@@ -1,12 +1,8 @@
-import Test from "@/components/Test";
-
 export default async function Home() {
   const data = await fetch(`https://api.aiterview.tech/`);
-  const res = data.text();
+  const res = data;
 
-  return (
-    <div>
-      <Test test={res} />
-    </div>
-  );
+  console.log(res);
+
+  return <div>1</div>;
 }
