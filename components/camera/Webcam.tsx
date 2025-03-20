@@ -1,13 +1,42 @@
 'use client';
 
 import { humanInstanceAtom } from '@/store/webcam';
-import Human from '@vladmandic/human';
+import Human, { DrawOptions } from '@vladmandic/human';
 import { useAtomValue } from 'jotai';
 import { useEffect, useRef } from 'react';
 
 interface Props {
   size: { width: number; height: number };
 }
+
+// drawOptions = {
+//   faceLabels: `face
+//     confidence: [score]%
+//     [gender] [genderScore]%
+//     age: [age] years
+//     distance: [distance]cm
+//     real: [real]%
+//     live: [live]%
+//     [emotions]
+//     roll: [roll]° yaw:[yaw]° pitch:[pitch]°
+//     gaze: [gaze]°`,
+//   bodyLabels: 'body [score]%',
+//   bodyPartLabels: '[label] [score]%',
+//   objectLabels: '[label] [score]%',
+//   handLabels: '[label] [score]%',
+//   fingerLabels: '[label]',
+//   gestureLabels: '[where] [who]: [what]',
+// };
+
+const DRAW_OPTIONS: Partial<DrawOptions> = {
+  drawPolygons: false,
+  faceLabels: `[score]%
+    [emotions]
+    distance: [distance]cm
+    roll: [roll]° yaw:[yaw]° pitch:[pitch]°
+    gaze: [gaze]°
+  `,
+};
 
 const WebcamComponent = ({ size }: Props) => {
   const humanInstance = useAtomValue(humanInstanceAtom);
@@ -80,7 +109,7 @@ const WebcamComponent = ({ size }: Props) => {
 
       if (canvas) {
         human.draw.canvas(processed.canvas as HTMLCanvasElement, canvas);
-        await human.draw.all(canvas, interpolated);
+        await human.draw.all(canvas, interpolated, DRAW_OPTIONS);
       }
     }
 
