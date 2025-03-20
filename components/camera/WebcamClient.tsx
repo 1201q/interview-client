@@ -1,9 +1,10 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import styles from './styles/webcam.module.css';
 import WebcamComponent from './Webcam';
 import useSize from '@/hooks/useSize';
+import InitHuman from './InitHuman';
 
 const WebcamClient = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -14,8 +15,8 @@ const WebcamClient = () => {
 
   return (
     <div ref={containerRef} className={styles.container}>
-      {!isResizing && <WebcamComponent size={size} />}
-      {size.width} /{size.height}
+      <WebcamComponent size={size} />
+      <InitHuman />
     </div>
   );
 };
