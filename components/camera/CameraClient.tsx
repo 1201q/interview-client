@@ -2,10 +2,12 @@
 
 import { useRef, useState } from 'react';
 import styles from './styles/camera.module.css';
-import RunHuman from './Human';
+import HumanDetector from './HumanDetector';
 
 const CameraClient = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
   const [isCameraOn, setIsCameraOn] = useState(false);
   let stream = null;
 
@@ -34,12 +36,17 @@ const CameraClient = () => {
     <div className={styles.container}>
       <div className={styles.cameraContainer}>
         <video ref={videoRef} playsInline autoPlay muted></video>
+        <canvas ref={canvasRef}></canvas>
       </div>
       <button onClick={startCamera}>시작</button>
       <button onClick={stopCamera}>종료</button>
-      {isCameraOn && videoRef.current && videoRef && (
-        <RunHuman videoRef={videoRef} />
-      )}
+      {isCameraOn &&
+        videoRef.current &&
+        videoRef &&
+        canvasRef &&
+        canvasRef.current && (
+          <HumanDetector videoRef={videoRef} canvasRef={canvasRef} />
+        )}
     </div>
   );
 };

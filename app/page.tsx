@@ -1,10 +1,10 @@
 import CameraClient from '@/components/camera/CameraClient';
-import Test from '@/components/Test';
+import WebcamClient from '@/components/camera/WebcamClient';
 
 export default async function Home() {
   return (
     <div>
-      <CameraClient />
+      <WebcamClient />
     </div>
   );
 }
