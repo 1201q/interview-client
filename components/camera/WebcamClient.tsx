@@ -17,15 +17,6 @@ const WebcamClient = () => {
           facingMode: 'user',
         }}
       />
-      <Webcam
-        ref={webcamRef}
-        audio={false}
-        mirrored={true}
-        videoConstraints={{
-          aspectRatio: 0.67777,
-          facingMode: 'user',
-        }}
-      />
     </div>
   );
 };
