@@ -1,22 +1,21 @@
 'use client';
-import { useRef } from 'react';
+
+import { useRef, useState } from 'react';
 import styles from './styles/webcam.module.css';
-import Webcam from 'react-webcam';
+import WebcamComponent from './Webcam';
+import useSize from '@/hooks/useSize';
 
 const WebcamClient = () => {
-  const webcamRef = useRef<Webcam>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { size, isResizing } = useSize(
+    containerRef as React.RefObject<HTMLElement>,
+  );
 
   return (
-    <div className={styles.container}>
-      <Webcam
-        ref={webcamRef}
-        audio={false}
-        mirrored={true}
-        videoConstraints={{
-          aspectRatio: 1.71,
-          facingMode: 'user',
-        }}
-      />
+    <div ref={containerRef} className={styles.container}>
+      {!isResizing && <WebcamComponent size={size} />}
+      {size.width} /{size.height}
     </div>
   );
 };

@@ -3,7 +3,7 @@ import WebcamClient from '@/components/camera/WebcamClient';
 
 export default async function Home() {
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       <WebcamClient />
     </div>
   );
