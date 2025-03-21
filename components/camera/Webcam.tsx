@@ -43,7 +43,11 @@ const WebcamComponent = ({ size }: Props) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  const timeoutRef = useRef<NodeJS.Timeout>(null);
+  const animationFrameRef = useRef<number>(null);
+
   useEffect(() => {
+    console.log(humanInstance, size);
     if (!humanInstance) return;
 
     const main = async (human: Human) => {
@@ -54,6 +58,22 @@ const WebcamComponent = ({ size }: Props) => {
     };
 
     main(humanInstance);
+
+    return () => {
+      if (timeoutRef.current) {
+        console.log('clearTimeout');
+        clearTimeout(timeoutRef.current);
+      }
+      if (animationFrameRef.current) {
+        console.log('cancelAnimationFrame');
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+
+      if (humanInstance) {
+        console.log('stop webcam');
+        humanInstance.webcam.stop();
+      }
+    };
   }, [humanInstance, size]);
 
   const startWebcam = async (human: Human) => {
@@ -96,7 +116,9 @@ const WebcamComponent = ({ size }: Props) => {
       await human.detect(video);
     }
 
-    requestAnimationFrame(() => detectionLoop(human));
+    animationFrameRef.current = requestAnimationFrame(() =>
+      detectionLoop(human),
+    );
   };
 
   const drawLoop = async (human: Human) => {
@@ -113,7 +135,7 @@ const WebcamComponent = ({ size }: Props) => {
       }
     }
 
-    setTimeout(() => drawLoop(human), 30);
+    timeoutRef.current = setTimeout(() => drawLoop(human), 30);
   };
 
   return (
