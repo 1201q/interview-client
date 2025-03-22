@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import styles from './styles/webcam.module.css';
 import WebcamComponent from './Webcam';
-import useSize from '@/hooks/useSize';
+import useSize from '@/utils/hooks/useSize';
 import InitHuman from './InitHuman';
 
 const WebcamClient = () => {
@@ -15,7 +15,9 @@ const WebcamClient = () => {
 
   return (
     <div ref={containerRef} className={styles.container}>
-      <WebcamComponent size={size} />
+      <div className={styles.webcamContainer}>
+        <WebcamComponent />
+      </div>
       <InitHuman />
     </div>
   );

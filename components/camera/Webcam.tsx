@@ -1,13 +1,9 @@
 'use client';
 
-import { humanInstanceAtom } from '@/store/webcam';
+import { initHumanAtom } from '@/store/webcam';
 import Human, { DrawOptions } from '@vladmandic/human';
 import { useAtomValue } from 'jotai';
 import { useEffect, useRef } from 'react';
-
-interface Props {
-  size: { width: number; height: number };
-}
 
 // drawOptions = {
 //   faceLabels: `face
@@ -38,8 +34,8 @@ const DRAW_OPTIONS: Partial<DrawOptions> = {
   `,
 };
 
-const WebcamComponent = ({ size }: Props) => {
-  const humanInstance = useAtomValue(humanInstanceAtom);
+const WebcamComponent = () => {
+  const humanInstance = useAtomValue(initHumanAtom);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -47,7 +43,7 @@ const WebcamComponent = ({ size }: Props) => {
   const animationFrameRef = useRef<number>(null);
 
   useEffect(() => {
-    console.log(humanInstance, size);
+    console.log(humanInstance);
     if (!humanInstance) return;
 
     const main = async (human: Human) => {
@@ -74,7 +70,7 @@ const WebcamComponent = ({ size }: Props) => {
         humanInstance.webcam.stop();
       }
     };
-  }, [humanInstance, size]);
+  }, [humanInstance]);
 
   const startWebcam = async (human: Human) => {
     const video = videoRef.current;
@@ -93,8 +89,7 @@ const WebcamComponent = ({ size }: Props) => {
     await human.webcam.start({
       element: video,
       crop: false,
-      width: size.width,
-      height: size.height,
+
       id,
     });
 
@@ -144,9 +139,9 @@ const WebcamComponent = ({ size }: Props) => {
         ref={videoRef}
         autoPlay
         playsInline
-        style={{ width: '100%', display: 'none' }}
+        style={{ width: '100%', display: 'none', position: 'relative' }}
       />
-      <canvas ref={canvasRef} />
+      <canvas ref={canvasRef} style={{ width: '100%', position: 'relative' }} />
     </>
   );
 };
