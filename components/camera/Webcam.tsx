@@ -92,8 +92,6 @@ const WebcamComponent = () => {
       id,
     });
 
-    console.log('진짜 완료');
-
     if (canvas) {
       canvas.width = human.webcam.width;
       canvas.height = human.webcam.height;
@@ -109,7 +107,8 @@ const WebcamComponent = () => {
     const video = videoRef.current;
 
     if (video && !video.paused) {
-      await human.detect(video);
+      const data = await human.detect(video);
+      // console.log(data);
     }
 
     animationFrameRef.current = requestAnimationFrame(() =>

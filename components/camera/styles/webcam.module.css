@@ -11,15 +11,17 @@
 }
 
 .webcamContainer {
-  max-width: 600px;
-  background-color: blue;
+  width: 100%;
+  max-width: 700px;
   position: relative;
-  border: 3px solid white;
 }
 
 .loadingContainer {
-  max-width: 600px;
+  max-width: 1200px;
   background-color: wheat;
   position: relative;
-  border: 3px solid white;
+}
+
+.webcamContainer canvas {
+  border-radius: 18px;
 }
