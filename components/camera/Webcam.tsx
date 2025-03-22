@@ -89,9 +89,10 @@ const WebcamComponent = () => {
     await human.webcam.start({
       element: video,
       crop: false,
-
       id,
     });
+
+    console.log('진짜 완료');
 
     if (canvas) {
       canvas.width = human.webcam.width;

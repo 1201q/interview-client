@@ -16,3 +16,10 @@
   position: relative;
   border: 3px solid white;
 }
+
+.loadingContainer {
+  max-width: 600px;
+  background-color: wheat;
+  position: relative;
+  border: 3px solid white;
+}
