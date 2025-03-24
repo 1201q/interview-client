@@ -22,6 +22,36 @@
   position: relative;
 }
 
-.webcamContainer canvas {
+.hiddenVideo {
+  width: 100%;
+  display: none;
+  position: relative;
+}
+
+.drawCanvas {
+  width: 100%;
+  position: relative;
   border-radius: 18px;
+}
+
+.overlayCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.resultVideo {
+  transform: scale(-1, 1);
+}
+
+.resultVideo::-webkit-media-controls-panel {
+  transform: scale(-1, 1);
+}
+
+.webcamContainer button {
+  padding: 10px;
+  margin: 0px 5px;
+  background-color: lightblue;
 }

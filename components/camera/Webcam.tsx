@@ -3,6 +3,7 @@
 import { detectionObserver } from '@/store/observer';
 import { initHumanAtom } from '@/store/webcam';
 import { Recorder } from '@/utils/libs/recorder';
+import styles from './styles/webcam.module.css';
 
 import Human, { DrawOptions, Result } from '@vladmandic/human';
 import { useAtomValue } from 'jotai';
@@ -234,23 +235,10 @@ const WebcamComponent = () => {
         ref={videoRef}
         autoPlay
         playsInline
-        style={{
-          width: '100%',
-          display: 'none',
-          position: 'relative',
-        }}
+        className={styles.hiddenVideo}
       />
-      <canvas ref={canvasRef} style={{ width: '100%', position: 'relative' }} />
-      <canvas
-        ref={overlayRef}
-        style={{
-          position: 'absolute',
-          zIndex: 100,
-          top: 0,
-          left: 0,
-          pointerEvents: 'none',
-        }}
-      />
+      <canvas ref={canvasRef} className={styles.drawCanvas} />
+      <canvas ref={overlayRef} className={styles.overlayCanvas} />
       <button
         onClick={() => {
           startRecording();
@@ -266,7 +254,9 @@ const WebcamComponent = () => {
         스탑
       </button>
       {isRecording ? <>녹화중</> : <>녹화상태아님</>}
-      {recordedUrl && <video src={recordedUrl} controls />}
+      {recordedUrl && (
+        <video className={styles.resultVideo} src={recordedUrl} controls />
+      )}
     </>
   );
 };
