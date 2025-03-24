@@ -200,8 +200,6 @@ const WebcamComponent = () => {
     ctx.restore();
   };
 
-  const getStream = async () => {};
-
   const startRecording = async () => {
     const stream = await humanInstance.webcam.stream;
 
