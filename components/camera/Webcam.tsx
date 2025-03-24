@@ -51,8 +51,12 @@ const WebcamComponent = () => {
         const { width, height } = entry.contentRect;
 
         if (overlayRef.current) {
-          overlayRef.current.width = width;
-          overlayRef.current.height = height;
+          const dpr = window.devicePixelRatio || 1;
+          overlayRef.current.style.width = `${width}px`;
+          overlayRef.current.style.height = `${height}px`;
+
+          overlayRef.current.width = width * dpr;
+          overlayRef.current.height = height * dpr;
         }
       });
     });
@@ -162,7 +166,7 @@ const WebcamComponent = () => {
 
   const drawOverlayCircle = (canvas: HTMLCanvasElement, distance: number) => {
     const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    if (!ctx || !window.devicePixelRatio) return;
 
     const width = canvas.width;
     const height = canvas.height;
@@ -171,19 +175,22 @@ const WebcamComponent = () => {
     const centerY = height / 2;
 
     const base = Math.min(width, height) / 2;
-    const outer = base * 0.6 + distance * 0.5;
-    const inner = outer - 2;
+    const raio = 0.6;
+    const outer = base * raio;
+    const inner = outer - 3;
 
     ctx.clearRect(0, 0, width, height);
 
     ctx.save();
     ctx.beginPath();
+
     ctx.arc(centerX, centerY, outer, 0, Math.PI * 2);
     ctx.arc(centerX, centerY, inner, 0, Math.PI * 2, true);
 
     ctx.closePath();
     ctx.fillStyle = 'rgba(255, 255, 255, 1)';
     ctx.fill();
+
     ctx.restore();
   };
 
