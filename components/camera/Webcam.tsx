@@ -2,10 +2,11 @@
 
 import { detectionObserver } from '@/store/observer';
 import { initHumanAtom } from '@/store/webcam';
+import { Recorder } from '@/utils/libs/recorder';
 
 import Human, { DrawOptions, Result } from '@vladmandic/human';
 import { useAtomValue } from 'jotai';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // drawOptions = {
 //   faceLabels: `face
@@ -44,6 +45,10 @@ const WebcamComponent = () => {
 
   const timeoutRef = useRef<NodeJS.Timeout>(null);
   const animationFrameRef = useRef<number>(null);
+
+  const [isRecording, setIsRecording] = useState(false);
+  const [recorder, setRecorder] = useState<Recorder | undefined>(undefined);
+  const [recordedUrl, setRecordedUrl] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const resizeObserver = new ResizeObserver((entries) => {
@@ -194,13 +199,46 @@ const WebcamComponent = () => {
     ctx.restore();
   };
 
+  const getStream = async () => {};
+
+  const startRecording = async () => {
+    const stream = await humanInstance.webcam.stream;
+
+    if (!stream) return;
+
+    const recorder = new Recorder(stream);
+
+    setRecorder(recorder);
+    setIsRecording(true);
+
+    recorder.start();
+  };
+
+  const stopRecording = async () => {
+    if (recorder) {
+      recorder.stop();
+
+      setTimeout(() => {
+        const url = recorder.getVideoUrl();
+        setRecordedUrl(url);
+      });
+
+      setIsRecording(false);
+      setRecorder(undefined);
+    }
+  };
+
   return (
     <>
       <video
         ref={videoRef}
         autoPlay
         playsInline
-        style={{ width: '100%', display: 'none', position: 'relative' }}
+        style={{
+          width: '100%',
+          display: 'none',
+          position: 'relative',
+        }}
       />
       <canvas ref={canvasRef} style={{ width: '100%', position: 'relative' }} />
       <canvas
@@ -213,6 +251,22 @@ const WebcamComponent = () => {
           pointerEvents: 'none',
         }}
       />
+      <button
+        onClick={() => {
+          startRecording();
+        }}
+      >
+        시작
+      </button>
+      <button
+        onClick={() => {
+          stopRecording();
+        }}
+      >
+        스탑
+      </button>
+      {isRecording ? <>녹화중</> : <>녹화상태아님</>}
+      {recordedUrl && <video src={recordedUrl} controls />}
     </>
   );
 };
