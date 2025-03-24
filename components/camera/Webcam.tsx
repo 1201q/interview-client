@@ -32,9 +32,7 @@ const DRAW_OPTIONS: Partial<DrawOptions> = {
   drawPolygons: false,
   faceLabels: `[score]%
     [emotions]
-    distance: [distance]cm
     roll: [roll]° yaw:[yaw]° pitch:[pitch]°
-    gaze: [gaze]°
   `,
 };
 
