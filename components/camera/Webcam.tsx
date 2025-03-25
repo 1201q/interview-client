@@ -117,7 +117,7 @@ const WebcamComponent = () => {
       return;
     }
 
-    await human.webcam.start({
+    const ready = await human.webcam.start({
       element: video,
       crop: false,
       id,
@@ -139,6 +139,8 @@ const WebcamComponent = () => {
 
     if (video && !video.paused) {
       const data = await human.detect(video);
+
+      console.log(data);
     }
 
     animationFrameRef.current = requestAnimationFrame(() =>
@@ -158,6 +160,8 @@ const WebcamComponent = () => {
       if (canvas) {
         human.draw.canvas(processed.canvas as HTMLCanvasElement, canvas);
         await human.draw.all(canvas, interpolated, DRAW_OPTIONS);
+
+        console.log(interpolated);
 
         if (overlay && interpolated.face[0] && interpolated.face[0].distance) {
           drawOverlayCircle(overlay, interpolated.face[0].distance);
