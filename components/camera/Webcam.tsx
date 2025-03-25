@@ -48,6 +48,7 @@ const WebcamComponent = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [recorder, setRecorder] = useState<Recorder | undefined>(undefined);
   const [recordedUrl, setRecordedUrl] = useState<string | undefined>(undefined);
+  const [isWebcamReady, setIsWebcamReady] = useState(false);
 
   useEffect(() => {
     const resizeObserver = new ResizeObserver((entries) => {
@@ -113,6 +114,9 @@ const WebcamComponent = () => {
     }
 
     const devices = await human.webcam.enumerate();
+
+    console.log(devices);
+
     const id = devices[0].deviceId;
 
     if (!id) {
