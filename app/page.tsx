@@ -1,9 +1,17 @@
-import WebcamClient from '@/components/camera/WebcamClient';
+import Header from '@/components/header/Header';
+import styles from './page.module.css';
+import Landing from '@/components/landing/Landing';
 
-export default async function Home() {
+const Page = () => {
   return (
-    <div style={{ width: '100%', height: '100dvh' }}>
-      <WebcamClient />
+    <div className={styles.container}>
+      <Header />
+
+      <div className={styles.contentsContainer}>
+        <Landing />
+      </div>
     </div>
   );
-}
+};
+
+export default Page;

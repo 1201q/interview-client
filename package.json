@@ -10,6 +10,7 @@
     "format": "prettier --write --cache ."
   },
   "dependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@vladmandic/human": "^3.3.5",
     "jotai": "^2.12.2",
     "next": "15.1.2",
