@@ -107,7 +107,10 @@ const WebcamComponent = () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
 
-    if (!video) return;
+    if (!video) {
+      console.error('No video element found');
+      return;
+    }
 
     const devices = await human.webcam.enumerate();
     const id = devices[0].deviceId;
@@ -141,6 +144,7 @@ const WebcamComponent = () => {
       const data = await human.detect(video);
 
       console.log(data);
+      console.log(human.webcam);
     }
 
     animationFrameRef.current = requestAnimationFrame(() =>

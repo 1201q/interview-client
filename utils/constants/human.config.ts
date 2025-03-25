@@ -8,7 +8,7 @@ export const humanConfig: Partial<Config> = {
   face: {
     enabled: true,
     skipFrames: 50,
-    iris: { enabled: false },
+    iris: { enabled: true },
     description: { enabled: false },
     liveness: { enabled: false },
     detector: { enabled: false, scale: 1.4 },
