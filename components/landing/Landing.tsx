@@ -1,9 +1,11 @@
+import Header from '../header/Header';
 import Info from './Info';
 import styles from './styles/landing.module.css';
 
 const Landing = () => {
   return (
     <div className={styles.container}>
+      <Header />
       <div className={styles.topContainer}>
         <div className={styles.welcomeTextContainer}>
           <p className={styles.welcomeText}>AI와 함께하는</p>
