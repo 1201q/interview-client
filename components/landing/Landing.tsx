@@ -1,11 +1,12 @@
-import Header from '../header/Header';
+import Link from 'next/link';
+import LandingHeader from '../header/LadingHeader';
 import Info from './Info';
 import styles from './styles/landing.module.css';
 
 const Landing = () => {
   return (
     <div className={styles.container}>
-      <Header />
+      <LandingHeader />
       <div className={styles.topContainer}>
         <div className={styles.welcomeTextContainer}>
           <p className={styles.welcomeText}>AI와 함께하는</p>
@@ -21,7 +22,9 @@ const Landing = () => {
           <p className={styles.explainText}>합격까지 같이 달려요!</p>
         </div>
         <div className={styles.buttonContainer}>
-          <button>바로 시작</button>
+          <Link href={'/interview'}>
+            <button>바로 시작</button>
+          </Link>
         </div>
       </div>
       <Info />

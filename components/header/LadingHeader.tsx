@@ -1,6 +1,6 @@
-import styles from './styles/header.module.css';
+import styles from './styles/landngHeader.module.css';
 
-const Header = () => {
+const LandingHeader = () => {
   return (
     <div className={styles.container}>
       <div className={styles.headerContainer}>
@@ -11,4 +11,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default LandingHeader;

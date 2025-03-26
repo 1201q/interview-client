@@ -3,8 +3,8 @@
 }
 
 .topContainer {
-  height: 75%;
-  background: linear-gradient(180deg, transparent 75%, rgba(0, 82, 254, 0.15));
+  height: 75dvh;
+  background: linear-gradient(180deg, transparent 55%, rgba(0, 82, 254, 0.15));
 }
 
 .welcomeText {
@@ -59,7 +59,7 @@
 
 @media screen and (max-width: 600px) {
   .topContainer {
-    height: 60%;
+    height: 60dvh;
     background: linear-gradient(
       180deg,
       transparent 70%,
@@ -84,6 +84,7 @@
     bottom: 50px;
     right: 50%;
     transform: translateX(50%);
+    margin-top: 0px;
   }
 
   .buttonContainer button {
