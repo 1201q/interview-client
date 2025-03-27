@@ -3,14 +3,14 @@
   --main-blue-hover-color: rgba(0, 73, 229, 0.771);
   --main-green-hover-color: #19c77a;
   --main-red-color: rgb(240, 97, 109);
-  --main-blue-color: rgb(76, 134, 254);
+  --main-blue-color: #4c86fe;
   --main-green-color: #03dd7c;
   --main-gray-color: rgba(91, 97, 110, 0.7);
 
   --bg-gray-color: rgb(243, 244, 246);
-  --bg-blue-color: rgba(64, 98, 219, 0.12);
+  --bg-blue-color: rgba(64, 98, 219, 0.1);
   --bg-red-color: rgba(219, 64, 64, 0.12);
-
+  --bg-black-color: #242424;
   --border-main-color: rgb(209, 217, 224);
   --border-main2-color: rgb(237, 237, 237);
 
