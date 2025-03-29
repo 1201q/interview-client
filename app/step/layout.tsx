@@ -8,8 +8,10 @@ interface Props {
 const InterviewLayout = ({ children }: Props) => {
   return (
     <div className={styles.container}>
-      <Indicator />
-      {children}
+      <div className={styles.indicatorContainer}>
+        <Indicator />
+      </div>
+      <div className={styles.contentsContainer}>{children}</div>
     </div>
   );
 };

@@ -146,9 +146,6 @@ const WebcamComponent = () => {
 
     if (video && !video.paused) {
       const data = await human.detect(video);
-
-      console.log(data);
-      console.log(human.webcam);
     }
 
     animationFrameRef.current = requestAnimationFrame(() =>

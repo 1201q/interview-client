@@ -1,4 +1,23 @@
 .container {
-  height: 100dvh;
-  background-color: var(--bg-gray-color);
+  width: 100%;
+  background-color: white;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  row-gap: 40px;
+}
+
+.indicatorContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 90px;
+  top: 0px;
+  position: sticky;
+}
+
+.contentsContainer {
+  flex: 1;
+  padding-bottom: 60px;
 }

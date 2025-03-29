@@ -7,6 +7,7 @@ import { initHumanAtom } from '@/store/webcam';
 import { useSetAtom } from 'jotai';
 import { Result } from '@vladmandic/human';
 import { detectionObserver } from '@/store/observer';
+
 const WebcamClient = () => {
   useSetAtom(initHumanAtom);
 

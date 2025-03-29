@@ -5,10 +5,7 @@
   max-width: 1200px;
   height: 65px;
   background-color: white;
-  position: fixed;
-  top: 15px;
-  left: 50%;
-  transform: translateX(-50%);
+
   border-radius: 80px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
