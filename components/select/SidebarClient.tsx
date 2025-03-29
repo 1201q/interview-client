@@ -5,7 +5,11 @@ import styles from './styles/sideOptionSelector.module.css';
 import { useAtom } from 'jotai';
 import { selectedRoleAtom } from '@/store/select';
 
-const SideOptionSelector = () => {
+interface Props {
+  count: Record<string, number>;
+}
+
+const SidebarClient = ({ count }: Props) => {
   const [selectedRole, setSelectedRole] = useAtom(selectedRoleAtom);
   return (
     <>
@@ -18,6 +22,7 @@ const SideOptionSelector = () => {
             onClick={() => setSelectedRole(option)}
           >
             <p>{option.name}</p>
+            <span>{count[option.value]}</span>
           </li>
         ))}
       </ul>
@@ -25,4 +30,4 @@ const SideOptionSelector = () => {
   );
 };
 
-export default SideOptionSelector;
+export default SidebarClient;

@@ -1,9 +1,8 @@
 import { STEP } from '@/utils/constants/interview.step';
-import Link from 'next/link';
 import styles from './page.module.css';
-import SideOptionSelector from '@/components/select/SideOptionSelector';
 import QuestionListServer from '@/components/select/QuestionListServer';
 import { Suspense } from 'react';
+import SidebarServer from '@/components/select/SidebarServer';
 
 const SelectPage = ({ step }: { step: string }) => {
   const nextStepIndex = STEP.findIndex((s) => s.page === step) + 1;
@@ -12,7 +11,7 @@ const SelectPage = ({ step }: { step: string }) => {
     <div className={styles.container}>
       <div className={styles.tableContainer}>
         <div className={styles.tableOptionsContainer}>
-          <SideOptionSelector />
+          <SidebarServer />
         </div>
         <div className={styles.questionListContainer}>
           <Suspense fallback={<div>Loading...</div>}>
