@@ -3,6 +3,7 @@ import Link from 'next/link';
 import styles from './page.module.css';
 import SideOptionSelector from '@/components/select/SideOptionSelector';
 import QuestionListServer from '@/components/select/QuestionListServer';
+import { Suspense } from 'react';
 
 const SelectPage = ({ step }: { step: string }) => {
   const nextStepIndex = STEP.findIndex((s) => s.page === step) + 1;
@@ -14,7 +15,9 @@ const SelectPage = ({ step }: { step: string }) => {
           <SideOptionSelector />
         </div>
         <div className={styles.questionListContainer}>
-          <QuestionListServer />
+          <Suspense fallback={<div>Loading...</div>}>
+            <QuestionListServer />
+          </Suspense>
         </div>
       </div>
       {/* <Link href={`/step/${STEP[nextStepIndex].page}`}>다음단계</Link> */}

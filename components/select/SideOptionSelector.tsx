@@ -9,7 +9,7 @@ const SideOptionSelector = () => {
   const [selectedRole, setSelectedRole] = useAtom(selectedRoleAtom);
   return (
     <>
-      <p className={styles.headerText}>분야</p>
+      <p className={styles.headerText}>분야별</p>
       <ul className={styles.optionContainer}>
         {ROLE_OPTIONS.map((option) => (
           <li

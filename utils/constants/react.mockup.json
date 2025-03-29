@@ -1,0 +1,262 @@
+[
+  {
+    "question_text": "React의 원리, 특징, 장단점이 무엇인가요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "Virtual DOM 이 무엇인지 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "Virtual DOM 작동 원리에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "JSX에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "엘리먼트와 컴포넌트의 차이에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "리액트에서 컴포넌트를 어떻게 생성하나요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "클래스형 컴포넌트를 사용해보셨나요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "클래스형 컴포넌트와 함수형 컴포넌트의 차이에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "라이프사이클에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "라이프 사이클 메소드에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "함수형 컴포넌트의 장점에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "React Hooks에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "함수형 컴포넌트에서 클래스형 컴포넌트의 라이프 사이클 메소드를 비슷하게 사용하는 방법에 대해 설명해주세요. (useEffect => ComponentDidMount, ComponentDidUpdate, ComponentWillUnmount)",
+    "role": "fe"
+  },
+  {
+    "question_text": "useEffect와 useLayoutEffect의 차이점에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "Pure Component에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "shouldComponentUpdate에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "State에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "React에서 State를 어떻게 관리하나요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "Props에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "Props Drilling에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "Props Drilling을 어떻게 해결할 수 있나요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "데이터를 자식에서 부모로도 전달할 수 있나요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "Props와 State의 차이에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "왜 state를 직접 바꾸지 않고 setState (useState)를 사용해야 하나요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "React 에서 상태 변화가 생겼을 때, 변화를 어떻게 알아채는지에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "React에서 State의 불변성은 어떻게 유지할 수 있나요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "setState는 동기적으로 동작하나요? 아니면 비동기적으로 동작하나요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "HTML과 React의 이벤트 처리 차이점에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "Key Props를 사용하는 이유에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "Ref의 용도에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "제어 컴포넌트와 비제어 컴포넌트의 차이에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "HOC (Higher-Order Components)에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "Context API에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "React.Fragment에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "Portal에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "에러 바운더리에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "메모이제이션에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "리액트에서 메모이제이션을 어떤 방식으로 활용할 수 있나요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "useMemo와 useCallback에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "React.memo와 useMemo의 차이에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "리액트 관련 패키지 중에 제일 좋다고 생각한 것은 무엇인가요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "리액트의 렌더링 성능 향상을 위해 어떻게 해야 하나요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "CSS in JS를 사용해 본 적이 있나요? 있다면 소감을 말해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "React 최신 버전 업데이트 내용에 대해 말씀해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "Client Side Routing에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "Next.js 를 사용해보셨나요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "React에서 Form 이벤트는 어떻게 제어하셨나요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "React Hook Form 를 사용해보셨나요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "기억나는 Hook에 대해 전부 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "React에서 컴포넌트 A가 사용하는 CSS파일과 컴포넌트 B가 사용하는 CSS파일의 선택자가 겹치는 이유가 뭘까요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "Redux에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "Redux를 사용하는 이유에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "Redux의 장단점에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "Flux 패턴에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "Context API와 Redux를 비교해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "Redux의 3대 원칙에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "React-Query를 사용해보셨나요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "React-Query에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "React-Query의 등장 배경과 장점에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "Recoil을 사용해보셨나요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "Recoil에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "Recoil에서 Loadable의 개념에 대해 설명해주세요.",
+    "role": "fe"
+  },
+  {
+    "question_text": "Recoil에서 비동기로 데이터를 받아올 때 State를 어떻게 관리하셨나요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "Recoil에서 로딩, 성공, 에러와 관련된 처리를 어떻게 하셨나요?",
+    "role": "fe"
+  },
+  {
+    "question_text": "Redux와 Recoil에 대해 비교 설명해주세요. (개념, 장단점)",
+    "role": "fe"
+  }
+]

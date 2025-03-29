@@ -8,6 +8,7 @@
   display: flex;
   width: calc(100% - 40px);
   max-width: 1200px;
+  min-height: 500px;
   column-gap: 20px;
 }
 
@@ -18,8 +19,11 @@
   flex-direction: column;
   background-color: white;
   border-radius: 20px;
-  padding-top: 10px;
+  padding-top: 0px;
+  position: sticky;
+  top: 115px;
 }
+
 .questionListContainer {
   flex: 1;
   display: flex;

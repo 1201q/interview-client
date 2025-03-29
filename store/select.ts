@@ -4,3 +4,11 @@ import { atom } from 'jotai';
 type RoleOptionType = (typeof ROLE_OPTIONS)[number];
 
 export const selectedRoleAtom = atom<RoleOptionType>(ROLE_OPTIONS[0]);
+
+export const selectedQuestionUUIDsAtom = atom<string[]>([]);
+
+selectedQuestionUUIDsAtom.onMount = (set) => {
+  return () => {
+    set([]);
+  };
+};
