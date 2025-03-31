@@ -4,13 +4,22 @@ import { ROLE_OPTIONS } from '@/utils/constants/interview.step';
 import styles from './styles/sideOptionSelector.module.css';
 import { useAtom } from 'jotai';
 import { selectedRoleAtom } from '@/store/select';
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation';
 
 interface Props {
   count: Record<string, number>;
+  role: string;
 }
 
-const SidebarClient = ({ count }: Props) => {
-  const [selectedRole, setSelectedRole] = useAtom(selectedRoleAtom);
+const SidebarClient = ({ count, role }: Props) => {
+  // const [selectedRole, setSelectedRole] = useAtom(selectedRoleAtom);
+  const router = useRouter();
+
   return (
     <>
       <p className={styles.headerText}>분야별</p>
@@ -18,8 +27,10 @@ const SidebarClient = ({ count }: Props) => {
         {ROLE_OPTIONS.map((option) => (
           <li
             key={option.value}
-            className={`${selectedRole.value === option.value ? styles.selected : styles.option}`}
-            onClick={() => setSelectedRole(option)}
+            className={`${role === option.value ? styles.selected : styles.option}`}
+            onClick={() => {
+              router.replace(`/step/select?role=${option.value}`);
+            }}
           >
             <p>{option.name}</p>
             <span>{count[option.value]}</span>

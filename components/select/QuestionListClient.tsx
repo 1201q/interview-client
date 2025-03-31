@@ -10,13 +10,12 @@ interface Props {
 }
 
 const QuestionListClient = ({ initData }: Props) => {
-  if (initData.length === 0) {
-    return <div>없음.</div>;
-  }
-
   const [selectedQuestionUUIDs, setSelectedQuestionUUIDs] = useAtom(
     selectedQuestionUUIDsAtom,
   );
+  if (initData.length === 0) {
+    return <div>없음.</div>;
+  }
 
   const handleClick = (id: string) => {
     setSelectedQuestionUUIDs((prev) => {
