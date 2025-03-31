@@ -12,3 +12,5 @@ selectedQuestionUUIDsAtom.onMount = (set) => {
     set([]);
   };
 };
+
+export const isUserAddButtonSelectedAtom = atom(false);

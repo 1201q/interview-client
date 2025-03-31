@@ -2,7 +2,6 @@
   display: flex;
   width: 100%;
 
-  /* background-color: whitesmoke; */
   margin-bottom: 12px;
   column-gap: 20px;
 }
@@ -29,10 +28,16 @@
   justify-content: center;
   background-color: white;
   height: 100%;
-  transition: background-color 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
 
   border-radius: 22px;
   padding: 0px 11px;
+}
+
+.selected {
+  border: 1px solid var(--main-blue-color);
+  background-color: var(--bg-blue-color);
+  transition: all 0.15s ease-in-out;
 }
 
 .button p {
@@ -49,4 +54,16 @@
   height: 15px;
   fill: var(--font-darkgray-color);
   margin-right: 5px;
+}
+
+.selected p {
+  color: var(--main-blue-color);
+}
+
+.selected svg {
+  fill: var(--main-blue-color);
+}
+
+.selected:hover {
+  background-color: var(--bg-blue-color);
 }
