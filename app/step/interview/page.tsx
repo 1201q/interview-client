@@ -1,14 +1,8 @@
 import { STEP } from '@/utils/constants/interview.step';
 import Link from 'next/link';
 
-const InterviewPage = ({ step }: { step: string }) => {
-  const nextStepIndex = STEP.findIndex((s) => s.page === step) + 1;
-
-  return (
-    <div>
-      <Link href={`/step/${STEP[nextStepIndex].page}`}>다음단계</Link>
-    </div>
-  );
+const InterviewPage = () => {
+  return <div>1</div>;
 };
 
 export default InterviewPage;

@@ -5,9 +5,7 @@ import { Suspense } from 'react';
 import SidebarServer from '@/components/select/SidebarServer';
 import QuestionListHeaderServer from '@/components/select/QuestionListHeaderServer';
 
-const SelectPage = ({ step }: { step: string }) => {
-  const nextStepIndex = STEP.findIndex((s) => s.page === step) + 1;
-
+const SelectPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.tableContainer}>
@@ -21,7 +19,6 @@ const SelectPage = ({ step }: { step: string }) => {
           </Suspense>
         </div>
       </div>
-      {/* <Link href={`/step/${STEP[nextStepIndex].page}`}>다음단계</Link> */}
     </div>
   );
 };
