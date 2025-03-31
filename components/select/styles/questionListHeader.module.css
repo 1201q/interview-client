@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  width: 100%;
+
+  /* background-color: whitesmoke; */
+  margin-bottom: 12px;
+  column-gap: 20px;
+}
+
+.inputContainer {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  font-size: 34px;
+  font-weight: 700;
+}
+
+.buttonContainer {
+  display: flex;
+
+  height: 36px;
+  column-gap: 7px;
+}
+
+.button {
+  border: 1px solid var(--border-main-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  height: 100%;
+  transition: background-color 0.15s ease-in-out;
+
+  border-radius: 22px;
+  padding: 0px 11px;
+}
+
+.button p {
+  font-weight: 600;
+  color: var(--font-darkgray-color);
+}
+
+.button:hover {
+  background-color: var(--main-gray-hover-color);
+}
+
+.button svg {
+  width: 15px;
+  height: 15px;
+  fill: var(--font-darkgray-color);
+  margin-right: 5px;
+}

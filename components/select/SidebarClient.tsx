@@ -2,14 +2,8 @@
 
 import { ROLE_OPTIONS } from '@/utils/constants/interview.step';
 import styles from './styles/sideOptionSelector.module.css';
-import { useAtom } from 'jotai';
-import { selectedRoleAtom } from '@/store/select';
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from 'next/navigation';
+
+import { useRouter } from 'next/navigation';
 
 interface Props {
   count: Record<string, number>;

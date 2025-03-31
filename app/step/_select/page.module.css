@@ -9,11 +9,11 @@
   width: calc(100% - 40px);
   max-width: 1200px;
   min-height: 500px;
-  column-gap: 20px;
+  column-gap: 28px;
 }
 
 .tableOptionsContainer {
-  width: 250px;
+  width: 220px;
   height: min-content;
   display: flex;
   flex-direction: column;
@@ -30,14 +30,4 @@
   flex-direction: column;
   border-radius: 20px;
   row-gap: 10px;
-}
-
-.answer {
-  display: flex;
-  align-items: center;
-  height: 55px;
-  background-color: white;
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }

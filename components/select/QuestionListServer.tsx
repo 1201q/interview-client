@@ -11,6 +11,10 @@ const QuestionListServer = async () => {
   );
   const res: QuestionType[] = await data.json();
 
+  if (!data.ok) {
+    return <div>error</div>;
+  }
+
   return <QuestionListClient initData={res} />;
 };
 
