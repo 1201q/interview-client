@@ -1,6 +1,6 @@
 import { STEP } from '@/utils/constants/interview.step';
 
-const AnalyzePage = ({ step }: { step: string }) => {
+const AnalyzePage = () => {
   return <div>1</div>;
 };
 
