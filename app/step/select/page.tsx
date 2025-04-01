@@ -5,11 +5,9 @@ import QuestionListHeaderServer from '@/components/select/QuestionListHeaderServ
 import { RoleType } from '@/utils/types/types';
 import { Suspense } from 'react';
 
-interface Props {
-  searchParams: {
-    role: RoleType;
-  };
-}
+type Props = {
+  searchParams: Promise<{ [key: string]: RoleType }>;
+};
 
 const SelectPage = async ({ searchParams }: Props) => {
   const { role } = await searchParams;
