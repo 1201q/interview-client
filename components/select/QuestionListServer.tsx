@@ -1,11 +1,7 @@
-import { QuestionType } from '@/utils/types/types';
+import { QuestionType, RoleType } from '@/utils/types/types';
 import QuestionListClient from './QuestionListClient';
-import { headers } from 'next/headers';
 
-const QuestionListServer = async () => {
-  const header = await headers();
-  const role = header.get('x-role') || 'fe';
-
+const QuestionListServer = async ({ role }: { role: RoleType }) => {
   const data = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/oracledb?role=${role}`,
   );
