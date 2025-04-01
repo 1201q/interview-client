@@ -1,0 +1,346 @@
+[
+  {
+    "question_text": "Swift에서 Extension은 어떻게 사용되나요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "Swift의 upcasting과 downcasting의 차이에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "== 연산자와 === 연산자는 어떻게 다른가요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "Dispatch Queue의 Serial Queue에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "let과 var의 차이는 무엇인가요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "function과 method의 차이를 말해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "커스텀 객체의 배열이 있을 때, 프로퍼티를 기준으로 배열을 어떻게 정렬할 수 있을까요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "mutaing 키워드의 의미를 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "프로토콜과 클래스의 차이를 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "Enum에서 raw value와 associated value에 대해 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "inout은 언제 사용하면 좋을까요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "연산 프로퍼티와 클로저를 가지는 저장 프로퍼티의 차이를 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "as? 와 as! 차이를 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "메서드 안에서 언제 self를 사용해야할까요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "Class와 Struct의 공통점과 차이점을 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "강한 참조는 무엇이고 왜 필요한가요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "strong, weak, unowned reference는 각각 언제 사용할까요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "Array, Set, Dictionary의 차이점이 뭘까요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "required 키워드에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "Self와 self의 차이가 뭘까요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "Array보다 Set을 사용하는게 더 좋을 때는 언제일까요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "Trailing Closure에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "@objc는 언제 사용하나요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "deinit은 언제 사용할까요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "DispatchQueue.main.async 와 DispatchQueue.main.sync 의 차이를 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "defer에 대해 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "open과 public 키워드의 차이를 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "fileprivate을 설명하고 언제 사용하면 좋을지 이야기해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "fileprivate과 private의 차이를 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "static func 와 class func의 차이를 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "Function과 Closure의 차이를 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "Swift에서 추상 클래스를 만들려면 어떻게 해야할까요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "Any와 AnyObject의 차이를 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "클래스 대신 언제 구조체를 사용하면 좋을까요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "구조체 대신 언제 클래스를 사용하면 좋을까요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "weak과 unowned 의 차이를 설명하고 예를 들어주세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "unowned는 언제 사용하는 것이 안전할까요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "Swift의 Copy-on-Write에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "staic 변수와 class 변수에 대해 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "ARC와 GC는 어떤 차이점이 있나요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "autoclosure attribute에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "GCD의 QoS에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "Hashable 프로토콜에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "Hashable 프로토콜을 채택하는 커스텀 타입이 Equtable도 채택해야하는 이유가 무엇인가요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "열거형도 Hashable을 채택했을 때 자동으로 Hashable하게 만들 수 있나요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "init?()과 init()은 어떤 차이가 있나요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "Never 반환 타입에 대해 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "weak만 사용하지 않고 unowned도 사용하는 이유가 무엇을까요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "ARC가 메모리 해제를 할 수 없는 상황에 대해 설명해보세요. GC는 해결할 수 있을까요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "DispatchGroup에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "DispatchWorkItem의 장점이 무엇인가요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "Concurrent와 Serial Queue가 async, sync와 함께 사용되는 상황에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "@escaping에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "@objc와 dynamic의 차이에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "Extension은 메서드를 Override 할 수 있을까요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "RunLoop에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "autoreleasepool에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "OperationQueue에 대해서 설명해보세요. DispatchQueue와는 어떤 것이 다른가요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "final 키워드를 클래스 앞에 붙이면 어떤 효과가 있을까요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "vtable에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "프로퍼티 옵저버에 대해 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "Property Wrapper에 대해 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "고차함수 중 flatMap과 compactMap의 차이를 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "High Order Function에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "함수형 프로그래밍은 무엇인가요? Swift는 함수형 프로그래밍 언어인가요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "순수함수가 무엇인가요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "사이드 이펙트는 무엇인가요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "순수 함수가 왜 필요하다고 생각하나요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "1급 객체에 대해서 설명해보세요. Swift에는 어떤 1급 객체들이 있나요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "Optional은 내부적으로 어떻게 구현되어 있나요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "Swift에서 참조 타입을 말해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "String은 왜 subscript로 접근할 수 없을까요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "Result 타입에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "some 키워드에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "KVC에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "KVO에 대해서 설명해보세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "typealias가 무엇인지 말해주세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "associatedType이 무엇인지 설명해주세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "제네릭이 무엇이고 어떻게 동작하는지 설명해주세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "GCD의 Barrier에 대해 설명해주세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "DispatchSemaphore를 사용하는 상황을 설명해주세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "DispatchGroup은 언제 어떻게 사용할까요?",
+    "role": "ios"
+  },
+  {
+    "question_text": "Codable에 대해서 설명해주세요.",
+    "role": "ios"
+  },
+  {
+    "question_text": "Codable과 NSCodong의 차이는?",
+    "role": "ios"
+  },
+  {
+    "question_text": "COW를 직접 구현한다면 어떻게 구현할 것인지?",
+    "role": "ios"
+  },
+  {
+    "question_text": "@Main에 대해서 설명해주세요.",
+    "role": "ios"
+  }
+]

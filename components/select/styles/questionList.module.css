@@ -11,9 +11,27 @@
   transition: all 0.1s ease-in-out;
 }
 
+.answer input {
+  border: none;
+  outline: none;
+  width: calc(100% - 100px);
+  height: 100%;
+  font-size: 15px;
+  background: none;
+}
+
+.answer input::placeholder {
+  font-size: 15px;
+}
+
 .selected {
   background-color: var(--bg-blue-color);
   color: var(--main-blue-color);
   font-weight: 600;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.input {
+  background-color: var(--bg-gray-color);
+  margin-bottom: 8px;
 }

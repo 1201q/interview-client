@@ -8,6 +8,7 @@ import {
   selectedQuestionUUIDsAtom,
 } from '@/store/select';
 import { motion, AnimatePresence } from 'motion/react';
+import { useEffect, useRef } from 'react';
 
 interface Props {
   initData: QuestionType[];
@@ -17,7 +18,8 @@ const QuestionListClient = ({ initData }: Props) => {
   const [selectedQuestionUUIDs, setSelectedQuestionUUIDs] = useAtom(
     selectedQuestionUUIDsAtom,
   );
-  const isAddMode = useAtomValue(isUserAddButtonSelectedAtom);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [isAddMode, setIsAddMode] = useAtom(isUserAddButtonSelectedAtom);
 
   if (initData.length === 0) {
     return <div>없음.</div>;
@@ -33,18 +35,34 @@ const QuestionListClient = ({ initData }: Props) => {
     });
   };
 
+  useEffect(() => {
+    return () => {
+      setIsAddMode(false);
+    };
+  }, [initData]);
+
+  useEffect(() => {
+    if (isAddMode) {
+      inputRef.current?.focus();
+    }
+  }, [isAddMode]);
+
   return (
     <>
       <AnimatePresence>
         {isAddMode && (
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={{ opacity: 1, scale: 1 }}
             exit={{ scale: 0, opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className={styles.answer}
+            transition={{ duration: 0.2 }}
+            className={`${styles.answer} ${styles.input}`}
           >
-            추가모드
+            <input
+              type="text"
+              ref={inputRef}
+              placeholder="추가하고 싶은 질문을 입력하세요."
+            />
           </motion.div>
         )}
       </AnimatePresence>
