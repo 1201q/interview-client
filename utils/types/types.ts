@@ -1,6 +1,6 @@
 import { ROLE_OPTIONS } from '../constants/interview.step';
 
-type RoleType = (typeof ROLE_OPTIONS)[number]['value'];
+export type RoleType = (typeof ROLE_OPTIONS)[number]['value'];
 
 export interface QuestionType {
   id: string;

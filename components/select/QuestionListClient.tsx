@@ -2,7 +2,7 @@
 
 import { QuestionType } from '@/utils/types/types';
 import styles from './styles/questionList.module.css';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import {
   isUserAddButtonSelectedAtom,
   selectedQuestionUUIDsAtom,
