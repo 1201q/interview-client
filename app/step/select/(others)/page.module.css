@@ -1,0 +1,60 @@
+.container {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+
+.tableContainer {
+  display: flex;
+  width: calc(100% - 40px);
+  max-width: 1200px;
+  min-height: 500px;
+  column-gap: 28px;
+}
+
+.tableOptionsContainer {
+  width: 220px;
+  height: min-content;
+  display: flex;
+  flex-direction: column;
+
+  background-color: white;
+  border-radius: 20px;
+  padding-top: 0px;
+  position: sticky;
+  top: 115px;
+}
+
+.questionListContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  row-gap: 10px;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  margin-left: 4px;
+}
+
+.backButton svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--font-gray-color);
+  transition: fill 0.15s ease-in-out;
+}
+.backButton span {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--font-gray-color);
+  margin-left: 4px;
+  transition: color 0.15s ease-in-out;
+}
+
+.backButton:hover svg,
+.backButton:hover span {
+  fill: var(--font-black-color);
+  color: var(--font-black-color);
+}

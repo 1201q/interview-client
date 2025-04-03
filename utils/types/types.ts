@@ -7,3 +7,9 @@ export interface QuestionType {
   question_text: string;
   role: RoleType;
 }
+
+export interface UserCreatedQuestionType {
+  id: string;
+  question_text: string;
+  role: 'user';
+}

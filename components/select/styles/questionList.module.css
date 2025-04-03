@@ -4,7 +4,7 @@
   height: 55px;
   background-color: white;
   border-radius: 12px;
-  padding: 15px;
+  padding: 0px 15px;
   box-shadow: rgba(99, 99, 99, 0.15) 0px 2px 8px 0px;
   cursor: pointer;
   font-size: 15px;
@@ -14,10 +14,11 @@
 .answer input {
   border: none;
   outline: none;
-  width: calc(100% - 100px);
+  flex: 1;
   height: 100%;
   font-size: 15px;
   background: none;
+  cursor: auto;
 }
 
 .answer input::placeholder {
@@ -33,5 +34,25 @@
 
 .input {
   background-color: var(--bg-gray-color);
-  margin-bottom: 8px;
+}
+
+.buttonContainer {
+  width: 40px;
+
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.buttonContainer button {
+  width: 40px;
+  height: 40px;
+}
+
+.buttonContainer button svg {
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  fill: var(--main-green-hover-color);
 }

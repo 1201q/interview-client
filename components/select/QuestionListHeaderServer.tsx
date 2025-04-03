@@ -1,7 +1,7 @@
-import QuestionListHeaderClient from './QuestionListHeaderClient';
 import styles from './styles/questionListHeader.module.css';
 import OpenAi from '@/public/openai.svg';
 import Link from 'next/link';
+import Plus from '@/public/plus.svg';
 
 const QuestionListHeaderServer = async () => {
   return (
@@ -16,7 +16,12 @@ const QuestionListHeaderServer = async () => {
             <p>AI로 질문 생성</p>
           </button>
         </Link>
-        <QuestionListHeaderClient />
+        <Link href={'/step/select/add'}>
+          <button className={`${styles.button}`}>
+            <Plus />
+            <p>직접추가</p>
+          </button>
+        </Link>
       </div>
     </div>
   );
