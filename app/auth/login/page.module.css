@@ -92,8 +92,8 @@
 
 .loginButton:hover {
   background-color: var(--main-gray-hover-color);
+}
 
-  p {
-    color: var(--font-black-color);
-  }
+.loginButton:hover p {
+  color: var(--font-black-color);
 }
