@@ -8,6 +8,7 @@
 .headerContainer {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 100%;
   width: 100%;
   max-width: 1200px;
@@ -17,4 +18,19 @@
 .logo {
   font-size: 19px;
   font-weight: 700;
+}
+
+.loginButton {
+  background-color: var(--bg-black-color);
+  color: white;
+  height: 35px;
+  width: 90px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 15px;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.loginButton:hover {
+  background-color: var(--main-black-hover-color);
 }

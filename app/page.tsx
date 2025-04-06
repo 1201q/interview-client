@@ -1,4 +1,3 @@
-import Header from '@/components/header/LadingHeader';
 import styles from './page.module.css';
 import Landing from '@/components/landing/Landing';
 
