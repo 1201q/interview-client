@@ -1,17 +1,13 @@
-import { QuestionType } from '@/utils/types/types';
+import { cookies } from 'next/headers';
+import NeedLogin from '../need-login';
 
 const Page = async () => {
-  const data = await fetch('https://api.aiterview.tech/question');
+  const token = (await cookies()).get('accessToken')?.value;
 
-  const res: QuestionType[] = await data.json();
-
-  return (
-    <div>
-      {res.map((item) => (
-        <div key={item.id}>{item.question_text}</div>
-      ))}
-    </div>
-  );
+  if (!token) {
+    return <NeedLogin />;
+  }
+  return <div>1</div>;
 };
 
 export default Page;

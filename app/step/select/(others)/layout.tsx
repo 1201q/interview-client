@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import styles from './page.module.css';
+import styles from './_styles/layout.module.css';
 import AngleLeft from '@/public/angle-left.svg';
 
 interface Props {
@@ -10,6 +10,7 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
   const router = useRouter();
+
   return (
     <div className={styles.container}>
       <div className={styles.tableContainer}>
