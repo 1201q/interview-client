@@ -1,7 +1,7 @@
 import { QuestionType } from '@/utils/types/types';
 
 const Page = async () => {
-  const data = await fetch('https://api.aiterview.tech/oracledb');
+  const data = await fetch('https://api.aiterview.tech/question');
 
   const res: QuestionType[] = await data.json();
 
