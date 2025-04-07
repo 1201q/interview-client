@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // 로그인 유저가 로그인 페이지 접근시 메인으로 리다이렉트
-  if (request.cookies.has('accessToken') && pathname.startsWith('/auth')) {
+  if (request.cookies.has('accessToken') && pathname.startsWith('/login')) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
@@ -92,5 +92,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/step/:currentStep', '/auth/:path', '/step/select/:others'],
+  matcher: ['/step/:currentStep', '/login', '/step/select/:others'],
 };

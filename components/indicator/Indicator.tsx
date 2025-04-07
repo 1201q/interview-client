@@ -6,11 +6,16 @@ import SelectInfo from './SelectInfo';
 import Step from './Step';
 import styles from './styles/indicator.module.css';
 import { STEP } from '@/utils/constants/interview.step';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 const Indicator = () => {
   const pathname = usePathname();
-  const currentStep = pathname.split('/')[2];
+  const params = useSearchParams();
+  const step = pathname.split('/')[2];
+  const prevPageType = params.get('prevPage');
+
+  // login 페이지일경우 query로 step 처리
+  const currentStep = pathname === '/login' ? prevPageType : step;
 
   return (
     <div className={styles.container}>

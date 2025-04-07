@@ -1,0 +1,119 @@
+.container {
+  width: 100%;
+  min-height: 100dvh;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0;
+  z-index: 100;
+}
+
+.loginBox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(100% - 20px);
+  max-width: 620px;
+  height: 400px;
+  background-color: white;
+  transform: translate(-50%, -50%);
+  border-radius: 18px;
+  display: flex;
+  overflow: hidden;
+}
+
+.loginBox section {
+  flex: 1;
+}
+
+.leftSection {
+  background: linear-gradient(180deg, transparent 1%, rgba(0, 82, 254, 0.25));
+}
+
+.padding {
+  height: 100%;
+  padding: 25px 20px;
+}
+
+.headerText {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 50px;
+  margin-top: 30px;
+}
+
+.mediumText {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--font-gray-color);
+  margin-bottom: 15px;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+
+.buttonContainer a {
+  width: 100%;
+  height: 40px;
+}
+
+.buttonContainer a button {
+  width: 100%;
+  height: 100%;
+
+  border-radius: 6px;
+  position: relative;
+}
+
+.buttonContainer a button span {
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.googleButton {
+  background-color: white;
+  border: 1px solid var(--border-main-color);
+  transition: background-color 0.15s ease-in-out;
+}
+
+.googleButton:hover {
+  background-color: var(--main-gray-hover-color);
+}
+
+.googleButton img {
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.googleButton span {
+  color: var(--font-darkgray-color);
+}
+
+.githubButton {
+  background-color: var(--bg-black-color);
+  transition: background-color 0.15s ease-in-out;
+}
+
+.githubButton span {
+  color: white;
+}
+
+.githubButton svg {
+  width: 26px;
+  height: 26px;
+  fill: white;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+
+  transform: translateY(-50%);
+}
+.githubButton:hover {
+  background-color: var(--main-black-hover-color);
+}

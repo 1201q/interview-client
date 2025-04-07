@@ -37,14 +37,9 @@ const HeaderController = ({ logout, token }: Props) => {
           </div>
         )}
 
-        <button
-          onClick={() => {
-            setShowLoginButtons((prev) => !prev);
-          }}
-          className={styles.loginButton}
-        >
-          로그인
-        </button>
+        <Link href={'/login'}>
+          <button className={styles.loginButton}>로그인</button>
+        </Link>
       </div>
     );
   }
