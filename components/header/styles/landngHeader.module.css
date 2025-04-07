@@ -34,3 +34,38 @@
 .loginButton:hover {
   background-color: var(--main-black-hover-color);
 }
+
+.controllerContainer {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  position: relative;
+}
+
+.socialButtonContainer {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.socialButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.15s ease-in-out;
+}
+
+.socialButton:hover {
+  background-color: var(--main-gray-hover-color);
+}
+
+.socialButton svg {
+  width: 27px;
+  height: 27px;
+}
