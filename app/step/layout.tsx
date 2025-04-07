@@ -1,5 +1,6 @@
 import Indicator from '@/components/indicator/Indicator';
 import styles from './page.module.css';
+import { Suspense } from 'react';
 
 interface Props {
   children: React.ReactNode;
@@ -7,14 +8,14 @@ interface Props {
 
 const InterviewLayout = ({ children }: Props) => {
   return (
-    <>
-      <div className={styles.container}>
-        <div className={styles.indicatorContainer}>
+    <div className={styles.container}>
+      <div className={styles.indicatorContainer}>
+        <Suspense>
           <Indicator />
-        </div>
-        <div className={styles.contentsContainer}>{children}</div>
+        </Suspense>
       </div>
-    </>
+      <div className={styles.contentsContainer}>{children}</div>
+    </div>
   );
 };
 
