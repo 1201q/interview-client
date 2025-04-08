@@ -20,10 +20,12 @@ const LandingHeader = async () => {
 
           headers: {
             'Content-Type': 'application/json',
-            Cookie: `refreshToken=${refreshToken}`,
+            Cookie: `accessToken=${accessToken}; refreshToken=${refreshToken}`,
           },
         },
       );
+
+      console.log(response);
 
       if (!response.ok) {
         throw new Error('로그아웃에 실패했습니다.');
