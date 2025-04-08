@@ -16,7 +16,7 @@
   max-width: 620px;
   height: 400px;
   background-color: white;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) !important;
   border-radius: 18px;
   display: flex;
   overflow: hidden;

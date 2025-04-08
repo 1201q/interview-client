@@ -1,9 +1,13 @@
-.container {
+.container,
+.headerContainer {
   display: flex;
   width: 100%;
-
   margin-bottom: 12px;
   column-gap: 20px;
+}
+
+.headerContainer {
+  margin-bottom: 22px;
 }
 
 .inputContainer {
@@ -21,7 +25,8 @@
   column-gap: 7px;
 }
 
-.button {
+.button,
+.submitButton {
   border: 1px solid var(--border-main-color);
   display: flex;
   align-items: center;
@@ -32,6 +37,28 @@
 
   border-radius: 22px;
   padding: 0px 11px;
+}
+
+.submitButton {
+  background-color: var(--main-blue-color);
+  border: none;
+  padding: 0px 13px;
+}
+
+.submitButton p {
+  color: white;
+  font-weight: 600;
+}
+
+.submitButton svg {
+  width: 15px;
+  height: 15px;
+  fill: white;
+  margin-right: 5px;
+}
+
+.submitButton:hover {
+  background-color: var(--main-blue-hover-color);
 }
 
 .selected {
