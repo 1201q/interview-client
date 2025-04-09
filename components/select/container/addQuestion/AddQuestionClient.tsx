@@ -3,7 +3,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import styles from '../questionList.module.css';
 import Plus from '@/public/plus.svg';
-import AddPageInput from '../../AddPageInput';
+import InputItem from '../../item/InputItem';
 
 interface Props {
   questions: string[];
@@ -34,7 +34,7 @@ const AddQuestionClient = ({ questions, setQuestions }: Props) => {
   return (
     <>
       {questions.map((value, index) => (
-        <AddPageInput
+        <InputItem
           value={value}
           index={index}
           handleInputChange={handleInputChange}

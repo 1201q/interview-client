@@ -1,4 +1,4 @@
-import styles from './container/questionList.module.css';
+import styles from './input.module.css';
 import XMark from '@/public/xmark.svg';
 import React from 'react';
 import { ChangeEvent } from 'react';
@@ -10,7 +10,7 @@ interface Props {
   index: number;
 }
 
-const AddPageInput = (props: Props) => {
+const InputItem = (props: Props) => {
   return (
     <div className={`${styles.answer} ${styles.addAnswer}`}>
       <input
@@ -38,4 +38,4 @@ const AddPageInput = (props: Props) => {
   );
 };
 
-export default AddPageInput;
+export default InputItem;

@@ -12,10 +12,7 @@ const FavoriteSelectPage = async () => {
           <SidebarServer />
         </div>
         <div className={styles.questionListContainer}>
-          <QuestionListHeaderServer />
-          <Suspense>
-            <UserQuestionListServer />
-          </Suspense>
+          <QuestionListHeaderServer />1
         </div>
       </div>
     </div>
