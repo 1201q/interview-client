@@ -53,7 +53,7 @@
   align-items: center;
   background-color: var(--bg-red-color);
   border-radius: 8px;
-  height: 28px;
+  height: 25px;
   padding: 0px 8px;
 }
 
@@ -63,15 +63,15 @@
 
 .removeButton span {
   color: var(--main-red-color);
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
   margin-left: 2px;
 }
 
 .removeButton svg {
-  width: 15px;
-  height: 15px;
-
+  width: 13px;
+  height: 13px;
+  margin-top: 1px;
   fill: var(--main-red-color);
 }
 

@@ -1,19 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import styles from './styles/questionList.module.css';
 import Plus from '@/public/plus.svg';
-import XMark from '@/public/xmark.svg';
+import AddPageInput from './AddPageInput';
 
-const AddPageListClient = () => {
-  const [question, setQuestion] = useState<string[]>(['']);
+interface Props {
+  questions: string[];
+  setQuestions: Dispatch<SetStateAction<string[]>>;
+}
 
+const AddPageListClient = ({ questions, setQuestions }: Props) => {
   const handleAddInput = () => {
-    setQuestion((prev) => [...prev, '']);
+    setQuestions((prev) => [...prev, '']);
   };
 
   const handleRemoveInput = (index: number) => {
-    setQuestion((prev) => prev.filter((_, i) => i !== index));
+    setQuestions((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleInputChange = (
@@ -21,7 +24,7 @@ const AddPageListClient = () => {
     index: number,
   ) => {
     const { value } = e.target;
-    setQuestion((prev) => {
+    setQuestions((prev) => {
       const newQuestions = [...prev];
       newQuestions[index] = value;
       return newQuestions;
@@ -30,32 +33,16 @@ const AddPageListClient = () => {
 
   return (
     <>
-      {question.map((value, index) => (
-        <div className={`${styles.answer} ${styles.addAnswer}`} key={index}>
-          <input
-            type="text"
-            className={styles.input}
-            placeholder="추가할 질문을 입력하세요."
-            minLength={10}
-            maxLength={150}
-            value={value}
-            onChange={(e) => handleInputChange(e, index)}
-            required
-          />
-          {index > 0 && (
-            <div className={styles.buttonContainer}>
-              <button
-                type="button"
-                className={styles.removeButton}
-                onClick={() => handleRemoveInput(index)}
-              >
-                <XMark /> <span>삭제</span>
-              </button>
-            </div>
-          )}
-        </div>
+      {questions.map((value, index) => (
+        <AddPageInput
+          value={value}
+          index={index}
+          handleInputChange={handleInputChange}
+          handleRemoveInput={handleRemoveInput}
+          key={index}
+        />
       ))}
-      {question.length < 10 && (
+      {questions.length < 10 && (
         <button
           type="button"
           className={styles.addInputContainer}
