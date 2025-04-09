@@ -1,4 +1,4 @@
-import styles from './styles/questionListHeader.module.css';
+import styles from './questionListHeader.module.css';
 import OpenAi from '@/public/openai.svg';
 import Link from 'next/link';
 import Plus from '@/public/plus.svg';

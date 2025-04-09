@@ -1,18 +1,10 @@
-import styles from './page.module.css';
-import QuestionListServer from '@/components/select/container/categoryQuestion/CategoryQuestionListServer';
+import styles from '../../_styles/page.module.css';
 import SidebarServer from '@/components/select/sidebar/SidebarServer';
 import QuestionListHeaderServer from '@/components/select/listHeader/QuestionListHeaderServer';
-import { RoleType } from '@/utils/types/types';
+import UserQuestionListServer from '@/components/select/container/userCreatedQuestion/UserCreatedQuestionListServer';
 import { Suspense } from 'react';
 
-type Props = {
-  searchParams: Promise<{ [key: string]: RoleType }>;
-};
-
-const SelectPage = async ({ searchParams }: Props) => {
-  const { role } = await searchParams;
-  const roleType = role || 'fe';
-
+const UserSelectPage = async () => {
   return (
     <div className={styles.container}>
       <div className={styles.tableContainer}>
@@ -21,8 +13,8 @@ const SelectPage = async ({ searchParams }: Props) => {
         </div>
         <div className={styles.questionListContainer}>
           <QuestionListHeaderServer />
-          <Suspense key={roleType} fallback={<div>loading....</div>}>
-            <QuestionListServer role={roleType} />
+          <Suspense>
+            <UserQuestionListServer />
           </Suspense>
         </div>
       </div>
@@ -30,4 +22,4 @@ const SelectPage = async ({ searchParams }: Props) => {
   );
 };
 
-export default SelectPage;
+export default UserSelectPage;

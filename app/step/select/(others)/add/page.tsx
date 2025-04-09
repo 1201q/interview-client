@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import NeedLogin from '../need-login';
-import AddPageHeaderClient from '@/components/select/AddPageHeaderClient';
+import AddQuestionHeaderClient from '@/components/select/listHeader/AddQuestionHeaderClient';
 
 interface SubmitQuestions {
   question_text: string;
@@ -40,7 +40,7 @@ const Page = async () => {
     }
   };
 
-  return <AddPageHeaderClient createUserQuestions={createUserQuestions} />;
+  return <AddQuestionHeaderClient createUserQuestions={createUserQuestions} />;
 };
 
 export default Page;

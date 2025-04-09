@@ -1,4 +1,4 @@
-import styles from './styles/questionList.module.css';
+import styles from './container/questionList.module.css';
 import XMark from '@/public/xmark.svg';
 import React from 'react';
 import { ChangeEvent } from 'react';

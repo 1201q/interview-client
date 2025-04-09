@@ -1,15 +1,15 @@
 'use client';
 
-import { QuestionType } from '@/utils/types/types';
-import styles from './styles/questionList.module.css';
+import { UserQuestionType } from '@/utils/types/types';
+import styles from '../questionList.module.css';
 import { useAtom } from 'jotai';
 import { selectedQuestionUUIDsAtom } from '@/store/select';
 
 interface Props {
-  initData: QuestionType[];
+  initData: UserQuestionType[];
 }
 
-const QuestionListClient = ({ initData }: Props) => {
+const UserCreatedQuestionListClient = ({ initData }: Props) => {
   const [selectedQuestionUUIDs, setSelectedQuestionUUIDs] = useAtom(
     selectedQuestionUUIDsAtom,
   );
@@ -43,4 +43,4 @@ const QuestionListClient = ({ initData }: Props) => {
   );
 };
 
-export default QuestionListClient;
+export default UserCreatedQuestionListClient;

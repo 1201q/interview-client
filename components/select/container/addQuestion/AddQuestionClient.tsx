@@ -1,16 +1,16 @@
 'use client';
 
 import { Dispatch, SetStateAction } from 'react';
-import styles from './styles/questionList.module.css';
+import styles from '../questionList.module.css';
 import Plus from '@/public/plus.svg';
-import AddPageInput from './AddPageInput';
+import AddPageInput from '../../AddPageInput';
 
 interface Props {
   questions: string[];
   setQuestions: Dispatch<SetStateAction<string[]>>;
 }
 
-const AddPageListClient = ({ questions, setQuestions }: Props) => {
+const AddQuestionClient = ({ questions, setQuestions }: Props) => {
   const handleAddInput = () => {
     setQuestions((prev) => [...prev, '']);
   };
@@ -57,4 +57,4 @@ const AddPageListClient = ({ questions, setQuestions }: Props) => {
   );
 };
 
-export default AddPageListClient;
+export default AddQuestionClient;

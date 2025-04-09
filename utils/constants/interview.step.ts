@@ -31,3 +31,21 @@ export const ROLE_OPTIONS = [
     value: 'ios',
   },
 ] as const;
+
+export const USER_SIDEBAR_OPTIONS = [
+  {
+    name: '내가 추가한 질문',
+    value: 'user',
+    link: '/step/select/list/user',
+  },
+  {
+    name: 'Ai가 생성한 질문',
+    value: 'ai',
+    link: '/step/select/list/ai',
+  },
+  {
+    name: '즐겨찾기한 질문',
+    value: 'favorite',
+    link: '/step/select/list/favorite',
+  },
+] as const;
