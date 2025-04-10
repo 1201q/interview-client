@@ -2,6 +2,7 @@ import styles from './input.module.css';
 import XMark from '@/public/xmark.svg';
 import React from 'react';
 import { ChangeEvent } from 'react';
+import { motion } from 'motion/react';
 
 interface Props {
   value: string;
@@ -12,7 +13,15 @@ interface Props {
 
 const InputItem = (props: Props) => {
   return (
-    <div className={`${styles.answer} ${styles.addAnswer}`}>
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 0.19,
+      }}
+      className={`${styles.answer} ${styles.addAnswer}`}
+    >
       <input
         type="text"
         className={styles.input}
@@ -34,7 +43,7 @@ const InputItem = (props: Props) => {
           </button>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 

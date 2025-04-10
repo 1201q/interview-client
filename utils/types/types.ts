@@ -25,3 +25,8 @@ export interface UserCreatedQuestionType {
   question_text: string;
   role: 'user';
 }
+
+export interface AddQuestionType {
+  question_text: string;
+  id: string;
+}

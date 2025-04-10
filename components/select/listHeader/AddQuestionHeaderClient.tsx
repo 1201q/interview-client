@@ -6,6 +6,8 @@ import React, { FormEvent, useState } from 'react';
 import AddPageListClient from '../container/addQuestion/AddQuestionClient';
 
 import { useRouter } from 'next/navigation';
+import { v4 as uuidv4 } from 'uuid';
+import { AddQuestionType } from '@/utils/types/types';
 
 interface SubmitQuestions {
   question_text: string;
@@ -17,19 +19,21 @@ interface Props {
 }
 
 const AddQuestionHeaderClient = ({ createUserQuestions }: Props) => {
-  const [questions, setQuestions] = useState<string[]>(['']);
+  const [questions, setQuestions] = useState<AddQuestionType[]>([
+    { question_text: '', id: uuidv4() },
+  ]);
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     const submitQuestions: SubmitQuestions[] = questions.map((q) => {
-      return { question_text: q, role: 'user' };
+      return { question_text: q.question_text, role: 'user' };
     });
 
     try {
       await createUserQuestions(submitQuestions);
-      setQuestions(['']);
+      setQuestions([{ question_text: '', id: uuidv4() }]);
 
       alert('질문 추가 성공! 질문 목록에서 확인해보세요.');
 

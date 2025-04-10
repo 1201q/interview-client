@@ -17,8 +17,6 @@ export async function middleware(request: NextRequest) {
   const accessToken = request.cookies.get('accessToken');
   const refreshToken = request.cookies.get('refreshToken');
 
-  console.log(1);
-
   response.headers.set('x-pathname', pathname);
 
   if (pathname.startsWith('/step/select') && role) {
