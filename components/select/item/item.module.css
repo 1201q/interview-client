@@ -35,10 +35,24 @@
   align-items: center;
   justify-content: flex-end;
   width: 45px;
-  height: 20px;
+  height: 100%;
 }
 
 .timeAgoText {
   font-size: 12px;
   color: var(--font-gray-color);
+}
+
+.bookMarkButton {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.favorite {
+  width: 22px;
+  height: 22px;
+  fill: var(--font-gray-color);
 }

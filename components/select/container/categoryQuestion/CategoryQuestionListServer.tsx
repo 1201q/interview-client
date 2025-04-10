@@ -1,9 +1,12 @@
 import { QuestionType, RoleType } from '@/utils/types/types';
 import QuestionListClient from './CategoryQuestionListClient';
+import { cookies } from 'next/headers';
 
 const CategoryQuestionListServer = async ({ role }: { role: RoleType }) => {
   const data = await getQuestionListByRole(role);
-  return <QuestionListClient initData={data} />;
+  const isLoggedIn = (await cookies()).has('accessToken');
+
+  return <QuestionListClient initData={data} isLoggedIn={isLoggedIn} />;
 };
 
 const getQuestionListByRole = async (role: RoleType) => {
