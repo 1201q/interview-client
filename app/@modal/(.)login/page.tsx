@@ -4,11 +4,35 @@ import Link from 'next/link';
 import styles from './page.module.css';
 import Image from 'next/image';
 import Github from '@/public/github.svg';
+import { useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import { motion } from 'motion/react';
 
 const LoginModal = () => {
+  const bgRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+
+  const handleBackgroundClick = (e: MouseEvent) => {
+    if (bgRef.current && bgRef.current === e.target) {
+      router.back();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleBackgroundClick);
+    return () => {
+      document.removeEventListener('mousedown', handleBackgroundClick);
+    };
+  }, []);
+
   return (
-    <div className={styles.container}>
-      <div className={styles.loginBox}>
+    <div ref={bgRef} className={styles.container}>
+      <motion.div
+        className={styles.loginBox}
+        initial={{ opacity: 0, scale: 0.95, y: 30 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.13, ease: 'easeInOut' }}
+      >
         <section className={styles.leftSection}></section>
         <section>
           <div className={styles.padding}>
@@ -35,7 +59,7 @@ const LoginModal = () => {
             </div>
           </div>
         </section>
-      </div>
+      </motion.div>
     </div>
   );
 };
