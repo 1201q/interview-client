@@ -24,6 +24,8 @@ const getUserCreatedQuestions = async () => {
 
   const res: UserQuestionType[] = await data.json();
 
+  console.log(res);
+
   return res;
 };
 

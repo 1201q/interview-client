@@ -50,7 +50,6 @@ const SidebarServer = async () => {
                   className={`${isUserPage && splitedPathname[4] === option.value ? styles.selected : styles.option}`}
                 >
                   <p>{option.name}</p>
-                  <span>{count[option.value]}</span>
                 </li>
               </Link>
             ))}

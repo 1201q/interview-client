@@ -3,7 +3,7 @@ import { QuestionType, UserQuestionType } from '@/utils/types/types';
 import { useAtom } from 'jotai';
 import styles from './item.module.css';
 
-const QuestionItem = ({ data }: { data: QuestionType | UserQuestionType }) => {
+const UserCreatedQuestionItem = ({ data }: { data: UserQuestionType }) => {
   const [selectedQuestionUUIDs, setSelectedQuestionUUIDs] = useAtom(
     selectedQuestionUUIDsAtom,
   );
@@ -22,11 +22,14 @@ const QuestionItem = ({ data }: { data: QuestionType | UserQuestionType }) => {
     <div
       onClick={() => handleClick(data.id)}
       key={data.id}
-      className={`${styles.answer} ${selectedQuestionUUIDs.find((u) => u === data.id) ? styles.selected : ''}`}
+      className={`${styles.answer} ${styles.flex} ${selectedQuestionUUIDs.find((u) => u === data.id) ? styles.selected : ''}`}
     >
       <span>{data.question_text}</span>
+      <div className={styles.bottomInfoContainer}>
+        <p>{data.created_at}</p>
+      </div>
     </div>
   );
 };
 
-export default QuestionItem;
+export default UserCreatedQuestionItem;

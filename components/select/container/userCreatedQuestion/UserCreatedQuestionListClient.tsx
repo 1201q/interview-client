@@ -1,7 +1,8 @@
 'use client';
 
 import { UserQuestionType } from '@/utils/types/types';
-import QuestionItem from '../../item/QuestionItem';
+
+import UserCreatedQuestionItem from '../../item/UserCreatedQuestionItem';
 
 interface Props {
   initData: UserQuestionType[];
@@ -15,7 +16,7 @@ const UserCreatedQuestionListClient = ({ initData }: Props) => {
   return (
     <>
       {initData.map((answer) => (
-        <QuestionItem data={answer} key={answer.id} />
+        <UserCreatedQuestionItem data={answer} key={answer.id} />
       ))}
     </>
   );
