@@ -1,12 +1,12 @@
 .container,
-.headerContainer {
+.headerFormContainer {
   display: flex;
   width: 100%;
   margin-bottom: 12px;
   column-gap: 20px;
 }
 
-.headerContainer {
+.headerFormContainer {
   margin-bottom: 22px;
 }
 
@@ -33,7 +33,6 @@
   justify-content: center;
   background-color: white;
   height: 100%;
-  transition: all 0.15s ease-in-out;
 
   border-radius: 22px;
   padding: 0px 11px;
@@ -48,6 +47,7 @@
 .submitButton p {
   color: white;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .submitButton svg {
@@ -70,6 +70,7 @@
 .button p {
   font-weight: 600;
   color: var(--font-darkgray-color);
+  white-space: nowrap;
 }
 
 .button:hover {
@@ -93,4 +94,19 @@
 
 .selected:hover {
   background-color: var(--bg-blue-color);
+}
+
+.penIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.penIcon svg {
+  width: 12px;
+  height: 12px;
+  fill: var(--font-darkgray-color);
+  margin-right: 6px;
+  margin-top: 1px;
+  margin-left: 1px;
 }

@@ -45,7 +45,7 @@ const AddQuestionHeaderClient = ({ createUserQuestions }: Props) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className={styles.headerContainer}>
+      <div className={styles.headerFormContainer}>
         <div className={styles.inputContainer}>
           <p>나만의 질문 추가</p>
         </div>

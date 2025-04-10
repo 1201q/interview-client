@@ -1,8 +1,8 @@
 import styles from '../../_styles/page.module.css';
 import SidebarServer from '@/components/select/sidebar/SidebarServer';
-import QuestionListHeaderServer from '@/components/select/listHeader/QuestionListHeaderServer';
 import UserQuestionListServer from '@/components/select/container/userCreatedQuestion/UserCreatedQuestionListServer';
 import { Suspense } from 'react';
+import UserCreatedQuestionListHeaderClient from '@/components/select/listHeader/UserCreatedQuestionListHeaderClient';
 
 const UserSelectPage = async () => {
   return (
@@ -12,7 +12,7 @@ const UserSelectPage = async () => {
           <SidebarServer />
         </div>
         <div className={styles.questionListContainer}>
-          <QuestionListHeaderServer />
+          <UserCreatedQuestionListHeaderClient />
           <Suspense>
             <UserQuestionListServer />
           </Suspense>
