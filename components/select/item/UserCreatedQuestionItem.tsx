@@ -1,7 +1,8 @@
 import { selectedQuestionUUIDsAtom } from '@/store/select';
-import { QuestionType, UserQuestionType } from '@/utils/types/types';
+import { UserQuestionType } from '@/utils/types/types';
 import { useAtom } from 'jotai';
 import styles from './item.module.css';
+import { dayjsFn } from '@/utils/libs/dayjs';
 
 const UserCreatedQuestionItem = ({ data }: { data: UserQuestionType }) => {
   const [selectedQuestionUUIDs, setSelectedQuestionUUIDs] = useAtom(
@@ -26,7 +27,7 @@ const UserCreatedQuestionItem = ({ data }: { data: UserQuestionType }) => {
     >
       <span>{data.question_text}</span>
       <div className={styles.bottomInfoContainer}>
-        <p>{data.created_at}</p>
+        <p>{dayjsFn(data.created_at).format()}</p>
       </div>
     </div>
   );
