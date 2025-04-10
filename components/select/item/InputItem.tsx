@@ -9,17 +9,38 @@ interface Props {
   handleInputChange: (e: ChangeEvent<HTMLInputElement>, index: number) => void;
   handleRemoveInput: (index: number) => void;
   index: number;
+  isAnimation?: boolean;
 }
 
-const InputItem = (props: Props) => {
+const animation = (isAnimation: boolean) => {
+  const animationProps = {
+    initial: { opacity: 0, scale: 0.95 },
+    animate: { opacity: 1, scale: 1 },
+    transition: {
+      duration: 0.19,
+    },
+  };
+
+  const noAnimationProps = {
+    initial: false,
+    animate: {},
+    transition: { duration: 0 },
+  };
+
+  return isAnimation ? animationProps : noAnimationProps;
+};
+
+const InputItem = ({
+  value,
+  handleInputChange,
+  handleRemoveInput,
+  index,
+  isAnimation = true,
+}: Props) => {
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{
-        duration: 0.19,
-      }}
+      {...animation(isAnimation)}
       className={`${styles.answer} ${styles.addAnswer}`}
     >
       <input
@@ -28,16 +49,16 @@ const InputItem = (props: Props) => {
         placeholder="추가할 질문을 입력하세요."
         minLength={10}
         maxLength={150}
-        value={props.value}
-        onChange={(e) => props.handleInputChange(e, props.index)}
+        value={value}
+        onChange={(e) => handleInputChange(e, index)}
         required
       />
-      {props.index > 0 && (
+      {index > 0 && (
         <div className={styles.buttonContainer}>
           <button
             type="button"
             className={styles.removeButton}
-            onClick={() => props.handleRemoveInput(props.index)}
+            onClick={() => handleRemoveInput(index)}
           >
             <XMark /> <span>삭제</span>
           </button>

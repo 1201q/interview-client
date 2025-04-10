@@ -3,6 +3,7 @@ import { UserQuestionType } from '@/utils/types/types';
 import { useAtom } from 'jotai';
 import styles from './item.module.css';
 import { dayjsFn } from '@/utils/libs/dayjs';
+import { getTimeAgo } from '@/utils/formatter/time';
 
 const UserCreatedQuestionItem = ({ data }: { data: UserQuestionType }) => {
   const [selectedQuestionUUIDs, setSelectedQuestionUUIDs] = useAtom(
@@ -19,16 +20,24 @@ const UserCreatedQuestionItem = ({ data }: { data: UserQuestionType }) => {
     });
   };
 
+  const isSelected = (id: string) => {
+    return selectedQuestionUUIDs.includes(id);
+  };
+
   return (
     <div
       onClick={() => handleClick(data.id)}
       key={data.id}
-      className={`${styles.answer} ${styles.flex} ${selectedQuestionUUIDs.find((u) => u === data.id) ? styles.selected : ''}`}
+      className={`${styles.answer} ${isSelected(data.id) ? styles.selected : ''}`}
     >
       <span>{data.question_text}</span>
-      <div className={styles.bottomInfoContainer}>
-        <p>{dayjsFn(data.created_at).format()}</p>
-      </div>
+      {!isSelected(data.id) && (
+        <div className={styles.rightController}>
+          <p className={styles.timeAgoText}>
+            {getTimeAgo(dayjsFn(data.created_at))}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

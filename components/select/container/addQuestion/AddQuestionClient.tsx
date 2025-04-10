@@ -36,13 +36,20 @@ const AddQuestionClient = ({ questions, setQuestions }: Props) => {
 
   return (
     <>
+      <InputItem
+        value={questions[0].question_text}
+        index={0}
+        handleInputChange={handleInputChange}
+        handleRemoveInput={handleRemoveInput}
+        isAnimation={false}
+      />
       <AnimatePresence initial={false} mode="popLayout">
         <motion.div layout>
-          {questions.map((q, index) => (
+          {questions.slice(1).map((q, index) => (
             <InputItem
               key={q.id}
               value={q.question_text}
-              index={index}
+              index={index + 1}
               handleInputChange={handleInputChange}
               handleRemoveInput={handleRemoveInput}
             />

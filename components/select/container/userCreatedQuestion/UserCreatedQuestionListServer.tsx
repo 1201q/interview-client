@@ -5,6 +5,7 @@ import UserQuestionListClient from './UserCreatedQuestionListClient';
 
 const UserCreatedQuestionListServer = async () => {
   const data = await getUserCreatedQuestions();
+
   return <UserQuestionListClient initData={data} />;
 };
 
@@ -23,8 +24,6 @@ const getUserCreatedQuestions = async () => {
   });
 
   const res: UserQuestionType[] = await data.json();
-
-  console.log(res);
 
   return res;
 };
