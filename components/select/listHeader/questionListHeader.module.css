@@ -20,13 +20,15 @@
 
 .buttonContainer {
   display: flex;
-
   height: 36px;
   column-gap: 7px;
+  position: relative;
+  z-index: 0;
 }
 
 .button,
-.submitButton {
+.submitButton,
+.deleteButton {
   border: 1px solid var(--border-main-color);
   display: flex;
   align-items: center;
@@ -44,17 +46,30 @@
   padding: 0px 13px;
 }
 
-.submitButton p {
+.deleteButton {
+  background-color: var(--main-red-color);
+  border: none;
+  padding: 0px 13px;
+}
+
+.submitButton p,
+.deleteButton p {
   color: white;
   font-weight: 600;
   white-space: nowrap;
 }
 
-.submitButton svg {
+.submitButton svg,
+.deleteButton svg {
   width: 15px;
   height: 15px;
   fill: white;
   margin-right: 5px;
+  margin-left: -2px;
+}
+
+.deleteButton:hover {
+  filter: brightness(0.95);
 }
 
 .submitButton:hover {
@@ -64,7 +79,6 @@
 .selected {
   border: 1px solid var(--main-blue-color);
   background-color: var(--bg-blue-color);
-  transition: all 0.15s ease-in-out;
 }
 
 .button p {
@@ -106,7 +120,14 @@
   width: 12px;
   height: 12px;
   fill: var(--font-darkgray-color);
-  margin-right: 6px;
+  margin-right: 7px;
   margin-top: 1px;
   margin-left: 1px;
+}
+
+.selectedPenIcon svg {
+  fill: white;
+
+  margin-right: 6px;
+  margin-left: 0px;
 }

@@ -15,6 +15,7 @@
   height: 90px;
   top: 0px;
   position: sticky;
+  z-index: 100;
 }
 
 .contentsContainer {
