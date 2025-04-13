@@ -1,27 +1,18 @@
 import { cookies } from 'next/headers';
 import NeedLogin from '../need-login';
 import DeleteQuestionHeaderClient from '@/components/select/listHeader/DeleteQuestionHeaderClient';
-import { deleteUserQuestions } from '@/utils/actions/deleteUserQuestions';
+
 import { UserQuestionType } from '@/utils/types/types';
 import UserDeletedQuestionListClient from '@/components/select/container/userDeletedQuestion/UserDeletedQuestionListClient';
 
 const Page = async () => {
   const token = (await cookies()).get('accessToken')?.value;
-
-  if (!token) {
-    return <NeedLogin />;
-  }
+  if (!token) return <NeedLogin />;
 
   const data = await getUserCreatedQuestions();
 
-  const submitAction = async (questions: string[]) => {
-    'use server';
-    const success = await deleteUserQuestions(token, questions);
-    return success;
-  };
-
   return (
-    <DeleteQuestionHeaderClient submitAction={submitAction}>
+    <DeleteQuestionHeaderClient>
       <UserDeletedQuestionListClient initData={data} />
     </DeleteQuestionHeaderClient>
   );

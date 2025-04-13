@@ -4,7 +4,7 @@ import QuestionListHeaderServer from '@/components/select/listHeader/QuestionLis
 import { QuestionType, RoleType } from '@/utils/types/types';
 import { Suspense } from 'react';
 import { cookies } from 'next/headers';
-import CategoryQuestionListClient from '@/components/select/container/categoryQuestion/CategoryQuestionListClient';
+import QuestionListClient from '@/components/select/container/QuestionListClient';
 
 type Props = {
   searchParams: Promise<{ [key: string]: RoleType }>;
@@ -26,11 +26,7 @@ const SelectPage = async ({ searchParams }: Props) => {
         <div className={styles.questionListContainer}>
           <QuestionListHeaderServer />
           <Suspense key={roleType} fallback={<div>loading....</div>}>
-            <CategoryQuestionListClient
-              initData={data}
-              isLoggedIn={isLoggedIn}
-            />
-            ;
+            <QuestionListClient initData={data} isLoggedIn={isLoggedIn} />
           </Suspense>
         </div>
       </div>

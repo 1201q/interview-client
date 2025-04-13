@@ -8,20 +8,18 @@ import AddQuestionClient from '../container/addQuestion/AddQuestionClient';
 import { useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 import { AddQuestionType } from '@/utils/types/types';
+import { createUserQuestions } from '@/utils/actions/createUserQuestions';
 
 interface SubmitQuestions {
   question_text: string;
   role: 'user';
 }
 
-const AddQuestionHeaderClient = ({
-  serverAction,
-}: {
-  serverAction: (data: SubmitQuestions[]) => Promise<void>;
-}) => {
+const AddQuestionHeaderClient = () => {
   const [questions, setQuestions] = useState<AddQuestionType[]>([
     { question_text: '', id: uuidv4() },
   ]);
+
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent) => {
@@ -32,7 +30,7 @@ const AddQuestionHeaderClient = ({
     });
 
     try {
-      serverAction(submitQuestions);
+      createUserQuestions(submitQuestions);
       setQuestions([{ question_text: '', id: uuidv4() }]);
 
       alert('질문 추가 성공! 질문 목록에서 확인해보세요.');

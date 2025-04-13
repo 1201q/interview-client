@@ -7,13 +7,13 @@ import React, { FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { deletedQuestionUUIDsAtom } from '@/store/select';
 import { useAtom } from 'jotai';
+import { deleteUserQuestions } from '@/utils/actions/deleteUserQuestions';
 
 interface Props {
   children: React.ReactNode;
-  submitAction: (questions: string[]) => Promise<{ success: boolean }>;
 }
 
-const DeleteQuestionHeaderClient = ({ children, submitAction }: Props) => {
+const DeleteQuestionHeaderClient = ({ children }: Props) => {
   const router = useRouter();
 
   const [selectedQuestionUUIDs, setSelectedQuestionUUIDs] = useAtom(
@@ -23,18 +23,8 @@ const DeleteQuestionHeaderClient = ({ children, submitAction }: Props) => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (selectedQuestionUUIDs.length === 0) {
-      alert('삭제할 질문을 선택해주세요.');
-      return;
-    }
-
     try {
-      const success = await submitAction(selectedQuestionUUIDs);
-
-      if (!success) {
-        throw new Error('질문 삭제에 실패했습니다.');
-      }
-
+      deleteUserQuestions(selectedQuestionUUIDs);
       setSelectedQuestionUUIDs([]);
 
       alert('질문 삭제 성공! 질문 목록에서 확인해보세요.');
