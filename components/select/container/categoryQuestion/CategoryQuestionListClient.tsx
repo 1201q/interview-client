@@ -2,6 +2,7 @@
 
 import { QuestionType } from '@/utils/types/types';
 import QuestionItem from '../../item/QuestionItem';
+import UserFavoritableQuestionItem from '../../item/UserFavoritableQuestionItem';
 
 interface Props {
   initData: QuestionType[];
@@ -13,10 +14,20 @@ const CategoryQuestionListClient = ({ initData, isLoggedIn }: Props) => {
     return <div>없음.</div>;
   }
 
+  if (isLoggedIn) {
+    return (
+      <>
+        {initData.map((answer) => (
+          <UserFavoritableQuestionItem data={answer} key={answer.id} />
+        ))}
+      </>
+    );
+  }
+
   return (
     <>
       {initData.map((answer) => (
-        <QuestionItem isLoggedIn={isLoggedIn} data={answer} key={answer.id} />
+        <QuestionItem data={answer} key={answer.id} />
       ))}
     </>
   );

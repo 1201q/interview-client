@@ -16,13 +16,7 @@ const UserCreatedQuestionOptionModal = () => {
           <span>질문 추가</span> <PlusMark />
         </button>
       </Link>
-      <button
-        className={styles.option}
-        type="button"
-        onClick={() => setOptionMode('modify')}
-      >
-        <span>질문 수정</span> <Modify />
-      </button>
+
       <button
         className={styles.option}
         type="button"

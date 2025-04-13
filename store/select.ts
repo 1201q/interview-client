@@ -22,11 +22,11 @@ deletedQuestionUUIDsAtom.onMount = (set) => {
 
 export const isUserPageOptionModalOpenAtom = atom(false);
 
-const userPageOptionModeBaseAtom = atom<'delete' | 'modify' | null>(null);
+const userPageOptionModeBaseAtom = atom<'delete' | null>(null);
 
 export const userPageOptionModeAtom = atom(
   (get) => get(userPageOptionModeBaseAtom),
-  (get, set, update: 'delete' | 'modify' | null) => {
+  (get, set, update: 'delete' | null) => {
     set(userPageOptionModeBaseAtom, update);
     set(isUserPageOptionModalOpenAtom, false);
   },

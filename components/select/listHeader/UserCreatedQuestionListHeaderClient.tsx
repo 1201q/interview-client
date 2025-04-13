@@ -118,9 +118,6 @@ const UserCreatedQuestionListHeaderClient = () => {
           {optionMode === 'delete' && (
             <DeleteCompleteButton set={setOptionMode} />
           )}
-          {optionMode === 'modify' && (
-            <ModifyCompleteButton set={setOptionMode} />
-          )}
 
           {isOptionModalOpen && <UserCreatedQuestionOptionModal />}
         </div>
