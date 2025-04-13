@@ -6,6 +6,12 @@
   column-gap: 20px;
 }
 
+.row {
+  row-gap: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
 .headerFormContainer {
   margin-bottom: 22px;
 }

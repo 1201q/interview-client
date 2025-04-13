@@ -4,18 +4,9 @@ import UserQuestionListServer from '@/components/select/container/userCreatedQue
 import { Suspense } from 'react';
 import UserCreatedQuestionListHeaderClient from '@/components/select/listHeader/UserCreatedQuestionListHeaderClient';
 import { cookies } from 'next/headers';
-import { deleteUserQuestions } from '@/utils/actions/deleteUserQuestions';
 
 const UserSelectPage = async () => {
   const cookieStore = await cookies();
-  const token = cookieStore.get('accessToken')?.value;
-
-  const handleDeleteSubmit = async (items: string[]) => {
-    'use server';
-    if (!token) return;
-
-    deleteUserQuestions(token, items);
-  };
 
   return (
     <div className={styles.container}>
@@ -24,9 +15,7 @@ const UserSelectPage = async () => {
           <SidebarServer />
         </div>
         <div className={styles.questionListContainer}>
-          <UserCreatedQuestionListHeaderClient
-            handleDeleteSubmit={handleDeleteSubmit}
-          />
+          <UserCreatedQuestionListHeaderClient />
           <Suspense>
             <UserQuestionListServer />
           </Suspense>

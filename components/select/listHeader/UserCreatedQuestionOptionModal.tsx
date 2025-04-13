@@ -1,14 +1,9 @@
 import styles from './questionOptionModal.module.css';
-import Modify from '@/public/pen.svg';
 import Trash from '@/public/trash-solid.svg';
 import PlusMark from '@/public/plus.svg';
 import Link from 'next/link';
-import { useSetAtom } from 'jotai';
-import { userPageOptionModeAtom } from '@/store/select';
 
 const UserCreatedQuestionOptionModal = () => {
-  const setOptionMode = useSetAtom(userPageOptionModeAtom);
-
   return (
     <div className={styles.container}>
       <Link href={'/step/select/add'}>
@@ -17,14 +12,12 @@ const UserCreatedQuestionOptionModal = () => {
         </button>
       </Link>
 
-      <button
-        className={styles.option}
-        type="button"
-        onClick={() => setOptionMode('delete')}
-      >
-        <span>질문 삭제</span>
-        <Trash />
-      </button>
+      <Link href={'/step/select/delete'}>
+        <button className={styles.option} type="button">
+          <span>질문 삭제</span>
+          <Trash />
+        </button>
+      </Link>
     </div>
   );
 };
