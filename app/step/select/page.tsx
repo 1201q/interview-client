@@ -14,7 +14,7 @@ const SelectPage = async ({ searchParams }: Props) => {
   const { role } = await searchParams;
   const roleType = role || 'fe';
 
-  const data = await getQuestionListByRole(role);
+  const data = await getQuestionListByRole(roleType);
   const isLoggedIn = (await cookies()).has('accessToken');
 
   return (
