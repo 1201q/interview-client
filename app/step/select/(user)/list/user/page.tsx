@@ -1,12 +1,13 @@
 import styles from '../../_styles/page.module.css';
 import SidebarServer from '@/components/select/sidebar/SidebarServer';
-import UserQuestionListServer from '@/components/select/container/userCreatedQuestion/UserCreatedQuestionListServer';
 import { Suspense } from 'react';
 import UserCreatedQuestionListHeaderClient from '@/components/select/listHeader/UserCreatedQuestionListHeaderClient';
 import { cookies } from 'next/headers';
+import { UserQuestionType } from '@/utils/types/types';
+import UserCreatedQuestionListClient from '@/components/select/container/userCreatedQuestion/UserCreatedQuestionListClient';
 
 const UserSelectPage = async () => {
-  const cookieStore = await cookies();
+  const data = await getUserCreatedQuestions();
 
   return (
     <div className={styles.container}>
@@ -17,12 +18,31 @@ const UserSelectPage = async () => {
         <div className={styles.questionListContainer}>
           <UserCreatedQuestionListHeaderClient />
           <Suspense>
-            <UserQuestionListServer />
+            <UserCreatedQuestionListClient initData={data} />
           </Suspense>
         </div>
       </div>
     </div>
   );
+};
+
+const getUserCreatedQuestions = async () => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('accessToken')?.value;
+
+  const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/question/user`, {
+    method: 'GET',
+    credentials: 'include',
+    cache: 'no-store',
+    headers: {
+      'Content-Type': 'application/json',
+      Cookie: `accessToken=${token}`,
+    },
+  });
+
+  const res: UserQuestionType[] = await data.json();
+
+  return res;
 };
 
 export default UserSelectPage;
