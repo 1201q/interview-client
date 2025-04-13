@@ -1,13 +1,13 @@
 'use client';
 
 import { UserQuestionType } from '@/utils/types/types';
-import UserDeletedQuestionItem from '../../item/UserDeletedQuestionItem';
+import UserCreatedQuestionItem from '../item/UserCreatedQuestionItem';
 
 interface Props {
   initData: UserQuestionType[];
 }
 
-const UserDeletedQuestionListClient = ({ initData }: Props) => {
+const UserCreatedQuestionListClient = ({ initData }: Props) => {
   if (initData.length === 0) {
     return <div>없음.</div>;
   }
@@ -19,10 +19,10 @@ const UserDeletedQuestionListClient = ({ initData }: Props) => {
   return (
     <>
       {sortedData.map((answer) => (
-        <UserDeletedQuestionItem data={answer} key={answer.id} />
+        <UserCreatedQuestionItem data={answer} key={answer.id} />
       ))}
     </>
   );
 };
 
-export default UserDeletedQuestionListClient;
+export default UserCreatedQuestionListClient;

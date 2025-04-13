@@ -3,7 +3,7 @@
 import styles from './questionListHeader.module.css';
 import Check from '@/public/check.svg';
 import React, { FormEvent, useState } from 'react';
-import AddQuestionClient from '../container/addQuestion/AddQuestionClient';
+import AddQuestionClient from '../container/AddQuestionClient';
 
 import { useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';

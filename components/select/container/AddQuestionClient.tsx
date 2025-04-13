@@ -1,9 +1,9 @@
 'use client';
 
 import { Dispatch, SetStateAction } from 'react';
-import styles from '../questionList.module.css';
+import styles from './questionList.module.css';
 import Plus from '@/public/plus.svg';
-import InputItem from '../../item/InputItem';
+import InputItem from '../item/InputItem';
 import { AnimatePresence, motion } from 'motion/react';
 import { AddQuestionType } from '@/utils/types/types';
 import { v4 as uuidv4 } from 'uuid';

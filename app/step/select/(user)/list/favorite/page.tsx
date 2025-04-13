@@ -1,5 +1,5 @@
 import styles from '../../_styles/page.module.css';
-import SidebarServer from '@/components/select/sidebar/SidebarServer';
+import SidebarServer from '@/components/select/sidebar/Sidebar';
 
 const FavoriteSelectPage = async () => {
   return (

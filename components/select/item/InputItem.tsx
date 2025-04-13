@@ -1,4 +1,4 @@
-import styles from './input.module.css';
+import styles from './styles/input.module.css';
 import XMark from '@/public/xmark.svg';
 import React from 'react';
 import { ChangeEvent } from 'react';

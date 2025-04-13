@@ -1,8 +1,8 @@
 import styles from '../../_styles/page.module.css';
-import SidebarServer from '@/components/select/sidebar/SidebarServer';
+import SidebarServer from '@/components/select/sidebar/Sidebar';
 import { Suspense } from 'react';
 import UserCreatedQuestionListHeaderClient from '@/components/select/listHeader/UserCreatedQuestionListHeaderClient';
-import UserCreatedQuestionListClient from '@/components/select/container/userCreatedQuestion/UserCreatedQuestionListClient';
+import UserCreatedQuestionListClient from '@/components/select/container/UserCreatedQuestionListClient';
 import { getUserCreatedQuestions } from '@/utils/services/question';
 
 const UserSelectPage = async () => {

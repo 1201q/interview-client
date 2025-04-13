@@ -7,13 +7,13 @@ import styles from './sidebar.module.css';
 import Link from 'next/link';
 import { getQuestionCounts } from '@/utils/services/question';
 
-const SidebarServer = async () => {
+const Sidebar = async () => {
   const cookieStore = await cookies();
-  const header = await headers();
   const token = cookieStore.get('accessToken')?.value;
 
   const count = await getQuestionCounts();
 
+  const header = await headers();
   const role = header.get('x-role') || 'fe';
   const splitedPathname = header.get('x-pathname')?.split('/');
 
@@ -60,4 +60,4 @@ const SidebarServer = async () => {
   );
 };
 
-export default SidebarServer;
+export default Sidebar;

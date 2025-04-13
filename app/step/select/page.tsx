@@ -1,5 +1,5 @@
 import styles from './page.module.css';
-import SidebarServer from '@/components/select/sidebar/SidebarServer';
+import SidebarServer from '@/components/select/sidebar/Sidebar';
 import QuestionListHeaderServer from '@/components/select/listHeader/QuestionListHeaderServer';
 import { QuestionType, RoleType } from '@/utils/types/types';
 import { Suspense } from 'react';
