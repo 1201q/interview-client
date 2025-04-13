@@ -11,7 +11,6 @@ const LandingHeader = async () => {
     'use server';
 
     try {
-      console.log('logout');
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,
         {

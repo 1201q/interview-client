@@ -2,7 +2,7 @@
 
 import styles from './questionListHeader.module.css';
 import Pen from '@/public/pen.svg';
-import React, { Dispatch, FormEvent, useState } from 'react';
+import React, { Dispatch, FormEvent } from 'react';
 import Check from '@/public/check.svg';
 
 import { SetStateAction } from 'jotai';
@@ -11,9 +11,73 @@ import { motion } from 'motion/react';
 import UserCreatedQuestionOptionModal from './UserCreatedQuestionOptionModal';
 import { useAtom } from 'jotai';
 import {
+  deletedQuestionUUIDsAtom,
   isUserPageOptionModalOpenAtom,
   userPageOptionModeAtom,
 } from '@/store/select';
+import { useRouter } from 'next/navigation';
+
+interface Props {
+  handleDeleteSubmit: (items: string[]) => Promise<void>;
+}
+
+interface DeleteButtonProps {
+  handleSubmit: (e: FormEvent) => void;
+}
+
+const UserCreatedQuestionListHeaderClient = ({ handleDeleteSubmit }: Props) => {
+  const [isOptionModalOpen, setIsOptionModalOpen] = useAtom(
+    isUserPageOptionModalOpenAtom,
+  );
+  const [optionMode, setOptionMode] = useAtom(userPageOptionModeAtom);
+  const [selectedQuestionUUIDs, setSelectedQuestionUUIDs] = useAtom(
+    deletedQuestionUUIDsAtom,
+  );
+
+  const router = useRouter();
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (selectedQuestionUUIDs.length === 0) {
+      setOptionMode(null);
+      return;
+    }
+
+    try {
+      await handleDeleteSubmit(selectedQuestionUUIDs);
+      setOptionMode(null);
+      setSelectedQuestionUUIDs([]);
+
+      alert('질문 삭제 성공! 질문 목록에서 확인해보세요.');
+
+      router.refresh();
+    } catch (error) {
+      alert('질문 삭제에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.inputContainer}>
+        <HeaderText optionMode={optionMode} />
+      </div>
+      <div className={styles.buttonContainer}>
+        {optionMode === null && (
+          <ModifyButton
+            set={setIsOptionModalOpen}
+            selected={isOptionModalOpen}
+          />
+        )}
+        {optionMode === 'delete' && (
+          <DeleteCompleteButton handleSubmit={handleSubmit} />
+        )}
+
+        {isOptionModalOpen && <UserCreatedQuestionOptionModal />}
+      </div>
+    </div>
+  );
+};
 
 const ModifyButton = ({
   set,
@@ -42,37 +106,19 @@ const ModifyButton = ({
   );
 };
 
-const DeleteCompleteButton = ({ set }: { set: any }) => {
+const DeleteCompleteButton = ({ handleSubmit }: DeleteButtonProps) => {
   return (
-    <motion.button
-      onClick={() => {
-        set(null);
-      }}
-      type="button"
-      className={styles.deleteButton}
-      layoutId="userAddPageControllerButton"
-      transition={{ duration: 0.1 }}
-    >
-      <Check />
-      <p>삭제완료</p>
-    </motion.button>
-  );
-};
-
-const ModifyCompleteButton = ({ set }: { set: any }) => {
-  return (
-    <motion.button
-      onClick={() => {
-        set(null);
-      }}
-      type="button"
-      className={styles.submitButton}
-      layoutId="userAddPageControllerButton"
-      transition={{ duration: 0.1 }}
-    >
-      <Check />
-      <p>수정완료</p>
-    </motion.button>
+    <form onSubmit={handleSubmit}>
+      <motion.button
+        type="submit"
+        className={styles.deleteButton}
+        layoutId="userAddPageControllerButton"
+        transition={{ duration: 0.1 }}
+      >
+        <Check />
+        <p>삭제완료</p>
+      </motion.button>
+    </form>
   );
 };
 
@@ -90,40 +136,6 @@ const HeaderText = ({
   }
 
   return <p>내가 추가한 질문</p>;
-};
-
-const UserCreatedQuestionListHeaderClient = () => {
-  const [isOptionModalOpen, setIsOptionModalOpen] = useAtom(
-    isUserPageOptionModalOpenAtom,
-  );
-  const [optionMode, setOptionMode] = useAtom(userPageOptionModeAtom);
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <div className={styles.container}>
-        <div className={styles.inputContainer}>
-          <HeaderText optionMode={optionMode} />
-        </div>
-        <div className={styles.buttonContainer}>
-          {optionMode === null && (
-            <ModifyButton
-              set={setIsOptionModalOpen}
-              selected={isOptionModalOpen}
-            />
-          )}
-          {optionMode === 'delete' && (
-            <DeleteCompleteButton set={setOptionMode} />
-          )}
-
-          {isOptionModalOpen && <UserCreatedQuestionOptionModal />}
-        </div>
-      </div>
-    </form>
-  );
 };
 
 export default UserCreatedQuestionListHeaderClient;

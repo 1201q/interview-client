@@ -14,11 +14,11 @@ interface SubmitQuestions {
   role: 'user';
 }
 
-interface Props {
-  createUserQuestions: (data: SubmitQuestions[]) => Promise<void>;
-}
-
-const AddQuestionHeaderClient = ({ createUserQuestions }: Props) => {
+const AddQuestionHeaderClient = ({
+  serverAction,
+}: {
+  serverAction: (data: SubmitQuestions[]) => Promise<void>;
+}) => {
   const [questions, setQuestions] = useState<AddQuestionType[]>([
     { question_text: '', id: uuidv4() },
   ]);
@@ -32,7 +32,7 @@ const AddQuestionHeaderClient = ({ createUserQuestions }: Props) => {
     });
 
     try {
-      await createUserQuestions(submitQuestions);
+      serverAction(submitQuestions);
       setQuestions([{ question_text: '', id: uuidv4() }]);
 
       alert('질문 추가 성공! 질문 목록에서 확인해보세요.');
