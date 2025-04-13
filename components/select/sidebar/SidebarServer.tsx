@@ -5,14 +5,14 @@ import {
 } from '@/utils/constants/interview.step';
 import styles from './sidebar.module.css';
 import Link from 'next/link';
+import { getQuestionCounts } from '@/utils/services/question';
 
 const SidebarServer = async () => {
   const cookieStore = await cookies();
   const header = await headers();
   const token = cookieStore.get('accessToken')?.value;
 
-  const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/question/count`);
-  const count: Record<string, number> = await data.json();
+  const count = await getQuestionCounts();
 
   const role = header.get('x-role') || 'fe';
   const splitedPathname = header.get('x-pathname')?.split('/');

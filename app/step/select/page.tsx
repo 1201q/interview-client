@@ -5,6 +5,7 @@ import { QuestionType, RoleType } from '@/utils/types/types';
 import { Suspense } from 'react';
 import { cookies } from 'next/headers';
 import QuestionListClient from '@/components/select/container/QuestionListClient';
+import { getQuestionListByRole } from '@/utils/services/question';
 
 type Props = {
   searchParams: Promise<{ [key: string]: RoleType }>;
@@ -34,13 +35,13 @@ const SelectPage = async ({ searchParams }: Props) => {
   );
 };
 
-const getQuestionListByRole = async (role: RoleType) => {
-  const data = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/question?role=${role}`,
-  );
-  const res: QuestionType[] = await data.json();
+// const getQuestionListByRole = async (role: RoleType) => {
+//   const data = await fetch(
+//     `${process.env.NEXT_PUBLIC_API_URL}/question?role=${role}`,
+//   );
+//   const res: QuestionType[] = await data.json();
 
-  return res;
-};
+//   return res;
+// };
 
 export default SelectPage;

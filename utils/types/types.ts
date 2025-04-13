@@ -30,3 +30,10 @@ export interface AddQuestionType {
   question_text: string;
   id: string;
 }
+
+export interface QuestionCountType {
+  fe: number;
+  be: number;
+  android: number;
+  ios: number;
+}
