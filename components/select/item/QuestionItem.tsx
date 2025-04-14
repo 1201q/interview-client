@@ -1,3 +1,5 @@
+'use client';
+
 import { QuestionType } from '@/utils/types/types';
 
 import styles from './styles/item.module.css';

@@ -1,3 +1,5 @@
+'use client';
+
 import { selectedQuestionUUIDsAtom } from '@/store/select';
 import { PrimitiveAtom } from 'jotai';
 import { useAtom } from 'jotai';

@@ -1,3 +1,5 @@
+'use client';
+
 import { deletedQuestionUUIDsAtom } from '@/store/select';
 import { UserQuestionType } from '@/utils/types/types';
 import styles from './styles/item.module.css';
