@@ -8,7 +8,9 @@ const Page = async () => {
   const token = (await cookies()).get('accessToken')?.value;
   if (!token) return <NeedLogin />;
 
-  return <DeleteQuestionHeaderClient />;
+  const data = await getUserCreatedQuestions();
+
+  return <UserDeletedQuestionListClient initData={data} />;
 };
 
 export default Page;

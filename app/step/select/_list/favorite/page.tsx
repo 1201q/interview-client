@@ -1,7 +1,7 @@
-import styles from '../../_styles/page.module.css';
+import styles from '../_styles/page.module.css';
 import SidebarServer from '@/components/select/sidebar/Sidebar';
 
-const AiSelectPage = async () => {
+const FavoriteSelectPage = async () => {
   return (
     <div className={styles.container}>
       <div className={styles.tableContainer}>
@@ -14,4 +14,4 @@ const AiSelectPage = async () => {
   );
 };
 
-export default AiSelectPage;
+export default FavoriteSelectPage;

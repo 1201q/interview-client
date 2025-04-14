@@ -9,11 +9,7 @@ import { deletedQuestionUUIDsAtom } from '@/store/select';
 import { useAtom } from 'jotai';
 import { deleteUserQuestions } from '@/utils/actions/deleteUserQuestions';
 
-interface Props {
-  children: React.ReactNode;
-}
-
-const DeleteQuestionHeaderClient = ({ children }: Props) => {
+const DeleteQuestionHeaderClient = () => {
   const router = useRouter();
 
   const [selectedQuestionUUIDs, setSelectedQuestionUUIDs] = useAtom(
@@ -48,7 +44,6 @@ const DeleteQuestionHeaderClient = ({ children }: Props) => {
           </button>
         </div>
       </div>
-      <div className={styles.row}>{children}</div>
     </form>
   );
 };

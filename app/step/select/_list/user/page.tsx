@@ -1,4 +1,4 @@
-import styles from '../../_styles/page.module.css';
+import styles from '../_styles/page.module.css';
 import SidebarServer from '@/components/select/sidebar/Sidebar';
 import { Suspense } from 'react';
 import UserCreatedQuestionListHeaderClient from '@/components/select/listHeader/UserCreatedQuestionListHeaderClient';

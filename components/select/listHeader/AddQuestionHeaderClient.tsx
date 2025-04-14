@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 import { AddQuestionType } from '@/utils/types/types';
 import { createUserQuestions } from '@/utils/actions/createUserQuestions';
+import { useAtom } from 'jotai';
+import { addQuestionsAtom } from '@/store/select';
 
 interface SubmitQuestions {
   question_text: string;
@@ -16,9 +18,7 @@ interface SubmitQuestions {
 }
 
 const AddQuestionHeaderClient = () => {
-  const [questions, setQuestions] = useState<AddQuestionType[]>([
-    { question_text: '', id: uuidv4() },
-  ]);
+  const [questions, setQuestions] = useAtom(addQuestionsAtom);
 
   const router = useRouter();
 
@@ -54,7 +54,6 @@ const AddQuestionHeaderClient = () => {
           </button>
         </div>
       </div>
-      <AddQuestionClient questions={questions} setQuestions={setQuestions} />
     </form>
   );
 };

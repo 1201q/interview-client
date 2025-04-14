@@ -1,7 +1,7 @@
 import styles from './page.module.css';
-import SidebarServer from '@/components/select/sidebar/Sidebar';
+import Sidebar from '@/components/select/sidebar/Sidebar';
 import QuestionListHeaderServer from '@/components/select/listHeader/QuestionListHeaderServer';
-import { QuestionType, RoleType } from '@/utils/types/types';
+import { RoleType } from '@/utils/types/types';
 import { Suspense } from 'react';
 import { cookies } from 'next/headers';
 import QuestionListClient from '@/components/select/container/QuestionListClient';
@@ -22,7 +22,7 @@ const SelectPage = async ({ searchParams }: Props) => {
     <div className={styles.container}>
       <div className={styles.tableContainer}>
         <div className={styles.tableOptionsContainer}>
-          <SidebarServer />
+          <Sidebar />
         </div>
         <div className={styles.questionListContainer}>
           <QuestionListHeaderServer />
@@ -34,14 +34,5 @@ const SelectPage = async ({ searchParams }: Props) => {
     </div>
   );
 };
-
-// const getQuestionListByRole = async (role: RoleType) => {
-//   const data = await fetch(
-//     `${process.env.NEXT_PUBLIC_API_URL}/question?role=${role}`,
-//   );
-//   const res: QuestionType[] = await data.json();
-
-//   return res;
-// };
 
 export default SelectPage;
