@@ -12,11 +12,11 @@ const Layout = async ({ children }: Props) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.tableContainer}>
-        <div className={styles.tableOptionsContainer}>
+      <div className={styles.contentsContainer}>
+        <div className={styles.sideMenuContainer}>
           <BackButton />
         </div>
-        <div className={styles.questionListContainer}>
+        <div className={styles.listContainer}>
           {isLoggedIn ? children : <NeedLogin />}
         </div>
       </div>

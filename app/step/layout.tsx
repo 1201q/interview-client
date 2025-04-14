@@ -14,7 +14,7 @@ const InterviewLayout = ({ children }: Props) => {
           <Indicator />
         </Suspense>
       </div>
-      <div className={styles.contentsContainer}>{children}</div>
+      <div className={styles.contents}>{children}</div>
     </div>
   );
 };

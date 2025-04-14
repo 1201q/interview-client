@@ -49,3 +49,9 @@ isUserPageOptionModalOpenAtom.onMount = (set) => {
 export const addQuestionsAtom = atom<AddQuestionType[]>([
   { question_text: '', id: uuidv4() },
 ]);
+
+addQuestionsAtom.onMount = (set) => {
+  return () => {
+    set([{ question_text: '', id: uuidv4() }]);
+  };
+};

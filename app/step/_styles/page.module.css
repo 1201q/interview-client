@@ -4,7 +4,7 @@
   height: 100%;
 }
 
-.tableContainer {
+.contentsContainer {
   display: flex;
   width: calc(100% - 40px);
   max-width: 1200px;
@@ -12,7 +12,7 @@
   column-gap: 28px;
 }
 
-.tableOptionsContainer {
+.sideMenuContainer {
   width: 220px;
   height: min-content;
   display: flex;
@@ -24,7 +24,7 @@
   top: 115px;
 }
 
-.questionListContainer {
+.listContainer {
   flex: 1;
   display: flex;
   flex-direction: column;

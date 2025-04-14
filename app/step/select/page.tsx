@@ -23,11 +23,11 @@ const SelectPage = async ({ searchParams }: Props) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.tableContainer}>
-        <div className={styles.tableOptionsContainer}>
+      <div className={styles.contentsContainer}>
+        <div className={styles.sideMenuContainer}>
           <Sidebar />
         </div>
-        <div className={styles.questionListContainer}>
+        <div className={styles.listContainer}>
           <QuestionListHeader />
           <Suspense key={roleType} fallback={<div>loading....</div>}>
             {isLoggedIn ? (

@@ -11,11 +11,11 @@ const UserSelectPage = async () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.tableContainer}>
-        <div className={styles.tableOptionsContainer}>
+      <div className={styles.contentsContainer}>
+        <div className={styles.sideMenuContainer}>
           <Sidebar />
         </div>
-        <div className={styles.questionListContainer}>
+        <div className={styles.listContainer}>
           <UserQuestionListHeader />
           <Suspense fallback={<div>loading....</div>}>
             <ItemList
