@@ -15,7 +15,9 @@ const UserCreatedQuestionItem = ({ data }: { data: UserQuestionType }) => {
       key={data.id}
       className={`${styles.answer} ${isSelected(data.id) ? styles.selected : ''}`}
     >
-      <span>{data.question_text}</span>
+      <div className={styles.textContainer}>
+        <p>{data.question_text}</p>
+      </div>
       {!isSelected(data.id) && (
         <div className={styles.rightController}>
           <p className={styles.timeAgoText}>

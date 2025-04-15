@@ -3,7 +3,10 @@ import { RoleType } from '@/utils/types/types';
 import { Suspense } from 'react';
 import { cookies } from 'next/headers';
 
-import { getQuestionListByRole } from '@/utils/services/question';
+import {
+  getBookmarkedQuestions,
+  getQuestionListByRole,
+} from '@/utils/services/question';
 import Sidebar from '@/components/select/sidebar/Sidebar';
 import styles from '../_styles/page.module.css';
 import ItemList from '@/components/select/ItemList';
@@ -19,6 +22,9 @@ const SelectPage = async ({ searchParams }: Props) => {
   const roleType = role || 'fe';
 
   const data = await getQuestionListByRole(roleType);
+  const bookmarkData = await getBookmarkedQuestions();
+
+  console.log(bookmarkData);
   const isLoggedIn = (await cookies()).has('accessToken');
 
   return (
@@ -34,7 +40,15 @@ const SelectPage = async ({ searchParams }: Props) => {
               <ItemList
                 data={data}
                 renderItem={(item) => (
-                  <UserFavoritableQuestionItem data={item} key={item.id} />
+                  <UserFavoritableQuestionItem
+                    isBookmarked={
+                      bookmarkData.findIndex(
+                        (data) => data.question_id === item.id,
+                      ) !== -1
+                    }
+                    data={item}
+                    key={item.id}
+                  />
                 )}
               />
             ) : (

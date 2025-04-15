@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { fetcher } from './fetcher';
 import {
+  BookmarkedQuestionType,
   QuestionCountType,
   QuestionType,
   RoleType,
@@ -22,6 +23,25 @@ export const getUserCreatedQuestions = async () => {
   };
 
   const data = fetcher<UserQuestionType[]>(`/question/user`, options);
+
+  return data;
+};
+
+export const getBookmarkedQuestions = async () => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('accessToken')?.value;
+
+  const options: Partial<RequestInit> = {
+    method: 'GET',
+    credentials: 'include',
+    cache: 'no-store',
+    headers: {
+      'Content-Type': 'application/json',
+      Cookie: `accessToken=${token}`,
+    },
+  };
+
+  const data = fetcher<BookmarkedQuestionType[]>(`/question/bookmark`, options);
 
   return data;
 };
