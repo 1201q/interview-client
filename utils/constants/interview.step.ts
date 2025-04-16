@@ -45,7 +45,7 @@ export const USER_SIDEBAR_OPTIONS = [
   },
   {
     name: '즐겨찾기한 질문',
-    value: 'favorite',
-    link: '/step/select/list/favorite',
+    value: 'bookmark',
+    link: '/step/select/list/bookmark',
   },
 ] as const;

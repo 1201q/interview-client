@@ -4,26 +4,35 @@ import {
 } from '../constants/interview.step';
 
 export type RoleType = (typeof ROLE_OPTIONS)[number]['value'];
+export type ExtendedRoleType = RoleType | 'user' | 'ai';
+
 export type UserRoleType = (typeof USER_SIDEBAR_OPTIONS)[number]['value'];
 
 export interface QuestionType {
   id: string;
   question_text: string;
-  role: RoleType;
-}
-
-export interface UserQuestionType {
-  id: string;
-  question_text: string;
-  role: UserRoleType;
-  user_id: string;
+  role: ExtendedRoleType;
+  user_id: string | null;
+  creator_type: 'user' | 'admin';
   created_at: string;
 }
 
-export interface UserCreatedQuestionType {
+export interface UserQuestionType extends QuestionType {
   id: string;
   question_text: string;
   role: 'user';
+  user_id: string;
+  creator_type: 'user';
+  created_at: string;
+}
+
+export interface AIQuestionType extends QuestionType {
+  id: string;
+  question_text: string;
+  role: 'ai';
+  user_id: string;
+  creator_type: 'user';
+  created_at: string;
 }
 
 export interface AddQuestionType {

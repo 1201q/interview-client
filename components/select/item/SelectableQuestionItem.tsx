@@ -1,6 +1,6 @@
 'use client';
 
-import { QuestionType, UserQuestionType } from '@/utils/types/types';
+import { QuestionType } from '@/utils/types/types';
 
 import styles from './styles/item.module.css';
 import { useSelectQuestion } from './hooks/useSelectQuestion';
@@ -12,13 +12,13 @@ import { getTimeAgo } from '@/utils/formatter/time';
 import { dayjsFn } from '@/utils/libs/dayjs';
 import BookmarkButton from './BookmarkButton';
 
-interface Props<T extends QuestionType | UserQuestionType> {
+interface Props<T extends QuestionType> {
   data: T;
   isBookmarked: boolean;
   displayRightContainer?: boolean;
 }
 
-const SelectableQuestionItem = <T extends QuestionType | UserQuestionType>({
+const SelectableQuestionItem = <T extends QuestionType>({
   data,
   isBookmarked,
   displayRightContainer = false,
@@ -57,7 +57,7 @@ const SelectableQuestionItem = <T extends QuestionType | UserQuestionType>({
       </div>
       {displayRightContainer && (
         <div className={styles.rightContainer}>
-          {!isSelected(data.id) && 'created_at' in data && (
+          {!isSelected(data.id) && (
             <Status text={getTimeAgo(dayjsFn(data.created_at))} />
           )}
         </div>
