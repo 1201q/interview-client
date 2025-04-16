@@ -2,7 +2,7 @@ import { getBookmarkedQuestions } from '@/utils/services/question';
 import styles from '../../../_styles/page.module.css';
 import Sidebar from '@/components/select/sidebar/Sidebar';
 import { cookies } from 'next/headers';
-import UserQuestionListHeader from '@/components/select/listHeader/UserQuestionListHeader';
+import BookmarkedQuestionListHeader from '@/components/select/listHeader/BookmarkedQuestionListHeader';
 import { Suspense } from 'react';
 import ItemList from '@/components/select/ItemList';
 import SelectableQuestionItem from '@/components/select/item/SelectableQuestionItem';
@@ -20,7 +20,7 @@ const FavoriteSelectPage = async () => {
           <Sidebar />
         </div>
         <div className={styles.listContainer}>
-          <UserQuestionListHeader />
+          <BookmarkedQuestionListHeader />
           <Suspense fallback={<div>loading....</div>}>
             <ItemList
               data={bookmarkData}
