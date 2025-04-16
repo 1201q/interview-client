@@ -11,6 +11,7 @@ import Sidebar from '@/components/select/sidebar/Sidebar';
 import styles from '../_styles/page.module.css';
 import ItemList from '@/components/select/ItemList';
 import SelectableQuestionItem from '@/components/select/item/SelectableQuestionItem';
+import ListLoader from '@/components/select/ListLoader';
 
 type Props = {
   searchParams: Promise<{ [key: string]: RoleType }>;
@@ -34,7 +35,7 @@ const SelectPage = async ({ searchParams }: Props) => {
         </div>
         <div className={styles.listContainer}>
           <QuestionListHeader />
-          <Suspense key={roleType} fallback={<div>loading....</div>}>
+          <Suspense key={roleType} fallback={<ListLoader />}>
             {isLoggedIn ? (
               <ItemList
                 data={data}

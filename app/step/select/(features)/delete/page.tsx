@@ -1,6 +1,7 @@
 import DeletableQuestionItem from '@/components/select/item/DeletableQuestionItem';
 import ItemList from '@/components/select/ItemList';
 import DeleteQuestionHeaderClient from '@/components/select/listHeader/DeleteQuestionHeader';
+import ListLoader from '@/components/select/ListLoader';
 import { getUserCreatedQuestions } from '@/utils/services/question';
 import { Suspense } from 'react';
 
@@ -14,7 +15,7 @@ const DeletePage = async () => {
   return (
     <>
       <DeleteQuestionHeaderClient />
-      <Suspense fallback={<div>로딩중....</div>}>
+      <Suspense fallback={<ListLoader />}>
         <ItemList
           data={data}
           renderItem={(item) => (

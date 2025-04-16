@@ -10,6 +10,7 @@ import ItemList from '@/components/select/ItemList';
 
 import SelectableQuestionItem from '@/components/select/item/SelectableQuestionItem';
 import { cookies } from 'next/headers';
+import ListLoader from '@/components/select/ListLoader';
 
 const UserSelectPage = async () => {
   const cookieStore = await cookies();
@@ -26,7 +27,7 @@ const UserSelectPage = async () => {
         </div>
         <div className={styles.listContainer}>
           <UserQuestionListHeader />
-          <Suspense fallback={<div>loading....</div>}>
+          <Suspense fallback={<ListLoader />}>
             <ItemList
               data={data}
               renderItem={(item) => (

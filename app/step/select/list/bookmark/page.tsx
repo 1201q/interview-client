@@ -6,6 +6,7 @@ import BookmarkedQuestionListHeader from '@/components/select/listHeader/Bookmar
 import { Suspense } from 'react';
 import ItemList from '@/components/select/ItemList';
 import SelectableQuestionItem from '@/components/select/item/SelectableQuestionItem';
+import ListLoader from '@/components/select/ListLoader';
 
 const FavoriteSelectPage = async () => {
   const cookieStore = await cookies();
@@ -21,7 +22,8 @@ const FavoriteSelectPage = async () => {
         </div>
         <div className={styles.listContainer}>
           <BookmarkedQuestionListHeader />
-          <Suspense fallback={<div>loading....</div>}>
+
+          <Suspense fallback={<ListLoader />}>
             <ItemList
               data={bookmarkData}
               renderItem={(item) => (
