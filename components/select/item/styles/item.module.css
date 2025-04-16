@@ -73,18 +73,14 @@
   justify-content: center;
 }
 
-.bookMarkButton:hover svg {
-  fill: var(--main-blue-color);
-}
-
 .voidStarSvg {
   width: 22px;
   height: 22px;
-  fill: var(--font-gray-color);
+  fill: var(--border-main-color);
 }
 
 .fillStarSvg {
   width: 22px;
   height: 22px;
-  fill: var(--main-blue-color);
+  fill: var(--main-yellow-color);
 }

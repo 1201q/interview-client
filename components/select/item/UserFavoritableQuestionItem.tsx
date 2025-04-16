@@ -6,6 +6,8 @@ import VoidStar from '@/public/star-void.svg';
 import FillStar from '@/public/star-fill.svg';
 import { useSelectQuestion } from './hooks/useSelectQuestion';
 import { addQuestionBookmark } from '@/utils/actions/addQuestionBookmark';
+import { useState } from 'react';
+import { deleteQuestionBookmark } from '@/utils/actions/deleteQuestionBookmark';
 
 const UserFavoritableQuestionItem = ({
   data,
@@ -15,6 +17,22 @@ const UserFavoritableQuestionItem = ({
   isBookmarked: boolean;
 }) => {
   const { handleClick, isSelected } = useSelectQuestion();
+  const [bookmark, setBookmark] = useState(isBookmarked);
+
+  const handleBookmarkClick = async () => {
+    try {
+      if (bookmark) {
+        await deleteQuestionBookmark(data.id);
+      } else {
+        await addQuestionBookmark(data.id);
+      }
+
+      setBookmark((prev) => !prev);
+    } catch (error) {
+      console.error('북마크 업데이트 실패', error);
+      alert('북마크 업데이트 실패');
+    }
+  };
 
   return (
     <div
@@ -32,14 +50,12 @@ const UserFavoritableQuestionItem = ({
         <div className={styles.rightController}>
           <button
             className={styles.bookMarkButton}
-            onClick={() => {
-              addQuestionBookmark(data.id);
-            }}
+            onClick={handleBookmarkClick}
           >
-            {isBookmarked ? (
+            {bookmark ? (
               <FillStar className={styles.fillStarSvg} />
             ) : (
-              <VoidStar className={styles.voidStarSvg} />
+              <FillStar className={styles.voidStarSvg} />
             )}
           </button>
         </div>

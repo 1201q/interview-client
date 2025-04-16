@@ -24,7 +24,6 @@ const SelectPage = async ({ searchParams }: Props) => {
   const data = await getQuestionListByRole(roleType);
   const bookmarkData = await getBookmarkedQuestions();
 
-  console.log(bookmarkData);
   const isLoggedIn = (await cookies()).has('accessToken');
 
   return (

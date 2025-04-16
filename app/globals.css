@@ -3,6 +3,9 @@
   --main-gray-hover-color: #f3f4f6;
   --main-blue-hover-color: rgba(0, 73, 229, 0.771);
   --main-green-hover-color: #19c77a;
+  --main-yellow-hover-color: rgba(255, 233, 25, 0.4);
+
+  --main-yellow-color: rgba(255, 233, 25, 1);
   --main-red-color: rgb(240, 97, 109);
   --main-blue-color: #4c86fe;
   --main-green-color: #03dd7c;
