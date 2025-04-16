@@ -23,5 +23,9 @@ export const useSelectQuestion = (
     return selectedQuestionUUIDs.includes(id);
   };
 
-  return { handleClick, isSelected };
+  const selectedIndex = (id: string) => {
+    return selectedQuestionUUIDs.indexOf(id);
+  };
+
+  return { handleClick, isSelected, selectedIndex };
 };

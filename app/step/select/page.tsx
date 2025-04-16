@@ -10,8 +10,7 @@ import {
 import Sidebar from '@/components/select/sidebar/Sidebar';
 import styles from '../_styles/page.module.css';
 import ItemList from '@/components/select/ItemList';
-import UserFavoritableQuestionItem from '@/components/select/item/UserFavoritableQuestionItem';
-import QuestionItem from '@/components/select/item/QuestionItem';
+import SelectableQuestionItem from '@/components/select/item/SelectableQuestionItem';
 
 type Props = {
   searchParams: Promise<{ [key: string]: RoleType }>;
@@ -20,11 +19,11 @@ type Props = {
 const SelectPage = async ({ searchParams }: Props) => {
   const { role } = await searchParams;
   const roleType = role || 'fe';
+  const cookieStore = await cookies();
+  const isLoggedIn = cookieStore.has('accessToken');
 
   const data = await getQuestionListByRole(roleType);
-  const bookmarkData = await getBookmarkedQuestions();
-
-  const isLoggedIn = (await cookies()).has('accessToken');
+  const bookmarkData = isLoggedIn ? await getBookmarkedQuestions() : [];
 
   return (
     <div className={styles.container}>
@@ -39,7 +38,7 @@ const SelectPage = async ({ searchParams }: Props) => {
               <ItemList
                 data={data}
                 renderItem={(item) => (
-                  <UserFavoritableQuestionItem
+                  <SelectableQuestionItem
                     isBookmarked={
                       bookmarkData.findIndex(
                         (data) => data.question_id === item.id,
@@ -54,7 +53,15 @@ const SelectPage = async ({ searchParams }: Props) => {
               <ItemList
                 data={data}
                 renderItem={(item) => (
-                  <QuestionItem data={item} key={item.id} />
+                  <SelectableQuestionItem
+                    isBookmarked={
+                      bookmarkData.findIndex(
+                        (data) => data.question_id === item.id,
+                      ) !== -1
+                    }
+                    data={item}
+                    key={item.id}
+                  />
                 )}
               />
             )}

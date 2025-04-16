@@ -1,32 +1,24 @@
-.answer {
+.container {
   display: flex;
   align-items: center;
   height: auto;
   min-height: 55px;
   background-color: white;
   border-radius: 12px;
-  padding-right: 15px;
+
   box-shadow: rgba(99, 99, 99, 0.15) 0px 2px 8px 0px;
   cursor: pointer;
   transition: all 0.1s ease-in-out;
+  overflow: hidden;
 }
 
-.textContainer {
-  flex: 1;
-  display: flex;
-  padding-left: 15px;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  height: 100%;
-}
-
-.textContainer p {
-  display: flex;
-  align-items: center;
-  font-size: 15px;
-  font-weight: 500;
-
-  word-break: break-all;
+.selectedIndexText {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--font-gray-color);
+  text-align: center;
+  padding-left: 17px;
+  padding-top: 0px;
 }
 
 .selected {
@@ -34,7 +26,7 @@
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
-.redSelected {
+.selected.red {
   background-color: var(--bg-red-color);
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
@@ -45,42 +37,70 @@
   font-weight: 500;
 }
 
-.redSelected p {
+.selected.red p {
   font-size: 15px;
   color: var(--main-red-color);
   font-weight: 500;
 }
 
-.rightController {
+/* 가장 좌측 헤더 */
+.itemHeaderContainer {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: 55px;
+  width: 36px;
+  height: 100%;
+  padding-left: 15px;
+}
+
+/* 중간 텍스트 컨테이너 */
+.textContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 15px 12px 15px;
+  height: 100%;
+}
+
+.textContainer p {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 500;
+  word-break: break-all;
+}
+
+.rightContainer {
+  display: flex;
+  align-items: center;
+  width: 69px;
   height: 100%;
 }
 
 .timeAgoText {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--font-gray-color);
   text-wrap: nowrap;
+  text-align: right;
 }
 
 .bookMarkButton {
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .voidStarSvg {
-  width: 22px;
-  height: 22px;
+  width: 19px;
+  height: 19px;
   fill: var(--border-main-color);
 }
 
 .fillStarSvg {
-  width: 22px;
-  height: 22px;
+  width: 19px;
+  height: 19px;
   fill: var(--main-yellow-color);
 }

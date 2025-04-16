@@ -6,26 +6,27 @@ import styles from './styles/item.module.css';
 import { dayjsFn } from '@/utils/libs/dayjs';
 import { getTimeAgo } from '@/utils/formatter/time';
 import { useSelectQuestion } from './hooks/useSelectQuestion';
+import Status from './Status';
 
 const UserDeletedQuestionItem = ({ data }: { data: UserQuestionType }) => {
   const { handleClick, isSelected } = useSelectQuestion(
     deletedQuestionUUIDsAtom,
   );
 
+  const selected = !isSelected(data.id);
+
   return (
     <div
       onClick={() => handleClick(data.id)}
       key={data.id}
-      className={`${styles.answer} ${isSelected(data.id) ? styles.redSelected : ''}`}
+      className={`${styles.container} ${selected ? styles.selected : ''} ${styles.red}`}
     >
       <div className={styles.textContainer}>
         <p>{data.question_text}</p>
       </div>
-      {!isSelected(data.id) && (
-        <div className={styles.rightController}>
-          <p className={styles.timeAgoText}>
-            {getTimeAgo(dayjsFn(data.created_at))}
-          </p>
+      {!selected && (
+        <div className={styles.rightContainer}>
+          <Status text={getTimeAgo(dayjsFn(data.created_at))} />
         </div>
       )}
     </div>
