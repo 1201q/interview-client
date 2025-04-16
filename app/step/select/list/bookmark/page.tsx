@@ -2,6 +2,10 @@ import { getBookmarkedQuestions } from '@/utils/services/question';
 import styles from '../../../_styles/page.module.css';
 import Sidebar from '@/components/select/sidebar/Sidebar';
 import { cookies } from 'next/headers';
+import UserQuestionListHeader from '@/components/select/listHeader/UserQuestionListHeader';
+import { Suspense } from 'react';
+import ItemList from '@/components/select/ItemList';
+import SelectableQuestionItem from '@/components/select/item/SelectableQuestionItem';
 
 const FavoriteSelectPage = async () => {
   const cookieStore = await cookies();
@@ -16,27 +20,20 @@ const FavoriteSelectPage = async () => {
           <Sidebar />
         </div>
         <div className={styles.listContainer}>
-          {/* {' '}
-          <div className={styles.listContainer}>
-            <UserQuestionListHeader />
-            <Suspense fallback={<div>loading....</div>}>
-              <ItemList
-                data={data}
-                renderItem={(item) => (
-                  <SelectableQuestionItem
-                    isBookmarked={
-                      bookmarkData.findIndex(
-                        (data) => data.question_id === item.id,
-                      ) !== -1
-                    }
-                    data={item}
-                    key={item.id}
-                    displayRightContainer={true}
-                  />
-                )}
-              />
-            </Suspense>
-          </div> */}
+          <UserQuestionListHeader />
+          <Suspense fallback={<div>loading....</div>}>
+            <ItemList
+              data={bookmarkData}
+              renderItem={(item) => (
+                <SelectableQuestionItem
+                  isBookmarked={true}
+                  data={item['question']}
+                  key={item.id}
+                  displayRightContainer={false}
+                />
+              )}
+            />
+          </Suspense>
         </div>
       </div>
     </div>

@@ -54,16 +54,22 @@
 }
 
 /* 중간 텍스트 컨테이너 */
-.textContainer {
+.textContainer,
+.deleteTextContainer {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 15px 12px 15px;
+  padding: 12px 15px 12px 12px;
   height: 100%;
 }
 
-.textContainer p {
+.deleteTextContainer {
+  padding: 12px 15px 12px 15px;
+}
+
+.textContainer p,
+.deleteTextContainer p {
   display: flex;
   align-items: center;
   font-size: 15px;

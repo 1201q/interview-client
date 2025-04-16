@@ -21,7 +21,7 @@ const DeletableQuestionItem = ({ data }: { data: UserQuestionType }) => {
       key={data.id}
       className={`${styles.container} ${selected ? styles.selected : ''} ${styles.red}`}
     >
-      <div className={styles.textContainer}>
+      <div className={styles.deleteTextContainer}>
         <p>{data.question_text}</p>
       </div>
       {!selected && (
