@@ -1,4 +1,4 @@
-import UserDeletedQuestionItem from '@/components/select/item/UserDeletedQuestionItem';
+import DeletableQuestionItem from '@/components/select/item/DeletableQuestionItem';
 import ItemList from '@/components/select/ItemList';
 import DeleteQuestionHeaderClient from '@/components/select/listHeader/DeleteQuestionHeader';
 import { getUserCreatedQuestions } from '@/utils/services/question';
@@ -18,7 +18,7 @@ const DeletePage = async () => {
         <ItemList
           data={data}
           renderItem={(item) => (
-            <UserDeletedQuestionItem data={item} key={item.id} />
+            <DeletableQuestionItem data={item} key={item.id} />
           )}
         />
       </Suspense>

@@ -20,6 +20,10 @@ const DeleteQuestionHeader = () => {
     e.preventDefault();
 
     try {
+      if (selectedQuestionUUIDs.length === 0) {
+        return;
+      }
+
       deleteUserQuestions(selectedQuestionUUIDs);
       setSelectedQuestionUUIDs([]);
 

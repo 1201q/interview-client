@@ -8,12 +8,12 @@ import { getTimeAgo } from '@/utils/formatter/time';
 import { useSelectQuestion } from './hooks/useSelectQuestion';
 import Status from './Status';
 
-const UserDeletedQuestionItem = ({ data }: { data: UserQuestionType }) => {
+const DeletableQuestionItem = ({ data }: { data: UserQuestionType }) => {
   const { handleClick, isSelected } = useSelectQuestion(
     deletedQuestionUUIDsAtom,
   );
 
-  const selected = !isSelected(data.id);
+  const selected = isSelected(data.id);
 
   return (
     <div
@@ -33,4 +33,4 @@ const UserDeletedQuestionItem = ({ data }: { data: UserQuestionType }) => {
   );
 };
 
-export default UserDeletedQuestionItem;
+export default DeletableQuestionItem;

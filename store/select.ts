@@ -1,6 +1,6 @@
 import { ROLE_OPTIONS } from '@/utils/constants/interview.step';
 import { AddQuestionType } from '@/utils/types/types';
-import { atom, useAtom } from 'jotai';
+import { atom } from 'jotai';
 import { v4 as uuidv4 } from 'uuid';
 
 type RoleOptionType = (typeof ROLE_OPTIONS)[number];
