@@ -1,5 +1,9 @@
 import { ROLE_OPTIONS } from '@/utils/constants/interview.step';
-import { AddQuestionType, HelpInformationType } from '@/utils/types/types';
+import {
+  AddQuestionType,
+  HelpInformationType,
+  QuestionType,
+} from '@/utils/types/types';
 import { atom } from 'jotai';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -17,6 +21,21 @@ selectedQuestionUUIDsAtom.onMount = (set) => {
 };
 
 deletedQuestionUUIDsAtom.onMount = (set) => {
+  return () => {
+    set([]);
+  };
+};
+
+export const selectedQuestionsAtom = atom<QuestionType[]>([]);
+export const deletedQuestionsAtom = atom<QuestionType[]>([]);
+
+selectedQuestionsAtom.onMount = (set) => {
+  return () => {
+    set([]);
+  };
+};
+
+deletedQuestionsAtom.onMount = (set) => {
   return () => {
     set([]);
   };
