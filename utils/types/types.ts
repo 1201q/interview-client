@@ -54,3 +54,5 @@ export interface BookmarkedQuestionType {
   created_at: string;
   question: QuestionType;
 }
+
+export type HelpInformationType = 'ai-job' | 'ai-category' | 'ai-question';

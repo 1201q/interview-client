@@ -4,6 +4,7 @@
   --main-blue-hover-color: rgba(0, 73, 229, 0.771);
   --main-green-hover-color: #19c77a;
   --main-yellow-hover-color: rgba(255, 233, 25, 0.4);
+  --main-red-hover-color: #cc5253;
 
   --main-yellow-color: rgba(255, 233, 25, 1);
   --main-red-color: rgb(240, 97, 109);
@@ -16,7 +17,7 @@
   --bg-red-color: rgba(219, 64, 64, 0.12);
   --bg-black-color: #242424;
   --border-main-color: rgb(209, 217, 224);
-  --border-main2-color: rgb(237, 237, 237);
+  --border-main2-color: #e5e7eb;
 
   --font-gray-color: #94a3b8;
   --font-darkgray-color: #64748b;

@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  column-gap: 15px;
+}
+
+.leftContainer {
+  display: flex;
+  align-items: center;
+}
+
+.leftContainer p {
+  font-size: 16px;
+  font-weight: 600;
+}

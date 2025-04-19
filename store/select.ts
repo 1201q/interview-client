@@ -1,5 +1,5 @@
 import { ROLE_OPTIONS } from '@/utils/constants/interview.step';
-import { AddQuestionType } from '@/utils/types/types';
+import { AddQuestionType, HelpInformationType } from '@/utils/types/types';
 import { atom } from 'jotai';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -53,5 +53,13 @@ export const addQuestionsAtom = atom<AddQuestionType[]>([
 addQuestionsAtom.onMount = (set) => {
   return () => {
     set([{ question_text: '', id: uuidv4() }]);
+  };
+};
+
+export const helpInformationAtom = atom<HelpInformationType | null>(null);
+
+helpInformationAtom.onMount = (set) => {
+  return () => {
+    set(null);
   };
 };
