@@ -46,6 +46,12 @@ export const getBookmarkedQuestions = async () => {
   return data;
 };
 
+export const getQuestionList = async () => {
+  const data = fetcher<QuestionType[]>(`/question`);
+
+  return data;
+};
+
 export const getQuestionListByRole = async (role: RoleType) => {
   const data = fetcher<QuestionType[]>(`/question?role=${role}`);
 
