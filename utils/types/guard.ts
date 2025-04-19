@@ -7,5 +7,5 @@ export const isRoleType = (value: any): value is RoleType => {
 };
 
 export const isUserRoleType = (value: any): value is UserRoleType => {
-  return value === 'user' || value === 'ai' || value === 'favorite';
+  return value === 'user' || value === 'ai' || value === 'bookmark';
 };

@@ -4,7 +4,7 @@ import {
 } from '../constants/interview.step';
 
 export type RoleType = (typeof ROLE_OPTIONS)[number]['value'];
-export type ExtendedRoleType = RoleType | 'user' | 'ai';
+export type ExtendedRoleType = RoleType | 'user' | 'ai' | 'bookmark';
 
 export type UserRoleType = (typeof USER_SIDEBAR_OPTIONS)[number]['value'];
 
@@ -56,3 +56,10 @@ export interface BookmarkedQuestionType {
 }
 
 export type HelpInformationType = 'ai-job' | 'ai-category' | 'ai-question';
+
+export interface DropDownMenuType {
+  menu: string;
+  code: ExtendedRoleType;
+  link: string;
+  perm?: 'user';
+}

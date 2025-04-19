@@ -25,13 +25,28 @@
 
 .optionContainer {
   display: flex;
+  position: relative;
 }
 
 .listContainer {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin-top: 40px;
-  gap: 20px;
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 120px;
+  column-gap: 20px;
+}
+
+.sideSelectContainer {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  row-gap: 15px;
+}
+
+.itemListContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
 }
 
 .contentsContainer {
@@ -40,22 +55,17 @@
 
 @media screen and (max-width: 1024px) {
   .listContainer {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    flex-direction: column;
+    row-gap: 20px;
+  }
+
+  .sideSelectContainer {
+    width: 100%;
   }
 }
 
 @media screen and (max-width: 768px) {
   .contentsContainer {
     margin: 30px 15px;
-  }
-
-  .listHeaderContainer {
-    flex-direction: column;
-    row-gap: 10px;
-    align-items: flex-end;
-  }
-
-  .listContainer {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 }

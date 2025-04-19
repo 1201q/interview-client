@@ -1,24 +1,24 @@
+import { QuestionType } from '@/utils/types/types';
 import styles from './styles/question.item.module.css';
 import FillStar from '@/public/star-fill.svg';
+import { getRoleName } from '@/utils/formatter/question';
 
 interface Props {
-  selected: boolean;
-  text: string;
-  tags: string[];
+  data: QuestionType;
 }
 
-const QuestionItem = () => {
+const QuestionItem = ({ data }: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.topContainer}>
-        <p>주로 어떤 소셜 미디어 플랫폼을 사용하시나요?</p>
+        <p>{data.question_text}</p>
         <button className={styles.bookmarkButton}>
           <FillStar />
         </button>
       </div>
 
       <div className={styles.bottomContainer}>
-        <div className={styles.tag}>프론트엔드</div>
+        <div className={styles.tag}>{getRoleName(data.role)}</div>
       </div>
     </div>
   );

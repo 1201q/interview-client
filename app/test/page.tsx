@@ -1,12 +1,55 @@
+import {
+  getBookmarkedQuestions,
+  getQuestionListByRole,
+  getUserCreatedQuestions,
+} from '@/utils/services/question';
 import BottomController from './_components/BottomController';
-import Button from './_components/Button';
 import Indicator from './_components/Indicator';
 import QuestionItem from './_components/QuestionItem';
 import SearchInput from './_components/SearchInput';
 import styles from './page.module.css';
-import Filter from '@/public/filter.svg';
 
-const Page = () => {
+import {
+  BookmarkedQuestionType,
+  ExtendedRoleType,
+  QuestionType,
+  RoleType,
+} from '@/utils/types/types';
+import { Suspense } from 'react';
+import ItemList from './_components/ItemList';
+import Options from './_components/Options';
+import { isRoleType } from '@/utils/types/guard';
+import { cookies } from 'next/headers';
+import Help from './_components/Help';
+import SelectQuestionList from './_components/SelectQuestionList';
+
+type Props = {
+  searchParams: Promise<{ [key: string]: ExtendedRoleType }>;
+};
+
+const Page = async ({ searchParams }: Props) => {
+  const { role } = await searchParams;
+  const roleType = role || 'fe';
+
+  const cookieStore = await cookies();
+  const isLoggedIn = cookieStore.has('accessToken');
+
+  const getData = async (
+    type: ExtendedRoleType,
+  ): Promise<QuestionType[] | BookmarkedQuestionType[]> => {
+    if (isRoleType(type)) {
+      return getQuestionListByRole(type);
+    } else if (type === 'user') {
+      return getUserCreatedQuestions();
+    } else if (type === 'bookmark') {
+      return getBookmarkedQuestions();
+    } else {
+      return [];
+    }
+  };
+
+  const data = await getData(roleType);
+
   return (
     <div className={styles.container}>
       <div className={styles.contentsContainer}>
@@ -14,11 +57,40 @@ const Page = () => {
         <div className={styles.listHeaderContainer}>
           <SearchInput />
           <div className={styles.optionContainer}>
-            <Button text="카테고리" disabled={false} icon={<Filter />} />
+            <Options roleType={roleType} isLoggedIn={isLoggedIn} />
           </div>
         </div>
         <div className={styles.listContainer}>
-          <QuestionItem /> <QuestionItem /> <QuestionItem />
+          <div className={styles.sideSelectContainer}>
+            <Help />
+            <SelectQuestionList />
+          </div>
+          <div className={styles.itemListContainer}>
+            <Suspense key={roleType} fallback={<div>로딩중</div>}>
+              {isRoleType(roleType) ? (
+                <ItemList
+                  data={data as QuestionType[]}
+                  renderItem={(item) => (
+                    <QuestionItem key={item.id} data={item} />
+                  )}
+                />
+              ) : roleType === 'user' ? (
+                <ItemList
+                  data={data as QuestionType[]}
+                  renderItem={(item) => (
+                    <QuestionItem key={item.id} data={item} />
+                  )}
+                />
+              ) : roleType === 'bookmark' ? (
+                <ItemList
+                  data={data as BookmarkedQuestionType[]}
+                  renderItem={(item) => (
+                    <QuestionItem key={item.id} data={item.question} />
+                  )}
+                />
+              ) : null}
+            </Suspense>
+          </div>
         </div>
       </div>
       <div className={styles.bottomContainer}>

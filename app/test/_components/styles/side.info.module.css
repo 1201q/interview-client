@@ -1,0 +1,79 @@
+.container {
+  background-color: var(--bg-gray-color);
+  border-radius: 7px;
+  height: min-content;
+  padding: 17px 17px;
+}
+
+.titleText {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--font-darkgray-color);
+  letter-spacing: 0.2px;
+  line-height: 140%;
+}
+
+.topContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+  column-gap: 8px;
+}
+
+.questionMark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  height: 17px;
+  width: 17px;
+  border: 1.5px solid var(--font-darkgray-color);
+  color: var(--font-darkgray-color);
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 3px;
+  width: 100%;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 30px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.item p {
+  flex: 1;
+  word-break: break-word;
+  text-overflow: ellipsis;
+  font-size: 15px;
+  font-weight: 500;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.item button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+}
+
+.item button svg {
+  width: 15px;
+  height: 15px;
+  fill: var(--font-gray-color);
+}
