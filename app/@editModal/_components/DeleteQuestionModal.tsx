@@ -28,7 +28,7 @@ const DeleteQuestionModal = ({ data }: Props) => {
   const selected = (id: string) =>
     selectedItemIds.findIndex((data) => data === id) !== -1;
 
-  const handleSubmit = async (e: FormData) => {
+  const handleSubmit = async () => {
     try {
       await deleteUserQuestions(selectedItemIds);
 

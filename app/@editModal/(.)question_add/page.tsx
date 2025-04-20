@@ -1,3 +1,5 @@
+'use client';
+
 import AddQuestionModal from '../_components/AddQuestionModal';
 import Modal from '../_components/Modal';
 

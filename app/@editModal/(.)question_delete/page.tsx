@@ -4,6 +4,11 @@ import Modal from '../_components/Modal';
 
 const DeletePageModal = async () => {
   const data = await getUserCreatedQuestions();
+
+  if (!data) {
+    return null;
+  }
+
   return (
     <Modal
       titleText="질문 삭제"
