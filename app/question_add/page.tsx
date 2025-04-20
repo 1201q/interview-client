@@ -1,4 +1,4 @@
-import AddPageModal from '../../@editModal/(.)question_add/page';
+import AddPageModal from '../@editModal/(.)question_add/page';
 
 const Page = () => {
   return <AddPageModal />;
