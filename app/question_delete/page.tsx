@@ -1,6 +1,6 @@
 import DeletePageModal from '../@editModal/(.)question_delete/page';
 
-const Page = () => {
+const Page = async () => {
   return <DeletePageModal />;
 };
 

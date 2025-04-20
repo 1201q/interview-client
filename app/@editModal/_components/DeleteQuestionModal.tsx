@@ -6,9 +6,9 @@ import styles from '../_styles/modal.module.css';
 import Trash from '@/public/trash-solid.svg';
 
 import { useRouter } from 'next/navigation';
-import { createUserQuestion } from '@/utils/actions/createUserQuestion';
+
 import { UserQuestionType } from '@/utils/types/types';
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 import { deleteUserQuestions } from '@/utils/actions/deleteUserQuestions';
 
 interface Props {

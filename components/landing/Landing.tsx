@@ -22,7 +22,7 @@ const Landing = () => {
           <p className={styles.explainText}>합격까지 같이 달려요!</p>
         </div>
         <div className={styles.buttonContainer}>
-          <Link href={'/step/select'}>
+          <Link href={'/test'}>
             <button>바로 시작</button>
           </Link>
         </div>
