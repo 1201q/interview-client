@@ -19,7 +19,10 @@ export async function middleware(request: NextRequest) {
 
   response.headers.set('x-pathname', pathname);
 
-  if (pathname.startsWith('/step/select') && role) {
+  if (
+    (pathname.startsWith('/test') || pathname.startsWith('/step/select')) &&
+    role
+  ) {
     response.headers.set('x-role', role);
   }
 
@@ -98,5 +101,8 @@ export const config = {
     '/step/:currentStep/list/:userPage',
     '/login',
     '/step/select/:others',
+    '/test',
+    '/question_add',
+    '/question_delete',
   ],
 };
