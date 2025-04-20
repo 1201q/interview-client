@@ -1,6 +1,8 @@
+export const dynamic = 'force-dynamic';
+
 import DeletePageModal from '../@editModal/(.)question_delete/page';
 
-const Page = async () => {
+const Page = () => {
   return <DeletePageModal />;
 };
 
