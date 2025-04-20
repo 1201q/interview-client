@@ -56,7 +56,9 @@
   fill: var(--border-main-color);
 }
 
-.checked {
+.checked svg {
+  width: 19px;
+  height: 19px;
   fill: var(--main-yellow-color);
 }
 

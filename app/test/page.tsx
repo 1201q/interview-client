@@ -13,7 +13,6 @@ import {
   BookmarkedQuestionType,
   ExtendedRoleType,
   QuestionType,
-  RoleType,
 } from '@/utils/types/types';
 import { Suspense } from 'react';
 import ItemList from './_components/ItemList';
@@ -33,6 +32,8 @@ const Page = async ({ searchParams }: Props) => {
 
   const cookieStore = await cookies();
   const isLoggedIn = cookieStore.has('accessToken');
+
+  const bookmarkData = isLoggedIn ? await getBookmarkedQuestions() : [];
 
   const getData = async (
     type: ExtendedRoleType,
@@ -71,21 +72,45 @@ const Page = async ({ searchParams }: Props) => {
                 <ItemList
                   data={data as QuestionType[]}
                   renderItem={(item) => (
-                    <QuestionItem key={item.id} data={item} />
+                    <QuestionItem
+                      key={item.id}
+                      data={item}
+                      isBookmarked={
+                        bookmarkData.findIndex(
+                          (data) => data.question_id === item.id,
+                        ) !== -1
+                      }
+                    />
                   )}
                 />
               ) : roleType === 'user' ? (
                 <ItemList
                   data={data as QuestionType[]}
                   renderItem={(item) => (
-                    <QuestionItem key={item.id} data={item} />
+                    <QuestionItem
+                      key={item.id}
+                      data={item}
+                      isBookmarked={
+                        bookmarkData.findIndex(
+                          (data) => data.question_id === item.id,
+                        ) !== -1
+                      }
+                    />
                   )}
                 />
               ) : roleType === 'bookmark' ? (
                 <ItemList
                   data={data as BookmarkedQuestionType[]}
                   renderItem={(item) => (
-                    <QuestionItem key={item.id} data={item.question} />
+                    <QuestionItem
+                      key={item.id}
+                      data={item.question}
+                      isBookmarked={
+                        bookmarkData.findIndex(
+                          (data) => data.question_id === item.question_id,
+                        ) !== -1
+                      }
+                    />
                   )}
                 />
               ) : null}
