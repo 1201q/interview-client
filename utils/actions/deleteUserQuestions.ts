@@ -1,14 +1,18 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export const deleteUserQuestions = async (questions: string[]) => {
   if (questions.length === 0) {
-    throw new Error('없습니다.');
+    throw new Error('삭제할 항목이 없습니다.');
   }
 
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
+
+  if (!accessToken) redirect('/login');
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/question/delete/user`,
@@ -25,6 +29,8 @@ export const deleteUserQuestions = async (questions: string[]) => {
   );
 
   if (!response.ok) {
-    throw new Error('로그아웃에 실패했습니다.');
+    throw new Error('삭제에 실패했습니다.');
   }
+
+  revalidatePath('/test');
 };

@@ -1,0 +1,148 @@
+.container {
+  width: 100%;
+  min-height: 100dvh;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  top: 0;
+  z-index: 99;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContainer {
+  width: calc(100% - 20px);
+  max-width: 520px;
+
+  background-color: white;
+
+  border-radius: 11px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 100;
+  padding: 22px;
+  position: relative;
+  row-gap: 20px;
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.headerContainer button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.headerContainer button svg {
+  width: 18px;
+  height: 18px;
+  fill: var(--font-gray-color);
+}
+
+.headerTextContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.headerTextContainer span {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--font-gray-color);
+}
+
+.titleText {
+  font-size: 19px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.inputContainer {
+  width: 100%;
+  height: 40px;
+  border: 1px solid var(--border-main2-color);
+  border-radius: 6px;
+  transition: all 0.1s ease-in-out;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.inputContainer input {
+  width: 100%;
+  height: 100%;
+  padding: 0px 15px 0px 10px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+}
+
+.inputContainer:focus-within {
+  outline-offset: -2px;
+  outline: 2px solid var(--main-blue-color);
+}
+
+.contentsContainer {
+  flex: 1;
+}
+
+.itemListContainer {
+  height: 100%;
+  max-height: 400px;
+
+  overflow-y: scroll;
+
+  margin-bottom: 30px;
+}
+
+.bottomContainer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  column-gap: 10px;
+  width: 100%;
+  height: 50px;
+}
+
+.itemContainer {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 100%;
+  border: 1px solid var(--border-main2-color);
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.itemContainer p {
+  word-break: break-word;
+  text-overflow: ellipsis;
+  font-size: 15px;
+  font-weight: 500;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.red {
+  border: 1px solid var(--main-red-color);
+  background-color: var(--bg-red-color);
+}
+
+.red p {
+  font-weight: 500;
+  color: var(--main-red-color);
+}

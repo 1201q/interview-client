@@ -16,11 +16,12 @@ import {
 } from '@/utils/types/types';
 import { Suspense } from 'react';
 import ItemList from './_components/ItemList';
-import Options from './_components/Options';
+import FilterButton from './_components/FilterButton';
 import { isRoleType } from '@/utils/types/guard';
 import { cookies } from 'next/headers';
 import Help from './_components/Help';
 import SelectQuestionList from './_components/SelectQuestionList';
+import EditButton from './_components/EditButton';
 
 type Props = {
   searchParams: Promise<{ [key: string]: ExtendedRoleType }>;
@@ -58,7 +59,8 @@ const Page = async ({ searchParams }: Props) => {
         <div className={styles.listHeaderContainer}>
           <SearchInput />
           <div className={styles.optionContainer}>
-            <Options roleType={roleType} isLoggedIn={isLoggedIn} />
+            {isLoggedIn && <EditButton roleType={roleType} />}
+            <FilterButton roleType={roleType} isLoggedIn={isLoggedIn} />
           </div>
         </div>
         <div className={styles.listContainer}>

@@ -59,7 +59,7 @@ export type HelpInformationType = 'ai-job' | 'ai-category' | 'ai-question';
 
 export interface DropDownMenuType {
   menu: string;
-  code: ExtendedRoleType;
+  code: string;
   link: string;
   perm?: 'user';
 }

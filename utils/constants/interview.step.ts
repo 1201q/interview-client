@@ -74,3 +74,8 @@ export const LOGGEDIN_DROPDOWN_MENU: DropDownMenuType[] = [
     perm: 'user',
   },
 ];
+
+export const EDIT_DROPDOWN_MENU: DropDownMenuType[] = [
+  { code: 'add', menu: '질문 추가', link: '/question_add' },
+  { code: 'delete', menu: '질문 삭제', link: '/question_delete' },
+];

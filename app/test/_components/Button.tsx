@@ -6,11 +6,20 @@ interface Props {
   disabled: boolean;
   text: string;
   icon?: any;
+  type?: 'submit' | 'button';
 }
 
-const Button = ({ onClick, color, disabled, text, icon }: Props) => {
+const Button = ({
+  onClick,
+  color,
+  disabled,
+  text,
+  icon,
+  type = 'button',
+}: Props) => {
   return (
     <button
+      type={type}
       onClick={onClick}
       disabled={disabled}
       className={` ${styles.button} ${color ? styles[color] : ''} `}

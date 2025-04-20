@@ -4,7 +4,7 @@ import { getRoleName } from '@/utils/formatter/question';
 import Button from './Button';
 import Filter from '@/public/filter.svg';
 import { ExtendedRoleType } from '@/utils/types/types';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import DropDown from './DropDown';
 import {
   DROPDOWN_MENU,
@@ -16,12 +16,16 @@ interface Props {
   isLoggedIn: boolean;
 }
 
-const Options = ({ roleType, isLoggedIn }: Props) => {
+const FilterButton = ({ roleType, isLoggedIn }: Props) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   return (
-    <>
-      <div style={{ pointerEvents: isFilterOpen ? 'none' : 'auto' }}>
+    <div style={{ position: 'relative' }}>
+      <div
+        style={{
+          pointerEvents: isFilterOpen ? 'none' : 'auto',
+        }}
+      >
         <Button
           text={getRoleName(roleType)}
           disabled={false}
@@ -48,8 +52,8 @@ const Options = ({ roleType, isLoggedIn }: Props) => {
           }
         />
       )}
-    </>
+    </div>
   );
 };
 
-export default Options;
+export default FilterButton;

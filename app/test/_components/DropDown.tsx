@@ -9,6 +9,7 @@ interface Props {
   role: ExtendedRoleType;
   onClick: () => void;
   outsideClick: () => void;
+  displayIcon?: boolean;
 }
 
 interface MenuProps {
@@ -16,9 +17,16 @@ interface MenuProps {
   text: string;
   href: string;
   onClick: () => void;
+  displayIcon: boolean;
 }
 
-const DropDown = ({ menu, role, onClick, outsideClick }: Props) => {
+const DropDown = ({
+  menu,
+  role,
+  onClick,
+  outsideClick,
+  displayIcon = true,
+}: Props) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,16 +51,19 @@ const DropDown = ({ menu, role, onClick, outsideClick }: Props) => {
           selected={item.code === role}
           href={item.link}
           onClick={onClick}
+          displayIcon={displayIcon}
         />
       ))}
     </div>
   );
 };
 
-const Menu = ({ selected, text, href, onClick }: MenuProps) => {
+const Menu = ({ selected, text, href, onClick, displayIcon }: MenuProps) => {
   return (
     <Link href={href} className={styles.menu} onClick={onClick}>
-      <div className={styles.iconContainer}>{selected && <Check />}</div>
+      {displayIcon && (
+        <div className={styles.iconContainer}>{selected && <Check />}</div>
+      )}
       <p>{text}</p>
     </Link>
   );

@@ -25,7 +25,8 @@
 
 .optionContainer {
   display: flex;
-  position: relative;
+
+  column-gap: 12px;
 }
 
 .listContainer {
@@ -55,12 +56,20 @@
 
 @media screen and (max-width: 1024px) {
   .listContainer {
+    display: flex;
     flex-direction: column;
     row-gap: 20px;
   }
 
   .sideSelectContainer {
     width: 100%;
+  }
+
+  .listHeaderContainer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    align-items: flex-end;
   }
 }
 
