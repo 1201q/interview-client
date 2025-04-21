@@ -1,25 +1,45 @@
-interface Props<T> {
-  data: T[];
-  renderItem: (item: T) => React.ReactNode;
+'use client';
+
+import { searchInputAtom } from '@/store/select';
+import { useAtomValue } from 'jotai';
+import QuestionItem from './QuestionItem';
+import { BookmarkedQuestionType, QuestionType } from '@/utils/types/types';
+
+interface Props {
+  data: QuestionType[];
+  bookmarkData: BookmarkedQuestionType[];
   emptyComponent?: React.ReactNode;
-  sortFn?: (a: T, b: T) => number;
 }
 
-const ItemList = async <T,>({
+const ItemList = ({
   data,
-  renderItem,
-  emptyComponent = <div>없음.</div>,
-  sortFn = (a, b) =>
-    new Date((b as any).created_at).getTime() -
-    new Date((a as any).created_at).getTime(),
-}: Props<T>) => {
-  // await new Promise((resolve) => setTimeout(resolve, 500));
+  bookmarkData,
+  emptyComponent = <div>데이터가 없습니다.</div>,
+}: Props) => {
+  const keyword = useAtomValue(searchInputAtom);
+  const filteredData =
+    keyword.length > 0
+      ? data.filter((item) => item.question_text.includes(keyword))
+      : data;
 
-  const sortedData = [...data].sort(sortFn);
+  if (filteredData.length === 0) {
+    return emptyComponent;
+  }
 
-  if (sortedData.length === 0) return <>{emptyComponent}</>;
-
-  return <>{sortedData.map(renderItem)}</>;
+  return (
+    <>
+      {filteredData.map((item) => (
+        <QuestionItem
+          key={item.id}
+          data={item}
+          isBookmarked={
+            bookmarkData.findIndex((data) => data.question_id === item.id) !==
+            -1
+          }
+        />
+      ))}
+    </>
+  );
 };
 
 export default ItemList;

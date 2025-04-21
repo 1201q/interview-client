@@ -82,3 +82,5 @@ helpInformationAtom.onMount = (set) => {
     set(null);
   };
 };
+
+export const searchInputAtom = atom<string>('');
