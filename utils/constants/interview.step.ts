@@ -53,24 +53,33 @@ export const USER_SIDEBAR_OPTIONS = [
 ] as const;
 
 export const DROPDOWN_MENU: DropDownMenuType[] = [
-  { code: 'fe', menu: '프론트엔드', link: '/test?role=fe' },
-  { code: 'be', menu: '백엔드', link: '/test?role=be' },
-  { code: 'android', menu: '안드로이드', link: '/test?role=android' },
-  { code: 'ios', menu: 'IOS', link: '/test?role=ios' },
+  { code: 'fe', menu: '프론트엔드', link: '/question_select?role=fe' },
+  { code: 'be', menu: '백엔드', link: '/question_select?role=be' },
+  {
+    code: 'android',
+    menu: '안드로이드',
+    link: '/question_select?role=android',
+  },
+  { code: 'ios', menu: 'IOS', link: '/question_select?role=ios' },
 ];
 
 export const LOGGEDIN_DROPDOWN_MENU: DropDownMenuType[] = [
   {
     code: 'user',
     menu: '내가 생성한 질문',
-    link: '/test?role=user',
+    link: '/question_select?role=user',
     perm: 'user',
   },
-  { code: 'ai', menu: 'AI가 생성한 질문', link: '/test?role=ai', perm: 'user' },
+  {
+    code: 'ai',
+    menu: 'AI가 생성한 질문',
+    link: '/question_select?role=ai',
+    perm: 'user',
+  },
   {
     code: 'bookmark',
     menu: '즐겨찾기한 질문',
-    link: '/test?role=bookmark',
+    link: '/question_select?role=bookmark',
     perm: 'user',
   },
 ];
