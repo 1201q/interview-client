@@ -93,10 +93,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/login',
-    '/question_select/:',
-    '/question_add',
-    '/question_delete',
-  ],
+  matcher: ['/login', '/question_select', '/question_add', '/question_delete'],
 };
