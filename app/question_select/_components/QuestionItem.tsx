@@ -4,13 +4,14 @@ import { QuestionType } from '@/utils/types/types';
 import styles from './styles/question.item.module.css';
 import FillStar from '@/public/star-fill.svg';
 import { getRoleName } from '@/utils/formatter/question';
-
 import { useSelectQuestion } from './hooks/useSelectQuestion';
 import { useState } from 'react';
 import { hasAccessToken } from '@/utils/actions/hasAccessToken';
 import { useRouter } from 'next/navigation';
 import { deleteQuestionBookmark } from '@/utils/actions/deleteQuestionBookmark';
 import { addQuestionBookmark } from '@/utils/actions/addQuestionBookmark';
+
+import { AnimatePresence, motion } from 'motion/react';
 
 interface Props {
   data: QuestionType;
@@ -53,7 +54,7 @@ const QuestionItem = ({ data, isBookmarked }: Props) => {
   };
 
   return (
-    <div
+    <motion.div
       className={`${styles.container} ${selected ? styles.selected : ''}`}
       onClick={() => handleClick(data)}
     >
@@ -69,12 +70,21 @@ const QuestionItem = ({ data, isBookmarked }: Props) => {
           />
         )}
       </div>
-      {!selected && (
-        <div className={styles.bottomContainer}>
-          <div className={styles.tag}>{getRoleName(data.role)}</div>
-        </div>
-      )}
-    </div>
+      <AnimatePresence initial={false}>
+        {!selected && (
+          <motion.div
+            key="bottom"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className={styles.bottomContainer}
+          >
+            <div className={styles.tag}>{getRoleName(data.role)}</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 

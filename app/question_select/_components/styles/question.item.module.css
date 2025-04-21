@@ -3,7 +3,6 @@
   border-radius: 6px;
   border: 1px solid var(--border-main2-color);
   cursor: pointer;
-  transition: all 0.25s;
 }
 
 .container:not(.selected):hover {
