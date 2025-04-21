@@ -15,7 +15,6 @@
 .modalContainer {
   width: calc(100% - 20px);
   max-width: 520px;
-
   background-color: white;
 
   border-radius: 11px;
@@ -23,7 +22,7 @@
   flex-direction: column;
   overflow: hidden;
   z-index: 100;
-  padding: 22px;
+  padding: 25px 22px;
   position: relative;
   row-gap: 20px;
 }
@@ -57,15 +56,15 @@
 }
 
 .headerTextContainer span {
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 600;
   color: var(--font-gray-color);
 }
 
 .titleText {
-  font-size: 19px;
+  font-size: 22px;
   font-weight: 700;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 
 .inputContainer {
