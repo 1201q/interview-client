@@ -19,6 +19,7 @@ import Help from './_components/Help';
 import SelectQuestionList from './_components/SelectQuestionList';
 import EditButton from './_components/EditButton';
 import ItemList from './_components/ItemList';
+import AiBanner from './_components/AiBanner';
 
 type Props = {
   searchParams: Promise<{ [key: string]: ExtendedRoleType }>;
@@ -63,6 +64,7 @@ const Page = async ({ searchParams }: Props) => {
         </div>
         <div className={styles.listContainer}>
           <div className={styles.sideSelectContainer}>
+            <AiBanner />
             <Help />
             <SelectQuestionList />
           </div>
