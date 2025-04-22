@@ -11,8 +11,6 @@ import { useRouter } from 'next/navigation';
 import { deleteQuestionBookmark } from '@/utils/actions/deleteQuestionBookmark';
 import { addQuestionBookmark } from '@/utils/actions/addQuestionBookmark';
 
-import { AnimatePresence, motion } from 'motion/react';
-
 interface Props {
   data: QuestionType;
   isBookmarked: boolean;
@@ -54,7 +52,7 @@ const QuestionItem = ({ data, isBookmarked }: Props) => {
   };
 
   return (
-    <motion.div
+    <div
       className={`${styles.container} ${selected ? styles.selected : ''}`}
       onClick={() => handleClick(data)}
     >
@@ -70,21 +68,14 @@ const QuestionItem = ({ data, isBookmarked }: Props) => {
           />
         )}
       </div>
-      <AnimatePresence initial={false}>
-        {!selected && (
-          <motion.div
-            key="bottom"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className={styles.bottomContainer}
-          >
-            <div className={styles.tag}>{getRoleName(data.role)}</div>
-          </motion.div>
+      <div className={styles.bottomContainer}>
+        {!selected ? (
+          <div className={styles.tag}>{getRoleName(data.role)}</div>
+        ) : (
+          <div className={`${styles.tag} ${styles.blue}`}>선택됨</div>
         )}
-      </AnimatePresence>
-    </motion.div>
+      </div>
+    </div>
   );
 };
 

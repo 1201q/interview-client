@@ -3,6 +3,7 @@
   border-radius: 6px;
   border: 1px solid var(--border-main2-color);
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
 .container:not(.selected):hover {
@@ -15,6 +16,7 @@
   display: flex;
   justify-content: space-between;
   column-gap: 8px;
+  min-height: 22px;
 }
 
 .topContainer p {
@@ -41,6 +43,11 @@
   padding: 4px 7px;
   border-radius: 4px;
   white-space: nowrap;
+}
+
+.blue {
+  background-color: var(--bg-blue-color);
+  color: var(--main-blue-color);
 }
 
 .bookmarkButton {
@@ -82,6 +89,11 @@
     word-break: break-word;
   }
 
+  .selected p {
+    font-size: 16px;
+    color: var(--main-blue-color);
+  }
+
   .tag {
     background-color: var(--bg-gray-color);
     font-size: 10px;
@@ -91,11 +103,16 @@
     white-space: nowrap;
   }
 
+  .blue {
+    background-color: var(--bg-blue-color);
+    color: var(--main-blue-color);
+  }
+
   .bottomContainer {
     display: flex;
     column-gap: 10px;
     row-gap: 7px;
     flex-wrap: wrap;
-    margin-top: 7px;
+    margin-top: 8px;
   }
 }
