@@ -61,13 +61,13 @@ const Indicator = () => {
         ))}
       </div>
       <div className={styles.bottomContainer}>
-        <button
+        {/* <button
           onClick={() => {
             setCurrentStageIndex((prev) => prev + 1);
           }}
         >
           다음단계
-        </button>
+        </button> */}
       </div>
     </div>
   );

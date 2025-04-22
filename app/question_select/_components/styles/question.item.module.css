@@ -71,3 +71,31 @@
 .selected p {
   color: var(--main-blue-color);
 }
+
+@media screen and (max-width: 1024px) {
+  .topContainer p {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .tag {
+    background-color: var(--bg-gray-color);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .bottomContainer {
+    display: flex;
+    column-gap: 10px;
+    row-gap: 7px;
+    flex-wrap: wrap;
+    margin-top: 7px;
+  }
+}

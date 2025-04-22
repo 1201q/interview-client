@@ -41,6 +41,10 @@
   flex-direction: column;
   width: 280px;
   row-gap: 15px;
+  position: sticky;
+  top: 15px;
+  align-self: flex-start;
+  margin-top: 1px;
 }
 
 .itemListContainer {
@@ -59,10 +63,13 @@
     display: flex;
     flex-direction: column;
     row-gap: 20px;
+    margin-top: 0;
   }
 
   .sideSelectContainer {
     width: 100%;
+    position: relative;
+    margin-bottom: 20px;
   }
 
   .listHeaderContainer {

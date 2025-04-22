@@ -18,20 +18,27 @@ const SelectQuestionList = () => {
 
   return (
     <>
-      {selectedQuestions.length !== 0 && (
-        <div className={styles.container}>
-          <div className={styles.topContainer}>
-            <p className={styles.titleText}>선택한 질문</p>
-          </div>
-          <div className={styles.list}>
-            <AnimatePresence initial={false} mode="popLayout">
-              {selectedQuestions.map((q, index) => (
-                <Item data={q} key={q.id} index={index} />
-              ))}
-            </AnimatePresence>
-          </div>
-        </div>
-      )}
+      <AnimatePresence initial={false} mode="popLayout">
+        {selectedQuestions.length !== 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className={styles.container}
+          >
+            <div className={styles.topContainer}>
+              <p className={styles.titleText}>선택한 질문</p>
+            </div>
+            <div className={styles.list}>
+              <AnimatePresence initial={false} mode="popLayout">
+                {selectedQuestions.map((q, index) => (
+                  <Item data={q} key={q.id} index={index} />
+                ))}
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

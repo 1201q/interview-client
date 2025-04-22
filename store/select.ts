@@ -27,6 +27,28 @@ deletedQuestionUUIDsAtom.onMount = (set) => {
 };
 
 export const selectedQuestionsAtom = atom<QuestionType[]>([]);
+export const setSelectedQuestionsAtom = atom(
+  null,
+  (get, set, update: QuestionType) => {
+    const prev = get(selectedQuestionsAtom);
+
+    const exists = prev.some((q) => q.id === update.id);
+
+    if (exists) {
+      set(
+        selectedQuestionsAtom,
+        prev.filter((q) => q.id !== update.id),
+      );
+    } else {
+      if (prev.length < 15) {
+        set(selectedQuestionsAtom, [...prev, update]);
+      } else {
+        alert('질문은 최대 15개까지만 선택할 수 있습니다.');
+      }
+    }
+  },
+);
+
 export const deletedQuestionsAtom = atom<QuestionType[]>([]);
 
 selectedQuestionsAtom.onMount = (set) => {

@@ -1,25 +1,18 @@
 'use client';
 
-import { selectedQuestionsAtom } from '@/store/select';
+import {
+  selectedQuestionsAtom,
+  setSelectedQuestionsAtom,
+} from '@/store/select';
 import { QuestionType } from '@/utils/types/types';
-import { PrimitiveAtom } from 'jotai';
-import { useAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 
-export const useSelectQuestion = (
-  atom: PrimitiveAtom<QuestionType[]> = selectedQuestionsAtom,
-) => {
-  const [selectedQuestions, setSelectedQuestions] = useAtom(atom);
+export const useSelectQuestion = () => {
+  const selectedQuestions = useAtomValue(selectedQuestionsAtom);
+  const setSelectedQuestions = useSetAtom(setSelectedQuestionsAtom);
 
   const handleClick = (data: QuestionType) => {
-    setSelectedQuestions((prev) => {
-      const exists = prev.find((q) => q.id === data.id);
-
-      if (exists) {
-        return prev.filter((q) => q.id !== data.id);
-      } else {
-        return [...prev, data];
-      }
-    });
+    setSelectedQuestions(data);
   };
 
   const isSelected = (id: string) => {
