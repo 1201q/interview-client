@@ -88,3 +88,11 @@ export const EDIT_DROPDOWN_MENU: DropDownMenuType[] = [
   { code: 'add', menu: '질문 추가', link: '/question_add' },
   { code: 'delete', menu: '질문 삭제', link: '/question_delete' },
 ];
+
+export const AI_DROPDOWN_MENU = [
+  '개념설명형',
+  '비교형',
+  '시스템설계형',
+  '구현형',
+  '경험/상황형',
+];

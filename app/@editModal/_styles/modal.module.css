@@ -20,7 +20,7 @@
   border-radius: 11px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+
   z-index: 100;
   padding: 25px 22px;
   position: relative;
@@ -81,7 +81,7 @@
 .inputContainer input {
   width: 100%;
   height: 100%;
-  padding: 0px 15px 0px 10px;
+  padding: 0px 15px 0px 12px;
   border: none;
   outline: none;
   font-size: 15px;
@@ -90,6 +90,38 @@
 .inputContainer:focus-within {
   outline-offset: -2px;
   outline: 2px solid var(--main-blue-color);
+}
+
+.dropdownContainer {
+  width: 100%;
+  height: 40px;
+  border: 1px solid var(--border-main2-color);
+  border-radius: 6px;
+  transition: all 0.1s ease-in-out;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 13px;
+}
+
+.dropdownContainer:focus-within {
+  outline-offset: -2px;
+  outline: 2px solid var(--main-blue-color);
+}
+
+.dropdownContainer p {
+  font-size: 15px;
+}
+
+.dropdownContainer svg {
+  fill: var(--font-darkgray-color);
+  width: 12px;
+  height: 12px;
+  rotate: 270deg;
 }
 
 .contentsContainer {
@@ -144,4 +176,10 @@
 .red p {
   font-weight: 500;
   color: var(--main-red-color);
+}
+
+.sectionText {
+  font-size: 15px;
+  margin-bottom: 7px;
+  font-weight: 600;
 }
