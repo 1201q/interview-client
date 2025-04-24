@@ -5,11 +5,13 @@ import Button from './Button';
 import Filter from '@/public/filter.svg';
 import { ExtendedRoleType } from '@/utils/types/types';
 import { useState } from 'react';
-import DropDown from './DropDown';
+
 import {
   DROPDOWN_MENU,
   LOGGEDIN_DROPDOWN_MENU,
 } from '@/utils/constants/interview.step';
+import { useRouter } from 'next/navigation';
+import DropDownMenu from './DropDownMenu';
 
 interface Props {
   roleType: ExtendedRoleType;
@@ -18,6 +20,11 @@ interface Props {
 
 const FilterButton = ({ roleType, isLoggedIn }: Props) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const router = useRouter();
+
+  const concatMenu = isLoggedIn
+    ? DROPDOWN_MENU.concat(LOGGEDIN_DROPDOWN_MENU)
+    : DROPDOWN_MENU;
 
   return (
     <div style={{ position: 'relative' }}>
@@ -37,19 +44,21 @@ const FilterButton = ({ roleType, isLoggedIn }: Props) => {
         />
       </div>
       {isFilterOpen && (
-        <DropDown
-          role={roleType}
-          onClick={() => {
+        <DropDownMenu
+          onClick={(menu) => {
+            const href = concatMenu.find((value) => value.menu === menu)?.link;
+
+            if (href) {
+              router.push(href);
+            }
+
             setIsFilterOpen(false);
           }}
           outsideClick={() => {
             setIsFilterOpen(false);
           }}
-          menu={
-            isLoggedIn
-              ? DROPDOWN_MENU.concat(LOGGEDIN_DROPDOWN_MENU)
-              : DROPDOWN_MENU
-          }
+          selectedMenu={concatMenu.find((menu) => menu.code === roleType)?.menu}
+          menu={concatMenu.map((item) => item.menu)}
         />
       )}
     </div>

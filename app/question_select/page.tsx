@@ -58,7 +58,7 @@ const Page = async ({ searchParams }: Props) => {
         <div className={styles.listHeaderContainer}>
           <SearchInput />
           <div className={styles.optionContainer}>
-            {isLoggedIn && <EditButton roleType={roleType} />}
+            {isLoggedIn && <EditButton />}
             <FilterButton roleType={roleType} isLoggedIn={isLoggedIn} />
           </div>
         </div>

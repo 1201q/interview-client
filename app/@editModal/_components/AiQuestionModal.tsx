@@ -8,8 +8,9 @@ import { createUserQuestion } from '@/utils/actions/createUserQuestion';
 
 import AngleLeft from '@/public/angle-left.svg';
 import { useState } from 'react';
-import DropDownOptions from './DropDownOptions';
+
 import { AI_DROPDOWN_MENU } from '@/utils/constants/interview.step';
+import DropDownMenu from '@/app/question_select/_components/DropDownMenu';
 
 const AiQuestionModal = () => {
   const router = useRouter();
@@ -29,64 +30,66 @@ const AiQuestionModal = () => {
 
   return (
     <form action={handleSubmit} className={styles.contentsContainer}>
-      <p className={styles.sectionText}>직무 분야</p>
-      <div className={styles.inputContainer}>
-        <input
-          type="text"
-          placeholder="예: 데이터 분석, 백엔드, 안드로이드 앱 개발"
-          name="question"
-          required
-          minLength={10}
-        />
-      </div>
-      <p className={styles.sectionText}>질문 유형</p>
-      <div style={{ position: 'relative' }}>
-        <button
-          type="button"
-          className={styles.dropdownContainer}
-          style={{
-            pointerEvents: isOptionOpen ? 'none' : 'auto',
-          }}
-          onClick={() => {
-            setIsOptionOpen(true);
-          }}
-        >
-          <p>{selectedOption ? selectedOption : '질문 유형을 선택하세요'}</p>
-          <AngleLeft />
-        </button>
-        {isOptionOpen && (
-          <DropDownOptions
-            onClick={(option) => {
-              setSelectedOption(option);
-              setIsOptionOpen(false);
-            }}
-            outsideClick={() => {
-              setIsOptionOpen(false);
-            }}
-            menu={AI_DROPDOWN_MENU}
+      <div className={styles.rowGap}>
+        <p className={styles.sectionText}>직무 분야</p>
+        <div className={styles.inputContainer}>
+          <input
+            type="text"
+            placeholder="예: 데이터 분석, 백엔드, 안드로이드 앱 개발"
+            name="question"
+            required
+            minLength={10}
           />
-        )}
-      </div>
+        </div>
+        <p className={styles.sectionText}>질문 유형</p>
+        <div style={{ position: 'relative' }}>
+          <button
+            type="button"
+            className={styles.dropdownContainer}
+            style={{
+              pointerEvents: isOptionOpen ? 'none' : 'auto',
+            }}
+            onClick={() => {
+              setIsOptionOpen(true);
+            }}
+          >
+            <p>{selectedOption ? selectedOption : '질문 유형을 선택하세요'}</p>
+            <AngleLeft />
+          </button>
+          {isOptionOpen && (
+            <DropDownMenu
+              menu={AI_DROPDOWN_MENU}
+              onClick={(option) => {
+                setSelectedOption(option);
+                setIsOptionOpen(false);
+              }}
+              outsideClick={() => {
+                setIsOptionOpen(false);
+              }}
+              displayIcon={false}
+            />
+          )}
+        </div>
 
-      <p className={styles.sectionText}>질문 주제</p>
-      <div className={styles.inputContainer}>
-        <input
-          type="text"
-          placeholder="예: 쿠버네티스, NextJS, 네트워크 개념, Flask..."
-          name="question"
-          required
-          minLength={10}
-        />
-      </div>
-
-      <div className={styles.bottomContainer}>
-        <Button onClick={() => router.back()} text="취소" disabled={false} />
-        <Button
-          type="submit"
-          text="질문 생성하기"
-          disabled={false}
-          color="blue"
-        />
+        <p className={styles.sectionText}>질문 주제</p>
+        <div className={styles.inputContainer}>
+          <input
+            type="text"
+            placeholder="예: 쿠버네티스, NextJS, 네트워크 개념, Flask..."
+            name="question"
+            required
+            minLength={10}
+          />
+        </div>
+        <div className={styles.bottomContainer}>
+          <Button onClick={() => router.back()} text="취소" disabled={false} />
+          <Button
+            type="submit"
+            text="질문 생성하기"
+            disabled={false}
+            color="blue"
+          />
+        </div>
       </div>
     </form>
   );

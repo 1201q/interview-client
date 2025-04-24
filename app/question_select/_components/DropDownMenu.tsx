@@ -1,13 +1,11 @@
-import { DropDownMenuType, ExtendedRoleType } from '@/utils/types/types';
 import styles from './styles/dropdown.module.css';
 import Check from '@/public/check.svg';
-import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 
 interface Props {
-  menu: DropDownMenuType[];
-  role: ExtendedRoleType;
-  onClick: () => void;
+  menu: string[];
+  selectedMenu?: string;
+  onClick: (selectedMenu: string) => void;
   outsideClick: () => void;
   displayIcon?: boolean;
 }
@@ -15,14 +13,13 @@ interface Props {
 interface MenuProps {
   selected: boolean;
   text: string;
-  href: string;
-  onClick: () => void;
+  onClick: (selectedMenu: string) => void;
   displayIcon: boolean;
 }
 
-const DropDown = ({
+const DropDownMenu = ({
   menu,
-  role,
+  selectedMenu,
   onClick,
   outsideClick,
   displayIcon = true,
@@ -44,12 +41,11 @@ const DropDown = ({
 
   return (
     <div className={styles.container} ref={ref}>
-      {menu.map((item) => (
+      {menu.map((item, index) => (
         <Menu
-          key={item.link}
-          text={item.menu}
-          selected={item.code === role}
-          href={item.link}
+          key={`${item}-${index}`}
+          text={item}
+          selected={item === selectedMenu}
           onClick={onClick}
           displayIcon={displayIcon}
         />
@@ -58,15 +54,20 @@ const DropDown = ({
   );
 };
 
-const Menu = ({ selected, text, href, onClick, displayIcon }: MenuProps) => {
+const Menu = ({ selected, text, onClick, displayIcon }: MenuProps) => {
   return (
-    <Link href={href} className={styles.menu} onClick={onClick}>
+    <div
+      className={styles.menu}
+      onClick={() => {
+        onClick(text);
+      }}
+    >
       {displayIcon && (
         <div className={styles.iconContainer}>{selected && <Check />}</div>
       )}
       <p>{text}</p>
-    </Link>
+    </div>
   );
 };
 
-export default DropDown;
+export default DropDownMenu;

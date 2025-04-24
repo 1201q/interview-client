@@ -1,5 +1,5 @@
 import { getUserCreatedQuestions } from '@/utils/services/question';
-import DeleteQuestionModal from '../_components/DeleteQuestionModal';
+
 import Modal from '../_components/Modal';
 import AiQuestionModal from '../_components/AiQuestionModal';
 

@@ -1,20 +1,14 @@
 'use client';
 
 import Button from './Button';
-
-import Plus from '@/public/plus.svg';
-
-import { ExtendedRoleType } from '@/utils/types/types';
 import { useState } from 'react';
-import DropDown from './DropDown';
 import { EDIT_DROPDOWN_MENU } from '@/utils/constants/interview.step';
+import DropDownMenu from './DropDownMenu';
+import { useRouter } from 'next/navigation';
 
-interface Props {
-  roleType: ExtendedRoleType;
-}
-
-const EditButton = ({ roleType }: Props) => {
+const EditButton = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <div style={{ position: 'relative' }}>
@@ -32,16 +26,22 @@ const EditButton = ({ roleType }: Props) => {
         />
       </div>
       {isFilterOpen && (
-        <DropDown
+        <DropDownMenu
           displayIcon={false}
-          role={roleType}
-          onClick={() => {
+          onClick={(menu) => {
+            const href = EDIT_DROPDOWN_MENU.find(
+              (value) => value.menu === menu,
+            )?.link;
+
+            if (href) {
+              router.push(href);
+            }
             setIsFilterOpen(false);
           }}
           outsideClick={() => {
             setIsFilterOpen(false);
           }}
-          menu={EDIT_DROPDOWN_MENU}
+          menu={EDIT_DROPDOWN_MENU.map((value) => value.menu)}
         />
       )}
     </div>
