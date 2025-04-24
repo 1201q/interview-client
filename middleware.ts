@@ -28,6 +28,22 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
+  if (
+    !request.cookies.has('accessToken') &&
+    pathname.startsWith('/question_select') &&
+    (role === 'user' || role === 'ai' || role === 'bookmark')
+  ) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  if (
+    !request.cookies.has('accessToken') &&
+    (pathname.startsWith('/question_generate') ||
+      pathname.startsWith('/question_delete'))
+  ) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
   if (accessToken) {
     const decoded = jwt.decode(accessToken.value) as Token;
 
