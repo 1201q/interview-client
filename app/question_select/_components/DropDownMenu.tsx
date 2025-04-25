@@ -1,19 +1,20 @@
 import styles from './styles/dropdown.module.css';
 import Check from '@/public/check.svg';
+import { MenuType } from '@/utils/types/types';
 import { useEffect, useRef } from 'react';
 
 interface Props {
-  menu: string[];
-  selectedMenu?: string;
-  onClick: (selectedMenu: string) => void;
+  menu: MenuType[];
+  selectedMenu?: MenuType;
+  onClick: (selectedMenu: MenuType) => void;
   outsideClick: () => void;
   displayIcon?: boolean;
 }
 
 interface MenuProps {
   selected: boolean;
-  text: string;
-  onClick: (selectedMenu: string) => void;
+  data: MenuType;
+  onClick: (selectedMenu: MenuType) => void;
   displayIcon: boolean;
 }
 
@@ -41,10 +42,10 @@ const DropDownMenu = ({
 
   return (
     <div className={styles.container} ref={ref}>
-      {menu.map((item, index) => (
+      {menu.map((item) => (
         <Menu
-          key={`${item}-${index}`}
-          text={item}
+          key={item.value}
+          data={item}
           selected={item === selectedMenu}
           onClick={onClick}
           displayIcon={displayIcon}
@@ -54,18 +55,18 @@ const DropDownMenu = ({
   );
 };
 
-const Menu = ({ selected, text, onClick, displayIcon }: MenuProps) => {
+const Menu = ({ selected, data, onClick, displayIcon }: MenuProps) => {
   return (
     <div
       className={styles.menu}
       onClick={() => {
-        onClick(text);
+        onClick(data);
       }}
     >
       {displayIcon && (
         <div className={styles.iconContainer}>{selected && <Check />}</div>
       )}
-      <p>{text}</p>
+      <p>{data.name}</p>
     </div>
   );
 };

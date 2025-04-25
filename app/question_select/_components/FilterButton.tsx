@@ -45,8 +45,8 @@ const FilterButton = ({ roleType, isLoggedIn }: Props) => {
       </div>
       {isFilterOpen && (
         <DropDownMenu
-          onClick={(menu) => {
-            const href = concatMenu.find((value) => value.menu === menu)?.link;
+          onClick={(selected) => {
+            const href = concatMenu.find((menu) => menu === selected)?.link;
 
             if (href) {
               router.push(href);
@@ -57,8 +57,8 @@ const FilterButton = ({ roleType, isLoggedIn }: Props) => {
           outsideClick={() => {
             setIsFilterOpen(false);
           }}
-          selectedMenu={concatMenu.find((menu) => menu.code === roleType)?.menu}
-          menu={concatMenu.map((item) => item.menu)}
+          selectedMenu={concatMenu.find((menu) => menu.value === roleType)}
+          menu={concatMenu.map((item) => item)}
         />
       )}
     </div>

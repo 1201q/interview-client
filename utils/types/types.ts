@@ -63,3 +63,5 @@ export interface DropDownMenuType {
   link: string;
   perm?: 'user';
 }
+
+export type MenuType = { name: string; value: string; link?: string };

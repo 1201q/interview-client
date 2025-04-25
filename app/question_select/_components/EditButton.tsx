@@ -28,9 +28,9 @@ const EditButton = () => {
       {isFilterOpen && (
         <DropDownMenu
           displayIcon={false}
-          onClick={(menu) => {
+          onClick={(selected) => {
             const href = EDIT_DROPDOWN_MENU.find(
-              (value) => value.menu === menu,
+              (menu) => menu === selected,
             )?.link;
 
             if (href) {
@@ -41,7 +41,7 @@ const EditButton = () => {
           outsideClick={() => {
             setIsFilterOpen(false);
           }}
-          menu={EDIT_DROPDOWN_MENU.map((value) => value.menu)}
+          menu={EDIT_DROPDOWN_MENU.map((menu) => menu)}
         />
       )}
     </div>

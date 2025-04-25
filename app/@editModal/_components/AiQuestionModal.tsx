@@ -11,12 +11,13 @@ import { useState } from 'react';
 
 import { AI_DROPDOWN_MENU } from '@/utils/constants/interview.step';
 import DropDownMenu from '@/app/question_select/_components/DropDownMenu';
+import { MenuType } from '@/utils/types/types';
 
 const AiQuestionModal = () => {
   const router = useRouter();
 
   const [isOptionOpen, setIsOptionOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState<null | MenuType>(null);
 
   const handleSubmit = async (formData: FormData) => {
     try {
@@ -53,7 +54,9 @@ const AiQuestionModal = () => {
               setIsOptionOpen(true);
             }}
           >
-            <p>{selectedOption ? selectedOption : '질문 유형을 선택하세요'}</p>
+            <p>
+              {selectedOption ? selectedOption.name : '질문 유형을 선택하세요'}
+            </p>
             <AngleLeft />
           </button>
           {isOptionOpen && (

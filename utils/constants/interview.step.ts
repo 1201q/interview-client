@@ -1,4 +1,4 @@
-import { DropDownMenuType } from '../types/types';
+import { DropDownMenuType, MenuType } from '../types/types';
 
 export const STEP = [
   {
@@ -52,47 +52,47 @@ export const USER_SIDEBAR_OPTIONS = [
   },
 ] as const;
 
-export const DROPDOWN_MENU: DropDownMenuType[] = [
-  { code: 'fe', menu: '프론트엔드', link: '/question_select?role=fe' },
-  { code: 'be', menu: '백엔드', link: '/question_select?role=be' },
+export const DROPDOWN_MENU: MenuType[] = [
+  { name: '프론트엔드', value: 'fe', link: '/question_select?role=fe' },
+  { name: '백엔드', value: 'be', link: '/question_select?role=be' },
   {
-    code: 'android',
-    menu: '안드로이드',
+    name: '안드로이드',
+    value: 'android',
+
     link: '/question_select?role=android',
   },
-  { code: 'ios', menu: 'IOS', link: '/question_select?role=ios' },
+  { name: 'IOS', value: 'ios', link: '/question_select?role=ios' },
 ];
 
-export const LOGGEDIN_DROPDOWN_MENU: DropDownMenuType[] = [
+export const LOGGEDIN_DROPDOWN_MENU: MenuType[] = [
   {
-    code: 'user',
-    menu: '내가 생성한 질문',
+    name: '내가 생성한 질문',
+    value: 'user',
+
     link: '/question_select?role=user',
-    perm: 'user',
   },
   {
-    code: 'ai',
-    menu: 'AI가 생성한 질문',
+    name: 'AI가 생성한 질문',
+    value: 'ai',
+
     link: '/question_select?role=ai',
-    perm: 'user',
   },
   {
-    code: 'bookmark',
-    menu: '즐겨찾기한 질문',
+    name: '즐겨찾기한 질문',
+    value: 'bookmark',
     link: '/question_select?role=bookmark',
-    perm: 'user',
   },
 ];
 
-export const EDIT_DROPDOWN_MENU: DropDownMenuType[] = [
-  { code: 'add', menu: '질문 추가', link: '/question_add' },
-  { code: 'delete', menu: '질문 삭제', link: '/question_delete' },
+export const EDIT_DROPDOWN_MENU: MenuType[] = [
+  { name: '질문 추가', value: 'add', link: '/question_add' },
+  { name: '질문 삭제', value: 'delete', link: '/question_delete' },
 ];
 
-export const AI_DROPDOWN_MENU = [
-  '개념설명형',
-  '비교형',
-  '시스템설계형',
-  '구현형',
-  '경험/상황형',
+export const AI_DROPDOWN_MENU: MenuType[] = [
+  { name: '개념 설명형', value: 'concept' },
+  { name: '비교 설명형', value: 'comparison' },
+  { name: '시스템 설계형', value: 'system_design' },
+  { name: '구현 문제형', value: 'implementation' },
+  { name: '경험/상황형', value: 'experience' },
 ];
