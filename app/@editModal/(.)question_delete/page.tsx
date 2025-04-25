@@ -1,9 +1,15 @@
-import { getUserCreatedQuestions } from '@/utils/services/question';
+import {
+  getAiGeneratedQuestions,
+  getUserCreatedQuestions,
+} from '@/utils/services/question';
 import DeleteQuestionModal from '../_components/DeleteQuestionModal';
 import Modal from '../_components/Modal';
 
 const DeletePageModal = async () => {
-  const data = await getUserCreatedQuestions();
+  const userData = await getUserCreatedQuestions();
+  const aiData = await getAiGeneratedQuestions();
+
+  const data = userData.concat(aiData);
 
   if (!data) {
     return null;

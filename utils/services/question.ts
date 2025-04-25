@@ -46,6 +46,25 @@ export const getBookmarkedQuestions = async () => {
   return data;
 };
 
+export const getAiGeneratedQuestions = async () => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('accessToken')?.value;
+
+  const options: Partial<RequestInit> = {
+    method: 'GET',
+    credentials: 'include',
+    cache: 'no-store',
+    headers: {
+      'Content-Type': 'application/json',
+      Cookie: `accessToken=${token}`,
+    },
+  };
+
+  const data = fetcher<UserQuestionType[]>(`/question/ai`, options);
+
+  return data;
+};
+
 export const getQuestionList = async () => {
   const data = fetcher<QuestionType[]>(`/question`);
 

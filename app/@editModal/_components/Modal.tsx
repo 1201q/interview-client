@@ -35,9 +35,9 @@ const Modal = ({ titleText, introduceText, children }: Props) => {
   return (
     <div className={styles.container} ref={bgRef}>
       <motion.div
-        initial={{ y: 80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.25 }}
+        initial={{ y: 40, scale: 1, opacity: 0 }}
+        animate={{ y: 0, scale: 1, opacity: 1 }}
+        transition={{ duration: 0.18 }}
         className={styles.modalContainer}
       >
         <div className={styles.headerContainer}>

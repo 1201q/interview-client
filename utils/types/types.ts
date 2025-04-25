@@ -65,3 +65,4 @@ export interface DropDownMenuType {
 }
 
 export type MenuType = { name: string; value: string; link?: string };
+export type GeneratedQuestionType = { question_text: string; id: number };

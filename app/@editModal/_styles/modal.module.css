@@ -100,7 +100,7 @@
   transition: all 0.1s ease-in-out;
   position: relative;
   overflow: hidden;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 
   display: flex;
   align-items: center;
@@ -152,7 +152,8 @@
   height: 50px;
 }
 
-.itemContainer {
+.itemContainer,
+.wrappedItemContainer {
   display: flex;
   align-items: center;
   height: 50px;
@@ -165,6 +166,11 @@
   transition: all 0.2s;
 }
 
+.wrappedItemContainer {
+  height: 100%;
+  min-height: 50px;
+}
+
 .itemContainer p {
   word-break: break-word;
   text-overflow: ellipsis;
@@ -172,6 +178,12 @@
   font-weight: 500;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.wrappedItemContainer p {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 130%;
 }
 
 .red {
@@ -184,8 +196,31 @@
   color: var(--main-red-color);
 }
 
+.blue {
+  border: 1px solid var(--main-blue-color);
+  background-color: var(--bg-blue-color);
+}
+.blue p {
+  font-weight: 500;
+  color: var(--main-blue-color);
+}
+
 .sectionText {
   font-size: 15px;
   margin-bottom: 7px;
   font-weight: 600;
+}
+
+.errorContainer {
+  height: 30px;
+  width: 100%;
+  background-color: var(--bg-blue-color);
+  color: var(--main-blue-color);
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

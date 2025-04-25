@@ -32,5 +32,5 @@ export const deleteUserQuestions = async (questions: string[]) => {
     throw new Error('삭제에 실패했습니다.');
   }
 
-  revalidatePath('/test');
+  revalidatePath('/question_select');
 };

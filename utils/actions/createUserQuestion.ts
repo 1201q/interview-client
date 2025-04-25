@@ -33,5 +33,5 @@ export const createUserQuestion = async (formData: FormData) => {
     throw new Error('저장에 실패했습니다.');
   }
 
-  await revalidatePath('/test');
+  revalidatePath('/question_select');
 };

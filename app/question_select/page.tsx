@@ -1,4 +1,5 @@
 import {
+  getAiGeneratedQuestions,
   getBookmarkedQuestions,
   getQuestionListByRole,
   getUserCreatedQuestions,
@@ -39,6 +40,8 @@ const Page = async ({ searchParams }: Props) => {
       return getQuestionListByRole(type);
     } else if (type === 'user') {
       return getUserCreatedQuestions();
+    } else if (type === 'ai') {
+      return getAiGeneratedQuestions();
     } else if (type === 'bookmark') {
       const data = await getBookmarkedQuestions();
       const questions = data.map((item) => item.question);
