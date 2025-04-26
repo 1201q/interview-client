@@ -11,6 +11,7 @@ import Webcam from './_components/Webcam';
 
 const CameraPage = () => {
   const [isRunning, setIsRunning] = useState(false);
+  const [isCenter, setIsCenter] = useState(false);
 
   useSetAtom(initHumanAtom);
 
@@ -22,14 +23,18 @@ const CameraPage = () => {
     return () => unsubscribe();
   }, []);
 
+  const setCenterStatus = (center: boolean) => {
+    setIsCenter(center);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.headerContainer}>
-        <TopAlert text="상단 카메라를 5초 이상 응시하세요." />
+        <TopAlert isCenter={isCenter} />
       </div>
       <div className={`${styles.contentsContainer}`}>
         <div className={`${isRunning ? styles.ready : styles.notReady}`}>
-          <Webcam isRunning={isRunning} />
+          <Webcam isRunning={isRunning} setCenterStatus={setCenterStatus} />
         </div>
       </div>
       <div

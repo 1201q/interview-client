@@ -3,30 +3,47 @@
 import { dayjsFn } from '@/utils/libs/dayjs';
 import styles from './styles/webcam.module.css';
 import { initHumanAtom } from '@/store/webcam';
-import Human, { DrawOptions } from '@vladmandic/human';
+import Human, { DrawOptions, PersonResult } from '@vladmandic/human';
 import { useAtomValue } from 'jotai';
 import { useEffect, useRef } from 'react';
+import { isFacingCenter } from './utils/face';
 
 const DRAW_OPTIONS: Partial<DrawOptions> = {
+  drawPolygons: true,
+  drawLabels: true,
+  drawBoxes: false,
+};
+
+const FACE_DRAW_OPTIONS: Partial<DrawOptions> = {
+  drawGaze: false,
+  drawLabels: false,
   drawPolygons: false,
   faceLabels: `[score]%
-    [distance]
-    roll: [roll]° yaw:[yaw]° pitch:[pitch]°
-  `,
+  [distance]
+  roll: [roll]° yaw:[yaw]° pitch:[pitch]°
+`,
 };
 
 interface Props {
   autoStart?: boolean;
   isRunning: boolean;
+  setCenterStatus: (center: boolean) => void;
 }
 
-const Webcam = ({ isRunning }: Props) => {
+interface ResultBuffer {
+  timestamp: number;
+  data: PersonResult;
+}
+
+const Webcam = ({ isRunning, setCenterStatus }: Props) => {
   const humanInstance = useAtomValue(initHumanAtom);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const timeoutRef = useRef<NodeJS.Timeout>(null);
   const animationFrameRef = useRef<number>(null);
+
+  const bufferRef = useRef<ResultBuffer[]>([]);
 
   useEffect(() => {
     if (!humanInstance) return;
@@ -38,6 +55,14 @@ const Webcam = ({ isRunning }: Props) => {
     };
 
     setupAndStartDetection();
+
+    return () => {
+      console.log('cleanup');
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (animationFrameRef.current)
+        cancelAnimationFrame(animationFrameRef.current);
+      if (humanInstance) humanInstance.webcam.stop();
+    };
   }, [humanInstance]);
 
   useEffect(() => {
@@ -47,18 +72,25 @@ const Webcam = ({ isRunning }: Props) => {
       startDetection();
     } else {
       pauseDetection();
+      bufferRef.current = [];
     }
   }, [humanInstance, isRunning]);
 
   useEffect(() => {
+    if (!isRunning) return;
+
+    const interval = setInterval(() => {
+      const data = bufferRef.current.at(-1)?.data;
+
+      if (data) {
+        setCenterStatus(isFacingCenter(data));
+      }
+    }, 100);
+
     return () => {
-      console.log('cleanup');
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      if (animationFrameRef.current)
-        cancelAnimationFrame(animationFrameRef.current);
-      if (humanInstance) humanInstance.webcam.stop();
+      clearInterval(interval);
     };
-  }, [humanInstance]);
+  }, [isRunning]);
 
   const setupWebcam = async () => {
     await humanInstance.warmup();
@@ -120,7 +152,9 @@ const Webcam = ({ isRunning }: Props) => {
     const video = videoRef.current;
 
     if (video && !video.paused) {
-      await human.detect(video);
+      const data = await human.detect(video);
+
+      pushBuffer(data.persons[0]);
     }
 
     animationFrameRef.current = requestAnimationFrame(() =>
@@ -138,11 +172,20 @@ const Webcam = ({ isRunning }: Props) => {
 
       if (canvas) {
         human.draw.canvas(processed.canvas as HTMLCanvasElement, canvas);
-        await human.draw.all(canvas, interpolated, DRAW_OPTIONS);
+        // await human.draw.all(canvas, interpolated, DRAW_OPTIONS);
+
+        human.draw.face(canvas, interpolated.face, FACE_DRAW_OPTIONS);
+        human.draw.body(canvas, interpolated.body, DRAW_OPTIONS);
+        human.draw.hand(canvas, interpolated.hand, DRAW_OPTIONS);
       }
     }
 
     timeoutRef.current = setTimeout(() => drawLoop(human), 60);
+  };
+
+  const pushBuffer = (data: PersonResult) => {
+    const now = performance.now();
+    bufferRef.current.push({ timestamp: now, data });
   };
 
   return (
@@ -156,6 +199,17 @@ const Webcam = ({ isRunning }: Props) => {
         />
         <canvas ref={canvasRef} className={styles.drawCanvas} />
       </div>
+
+      <button
+        onClick={() => {
+          const now = performance.now();
+          console.log(bufferRef.current);
+
+          console.log(now - bufferRef.current[0].timestamp);
+        }}
+      >
+        버튼
+      </button>
     </div>
   );
 };

@@ -31,3 +31,18 @@
   height: 100%;
   background-color: var(--main-blue-color);
 }
+
+.blue {
+  background-color: var(--main-blue-color);
+}
+
+.blue p {
+  color: white;
+}
+
+.red {
+  background-color: var(--main-red-color);
+}
+.red p {
+  color: white;
+}

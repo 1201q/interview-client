@@ -4,12 +4,14 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './styles/top.alert.module.css';
 
 interface Props {
-  text: string;
+  isCenter: boolean;
 }
 
-const TopAlert = ({ text }: Props) => {
+const TopAlert = ({ isCenter }: Props) => {
+  const text = isCenter ? '시선이 가운데입니다.' : '카메라를 바라보세요.';
+
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${isCenter ? '' : styles.red}`}>
       <p>{text}</p>
     </div>
   );
