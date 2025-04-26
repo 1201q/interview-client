@@ -1,6 +1,6 @@
 'use client';
 
-import Button from '@/app/question_select/_components/Button';
+import Button from '@/app/(interview)/question_select/_components/Button';
 import styles from '../_styles/modal.module.css';
 
 import { useRouter } from 'next/navigation';

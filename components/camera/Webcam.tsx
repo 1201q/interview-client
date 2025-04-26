@@ -5,7 +5,7 @@ import { initHumanAtom } from '@/store/webcam';
 import { Recorder } from '@/utils/libs/recorder';
 import styles from './styles/webcam.module.css';
 
-import Human, { DrawOptions, Result } from '@vladmandic/human';
+import Human, { DrawOptions } from '@vladmandic/human';
 import { useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 

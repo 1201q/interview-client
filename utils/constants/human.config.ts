@@ -3,7 +3,7 @@ import type { Config } from '@vladmandic/human';
 // https://github.com/vladmandic/human/discussions/252
 
 export const humanConfig: Partial<Config> = {
-  debug: true,
+  debug: false,
   modelBasePath: 'https://cdn.jsdelivr.net/gh/vladmandic/human-models/models/',
   face: {
     enabled: true,
@@ -11,9 +11,10 @@ export const humanConfig: Partial<Config> = {
     iris: { enabled: true },
     description: { enabled: false },
     liveness: { enabled: false },
+    emotion: { enabled: false },
     detector: { enabled: false, scale: 1.4 },
   },
-  body: { enabled: false },
+  body: { enabled: true },
   hand: { enabled: false },
   object: { enabled: false },
   segmentation: { enabled: false },

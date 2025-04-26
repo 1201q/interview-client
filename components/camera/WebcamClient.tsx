@@ -11,8 +11,6 @@ import { detectionObserver } from '@/store/observer';
 const WebcamClient = () => {
   useSetAtom(initHumanAtom);
 
-  const [result, setResult] = useState<Result | null>(null);
-
   useEffect(() => {
     const unsubscribe = detectionObserver.subscribe((data) => {
       console.log(data);

@@ -1,6 +1,6 @@
 'use client';
 
-import Button from '@/app/question_select/_components/Button';
+import Button from '@/app/(interview)/question_select/_components/Button';
 import styles from '../_styles/modal.module.css';
 
 import { useRouter } from 'next/navigation';
@@ -9,7 +9,7 @@ import AngleLeft from '@/public/angle-left.svg';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 import { AI_DROPDOWN_MENU } from '@/utils/constants/interview.step';
-import DropDownMenu from '@/app/question_select/_components/DropDownMenu';
+import DropDownMenu from '@/app/(interview)/question_select/_components/DropDownMenu';
 import { GeneratedQuestionType, MenuType } from '@/utils/types/types';
 import { generateQuestions } from '@/utils/actions/generateQuestions';
 

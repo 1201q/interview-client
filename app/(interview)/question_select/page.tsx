@@ -5,10 +5,9 @@ import {
   getUserCreatedQuestions,
 } from '@/utils/services/question';
 import BottomController from './_components/BottomController';
-import Indicator from './_components/Indicator';
 
 import SearchInput from './_components/SearchInput';
-import styles from './page.module.css';
+import styles from '../page.module.css';
 
 import { ExtendedRoleType, QuestionType } from '@/utils/types/types';
 import { Suspense } from 'react';
@@ -55,33 +54,30 @@ const Page = async ({ searchParams }: Props) => {
   const data = await getData(roleType);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.contentsContainer}>
-        <Indicator />
-        <div className={styles.listHeaderContainer}>
-          <SearchInput />
-          <div className={styles.optionContainer}>
-            {isLoggedIn && <EditButton />}
-            <FilterButton roleType={roleType} isLoggedIn={isLoggedIn} />
-          </div>
+    <>
+      <div className={styles.listHeaderContainer}>
+        <SearchInput />
+        <div className={styles.optionContainer}>
+          {isLoggedIn && <EditButton />}
+          <FilterButton roleType={roleType} isLoggedIn={isLoggedIn} />
         </div>
-        <div className={styles.listContainer}>
-          <div className={styles.sideSelectContainer}>
-            <AiBanner />
-            <Help />
-            <SelectQuestionList />
-          </div>
-          <div className={styles.itemListContainer}>
-            <Suspense key={roleType} fallback={<div>로딩중</div>}>
-              <ItemList data={data} bookmarkData={bookmarkData} />
-            </Suspense>
-          </div>
+      </div>
+      <div className={styles.listContainer}>
+        <div className={styles.sideSelectContainer}>
+          <AiBanner />
+          <Help />
+          <SelectQuestionList />
+        </div>
+        <div className={styles.itemListContainer}>
+          <Suspense key={roleType} fallback={<div>로딩중</div>}>
+            <ItemList data={data} bookmarkData={bookmarkData} />
+          </Suspense>
         </div>
       </div>
       <div className={styles.bottomContainer}>
         <BottomController />
       </div>
-    </div>
+    </>
   );
 };
 

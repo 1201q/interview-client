@@ -113,6 +113,8 @@ export const config = {
     '/login',
     '/question_select',
     '/question_add',
+    '/device_check',
+    '/device_check/camera',
     '/question_delete',
     '/question_generate',
   ],
