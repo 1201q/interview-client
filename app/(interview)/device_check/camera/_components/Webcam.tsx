@@ -1,12 +1,12 @@
 'use client';
 
-import { dayjsFn } from '@/utils/libs/dayjs';
 import styles from './styles/webcam.module.css';
 import { initHumanAtom } from '@/store/webcam';
 import Human, { DrawOptions, PersonResult } from '@vladmandic/human';
 import { useAtomValue } from 'jotai';
 import { useEffect, useRef } from 'react';
 import { isFacingCenter } from './utils/face';
+import { useCenter } from './hooks/useCenter';
 
 const DRAW_OPTIONS: Partial<DrawOptions> = {
   drawPolygons: true,
@@ -45,13 +45,24 @@ const Webcam = ({ isRunning, setCenterStatus }: Props) => {
 
   const bufferRef = useRef<ResultBuffer[]>([]);
 
+  const isCenter = useCenter(isRunning, bufferRef);
+
   useEffect(() => {
     if (!humanInstance) return;
 
     const setupAndStartDetection = async () => {
       await setupWebcam();
 
-      startDetection();
+      const video = videoRef.current;
+      const processed = await humanInstance.image(video);
+      const canvas = canvasRef.current;
+
+      if (canvas) {
+        humanInstance.draw.canvas(
+          processed.canvas as HTMLCanvasElement,
+          canvas,
+        );
+      }
     };
 
     setupAndStartDetection();
@@ -77,24 +88,30 @@ const Webcam = ({ isRunning, setCenterStatus }: Props) => {
   }, [humanInstance, isRunning]);
 
   useEffect(() => {
-    if (!isRunning) return;
-
-    const interval = setInterval(() => {
-      const data = bufferRef.current.at(-1)?.data;
-
-      if (data) {
-        setCenterStatus(isFacingCenter(data));
-      }
-    }, 100);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [isRunning]);
+    setCenterStatus(isCenter);
+  }, [isCenter]);
 
   const setupWebcam = async () => {
-    await humanInstance.warmup();
-    await initWebcam(humanInstance);
+    try {
+      const status = await navigator.permissions.query({
+        name: 'camera' as PermissionName,
+      });
+
+      if (status.state === 'denied') {
+        alert('카메라 접근이 차단되었습니다. 브라우저 설정을 확인하세요.');
+        return;
+      }
+
+      // 1. 권한 요청
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      stream.getTracks().forEach((track) => track.stop());
+
+      await humanInstance.warmup();
+      await initWebcam(humanInstance);
+    } catch (error) {
+      console.error('카메라 권한 요청 실패', error);
+      alert('카메라 권한을 허용해주세요.');
+    }
   };
 
   const initWebcam = async (human: Human) => {
@@ -172,8 +189,6 @@ const Webcam = ({ isRunning, setCenterStatus }: Props) => {
 
       if (canvas) {
         human.draw.canvas(processed.canvas as HTMLCanvasElement, canvas);
-        // await human.draw.all(canvas, interpolated, DRAW_OPTIONS);
-
         human.draw.face(canvas, interpolated.face, FACE_DRAW_OPTIONS);
         human.draw.body(canvas, interpolated.body, DRAW_OPTIONS);
         human.draw.hand(canvas, interpolated.hand, DRAW_OPTIONS);

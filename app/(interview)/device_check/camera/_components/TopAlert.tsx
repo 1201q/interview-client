@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import styles from './styles/top.alert.module.css';
 
 interface Props {

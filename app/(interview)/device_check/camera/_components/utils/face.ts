@@ -1,17 +1,68 @@
 import { PersonResult } from '@vladmandic/human';
 
+import { DirectionType } from '@/utils/types/types';
+
 export const isFacingCenter = (data: PersonResult) => {
   const lastGesture = data?.gestures || [];
-  const faceData = lastGesture.filter((g) => 'face' in g);
-  const mouthData = faceData.filter((g) => g.gesture.includes('mouth'));
+  const faceData = lastGesture.filter((g) => 'face' in g).map((g) => g.gesture);
+  const irisData = lastGesture.filter((g) => 'iris' in g).map((g) => g.gesture);
 
-  const irisData = lastGesture.filter((g) => 'iris' in g);
+  let faceDirection: DirectionType | null = null;
+  let irisDirection: DirectionType | null = null;
 
-  // facing center
-  const facingCenter = faceData.some((g) => g.gesture === 'facing center');
+  if (faceData.includes('facing center')) {
+    if (faceData.includes('head up')) {
+      faceDirection = 'up';
+    } else if (faceData.includes('head down')) {
+      faceDirection = 'down';
+    } else {
+      faceDirection = 'center';
+    }
+  } else if (faceData.includes('facing left')) {
+    faceDirection = 'right';
+  } else if (faceData.includes('facing right')) {
+    faceDirection = 'left';
+  }
 
-  // head가 포함되면 위아래, 왼쪽 오른쪽으로 얼굴이 위치함. (정면을 바라보고 있지 않음)
-  const headDataExists = faceData.some((g) => g.gesture.includes('head'));
+  if (irisData.includes('facing center')) {
+    if (irisData.includes('looking center')) {
+      irisDirection = 'center';
+    } else if (irisData.includes('looking down')) {
+      if (faceDirection === 'down') {
+        irisDirection = 'down';
+      } else if (faceDirection === 'center') {
+        irisDirection = 'center';
+      }
+    } else if (irisData.includes('looking up')) {
+      irisDirection = 'up';
+    } else if (irisData.includes('looking left')) {
+      irisDirection = 'right';
+    } else if (irisData.includes('looking right')) {
+      irisDirection = 'left';
+    }
+  } else {
+    if (irisData.includes('looking down')) {
+      irisDirection = 'down';
+    } else if (irisData.includes('looking up')) {
+      irisDirection = 'up';
+    } else if (irisData.includes('looking left')) {
+      irisDirection = 'left';
+    } else if (irisData.includes('looking right')) {
+      irisDirection = 'right';
+    }
+  }
 
-  return facingCenter && !headDataExists;
+  if (faceDirection === 'center') {
+    if (irisDirection === 'center') {
+      return true;
+    } else if (!irisDirection) {
+      return true;
+    } else {
+      // console.log(faceData, irisData);
+      return false;
+    }
+  } else {
+    // console.log(faceData, irisData);
+    return false;
+  }
 };

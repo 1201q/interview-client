@@ -13,6 +13,8 @@ const CameraPage = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [isCenter, setIsCenter] = useState(false);
 
+  const [recognizing, setRecognizing] = useState(false);
+
   useSetAtom(initHumanAtom);
 
   useEffect(() => {
@@ -30,7 +32,7 @@ const CameraPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.headerContainer}>
-        <TopAlert isCenter={isCenter} />
+        {recognizing && <TopAlert isCenter={isCenter} />}
       </div>
       <div className={`${styles.contentsContainer}`}>
         <div className={`${isRunning ? styles.ready : styles.notReady}`}>
@@ -44,12 +46,17 @@ const CameraPage = () => {
         <button
           onClick={() => {
             setIsRunning(true);
+
+            setTimeout(() => {
+              setRecognizing(true);
+            }, 500);
           }}
         >
           시작
         </button>
         <button
           onClick={() => {
+            setRecognizing(false);
             setIsRunning(false);
           }}
         >
