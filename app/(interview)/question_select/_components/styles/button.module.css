@@ -5,9 +5,7 @@
   height: 40px;
   padding: 8px 16px;
   border: 1px solid var(--border-main2-color);
-
   border-radius: 6px;
-
   transition: all 0.1s ease-in-out;
 }
 

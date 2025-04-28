@@ -75,7 +75,7 @@
   transition: all 0.1s ease-in-out;
   position: relative;
   overflow: hidden;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .inputContainer input {
@@ -140,7 +140,7 @@
 
   overflow-y: scroll;
 
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 
 .bottomContainer {
@@ -223,4 +223,40 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media screen and (max-width: 768px) {
+  .modalContainer {
+    width: calc(100% - 20px);
+    max-width: 520px;
+    background-color: white;
+
+    border-radius: 11px;
+    display: flex;
+    flex-direction: column;
+
+    z-index: 100;
+    padding: 22px 18px;
+    position: relative;
+    row-gap: 20px;
+  }
+
+  .itemContainer,
+  .wrappedItemContainer {
+    padding: 9px;
+  }
+
+  .wrappedItemContainer p {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 130%;
+  }
+
+  .headerTextContainer span {
+    font-size: 13px;
+  }
+
+  .titleText {
+    font-size: 19px;
+  }
 }
