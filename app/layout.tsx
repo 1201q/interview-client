@@ -7,7 +7,7 @@ import { Analytics } from '@vercel/analytics/next';
 interface Props {
   children: React.ReactNode;
   modal: React.ReactNode;
-  editModal: React.ReactNode;
+  questionModal: React.ReactNode;
 }
 
 const pretendard = localFont({
@@ -20,7 +20,7 @@ const pretendard = localFont({
 export default function RootLayout({
   children,
   modal,
-  editModal,
+  questionModal,
 }: Readonly<Props>) {
   return (
     <html lang="ko">
@@ -29,7 +29,7 @@ export default function RootLayout({
         <Analytics />
         {children}
         {modal}
-        {editModal}
+        {questionModal}
       </body>
     </html>
   );
