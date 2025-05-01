@@ -1,17 +1,10 @@
 'use client';
 
-import Instructions from './_components/Instructions';
-import { AnimatePresence, motion } from 'motion/react';
 import PermissionCheck from './_components/PermissionCheck';
-import CameraTest from './_components/CameraTest';
-import MicTest from './_components/MicTest';
-import { useRouter, useSearchParams } from 'next/navigation';
+
 import styles from '../page.module.css';
 import SideMenu from './_components/SideMenu';
 
-import Mic from '@/public/microphone-line.svg';
-import Camera from '@/public/photo-capture.svg';
-import Security from '@/public/screen-icon.svg';
 import PageHeader from './_components/PageHeader';
 
 const STEP = [
@@ -22,11 +15,6 @@ const STEP = [
 ];
 
 const DeviceCheckPage = () => {
-  const params = useSearchParams();
-  const router = useRouter();
-
-  const currentStep = params.get('step') ?? STEP[0].code;
-
   return (
     <>
       <div className={styles.listContainer}>
