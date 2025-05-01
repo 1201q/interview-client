@@ -2,14 +2,14 @@
   --main-black-hover-color: #353a40;
   --main-gray-hover-color: #f3f4f6;
   --main-blue-hover-color: rgba(0, 73, 229, 0.771);
-  --main-green-hover-color: #19c77a;
+  --main-green-hover-color: rgb(220, 252, 231);
   --main-yellow-hover-color: rgba(255, 233, 25, 0.4);
   --main-red-hover-color: #cc5253;
 
   --main-yellow-color: rgba(255, 233, 25, 1);
   --main-red-color: rgb(240, 97, 109);
   --main-blue-color: #4c86fe;
-  --main-green-color: #03dd7c;
+  --main-green-color: rgb(34, 197, 94);
   --main-gray-color: rgba(91, 97, 110, 0.7);
 
   --bg-gray-color: rgb(243, 244, 246);

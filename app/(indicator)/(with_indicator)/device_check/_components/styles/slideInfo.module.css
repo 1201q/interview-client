@@ -33,7 +33,7 @@
 }
 
 .subtitleTextContainer p {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 500;
   line-height: 150%;
   letter-spacing: -0.2px;
@@ -41,6 +41,25 @@
 }
 
 .subtitleTextContainer strong {
-  font-size: 18px;
+  font-size: 17px;
   margin-right: 1px;
+}
+
+@media screen and (max-width: 768px) {
+  .imageContainer svg {
+    width: 100px;
+    height: 100px;
+  }
+
+  .titleText {
+    font-size: 27px;
+  }
+
+  .subtitleTextContainer p {
+    font-size: 16px;
+  }
+
+  .subtitleTextContainer strong {
+    font-size: 16px;
+  }
 }

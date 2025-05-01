@@ -2,6 +2,7 @@ import styles from '../../page.module.css';
 import FaceScan from '@/public/face-scan.svg';
 import Light from '@/public/light.svg';
 import Ruler from '@/public/ruler.svg';
+import Mic from '@/public/mic.svg';
 
 import SlideInfo from './SlideInfo';
 import Button from '@/components/common/Button';
@@ -11,11 +12,11 @@ interface Props {
   nextStep?: () => void;
 }
 
-const CameraInstructions = ({ nextStep }: Props) => {
+const Instructions = ({ nextStep }: Props) => {
   return (
     <>
       <div className={styles.listHeaderContainer}>
-        <DeviceCheckHeader text={'카메라 사용에 대한 안내'} />
+        <DeviceCheckHeader text={'서비스 사용 환경에 대한 안내'} />
       </div>
       <div className={styles.listContainer}>
         <div className={styles.itemListContainer}>
@@ -58,6 +59,19 @@ const CameraInstructions = ({ nextStep }: Props) => {
                   </>
                 }
               />
+              <SlideInfo
+                image={<Mic />}
+                titleText="조용한 환경"
+                subtitleText={
+                  <>
+                    <p>마이크가 당신의 목소리를 기록할 예정이에요.</p>
+                    <p>
+                      <strong>잡음이 없는 조용한 환경</strong>에서 이용해
+                      주세요.
+                    </p>
+                  </>
+                }
+              />
             </div>
             <Button
               disabled={false}
@@ -72,4 +86,4 @@ const CameraInstructions = ({ nextStep }: Props) => {
   );
 };
 
-export default CameraInstructions;
+export default Instructions;

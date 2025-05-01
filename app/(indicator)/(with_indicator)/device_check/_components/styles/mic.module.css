@@ -1,0 +1,74 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 30px;
+}
+
+.buttonContainer {
+  width: 70px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttonContainer button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transition: all 0.1s ease-in-out;
+}
+
+.buttonContainer button svg {
+  width: 25px;
+  height: 25px;
+  margin-top: 3px;
+}
+
+.blue {
+  background-color: var(--main-blue-color);
+}
+
+.blue:hover {
+  background-color: var(--main-blue-hover-color);
+}
+
+.red {
+  background-color: var(--main-red-color);
+}
+
+.red:hover {
+  background-color: var(--main-red-hover-color);
+}
+
+.sttContainer {
+  width: 100%;
+  height: 120px;
+  max-width: 450px;
+  border-radius: 7px;
+  border: 1px solid var(--border-main-color);
+  padding: 15px;
+}
+
+.sttContainer p {
+  color: var(--font-gray-color);
+  text-align: center;
+}
+
+.sttContainer span {
+  text-align: left;
+}
+
+.text {
+  color: var(--font-darkgray-color);
+  font-size: 15px;
+  line-height: 140%;
+  font-weight: 400;
+  text-align: center;
+}

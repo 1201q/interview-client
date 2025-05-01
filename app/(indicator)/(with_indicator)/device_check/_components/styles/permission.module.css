@@ -1,0 +1,59 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.itemContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 50px;
+  border-radius: 8px;
+  border: 1px solid var(--border-main-color);
+  padding: 0px 12px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: red;
+}
+
+.dot.green {
+  background-color: var(--main-green-color);
+}
+
+.dot.red {
+  background-color: var(--main-red-color);
+}
+
+.flex {
+  display: flex;
+  column-gap: 10px;
+}
+
+.flex svg {
+  width: 22px;
+  height: 22px;
+}
+
+.flex p {
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.webcam {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+}
+
+.webcam svg {
+  width: 20px;
+  height: 20px;
+}

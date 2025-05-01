@@ -1,14 +1,11 @@
 'use client';
 
-import styles from '../../page.module.css';
-
-import Button from '@/components/common/Button';
-import DeviceCheckHeader from './DeviceCheckHeader';
-
-import SlideInfo from './SlideInfo';
-import Check from '@/public/check-circle.svg';
+import styles from './styles/permission.module.css';
 
 import { useRequestMediaAccess } from './hooks/useRequestMediaAccess';
+
+import Mic from '@/public/mic.svg';
+import Camera from '@/public/webcam.svg';
 
 interface Props {
   nextStep: () => void;
@@ -20,36 +17,28 @@ const PermissionCheck = ({ nextStep }: Props) => {
   const check = camera && mic;
 
   return (
-    <>
-      <div className={styles.listHeaderContainer}>
-        <DeviceCheckHeader text={'카메라 / 마이크 권한 체크'} />
-      </div>
-      <div className={styles.listContainer}>
-        <div className={styles.itemListContainer}>
-          <div className={styles.centerContainer}>
-            <SlideInfo
-              image={<Check />}
-              titleText="권한 허용"
-              subtitleText={
-                <>
-                  <p>브라우저가 카메라와 마이크의 접근 권한을</p>
-                  <p>
-                    요청할 경우 <strong>허용</strong>을 눌러주세요.
-                  </p>
-                </>
-              }
-            />
-
-            <Button
-              disabled={!check}
-              text={!check ? '권한을 허용해주세요' : '다음으로'}
-              color="blue"
-              onClick={nextStep}
-            />
-          </div>
+    <div className={styles.container}>
+      <div className={styles.itemContainer}>
+        <div className={styles.flex}>
+          <Mic />
+          <p>마이크 권한</p>
+        </div>
+        <div className={styles.flex}>
+          <div className={`${styles.dot} ${styles.green}`}></div>
         </div>
       </div>
-    </>
+      <div className={styles.itemContainer}>
+        <div className={styles.flex}>
+          <div className={styles.webcam}>
+            <Camera />
+          </div>
+          <p>카메라 권한</p>
+        </div>{' '}
+        <div className={styles.flex}>
+          <div className={`${styles.dot} ${styles.red}`}></div>
+        </div>
+      </div>
+    </div>
   );
 };
 
