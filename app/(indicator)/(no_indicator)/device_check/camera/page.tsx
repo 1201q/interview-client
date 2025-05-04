@@ -13,11 +13,13 @@ import Controller from './_components/Controller';
 
 const CameraPage = () => {
   const [isRunning, setIsRunning] = useState(false);
+
+  const [init, setInit] = useState(false);
   const [isCenter, setIsCenter] = useState(false);
 
   const [recognizing, setRecognizing] = useState(false);
 
-  useSetAtom(initHumanAtom);
+  // useSetAtom(initHumanAtom);
 
   useEffect(() => {
     const unsubscribe = detectionObserver.subscribe((data) => {
@@ -37,9 +39,14 @@ const CameraPage = () => {
       setRecognizing(true);
     }, 500);
   };
+
   const stop = () => {
     setRecognizing(false);
     setIsRunning(false);
+  };
+
+  const afterInit = () => {
+    setInit(true);
   };
 
   return (
@@ -50,6 +57,7 @@ const CameraPage = () => {
       <div className={`${styles.contentsContainer}`}>
         <div className={`${isRunning ? styles.ready : styles.notReady}`}>
           <Webcam
+            afterInit={afterInit}
             isRunning={isRunning}
             setCenterStatus={setCenterStatus}
             size="fill"

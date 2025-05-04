@@ -3,6 +3,7 @@
   align-items: center;
   height: 40px;
   column-gap: 10px;
+  cursor: pointer;
 }
 
 .container p {
@@ -24,6 +25,12 @@
 .container span p {
   font-size: 13px;
   font-weight: 500;
+}
+
+.container span svg {
+  width: 14px;
+  height: 14px;
+  fill: var(--font-gray-color);
 }
 
 /* isCompleted */
@@ -59,4 +66,10 @@
 
 .isSelected span p {
   color: white;
+}
+
+.isSelected span svg {
+  width: 16px;
+  height: 16px;
+  fill: white;
 }

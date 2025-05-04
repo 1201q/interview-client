@@ -1,9 +1,9 @@
 'use client';
 
 import styles from './styles/webcam.module.css';
-import { initHumanAtom } from '@/store/webcam';
+import { initHumanAtom, isHumanLoadedAtom } from '@/store/webcam';
 import Human, { DrawOptions, PersonResult } from '@vladmandic/human';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useRef } from 'react';
 import { isFacingCenter } from './utils/face';
 import { useCenter } from './hooks/useCenter';
@@ -28,6 +28,7 @@ interface Props {
   isRunning: boolean;
   setCenterStatus: (center: boolean) => void;
   size: 'fill' | 'auto';
+  afterInit: () => void;
 }
 
 interface ResultBuffer {
@@ -35,7 +36,12 @@ interface ResultBuffer {
   data: PersonResult;
 }
 
-const Webcam = ({ isRunning, setCenterStatus, size = 'auto' }: Props) => {
+const Webcam = ({
+  isRunning,
+  setCenterStatus,
+  size = 'auto',
+  afterInit,
+}: Props) => {
   const humanInstance = useAtomValue(initHumanAtom);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -109,7 +115,7 @@ const Webcam = ({ isRunning, setCenterStatus, size = 'auto' }: Props) => {
 
       stream.getTracks().forEach((track) => track.stop());
 
-      await humanInstance.warmup();
+      // await humanInstance.warmup();
       await initWebcam(humanInstance);
     } catch (error) {
       console.error('카메라 권한 요청 실패', error);
@@ -149,6 +155,8 @@ const Webcam = ({ isRunning, setCenterStatus, size = 'auto' }: Props) => {
       mode: 'front',
       ...(size === 'fill' && { width: screenWidth, height: screenHeight }),
     });
+
+    afterInit();
 
     if (canvas) {
       canvas.width = human.webcam.width;

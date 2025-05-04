@@ -1,49 +1,50 @@
 'use client';
 
-import PermissionCheck from './_components/PermissionCheck';
-
 import styles from '../page.module.css';
 import SideMenu from './_components/SideMenu';
 
-import PageHeader from './_components/PageHeader';
+import { useState } from 'react';
+
+import Mic from '@/public/mic-svgrepo-white.svg';
+import Webcam from '@/public/webcam-cam-white.svg';
+import PermissionCheckPlz from './_components/PermissionCheckPlz';
+import MicCheck from './_components/MicCheck';
+import CameraCheck from './_components/CameraCheck';
 
 const STEP = [
-  { name: '안내', code: 'instructions' },
-  { name: '권한체크', code: 'permission' },
-  { name: '카메라체크', code: 'check_camera' },
-  { name: '마이크체크', code: 'check_mic' },
+  { name: '카메라 체크', code: 'check_camera' },
+  { name: '마이크 체크', code: 'check_mic' },
+  { name: '다음 단계', code: 'next' },
 ];
 
 const DeviceCheckPage = () => {
+  const [currentStep, setCurrentStep] = useState(STEP[0].code);
+
+  const handleCompleted = (nextCode: string) => {
+    setCurrentStep(nextCode);
+  };
+
   return (
     <>
       <div className={styles.listContainer}>
         <div className={styles.sideSelectContainer}>
           <SideMenu
-            number={1}
-            text="권한 체크"
-            isCompleted={true}
-            isSelected={false}
+            text={STEP[0].name}
+            icon={<Webcam />}
+            isCompleted={currentStep === 'check_mic'}
+            isSelected={currentStep === 'check_camera'}
           />
           <SideMenu
-            number={2}
-            text="마이크 체크"
-            isCompleted={false}
-            isSelected={true}
-          />
-          <SideMenu
-            number={3}
-            text="카메라 체크"
-            isCompleted={false}
-            isSelected={false}
+            text={STEP[1].name}
+            icon={<Mic />}
+            isCompleted={currentStep === 'next'}
+            isSelected={currentStep === 'check_mic'}
           />
         </div>
         <div className={styles.itemListContainer}>
-          <PageHeader
-            titleText="권한 체크"
-            subtitleText="마이크와 카메라 권한이 필요해요."
-          />
-          <PermissionCheck nextStep={() => {}} />
+          {/* <PermissionCheckPlz /> */}
+          {/* <MicCheck /> */}
+          <CameraCheck />
         </div>
       </div>
     </>
