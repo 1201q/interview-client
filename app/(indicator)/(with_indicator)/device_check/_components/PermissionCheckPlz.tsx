@@ -7,9 +7,15 @@ import { useRequestMediaAccess } from './hooks/useRequestMediaAccess';
 import Mic from '@/public/mic.svg';
 import Camera from '@/public/webcam-cam.svg';
 import { usePermissonCheck } from './hooks/usePermissonCheck';
+import { useEffect } from 'react';
 
-const PermissionCheckPlz = () => {
+const PermissionCheckPlz = ({
+  handleNextStep,
+}: {
+  handleNextStep: () => void;
+}) => {
   useRequestMediaAccess();
+
   const cameraPerm = usePermissonCheck('camera');
   const micPerm = usePermissonCheck('microphone');
 
@@ -22,6 +28,12 @@ const PermissionCheckPlz = () => {
       return styles.green;
     }
   };
+
+  useEffect(() => {
+    if (cameraPerm && micPerm) {
+      handleNextStep();
+    }
+  }, [cameraPerm, micPerm]);
 
   return (
     <div className={styles.container}>

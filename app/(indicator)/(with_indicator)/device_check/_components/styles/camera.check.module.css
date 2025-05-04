@@ -92,9 +92,40 @@
   fill: white;
 }
 
+.centerStatusContainer {
+  position: absolute;
+  top: 10px;
+  right: 50%;
+  transform: translateX(50%);
+  width: max-content;
+  padding: 0px 20px;
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 12px;
+
+  transition: background-color 0.2s ease-in-out;
+}
+
+.centerStatusContainer p {
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+}
+
+.red {
+  background-color: var(--main-red-color);
+}
+
+.blue {
+  background-color: var(--main-blue-color);
+}
+
 @media screen and (max-width: 768px) {
   .loadingContainer {
-    aspect-ratio: 9 / 16;
+    aspect-ratio: 9 / 18;
   }
 
   .cameraOverlayContainer span {

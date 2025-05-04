@@ -3,48 +3,67 @@
 import styles from '../page.module.css';
 import SideMenu from './_components/SideMenu';
 
-import { useState } from 'react';
-
+import Check from '@/public/check.svg';
 import Mic from '@/public/mic-svgrepo-white.svg';
 import Webcam from '@/public/webcam-cam-white.svg';
 import PermissionCheckPlz from './_components/PermissionCheckPlz';
 import MicCheck from './_components/MicCheck';
 import CameraCheck from './_components/CameraCheck';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { AnimatePresence, motion } from 'motion/react';
 
 const STEP = [
-  { name: '카메라 체크', code: 'check_camera' },
-  { name: '마이크 체크', code: 'check_mic' },
-  { name: '다음 단계', code: 'next' },
+  { name: '권한 체크', icon: <Check />, component: PermissionCheckPlz },
+  { name: '마이크 체크', icon: <Mic />, component: MicCheck },
+  { name: '카메라 체크', icon: <Webcam />, component: CameraCheck },
 ];
 
 const DeviceCheckPage = () => {
-  const [currentStep, setCurrentStep] = useState(STEP[0].code);
+  const router = useRouter();
+  const query = useSearchParams();
 
-  const handleCompleted = (nextCode: string) => {
-    setCurrentStep(nextCode);
+  const queryIndex = Number(query.get('step'));
+  const stepIndex = isNaN(queryIndex)
+    ? 0
+    : Math.max(0, Math.min(queryIndex, STEP.length - 1));
+
+  const CurrentComponent = STEP[stepIndex].component;
+
+  const handleNextStep = () => {
+    const next = stepIndex + 1;
+
+    if (next < STEP.length) {
+      router.push(`/device_check?step=${next}`);
+    } else {
+      console.log(1);
+    }
   };
 
   return (
     <>
       <div className={styles.listContainer}>
         <div className={styles.sideSelectContainer}>
-          <SideMenu
-            text={STEP[0].name}
-            icon={<Webcam />}
-            isCompleted={currentStep === 'check_mic'}
-            isSelected={currentStep === 'check_camera'}
-          />
-          <SideMenu
-            text={STEP[1].name}
-            icon={<Mic />}
-            isCompleted={currentStep === 'next'}
-            isSelected={currentStep === 'check_mic'}
-          />
+          {STEP.map((step, i) => (
+            <SideMenu
+              key={step.name}
+              text={step.name}
+              icon={step.icon}
+              isCompleted={stepIndex > i}
+              isSelected={stepIndex === i}
+            />
+          ))}
         </div>
         <div className={styles.itemListContainer}>
-          {/* <PermissionCheckPlz /> */}
-          {/* <MicCheck /> */}
-          <CameraCheck />
+          <AnimatePresence mode="popLayout">
+            <motion.div
+              key={stepIndex}
+              initial={{ x: -30, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: 20, opacity: 0 }}
+            >
+              <CurrentComponent handleNextStep={handleNextStep} />
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </>

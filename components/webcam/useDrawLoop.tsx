@@ -8,15 +8,16 @@ interface DrawTargets {
 }
 
 const DRAW_OPTIONS: Partial<DrawOptions> = {
-  drawPolygons: true,
-  drawLabels: true,
+  drawPolygons: false,
+  drawLabels: false,
   drawBoxes: false,
 };
 
 const FACE_DRAW_OPTIONS: Partial<DrawOptions> = {
   drawGaze: false,
-  drawLabels: false,
+  drawLabels: true,
   drawPolygons: false,
+  drawGestures: true,
   faceLabels: `[score]%
   [distance]
   roll: [roll]° yaw:[yaw]° pitch:[pitch]°
@@ -29,6 +30,7 @@ export const useDrawLoop = (
   canvasRef: RefObject<HTMLCanvasElement | null>,
 ) => {
   const timeoutRef = useRef<NodeJS.Timeout>(null);
+
   const optionsRef = useRef<DrawTargets>({});
 
   const draw = async () => {
@@ -56,7 +58,7 @@ export const useDrawLoop = (
         }
       }
     }
-    timeoutRef.current = setTimeout(draw, 60);
+    timeoutRef.current = setTimeout(draw, 20);
   };
 
   const startDrawing = (options: DrawTargets = {}) => {

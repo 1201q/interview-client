@@ -9,6 +9,7 @@ import { useDetectionLoop } from './useDetectionLoop';
 import { PersonResult } from '@vladmandic/human';
 import { initWebcam } from './initWebcam';
 import { useDrawLoop } from './useDrawLoop';
+import { useFaceCenter } from './useFaceCenter';
 
 interface ResultBuffer {
   timestamp: number;
@@ -18,15 +19,19 @@ interface ResultBuffer {
 const NewWebcam = ({
   isRunning,
   afterInit,
+  setCenterStatus,
 }: {
   isRunning: boolean;
   afterInit: () => void;
+  setCenterStatus: (center: boolean) => void;
 }) => {
   const human = useAtomValue(initHumanAtom);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const bufferRef = useRef<ResultBuffer[]>([]);
+
+  const isFaceCenter = useFaceCenter(isRunning, bufferRef);
 
   const { startDetection, stopDetection } = useDetectionLoop(
     human,
@@ -57,7 +62,7 @@ const NewWebcam = ({
 
     if (human && isRunning) {
       startDetection();
-      startDrawing();
+      startDrawing({ face: true });
 
       if (!human.webcam.paused) {
         human.webcam.start();
@@ -66,8 +71,14 @@ const NewWebcam = ({
       stopDetection();
       stopDrawing();
       human.webcam.stop();
+
+      bufferRef.current = [];
     }
   }, [human, isRunning]);
+
+  useEffect(() => {
+    setCenterStatus(isFaceCenter);
+  }, [isFaceCenter]);
 
   return (
     <>

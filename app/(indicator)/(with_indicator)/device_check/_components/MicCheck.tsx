@@ -6,13 +6,20 @@ import { useStt } from './hooks/useStt';
 import Loading from '@/components/common/Loading';
 import PageHeader from './PageHeader';
 import styles from './styles/mic.check.module.css';
+import { useEffect } from 'react';
 
-const MicCheck = () => {
+const MicCheck = ({ handleNextStep }: { handleNextStep: () => void }) => {
   const { startRecording, stopRecording, isLoading, isRecording, text } =
     useStt();
 
   const success = (text: string) =>
     text?.replaceAll(' ', '').startsWith('안녕하세요');
+
+  useEffect(() => {
+    if (text && success(text)) {
+      handleNextStep();
+    }
+  }, [text]);
 
   return (
     <>
