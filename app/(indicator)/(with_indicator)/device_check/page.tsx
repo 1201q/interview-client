@@ -11,6 +11,7 @@ import MicCheck from './_components/MicCheck';
 import CameraCheck from './_components/CameraCheck';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { AnimatePresence, motion } from 'motion/react';
+import { Suspense } from 'react';
 
 const STEP = [
   { name: '권한 체크', icon: <Check />, component: PermissionCheckPlz },
