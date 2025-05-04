@@ -11,7 +11,8 @@ import MicCheck from './_components/MicCheck';
 import CameraCheck from './_components/CameraCheck';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { AnimatePresence, motion } from 'motion/react';
-import { Suspense } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
+import Loading from '@/components/common/Loading';
 
 const STEP = [
   { name: '권한 체크', icon: <Check />, component: PermissionCheckPlz },
@@ -22,6 +23,8 @@ const STEP = [
 const DeviceCheckPage = () => {
   const router = useRouter();
   const query = useSearchParams();
+
+  const [loading, setLoading] = useState(false);
 
   const queryIndex = Number(query.get('step'));
   const stepIndex = isNaN(queryIndex)
@@ -34,7 +37,12 @@ const DeviceCheckPage = () => {
     const next = stepIndex + 1;
 
     if (next < STEP.length) {
-      router.push(`/device_check?step=${next}`);
+      setLoading(true);
+
+      setTimeout(() => {
+        router.push(`/device_check?step=${next}`);
+        setLoading(false);
+      }, 1200);
     } else {
       console.log(1);
     }
@@ -61,8 +69,14 @@ const DeviceCheckPage = () => {
               initial={{ x: -30, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: 20, opacity: 0 }}
+              style={{ position: 'relative' }}
             >
               <CurrentComponent handleNextStep={handleNextStep} />
+              {loading && (
+                <div className={styles.loadingContainer}>
+                  <Loading size={50} color="black" />
+                </div>
+              )}
             </motion.div>
           </AnimatePresence>
         </div>

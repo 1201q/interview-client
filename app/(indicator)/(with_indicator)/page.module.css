@@ -75,6 +75,18 @@
   margin-bottom: 70px;
 }
 
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  opacity: 0.8;
+}
+
 @media screen and (max-width: 1200px) {
   .slideListContainer {
     max-width: 800px;
