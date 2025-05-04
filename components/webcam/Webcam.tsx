@@ -53,9 +53,19 @@ const NewWebcam = ({
   }, [human]);
 
   useEffect(() => {
+    if (!human) return;
+
     if (human && isRunning) {
       startDetection();
       startDrawing();
+
+      if (!human.webcam.paused) {
+        human.webcam.start();
+      }
+    } else {
+      stopDetection();
+      stopDrawing();
+      human.webcam.stop();
     }
   }, [human, isRunning]);
 

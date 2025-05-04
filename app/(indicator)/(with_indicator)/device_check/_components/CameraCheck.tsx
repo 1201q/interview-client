@@ -4,8 +4,9 @@ import Loading from '@/components/common/Loading';
 import PageHeader from './PageHeader';
 import styles from './styles/camera.check.module.css';
 import { useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
+import { motion } from 'motion/react';
 import NewWebcam from '@/components/webcam/Webcam';
+import Xmark from '@/public/xmark.svg';
 
 const CameraCheck = () => {
   const [init, setInit] = useState(false);
@@ -16,12 +17,22 @@ const CameraCheck = () => {
     <>
       <PageHeader
         titleText="카메라 체크"
-        subtitleText="카메라가 얼굴을 제대로 인식하는지 확인하는 단계에요. 로딩이 완료되면 정면을 3초동안 바라보세요."
+        subtitleText="카메라가 얼굴을 제대로 인식하는지 확인하는 단계에요. 로딩이 완료되면 정면을 5초동안 바라보세요."
       />
 
       <motion.div
         className={`${!isFaceCheckModalOpen ? styles.container : styles.bgContainer}`}
       >
+        {isFaceCheckModalOpen && (
+          <button
+            onClick={() => {
+              setIsFaceCheckModalOpen(false);
+            }}
+            className={styles.cameraModalCloseButton}
+          >
+            <Xmark />
+          </button>
+        )}
         <motion.div
           layoutId="camera"
           className={
@@ -31,14 +42,15 @@ const CameraCheck = () => {
           }
           transition={{ duration: 0.35, ease: 'easeInOut' }}
         >
-          <Loading size={40} color="white" />
+          {!init && <Loading size={40} color="white" />}
           <NewWebcam
-            isRunning={isCameraRunning}
+            isRunning={isCameraRunning && isFaceCheckModalOpen}
             afterInit={() => {
               setInit(true);
               setIsCameraRunning(true);
             }}
           />
+
           {init && !isFaceCheckModalOpen && (
             <div
               onClick={() => setIsFaceCheckModalOpen(true)}

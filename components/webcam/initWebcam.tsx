@@ -25,6 +25,10 @@ export const initWebcam = (
     if (canvas) {
       canvas.width = human.webcam.width;
       canvas.height = human.webcam.height;
+
+      const processed = await human.image(video);
+
+      human.draw.canvas(processed.canvas as HTMLCanvasElement, canvas);
     }
 
     afterInit();
