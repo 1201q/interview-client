@@ -8,6 +8,7 @@ import { initHumanAtom } from '@/store/webcam';
 import { useDetectionLoop } from './useDetectionLoop';
 import { PersonResult } from '@vladmandic/human';
 import { initWebcam } from './initWebcam';
+import { useDrawLoop } from './useDrawLoop';
 
 interface ResultBuffer {
   timestamp: number;
@@ -27,17 +28,15 @@ const NewWebcam = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const bufferRef = useRef<ResultBuffer[]>([]);
 
-  const { startDetection } = useDetectionLoop(
+  const { startDetection, stopDetection } = useDetectionLoop(
     human,
     videoRef,
-    canvasRef,
     bufferRef,
   );
+  const { startDrawing, stopDrawing } = useDrawLoop(human, videoRef, canvasRef);
 
   useEffect(() => {
-    if (!videoRef.current) return;
-    if (!canvasRef.current) return;
-    if (!human) return;
+    if (!videoRef.current || !canvasRef.current || !human) return;
 
     const setupCamera = async () => {
       const init = initWebcam(human, videoRef, canvasRef, afterInit);
@@ -45,11 +44,18 @@ const NewWebcam = ({
     };
 
     setupCamera();
+
+    return () => {
+      stopDetection();
+      stopDrawing();
+      human.webcam.stop();
+    };
   }, [human]);
 
   useEffect(() => {
     if (human && isRunning) {
       startDetection();
+      startDrawing();
     }
   }, [human, isRunning]);
 

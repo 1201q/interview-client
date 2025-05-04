@@ -1,33 +1,18 @@
-import Human, { DrawOptions, PersonResult } from '@vladmandic/human';
-import { RefObject } from 'react';
+import Human, { PersonResult } from '@vladmandic/human';
+import { RefObject, useRef } from 'react';
 
 interface ResultBuffer {
   timestamp: number;
   data: PersonResult;
 }
 
-const DRAW_OPTIONS: Partial<DrawOptions> = {
-  drawPolygons: true,
-  drawLabels: true,
-  drawBoxes: false,
-};
-
-const FACE_DRAW_OPTIONS: Partial<DrawOptions> = {
-  drawGaze: false,
-  drawLabels: false,
-  drawPolygons: false,
-  faceLabels: `[score]%
-  [distance]
-  roll: [roll]° yaw:[yaw]° pitch:[pitch]°
-`,
-};
-
 export const useDetectionLoop = (
   human: Human,
   videoRef: RefObject<HTMLVideoElement | null>,
-  canvasRef: RefObject<HTMLCanvasElement | null>,
   bufferRef: RefObject<ResultBuffer[]>,
 ) => {
+  const animationFrameRef = useRef<number>(null);
+
   const detect = async () => {
     const video = videoRef.current;
 
@@ -40,31 +25,20 @@ export const useDetectionLoop = (
       });
     }
 
-    requestAnimationFrame(detect);
-  };
-
-  const draw = async () => {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-
-    if (video && !video.paused) {
-      const processed = await human.image(video);
-      const interpolated = human.next(human.result);
-
-      if (canvas) {
-        human.draw.canvas(processed.canvas as HTMLCanvasElement, canvas);
-        human.draw.face(canvas, interpolated.face, FACE_DRAW_OPTIONS);
-        // human.draw.body(canvas, interpolated.body, DRAW_OPTIONS);
-        // human.draw.hand(canvas, interpolated.hand, DRAW_OPTIONS);
-      }
-    }
-    setTimeout(draw, 60);
+    animationFrameRef.current = requestAnimationFrame(detect);
   };
 
   const startDetection = () => {
+    console.log('2. detection을 시작합니다.');
     detect();
-    draw();
   };
 
-  return { startDetection };
+  const stopDetection = () => {
+    if (animationFrameRef.current) {
+      console.log('2. detection을 중지합니다.');
+      cancelAnimationFrame(animationFrameRef.current);
+    }
+  };
+
+  return { startDetection, stopDetection };
 };

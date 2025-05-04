@@ -1,7 +1,6 @@
 .container {
   display: flex;
   flex-direction: column;
-  row-gap: 20px;
 }
 
 .loadingContainer,
@@ -61,6 +60,7 @@
   font-size: 32px;
   font-weight: 600;
   color: white;
+  text-align: center;
 }
 
 .cameraOverlayContainer p {
@@ -73,5 +73,19 @@
 @media screen and (max-width: 768px) {
   .loadingContainer {
     aspect-ratio: 9 / 16;
+  }
+
+  .cameraOverlayContainer span {
+    font-size: 22px;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+  }
+
+  .cameraOverlayContainer p {
+    margin-top: 5px;
+    font-size: 16px;
+    font-weight: 400;
+    color: white;
   }
 }
