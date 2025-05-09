@@ -3,6 +3,7 @@ import './globals.css';
 import localFont from 'next/font/local';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
+import JotaiProvider from '@/components/provider/JotaiProvider';
 
 interface Props {
   children: React.ReactNode;
@@ -25,11 +26,13 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={pretendard.variable}>
-        <SpeedInsights />
-        <Analytics />
-        {children}
-        {modal}
-        {questionModal}
+        <JotaiProvider>
+          <SpeedInsights />
+          <Analytics />
+          {children}
+          {modal}
+          {questionModal}
+        </JotaiProvider>
       </body>
     </html>
   );

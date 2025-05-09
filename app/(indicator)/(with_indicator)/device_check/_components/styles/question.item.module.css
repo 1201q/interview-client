@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.burgerButtonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 16px;
+}
+
+.burgerButtonContainer svg {
+  width: 16px;
+  height: 16px;
+
+  fill: var(--font-gray-color);
+}
+
+.itemContainer {
+  display: flex;
+
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid var(--border-main2-color);
+  cursor: pointer;
+  background-color: white;
+  min-height: 22px;
+
+  column-gap: 13px;
+}
+
+.itemTextContainer {
+  display: flex;
+  flex: 1;
+  column-gap: 13px;
+}
+
+.itemTextContainer p {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+
+  white-space: normal;
+  word-break: break-word;
+}
+
+.indexText {
+  color: var(--main-blue-color);
+}
+
+@media screen and (max-width: 1024px) {
+  .itemContainer p {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+
+    white-space: normal;
+    word-break: break-word;
+  }
+}

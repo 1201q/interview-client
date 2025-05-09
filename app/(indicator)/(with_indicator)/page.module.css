@@ -87,6 +87,12 @@
   opacity: 0.8;
 }
 
+.testButton {
+  position: absolute;
+  bottom: 0;
+  right: 120px;
+}
+
 @media screen and (max-width: 1200px) {
   .slideListContainer {
     max-width: 800px;

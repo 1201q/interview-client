@@ -1,18 +1,38 @@
+.bgContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContainer {
+  width: calc(100% - 20px);
+  max-width: 500px;
+  height: fit-content;
+  background-color: white;
+
+  padding: 42px 22px 25px 22px;
+  border-radius: 17px;
+}
+
 .container {
   display: flex;
   flex-direction: column;
-
   align-items: center;
-  margin-top: 50px;
-  row-gap: 50px;
+  row-gap: 30px;
 }
 
 .itemContainer {
   width: 100%;
-  max-width: 600px;
+
   display: flex;
   flex-direction: column;
-
   row-gap: 10px;
 }
 
@@ -60,4 +80,39 @@
 .flex p {
   font-size: 17px;
   font-weight: 500;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 30px;
+  }
+
+  .modalContainer {
+    padding: 35px 18px 22px 18px;
+  }
+
+  .itemContainer {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+  }
+
+  .item {
+    height: 42px;
+  }
+
+  .flex svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .flex p {
+    font-size: 15px;
+    font-weight: 500;
+  }
 }

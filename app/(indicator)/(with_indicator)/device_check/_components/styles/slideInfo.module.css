@@ -13,8 +13,8 @@
 }
 
 .imageContainer svg {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   display: block;
   margin: 0 auto;
   object-fit: contain;

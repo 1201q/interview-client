@@ -9,43 +9,46 @@ import Webcam from '@/public/webcam-cam-white.svg';
 import PermissionCheckPlz from './_components/PermissionCheckPlz';
 import MicCheck from './_components/MicCheck';
 import CameraCheck from './_components/CameraCheck';
-import { useRouter, useSearchParams } from 'next/navigation';
+import QuestionCheck from './_components/QuestionCheck';
+import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'motion/react';
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import Loading from '@/components/common/Loading';
 
+import { usePermissonCheck } from './_components/hooks/usePermissonCheck';
+
 const STEP = [
-  { name: '권한 체크', icon: <Check />, component: PermissionCheckPlz },
   { name: '마이크 체크', icon: <Mic />, component: MicCheck },
   { name: '카메라 체크', icon: <Webcam />, component: CameraCheck },
+  { name: '질문 설정', icon: <Check />, component: QuestionCheck },
 ];
 
 const DeviceCheckPage = () => {
   const router = useRouter();
-  const query = useSearchParams();
+
+  const cameraPerm = usePermissonCheck('camera');
+  const micPerm = usePermissonCheck('microphone');
+
+  const isPermissionModalOpen =
+    (cameraPerm !== null && !cameraPerm) || (micPerm !== null && !micPerm);
 
   const [loading, setLoading] = useState(false);
-
-  const queryIndex = Number(query.get('step'));
-  const stepIndex = isNaN(queryIndex)
-    ? 0
-    : Math.max(0, Math.min(queryIndex, STEP.length - 1));
+  const [stepIndex, setStepIndex] = useState(0);
 
   const CurrentComponent = STEP[stepIndex].component;
 
   const handleNextStep = () => {
-    const next = stepIndex + 1;
-
-    if (next < STEP.length) {
-      setLoading(true);
-
-      setTimeout(() => {
-        router.push(`/device_check?step=${next}`);
-        setLoading(false);
-      }, 1200);
-    } else {
-      console.log(1);
+    if (stepIndex === STEP.length - 1) {
+      router.push('/interview');
+      return;
     }
+
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+      setStepIndex((prev) => prev + 1);
+    }, 1200);
   };
 
   return (
@@ -80,7 +83,15 @@ const DeviceCheckPage = () => {
             </motion.div>
           </AnimatePresence>
         </div>
+
+        <button className={styles.testButton} onClick={handleNextStep}>
+          다음
+        </button>
       </div>
+
+      {isPermissionModalOpen && (
+        <PermissionCheckPlz cameraPerm={cameraPerm} micPerm={micPerm} />
+      )}
     </>
   );
 };

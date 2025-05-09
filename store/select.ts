@@ -7,25 +7,6 @@ import {
 import { atom } from 'jotai';
 import { v4 as uuidv4 } from 'uuid';
 
-type RoleOptionType = (typeof ROLE_OPTIONS)[number];
-
-export const selectedRoleAtom = atom<RoleOptionType>(ROLE_OPTIONS[0]);
-
-export const selectedQuestionUUIDsAtom = atom<string[]>([]);
-export const deletedQuestionUUIDsAtom = atom<string[]>([]);
-
-selectedQuestionUUIDsAtom.onMount = (set) => {
-  return () => {
-    set([]);
-  };
-};
-
-deletedQuestionUUIDsAtom.onMount = (set) => {
-  return () => {
-    set([]);
-  };
-};
-
 export const selectedQuestionsAtom = atom<QuestionType[]>([]);
 export const setSelectedQuestionsAtom = atom(
   null,
@@ -51,11 +32,11 @@ export const setSelectedQuestionsAtom = atom(
 
 export const deletedQuestionsAtom = atom<QuestionType[]>([]);
 
-selectedQuestionsAtom.onMount = (set) => {
-  return () => {
-    set([]);
-  };
-};
+// selectedQuestionsAtom.onMount = (set) => {
+//   return () => {
+//     set([]);
+//   };
+// };
 
 deletedQuestionsAtom.onMount = (set) => {
   return () => {
