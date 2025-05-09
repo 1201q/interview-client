@@ -1,9 +1,5 @@
 'use client';
 
-import MicSlash from '@/public/mic-slash.svg';
-import MicWhite from '@/public/mic-white.svg';
-import { useStt } from './hooks/useStt';
-import Loading from '@/components/common/Loading';
 import PageHeader from './PageHeader';
 import styles from './styles/question.check.module.css';
 import { useEffect, useState } from 'react';

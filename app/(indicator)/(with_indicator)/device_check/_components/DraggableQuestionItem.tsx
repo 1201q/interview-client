@@ -33,7 +33,7 @@ const DraggableQuestionItem = ({ text, id, index }: Props) => {
       style={style}
       {...attributes}
       {...listeners}
-      className={`${styles.itemContainer}`}
+      className={`${styles.container}`}
     >
       <div className={styles.itemTextContainer}>
         <p className={styles.indexText}>{index}</p>
