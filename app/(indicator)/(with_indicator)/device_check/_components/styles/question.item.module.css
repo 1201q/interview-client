@@ -1,27 +1,36 @@
 .container {
   display: flex;
-
   padding: 15px;
   border-radius: 6px;
   border: 1px solid var(--border-main2-color);
-  cursor: pointer;
   background-color: white;
   min-height: 22px;
-
-  column-gap: 13px;
   touch-action: none;
+  column-gap: 10px;
 }
 
 .burgerButtonContainer {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  position: relative;
   width: 16px;
 }
 
-.burgerButtonContainer svg {
-  width: 16px;
-  height: 16px;
+.burgerButtonContainer button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+
+  padding: 20px;
+
+  left: -20px;
+}
+
+.burgerButtonContainer button svg {
+  width: 14px;
+  height: 14px;
 
   fill: var(--font-gray-color);
 }
@@ -43,6 +52,11 @@
 
 .indexText {
   color: var(--main-blue-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 30px;
+  flex-shrink: 0;
 }
 
 @media screen and (max-width: 1024px) {

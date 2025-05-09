@@ -32,7 +32,6 @@ const DraggableQuestionItem = ({ text, id, index }: Props) => {
       ref={setNodeRef}
       style={style}
       {...attributes}
-      {...listeners}
       className={`${styles.container}`}
     >
       <div className={styles.itemTextContainer}>
@@ -40,7 +39,9 @@ const DraggableQuestionItem = ({ text, id, index }: Props) => {
         <p>{text}</p>
       </div>
       <div className={styles.burgerButtonContainer}>
-        <Burger />
+        <button {...listeners}>
+          <Burger />
+        </button>
       </div>
     </div>
   );
