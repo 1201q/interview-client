@@ -14,6 +14,7 @@ import {
   closestCenter,
   DndContext,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
@@ -32,7 +33,15 @@ const QuestionCheck = ({ handleNextStep }: { handleNextStep: () => void }) => {
 
   const [questions, setQuestions] = useState(newSelectedQuestions);
 
-  const sensors = useSensors(useSensor(PointerSensor));
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 250,
+        tolerance: 5,
+      },
+    }),
+  );
 
   const handleDragEnd = (event: any) => {
     const { active, over } = event;

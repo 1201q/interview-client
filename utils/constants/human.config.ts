@@ -4,7 +4,7 @@ import { DirectionType } from '../types/types';
 // https://github.com/vladmandic/human/discussions/252
 
 export const humanConfig: Partial<Config> = {
-  debug: true,
+  debug: false,
   modelBasePath: 'https://cdn.jsdelivr.net/gh/vladmandic/human-models/models/',
   face: {
     enabled: true,
