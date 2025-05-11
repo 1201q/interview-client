@@ -5,28 +5,22 @@ import Button from '@/components/common/Button';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import BottomController from '@/components/common/BottomController';
+import { useAtom } from 'jotai';
+import { cameraCheckCompletedAtom } from '@/store/step';
 
-const QuestionConfirmController = () => {
+const CameraCheckController = () => {
   const router = useRouter();
 
-  const [buttonDisabled, setButtonDisabled] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setButtonDisabled(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  const [completed] = useAtom(cameraCheckCompletedAtom);
 
   return (
     <BottomController
       rightContent={
         <Button
-          text={'환경체크로 이동'}
-          disabled={buttonDisabled}
+          text={!completed ? '카메라 체크를 완료해주세요' : '다음 단계로 이동'}
+          disabled={!completed}
           onClick={() => {
-            router.push('/device_check/mic');
+            router.push('/interview');
           }}
           color="blue"
         />
@@ -35,4 +29,4 @@ const QuestionConfirmController = () => {
   );
 };
 
-export default QuestionConfirmController;
+export default CameraCheckController;

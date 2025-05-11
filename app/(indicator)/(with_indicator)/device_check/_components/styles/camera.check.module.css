@@ -1,7 +1,6 @@
 .container {
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
 }
 
 .loadingContainer,
@@ -42,6 +41,8 @@
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(4px);
+
+  z-index: 100;
 }
 
 .cameraOverlayContainer {
