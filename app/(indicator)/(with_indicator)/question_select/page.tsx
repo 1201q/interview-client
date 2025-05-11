@@ -4,7 +4,7 @@ import {
   getQuestionListByRole,
   getUserCreatedQuestions,
 } from '@/utils/services/question';
-import BottomController from './_components/BottomController';
+import QuestionSelectController from './_components/QuestionSelectController';
 
 import SearchInput from './_components/SearchInput';
 import styles from '../page.module.css';
@@ -20,7 +20,6 @@ import SelectQuestionList from './_components/SelectQuestionList';
 import EditButton from './_components/EditButton';
 import ItemList from './_components/ItemList';
 import AiBanner from './_components/AiBanner';
-import Indicator from './_components/Indicator';
 
 type Props = {
   searchParams: Promise<{ [key: string]: ExtendedRoleType }>;
@@ -75,9 +74,7 @@ const Page = async ({ searchParams }: Props) => {
           </Suspense>
         </div>
       </div>
-      <div className={styles.bottomContainer}>
-        <BottomController />
-      </div>
+      <QuestionSelectController />
     </>
   );
 };

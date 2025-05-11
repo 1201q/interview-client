@@ -1,4 +1,4 @@
-import styles from './styles/question.item.module.css';
+import styles from './styles/draggable.question.item.module.css';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 

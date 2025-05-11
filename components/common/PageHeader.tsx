@@ -1,5 +1,4 @@
 import styles from './styles/page.header.module.css';
-import Check from '@/public/check.svg';
 
 interface Props {
   titleText: string;

@@ -3,13 +3,12 @@
 import styles from '../page.module.css';
 import SideMenu from './_components/SideMenu';
 
-import Check from '@/public/check.svg';
 import Mic from '@/public/mic-svgrepo-white.svg';
 import Webcam from '@/public/webcam-cam-white.svg';
 import PermissionCheckPlz from './_components/PermissionCheckPlz';
 import MicCheck from './_components/MicCheck';
 import CameraCheck from './_components/CameraCheck';
-import QuestionCheck from './_components/QuestionCheck';
+
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
@@ -20,7 +19,6 @@ import { usePermissonCheck } from './_components/hooks/usePermissonCheck';
 const STEP = [
   { name: '마이크 체크', icon: <Mic />, component: MicCheck },
   { name: '카메라 체크', icon: <Webcam />, component: CameraCheck },
-  { name: '질문 설정', icon: <Check />, component: QuestionCheck },
 ];
 
 const DeviceCheckPage = () => {

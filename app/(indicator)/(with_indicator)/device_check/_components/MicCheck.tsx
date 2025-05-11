@@ -4,7 +4,7 @@ import MicSlash from '@/public/mic-slash.svg';
 import MicWhite from '@/public/mic-white.svg';
 import { useStt } from './hooks/useStt';
 import Loading from '@/components/common/Loading';
-import PageHeader from './PageHeader';
+import PageHeader from '@/components/common/PageHeader';
 import styles from './styles/mic.check.module.css';
 import { useEffect } from 'react';
 
@@ -32,7 +32,6 @@ const MicCheck = ({ handleNextStep }: { handleNextStep: () => void }) => {
           {isRecording && <p>듣는중...</p>}
           {!isRecording && !text && (
             <>
-              {/* <p>안녕하세요</p> */}
               <span>아래 버튼을 누르고 말해보세요.</span>
             </>
           )}

@@ -60,29 +60,27 @@ const Indicator = () => {
   };
 
   return (
-    <>
-      <div className={styles.container}>
-        <div className={styles.topContainer}>
-          <p>{STAGE[currentStageIndex]?.name}</p>
-          <div>현재 {currentStageIndex + 1} / 4</div>
-        </div>
-        <div className={styles.barContainer}>
-          <div className={styles.bar} style={{ width: `${barWidth}%` }}></div>
-        </div>
-        <div className={styles.stageContainer}>
-          {STAGE.map((stage, index) => (
-            <Stage
-              key={stage.name}
-              stageNumber={index + 1}
-              stageText={stage.name}
-              status={getStatus(index)}
-              isLastStage={index === STAGE.length - 1}
-            />
-          ))}
-        </div>
-        <div className={styles.bottomContainer}></div>
+    <div className={styles.container}>
+      <div className={styles.topContainer}>
+        <p>{STAGE[currentStageIndex]?.name}</p>
+        <div>현재 {currentStageIndex + 1} / 4</div>
       </div>
-    </>
+      <div className={styles.barContainer}>
+        <div className={styles.bar} style={{ width: `${barWidth}%` }}></div>
+      </div>
+      <div className={styles.stageContainer}>
+        {STAGE.map((stage, index) => (
+          <Stage
+            key={stage.name}
+            stageNumber={index + 1}
+            stageText={stage.name}
+            status={getStatus(index)}
+            isLastStage={index === STAGE.length - 1}
+          />
+        ))}
+      </div>
+      <div className={styles.bottomContainer}></div>
+    </div>
   );
 };
 

@@ -1,7 +1,7 @@
 'use client';
 
 import Loading from '@/components/common/Loading';
-import PageHeader from './PageHeader';
+import PageHeader from '@/components/common/PageHeader';
 import styles from './styles/camera.check.module.css';
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';

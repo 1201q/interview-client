@@ -44,6 +44,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
+  if (
+    !request.cookies.has('accessToken') &&
+    pathname.startsWith('/question_select/confirm')
+  ) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
   if (accessToken) {
     const decoded = jwt.decode(accessToken.value) as Token;
 
@@ -112,6 +119,7 @@ export const config = {
   matcher: [
     '/login',
     '/question_select',
+    '/question_select/confirm',
     '/question_add',
     '/device_check',
     '/device_check/camera',

@@ -1,8 +1,6 @@
 'use client';
 
-import PageHeader from './PageHeader';
-import styles from './styles/question.check.module.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAtomValue } from 'jotai';
 import { selectedQuestionsAtom } from '@/store/select';
 import DraggableQuestionItem from './DraggableQuestionItem';
@@ -20,7 +18,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 
-const QuestionCheck = ({ handleNextStep }: { handleNextStep: () => void }) => {
+const QuestionCheck = () => {
   const selectedQuestions = useAtomValue(selectedQuestionsAtom);
 
   const newSelectedQuestions = selectedQuestions.map((q, index) => {
@@ -59,31 +57,25 @@ const QuestionCheck = ({ handleNextStep }: { handleNextStep: () => void }) => {
 
   return (
     <>
-      <PageHeader
-        titleText="질문 순서 확인"
-        subtitleText="아이템을 드래그하여 질문 순서를 바꿀 수 있습니다."
-      />
-      <div className={styles.container}>
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={questions.map((q) => q.id)}
+          strategy={verticalListSortingStrategy}
         >
-          <SortableContext
-            items={questions.map((q) => q.id)}
-            strategy={verticalListSortingStrategy}
-          >
-            {questions.map((item) => (
-              <DraggableQuestionItem
-                key={item.id}
-                id={item.id}
-                index={item.index}
-                text={item.text}
-              />
-            ))}
-          </SortableContext>
-        </DndContext>
-      </div>
+          {questions.map((item) => (
+            <DraggableQuestionItem
+              key={item.id}
+              id={item.id}
+              index={item.index}
+              text={item.text}
+            />
+          ))}
+        </SortableContext>
+      </DndContext>
     </>
   );
 };
