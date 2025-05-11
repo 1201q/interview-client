@@ -29,6 +29,7 @@ export const initWebcam = (
       const processed = await human.image(video);
 
       human.draw.canvas(processed.canvas as HTMLCanvasElement, canvas);
+      human.webcam.pause();
     }
 
     afterInit();

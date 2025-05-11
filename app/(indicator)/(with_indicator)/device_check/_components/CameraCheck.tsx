@@ -79,10 +79,9 @@ const CameraCheck = () => {
         transition={{ duration: 0.35, ease: 'easeInOut' }}
       >
         <NewWebcam
-          isRunning={isCameraRunning && isFaceCheckModalOpen}
+          isRunning={isFaceCheckModalOpen}
           afterInit={() => {
             setInit(true);
-            setIsCameraRunning(true);
           }}
           setCenterStatus={setCenterStatus}
         />

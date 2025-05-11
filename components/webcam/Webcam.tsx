@@ -10,6 +10,7 @@ import { PersonResult } from '@vladmandic/human';
 import { initWebcam } from './initWebcam';
 import { useDrawLoop } from './useDrawLoop';
 import { useFaceCenter } from './useFaceCenter';
+import React from 'react';
 
 interface ResultBuffer {
   timestamp: number;
@@ -48,6 +49,9 @@ const NewWebcam = ({
       await init();
     };
 
+    if (human.webcam) {
+      human.webcam.stop();
+    }
     setupCamera();
 
     return () => {
@@ -62,15 +66,12 @@ const NewWebcam = ({
 
     if (human && isRunning) {
       startDetection();
-      startDrawing({ face: true });
-
-      if (!human.webcam.paused) {
-        human.webcam.start();
-      }
+      startDrawing();
+      human.webcam.play();
     } else {
       stopDetection();
       stopDrawing();
-      human.webcam.stop();
+      human.webcam.pause();
 
       bufferRef.current = [];
     }
@@ -88,4 +89,4 @@ const NewWebcam = ({
   );
 };
 
-export default NewWebcam;
+export default React.memo(NewWebcam);
