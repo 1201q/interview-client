@@ -1,4 +1,4 @@
-import Indicator from './question_select/_components/Indicator';
+import Indicator from '@/components/common/Indicator';
 import styles from './page.module.css';
 import { Suspense } from 'react';
 

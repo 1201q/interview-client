@@ -52,6 +52,8 @@ const QuestionCheck = () => {
       }),
     );
 
+    console.log(newList);
+
     setQuestions(newList);
   };
 

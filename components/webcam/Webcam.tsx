@@ -57,6 +57,7 @@ const NewWebcam = ({
     return () => {
       stopDetection();
       stopDrawing();
+
       human.webcam.stop();
     };
   }, [human]);

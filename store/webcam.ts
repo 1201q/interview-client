@@ -2,8 +2,6 @@ import { humanConfig } from '@/utils/constants/human.config';
 import type { Human } from '@vladmandic/human';
 import { atom } from 'jotai';
 
-let singleton: Human | null = null;
-
 export const humanInstanceAtom = atom<Human>();
 export const isHumanLoadedAtom = atom(false);
 
@@ -19,19 +17,12 @@ export const initHumanAtom = atom(
 initHumanAtom.onMount = (set) => {
   (async () => {
     if (typeof window !== 'undefined') {
-      if (singleton) {
-        console.log('human 로딩 재호출');
-        set(singleton);
-        return;
-      }
-
       console.log('human 로딩중');
       const H = await import('@vladmandic/human');
       const human = new H.default(humanConfig) as Human;
       await human.load();
       await human.warmup();
 
-      singleton = human;
       set(human);
       console.log('human 로딩완료');
     }

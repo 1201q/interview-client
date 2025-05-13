@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
 
     return config;
   },
-
+  reactStrictMode: false,
   experimental: {
     turbo: {
       rules: {

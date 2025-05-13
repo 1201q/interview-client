@@ -30,6 +30,10 @@ export const setSelectedQuestionsAtom = atom(
   },
 );
 
+export const finalSelectedQuestionsAtom = atom<
+  { id: string; index: number; text: string }[]
+>([]);
+
 export const deletedQuestionsAtom = atom<QuestionType[]>([]);
 
 // selectedQuestionsAtom.onMount = (set) => {
