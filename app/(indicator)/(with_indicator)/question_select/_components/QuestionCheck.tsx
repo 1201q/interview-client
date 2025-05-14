@@ -1,8 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-import { useAtomValue } from 'jotai';
-import { selectedQuestionsAtom } from '@/store/select';
+import { useEffect } from 'react';
+import { useAtom, useAtomValue } from 'jotai';
+import {
+  finalSelectedQuestionsAtom,
+  selectedQuestionsAtom,
+} from '@/store/select';
 import DraggableQuestionItem from './DraggableQuestionItem';
 import {
   closestCenter,
@@ -22,10 +25,14 @@ const QuestionCheck = () => {
   const selectedQuestions = useAtomValue(selectedQuestionsAtom);
 
   const newSelectedQuestions = selectedQuestions.map((q, index) => {
-    return { id: q.id, index: index + 1, text: q.question_text };
+    return { id: q.id, index, text: q.question_text };
   });
 
-  const [questions, setQuestions] = useState(newSelectedQuestions);
+  const [questions, setQuestions] = useAtom(finalSelectedQuestionsAtom);
+
+  useEffect(() => {
+    setQuestions(newSelectedQuestions);
+  }, []);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -48,11 +55,9 @@ const QuestionCheck = () => {
     const newList = arrayMove(questions, oldIndex, newIndex).map(
       (item, index) => ({
         ...item,
-        index: index + 1,
+        index: index,
       }),
     );
-
-    console.log(newList);
 
     setQuestions(newList);
   };

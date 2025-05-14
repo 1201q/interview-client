@@ -1,4 +1,3 @@
-import { ROLE_OPTIONS } from '@/utils/constants/interview.step';
 import {
   AddQuestionType,
   HelpInformationType,
@@ -34,13 +33,13 @@ export const finalSelectedQuestionsAtom = atom<
   { id: string; index: number; text: string }[]
 >([]);
 
-export const deletedQuestionsAtom = atom<QuestionType[]>([]);
+export const submitSelectedQuestionsAtom = atom((get) =>
+  get(finalSelectedQuestionsAtom).map((q) => {
+    return { id: q.id, order: q.index };
+  }),
+);
 
-// selectedQuestionsAtom.onMount = (set) => {
-//   return () => {
-//     set([]);
-//   };
-// };
+export const deletedQuestionsAtom = atom<QuestionType[]>([]);
 
 deletedQuestionsAtom.onMount = (set) => {
   return () => {
