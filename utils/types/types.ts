@@ -68,3 +68,21 @@ export type MenuType = { name: string; value: string; link?: string };
 export type GeneratedQuestionType = { question_text: string; id: number };
 
 export type DirectionType = 'up' | 'down' | 'right' | 'left' | 'center';
+
+export type InterviewSessionType = {
+  id: string;
+  user_id: string;
+  status: 'pending' | 'ready' | 'in_progress' | 'completed' | 'expired';
+  created_at: string;
+  updated_at: string;
+  questions: InterviewSessionQuestionType[];
+};
+
+export type InterviewSessionQuestionType = {
+  id: string;
+  order: number;
+  started_at: null | string;
+  ended_at: null | string;
+  created_at: string;
+  question: QuestionType;
+};

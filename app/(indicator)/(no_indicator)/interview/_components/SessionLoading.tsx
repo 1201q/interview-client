@@ -1,14 +1,20 @@
 'use client';
 
 import Loading from '@/components/common/Loading';
-import styles from './page.module.css';
+import styles from './styles/session.loading.module.css';
 import { submitSelectedQuestionsAtom } from '@/store/select';
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import { createInterviewSession } from '@/utils/actions/createInterviewSession';
 import { useRouter } from 'next/navigation';
 
-const Page = () => {
+interface Props {
+  handleCreateInterviewSession: (
+    submitData: { id: string; order: number }[],
+  ) => Promise<void>;
+}
+
+const SessionLoading = ({ handleCreateInterviewSession }: Props) => {
   const submitData = useAtomValue(submitSelectedQuestionsAtom);
 
   const router = useRouter();
@@ -16,15 +22,9 @@ const Page = () => {
   useEffect(() => {
     const submit = async () => {
       try {
-        const session = await createInterviewSession(submitData);
-
-        router.replace(`/interview/running/${session.id}`);
+        await createInterviewSession(submitData);
       } catch (error) {
         console.error('Error creating interview session:', error);
-
-        alert('실패');
-
-        router.back();
       }
     };
 
@@ -41,4 +41,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default SessionLoading;

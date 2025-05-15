@@ -1,7 +1,8 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
+
+import { InterviewSessionType } from '../types/types';
 
 export const createInterviewSession = async (
   questionWithOrder: { id: string; order: number }[],
@@ -33,5 +34,8 @@ export const createInterviewSession = async (
     throw new Error('세션 생성에 실패했습니다. 다시 시도해주세요.');
   }
 
-  revalidatePath('/question_select/confirm');
+  const data = await res.json();
+  const session: InterviewSessionType = data.session;
+
+  return session;
 };

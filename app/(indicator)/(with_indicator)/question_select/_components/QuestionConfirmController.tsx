@@ -22,7 +22,7 @@ const QuestionConfirmController = () => {
     try {
       await createInterviewSession(submitData);
 
-      router.replace('/device_check/mic');
+      router.push('/device_check/mic');
     } catch (error) {
       alert('인터뷰 세션 생성에 실패했습니다.');
     } finally {
@@ -41,14 +41,23 @@ const QuestionConfirmController = () => {
   return (
     <BottomController
       rightContent={
-        <Button
-          text={!loading ? '환경체크로 이동' : '로딩중...'}
-          disabled={buttonDisabled || loading}
-          onClick={() => {
-            handleCreateInterviewSession();
-          }}
-          color="blue"
-        />
+        <>
+          <Button
+            text={'환경 체크 스킵'}
+            disabled={buttonDisabled || loading}
+            onClick={() => {
+              router.push('/interview');
+            }}
+          />
+          <Button
+            text={!loading ? '환경체크로 이동' : '로딩중...'}
+            disabled={buttonDisabled || loading}
+            onClick={() => {
+              handleCreateInterviewSession();
+            }}
+            color="blue"
+          />
+        </>
       }
     />
   );

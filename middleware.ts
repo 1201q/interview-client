@@ -118,6 +118,8 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/login',
+    '/interview',
+    '/interview/running',
     '/question_select',
     '/question_select/confirm',
     '/question_add',
