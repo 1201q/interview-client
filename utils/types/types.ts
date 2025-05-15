@@ -69,10 +69,17 @@ export type GeneratedQuestionType = { question_text: string; id: number };
 
 export type DirectionType = 'up' | 'down' | 'right' | 'left' | 'center';
 
+export type InterviewSessionStatusType =
+  | 'pending'
+  | 'ready'
+  | 'in_progress'
+  | 'completed'
+  | 'expired';
+
 export type InterviewSessionType = {
   id: string;
   user_id: string;
-  status: 'pending' | 'ready' | 'in_progress' | 'completed' | 'expired';
+  status: InterviewSessionStatusType;
   created_at: string;
   updated_at: string;
   questions: InterviewSessionQuestionType[];

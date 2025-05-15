@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import { fetcher } from './fetcher';
 import {
   BookmarkedQuestionType,
+  InterviewSessionType,
   QuestionCountType,
   QuestionType,
   RoleType,
@@ -79,4 +80,26 @@ export const getQuestionListByRole = async (role: RoleType) => {
 
 export const getQuestionCounts = async () => {
   return fetcher<QuestionCountType>(`/question/count`);
+};
+
+export const getInterviewSession = async (sessionId: string) => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('accessToken')?.value;
+
+  const options: Partial<RequestInit> = {
+    method: 'GET',
+    credentials: 'include',
+    cache: 'no-store',
+    headers: {
+      'Content-Type': 'application/json',
+      Cookie: `accessToken=${token}`,
+    },
+  };
+
+  const data = fetcher<InterviewSessionType>(
+    `/interview/session/${sessionId}`,
+    options,
+  );
+
+  return data;
 };

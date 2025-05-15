@@ -20,9 +20,12 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
+import { useRouter } from 'next/navigation';
 
 const QuestionCheck = () => {
   const selectedQuestions = useAtomValue(selectedQuestionsAtom);
+
+  const router = useRouter();
 
   const newSelectedQuestions = selectedQuestions.map((q, index) => {
     return { id: q.id, index, text: q.question_text };
@@ -31,6 +34,11 @@ const QuestionCheck = () => {
   const [questions, setQuestions] = useAtom(finalSelectedQuestionsAtom);
 
   useEffect(() => {
+    if (selectedQuestions.length === 0) {
+      alert('질문을 선택해주세요.');
+      router.replace('/question_select');
+    }
+
     setQuestions(newSelectedQuestions);
   }, []);
 

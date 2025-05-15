@@ -14,7 +14,7 @@ interface Props {
   ) => Promise<void>;
 }
 
-const SessionLoading = ({ handleCreateInterviewSession }: Props) => {
+const SessionLoading = () => {
   const submitData = useAtomValue(submitSelectedQuestionsAtom);
 
   const router = useRouter();

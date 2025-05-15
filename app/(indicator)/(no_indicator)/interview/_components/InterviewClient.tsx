@@ -1,17 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import StepIndicator from '../_components/StepIndicator';
-import styles from './page.module.css';
+import { useState } from 'react';
+
+import styles from './styles/interview.client.module.css';
 import TopStatusHeader from '../_components/TopStatusHeader';
 import WebcamInstance from '@/components/refactorWebcam/WebcamInstance';
-import Question from '../_components/Question';
-import SessionLoading from '../_components/SessionLoading';
-import { useAtomValue } from 'jotai';
-import { submitSelectedQuestionsAtom } from '@/store/select';
-import { createInterviewSession } from '@/utils/actions/createInterviewSession';
 
-const InterviewPage = () => {
+import {
+  InterviewSessionStatusType,
+  InterviewSessionType,
+} from '@/utils/types/types';
+
+const InterviewClient = ({ data }: { data: InterviewSessionType }) => {
+  const [interviewStatus, setInterviewStatus] =
+    useState<InterviewSessionStatusType>('pending');
+
   const stepLength = 5;
   const [stepIndex, setStepIndex] = useState(0);
   const [start, setStart] = useState(false);
@@ -43,13 +46,13 @@ const InterviewPage = () => {
       </div>
       <WebcamInstance isRunning={start} />
       <div className={styles.bottomContainer}>
-        <Question>
+        {/* <Question>
           <StepIndicator length={stepLength} currentStep={stepIndex} />
-        </Question>
-        <button>제출하기</button>
+        </Question> */}
+        {interviewStatus === 'pending' && <button>시작하기</button>}
       </div>
     </div>
   );
 };
 
-export default InterviewPage;
+export default InterviewClient;
