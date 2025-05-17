@@ -1,23 +1,29 @@
 import { useEffect, useState } from 'react';
 import styles from './styles/top.status.module.css';
 
-const TOTAL_TIME = 60;
+interface Props {
+  time: number;
+  onTimeOver?: () => void;
+}
 
-const Timer = () => {
-  const [secondsLeft, setSecondsLeft] = useState(TOTAL_TIME);
+const Timer = ({ time, onTimeOver }: Props) => {
+  const [secondsLeft, setSecondsLeft] = useState(time);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setSecondsLeft((prev) => {
         if (prev <= 1) {
           clearInterval(interval);
+
+          if (onTimeOver) onTimeOver();
+
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [onTimeOver]);
 
   return (
     <div className={styles.timeContainer}>

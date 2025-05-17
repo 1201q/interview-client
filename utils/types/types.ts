@@ -69,12 +69,25 @@ export type GeneratedQuestionType = { question_text: string; id: number };
 
 export type DirectionType = 'up' | 'down' | 'right' | 'left' | 'center';
 
+export type InterviewClientStatusType =
+  | 'ready'
+  | 'countdown'
+  | 'answering'
+  | 'submitting'
+  | 'waiting30';
+
 export type InterviewSessionStatusType =
   | 'pending'
   | 'ready'
   | 'in_progress'
   | 'completed'
   | 'expired';
+
+export type InterviewSessionQuestionStatusType =
+  | 'waiting'
+  | 'ready'
+  | 'answering'
+  | 'submitted';
 
 export type InterviewSessionType = {
   id: string;
@@ -92,4 +105,5 @@ export type InterviewSessionQuestionType = {
   ended_at: null | string;
   created_at: string;
   question: QuestionType;
+  status: InterviewSessionQuestionStatusType;
 };

@@ -82,7 +82,7 @@ export const getQuestionCounts = async () => {
   return fetcher<QuestionCountType>(`/question/count`);
 };
 
-export const getInterviewSession = async (sessionId: string) => {
+export const getInterviewSessionServer = async (sessionId: string) => {
   const cookieStore = await cookies();
   const token = cookieStore.get('accessToken')?.value;
 
