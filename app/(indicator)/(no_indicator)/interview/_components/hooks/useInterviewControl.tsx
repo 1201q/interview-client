@@ -55,9 +55,9 @@ export const useInterviewControl = () => {
   };
 
   const startAnswer = async () => {
+    setLoading(true);
     try {
       if (session) {
-        setLoading(true);
         await startInterviewSessionQuestion(session.id, displayQuestion.order);
 
         fetchSessionData();

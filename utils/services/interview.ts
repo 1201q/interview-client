@@ -19,6 +19,7 @@ export const readyInterviewSession = async (sessionId: string) => {
     throw new Error('ready 세팅에 실패했습니다.');
   }
 };
+
 export const startInterviewSession = async (sessionId: string) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/interview/session/start`,

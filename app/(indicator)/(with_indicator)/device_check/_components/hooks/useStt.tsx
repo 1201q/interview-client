@@ -37,6 +37,8 @@ export const useStt = () => {
     recorderRef.current.onstop = async () => {
       const blob = new Blob(audioChunks.current, { type: 'audio/webm' });
 
+      console.log(blob);
+
       try {
         const text = await uploadAudioForSTT(blob);
         setText(text);

@@ -18,6 +18,7 @@ import DisplayQuestion from './DisplayQuestion';
 
 import Countdown from './Countdown';
 import { AnimatePresence } from 'motion/react';
+import MicRecorder from './MicRecorder';
 
 const InterviewClient = ({ data }: { data: InterviewSessionType }) => {
   const setData = useSetAtom(interviewSessionAtom);
@@ -36,6 +37,7 @@ const InterviewClient = ({ data }: { data: InterviewSessionType }) => {
       </div>
 
       <WebcamInstance isRunning={true} />
+      <MicRecorder />
       <div className={styles.bottomContainer}>
         {sessionStatus !== 'pending' && <DisplayQuestion />}
         <div className={styles.buttonContainer}>

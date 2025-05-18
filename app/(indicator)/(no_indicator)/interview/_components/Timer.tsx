@@ -15,7 +15,11 @@ const Timer = ({ time, onTimeOver }: Props) => {
         if (prev <= 1) {
           clearInterval(interval);
 
-          if (onTimeOver) onTimeOver();
+          if (onTimeOver) {
+            setTimeout(() => {
+              onTimeOver();
+            }, 0);
+          }
 
           return 0;
         }

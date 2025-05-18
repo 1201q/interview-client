@@ -55,3 +55,5 @@ interviewClientStatusAtom.onMount = (set) => {
     set('ready');
   };
 };
+
+export const isMicRecordingAtom = atom<boolean>(false);
