@@ -15,31 +15,14 @@ const TopStatusHeader = () => {
   const clientStatus = useAtomValue(interviewClientStatusAtom);
   const sessionStatus = useAtomValue(interviewSessionStatusAtom);
 
-  const { startAnswer, submitAnswer, startInterview } = useInterviewControl();
+  const { startAnswer, submitAnswer } = useInterviewControl();
 
   return (
     <div className={styles.container}>
       {clientStatus === 'answering' && <Recording />}
-      {(clientStatus === 'waiting30' || clientStatus === 'ready') && (
-        <Status text="준비 중" />
-      )}
+      {clientStatus === 'waiting30' && <Status text="준비 중" />}
       <AnimatePresence>
-        {sessionStatus === 'ready' && clientStatus === 'ready' && (
-          <motion.div
-            initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.45, type: 'spring' }}
-            exit={{ x: -100, opacity: 0 }}
-            className={`${styles.status} ${styles.remainingTime}`}
-          >
-            <Clock />
-            <span>준비 시간</span>
-            <Timer time={30} onTimeOver={startInterview} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <AnimatePresence>
-        {clientStatus === 'waiting30' && (
+        {sessionStatus === 'in_progress' && clientStatus === 'waiting30' && (
           <motion.div
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}

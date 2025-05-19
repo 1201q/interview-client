@@ -1,25 +1,6 @@
 import { InterviewSessionType } from '../types/types';
 import { fetcher } from './fetcher';
 
-export const readyInterviewSession = async (sessionId: string) => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/interview/session/ready`,
-    {
-      method: 'PATCH',
-      credentials: 'include',
-      cache: 'no-store',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ session_id: sessionId }),
-    },
-  );
-
-  if (!res.ok) {
-    throw new Error('ready 세팅에 실패했습니다.');
-  }
-};
-
 export const startInterviewSession = async (sessionId: string) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/interview/session/start`,

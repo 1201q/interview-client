@@ -41,14 +41,31 @@ export const useMicRecorder = () => {
 
   const startRecording = () => {
     if (recorderRef.current && recorderRef.current.state === 'inactive') {
+      console.log('시작');
       recorderRef.current.start();
     }
   };
 
   const stopRecording = () => {
-    if (recorderRef.current && recorderRef.current.state === 'recording') {
-      recorderRef.current.stop();
-    }
+    return new Promise<Blob>((resolve) => {
+      if (recorderRef.current && recorderRef.current.state === 'recording') {
+        recorderRef.current.onstop = () => {
+          const blob = new Blob(audioChunks.current, { type: 'audio/webm' });
+
+          console.log(blob);
+
+          console.log('stop');
+          setAudioBlob(blob);
+          audioChunks.current = [];
+          resolve(blob);
+        };
+
+        recorderRef.current.stop();
+      } else {
+        console.log('stop');
+        resolve(new Blob());
+      }
+    });
   };
 
   return { audioBlob, startRecording, stopRecording };

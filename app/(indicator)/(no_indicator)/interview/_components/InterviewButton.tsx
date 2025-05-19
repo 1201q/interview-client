@@ -23,7 +23,7 @@ const InterviewButton = () => {
   const sessionStatus = useAtomValue(interviewSessionStatusAtom);
   const clientStatus = useAtomValue(interviewClientStatusAtom);
 
-  const { loading, readyInterview, startInterview, submitAnswer, startAnswer } =
+  const { loading, startInterview, submitAnswer, startAnswer } =
     useInterviewControl();
 
   return (
@@ -33,10 +33,7 @@ const InterviewButton = () => {
       whileHover={{ scale: 1.03 }}
     >
       {sessionStatus === 'pending' && (
-        <ReadyButton loading={loading} onClick={readyInterview} />
-      )}
-      {sessionStatus === 'ready' && (
-        <StartSessionButton loading={loading} onClick={startInterview} />
+        <ReadyButton loading={loading} onClick={startInterview} />
       )}
       {clientStatus === 'answering' && (
         <StopButton loading={loading} onClick={submitAnswer} />
@@ -65,28 +62,6 @@ const ReadyButton = ({ loading, onClick }: ButtonProps) => {
           </div>
         )}
         <p>시작하기</p>
-      </div>
-    </button>
-  );
-};
-
-// 질문 시작 -> countdown -> answering
-const StartSessionButton = ({ loading, onClick }: ButtonProps) => {
-  return (
-    <button
-      disabled={loading}
-      onClick={onClick}
-      className={`${styles.container}`}
-    >
-      <div className={styles.flex}>
-        {loading ? (
-          <Loading size={25} color="white" />
-        ) : (
-          <div className={styles.playIcon}>
-            <Play />
-          </div>
-        )}
-        <p>면접 시작</p>
       </div>
     </button>
   );
