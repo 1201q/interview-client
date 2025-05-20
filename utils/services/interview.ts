@@ -23,17 +23,19 @@ export const startInterviewSession = async (sessionId: string) => {
 export const submitInterviewSessionQuestion = async (
   sessionId: string,
   order: number,
+  audioBlob: Blob,
 ) => {
+  const formData = new FormData();
+  formData.append('audio', audioBlob, 'answer.webm');
+  formData.append('session_id', sessionId);
+  formData.append('order', order.toString());
+
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/interview/session/question/submit`,
     {
       method: 'PATCH',
       credentials: 'include',
-      cache: 'no-store',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ session_id: sessionId, order: order }),
+      body: formData,
     },
   );
 

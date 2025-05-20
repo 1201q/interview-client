@@ -64,7 +64,11 @@ export const useInterviewControl = (
 
         console.log(audioBlob);
 
-        await submitInterviewSessionQuestion(session.id, displayQuestion.order);
+        await submitInterviewSessionQuestion(
+          session.id,
+          displayQuestion.order,
+          audioBlob,
+        );
         fetchSessionData();
       }
 
