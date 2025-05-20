@@ -18,12 +18,21 @@ import DisplayQuestion from './DisplayQuestion';
 
 import Countdown from './Countdown';
 import { AnimatePresence } from 'motion/react';
+import { useInterviewFlow } from './hooks/useInterviewFlow';
+
+const READY_SEC = 10;
+const INTERVIEW_SEC = 60;
 
 const InterviewClient = ({ data }: { data: InterviewSessionType }) => {
   const setData = useSetAtom(interviewSessionAtom);
 
   const sessionStatus = useAtomValue(interviewSessionStatusAtom);
   const clientStatus = useAtomValue(interviewClientStatusAtom);
+
+  useInterviewFlow({
+    readySec: READY_SEC,
+    interviewSec: INTERVIEW_SEC,
+  });
 
   useEffect(() => {
     setData(data);
@@ -32,7 +41,7 @@ const InterviewClient = ({ data }: { data: InterviewSessionType }) => {
   return (
     <div className={styles.container}>
       <div className={styles.topContainer}>
-        <TopStatusHeader />
+        <TopStatusHeader readySec={READY_SEC} interviewSec={INTERVIEW_SEC} />
       </div>
 
       <WebcamInstance isRunning={true} />

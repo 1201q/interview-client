@@ -5,7 +5,7 @@ import styles from './styles/interview.button.module.css';
 import Play from '@/public/play.svg';
 import Stop from '@/public/stop.svg';
 
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import {
   interviewClientStatusAtom,
   interviewSessionStatusAtom,
@@ -21,10 +21,9 @@ interface ButtonProps {
 
 const InterviewButton = () => {
   const sessionStatus = useAtomValue(interviewSessionStatusAtom);
-  const clientStatus = useAtomValue(interviewClientStatusAtom);
+  const [clientStatus, setClientStatus] = useAtom(interviewClientStatusAtom);
 
-  const { loading, startInterview, submitAnswer, startAnswer } =
-    useInterviewControl();
+  const { loading, startInterview, submitAnswer } = useInterviewControl();
 
   return (
     <motion.div
@@ -39,7 +38,12 @@ const InterviewButton = () => {
         <StopButton loading={loading} onClick={submitAnswer} />
       )}
       {sessionStatus === 'in_progress' && clientStatus === 'waiting30' && (
-        <StartAnsweringButton loading={loading} onClick={startAnswer} />
+        <StartAnsweringButton
+          loading={loading}
+          onClick={() => {
+            setClientStatus('countdown');
+          }}
+        />
       )}
     </motion.div>
   );

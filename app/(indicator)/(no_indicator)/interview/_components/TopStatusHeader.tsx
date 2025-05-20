@@ -9,13 +9,15 @@ import {
   interviewClientStatusAtom,
   interviewSessionStatusAtom,
 } from '@/store/interview';
-import { useInterviewControl } from './hooks/useInterviewControl';
 
-const TopStatusHeader = () => {
+interface Props {
+  readySec: number;
+  interviewSec: number;
+}
+
+const TopStatusHeader = ({ readySec, interviewSec }: Props) => {
   const clientStatus = useAtomValue(interviewClientStatusAtom);
   const sessionStatus = useAtomValue(interviewSessionStatusAtom);
-
-  const { startAnswer, submitAnswer } = useInterviewControl();
 
   return (
     <div className={styles.container}>
@@ -32,7 +34,13 @@ const TopStatusHeader = () => {
           >
             <Clock />
             <span>준비 시간</span>
-            <Timer time={30} onTimeOver={startAnswer} />
+
+            <Timer
+              time={readySec}
+              onTimeOver={() => {
+                console.log(30);
+              }}
+            />
           </motion.div>
         )}
       </AnimatePresence>
@@ -47,7 +55,13 @@ const TopStatusHeader = () => {
           >
             <Clock />
             <span>남은 시간</span>
-            <Timer time={60} onTimeOver={submitAnswer} />
+
+            <Timer
+              time={interviewSec}
+              onTimeOver={() => {
+                console.log(60);
+              }}
+            />
           </motion.div>
         )}
       </AnimatePresence>

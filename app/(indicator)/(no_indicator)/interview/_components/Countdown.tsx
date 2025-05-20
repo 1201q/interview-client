@@ -12,7 +12,9 @@ const Countdown = () => {
 
   useEffect(() => {
     if (countdown === 0) {
-      setStatus('answering');
+      // setStatus('answering');
+
+      console.log('321');
       return;
     }
 
