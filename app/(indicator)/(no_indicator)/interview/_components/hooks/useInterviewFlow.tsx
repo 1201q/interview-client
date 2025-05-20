@@ -7,15 +7,15 @@ import { startTimer } from '@/utils/time/timer';
 interface Props {
   readySec?: number;
   interviewSec?: number;
+  control: ReturnType<typeof useInterviewControl>;
 }
 
 export const useInterviewFlow = ({
   readySec = 30,
   interviewSec = 60,
+  control,
 }: Props) => {
   const [clientStatus, setClientStatus] = useAtom(interviewClientStatusAtom);
-
-  const { startAnswer, submitAnswer } = useInterviewControl();
 
   useEffect(() => {
     if (clientStatus === 'countdown') {
@@ -29,10 +29,12 @@ export const useInterviewFlow = ({
 
   useEffect(() => {
     if (clientStatus === 'answering') {
-      startAnswer();
+      control.startAnswer();
+
       const timer = startTimer(interviewSec, async () => {
-        await submitAnswer();
+        await control.submitAnswer();
       });
+
       return () => timer.cancel();
     }
   }, [clientStatus]);

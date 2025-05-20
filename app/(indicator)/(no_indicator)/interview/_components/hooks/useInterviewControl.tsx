@@ -13,15 +13,15 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useState } from 'react';
 import { useInterviewRecorder } from './useInterviewRecorder';
 
-export const useInterviewControl = () => {
+export const useInterviewControl = (
+  recorder: ReturnType<typeof useInterviewRecorder>,
+) => {
   const session = useAtomValue(interviewSessionAtom);
   const displayQuestion = useAtomValue(displayInterviewQuestionAtom);
 
   const fetchSessionData = useSetAtom(fetchInerviewSessionAtom);
   const [clientStatus, setClientStatus] = useAtom(interviewClientStatusAtom);
   const [loading, setLoading] = useState(false);
-
-  const { startRecording, stopRecording } = useInterviewRecorder();
 
   const startInterview = async () => {
     try {
@@ -45,6 +45,8 @@ export const useInterviewControl = () => {
     try {
       if (session) {
         await startInterviewSessionQuestion(session.id, displayQuestion.order);
+        await recorder.startRecording();
+
         fetchSessionData();
       }
     } catch (error) {
@@ -58,6 +60,10 @@ export const useInterviewControl = () => {
     setLoading(true);
     try {
       if (session) {
+        const audioBlob = await recorder.stopRecording();
+
+        console.log(audioBlob);
+
         await submitInterviewSessionQuestion(session.id, displayQuestion.order);
         fetchSessionData();
       }

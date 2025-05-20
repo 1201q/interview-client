@@ -12,18 +12,25 @@ import {
 } from '@/store/interview';
 
 import { motion } from 'motion/react';
-import { useInterviewControl } from './hooks/useInterviewControl';
+
+interface Props {
+  loading: boolean;
+  onInterviewStart: () => Promise<void>;
+  onAnswerSubmit: () => Promise<void>;
+}
 
 interface ButtonProps {
   loading: boolean;
   onClick?: () => void;
 }
 
-const InterviewButton = () => {
+const InterviewButton = ({
+  loading,
+  onAnswerSubmit,
+  onInterviewStart,
+}: Props) => {
   const sessionStatus = useAtomValue(interviewSessionStatusAtom);
   const [clientStatus, setClientStatus] = useAtom(interviewClientStatusAtom);
-
-  const { loading, startInterview, submitAnswer } = useInterviewControl();
 
   return (
     <motion.div
@@ -32,17 +39,15 @@ const InterviewButton = () => {
       whileHover={{ scale: 1.03 }}
     >
       {sessionStatus === 'pending' && (
-        <ReadyButton loading={loading} onClick={startInterview} />
+        <ReadyButton loading={loading} onClick={onInterviewStart} />
       )}
       {clientStatus === 'answering' && (
-        <StopButton loading={loading} onClick={submitAnswer} />
+        <StopButton loading={loading} onClick={onAnswerSubmit} />
       )}
       {sessionStatus === 'in_progress' && clientStatus === 'waiting30' && (
         <StartAnsweringButton
           loading={loading}
-          onClick={() => {
-            setClientStatus('countdown');
-          }}
+          onClick={() => setClientStatus('countdown')}
         />
       )}
     </motion.div>

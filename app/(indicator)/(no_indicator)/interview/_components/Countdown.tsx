@@ -2,18 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import styles from './styles/countdown.module.css';
-import { useSetAtom } from 'jotai';
-import { interviewClientStatusAtom } from '@/store/interview';
 import { motion } from 'motion/react';
 
 const Countdown = () => {
   const [countdown, setCountdown] = useState(3);
-  const setStatus = useSetAtom(interviewClientStatusAtom);
 
   useEffect(() => {
     if (countdown === 0) {
-      // setStatus('answering');
-
       console.log('321');
       return;
     }
@@ -23,7 +18,7 @@ const Countdown = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [countdown, setStatus]);
+  }, [countdown]);
 
   return (
     <motion.div
