@@ -59,6 +59,7 @@ const InterviewClient = ({ data }: { data: InterviewSessionType }) => {
               loading={control.loading}
               onAnswerSubmit={control.submitAnswer}
               onInterviewStart={control.startInterview}
+              onInterviewComplete={control.completeInterview}
             />
           )}
         </div>

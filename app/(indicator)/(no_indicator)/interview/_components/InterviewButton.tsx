@@ -9,6 +9,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import {
   interviewClientStatusAtom,
   interviewSessionStatusAtom,
+  isLastQuestionAtom,
 } from '@/store/interview';
 
 import { motion } from 'motion/react';
@@ -17,6 +18,7 @@ interface Props {
   loading: boolean;
   onInterviewStart: () => Promise<void>;
   onAnswerSubmit: () => Promise<void>;
+  onInterviewComplete: () => Promise<void>;
 }
 
 interface ButtonProps {
@@ -28,8 +30,11 @@ const InterviewButton = ({
   loading,
   onAnswerSubmit,
   onInterviewStart,
+  onInterviewComplete,
 }: Props) => {
   const sessionStatus = useAtomValue(interviewSessionStatusAtom);
+  const isLastQuestion = useAtomValue(isLastQuestionAtom);
+
   const [clientStatus, setClientStatus] = useAtom(interviewClientStatusAtom);
 
   return (
@@ -38,17 +43,22 @@ const InterviewButton = ({
       animate={{ opacity: 1, scale: 1 }}
       whileHover={{ scale: 1.03 }}
     >
-      {sessionStatus === 'pending' && (
+      {!isLastQuestion && sessionStatus === 'pending' && (
         <ReadyButton loading={loading} onClick={onInterviewStart} />
       )}
-      {clientStatus === 'answering' && (
+      {!isLastQuestion && clientStatus === 'answering' && (
         <StopButton loading={loading} onClick={onAnswerSubmit} />
       )}
-      {sessionStatus === 'in_progress' && clientStatus === 'waiting30' && (
-        <StartAnsweringButton
-          loading={loading}
-          onClick={() => setClientStatus('countdown')}
-        />
+      {!isLastQuestion &&
+        sessionStatus === 'in_progress' &&
+        clientStatus === 'waiting30' && (
+          <StartAnsweringButton
+            loading={loading}
+            onClick={() => setClientStatus('countdown')}
+          />
+        )}
+      {isLastQuestion && (
+        <CompleteButton loading={loading} onClick={onInterviewComplete} />
       )}
     </motion.div>
   );
@@ -113,6 +123,27 @@ const StartAnsweringButton = ({ loading, onClick }: ButtonProps) => {
           </div>
         )}
         <p>답변 시작</p>
+      </div>
+    </button>
+  );
+};
+
+const CompleteButton = ({ loading, onClick }: ButtonProps) => {
+  return (
+    <button
+      disabled={loading}
+      onClick={onClick}
+      className={`${styles.container}`}
+    >
+      <div className={styles.flex}>
+        {loading ? (
+          <Loading size={25} color="white" />
+        ) : (
+          <div className={styles.playIcon}>
+            <Play />
+          </div>
+        )}
+        <p>결과 보기</p>
       </div>
     </button>
   );

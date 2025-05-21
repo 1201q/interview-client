@@ -35,3 +35,12 @@
   font-size: 16px;
   text-align: center;
 }
+
+.isLastQuestion {
+  padding: 25px 22px 25px 22px;
+}
+
+.isLastQuestion p {
+  font-size: 23px;
+  font-weight: 600;
+}

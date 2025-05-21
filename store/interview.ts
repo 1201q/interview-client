@@ -56,4 +56,10 @@ interviewClientStatusAtom.onMount = (set) => {
   };
 };
 
-export const isMicRecordingAtom = atom<boolean>(false);
+export const isLastQuestionAtom = atom<boolean>(false);
+
+isLastQuestionAtom.onMount = (set) => {
+  return () => {
+    set(false);
+  };
+};

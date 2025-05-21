@@ -20,6 +20,25 @@ export const startInterviewSession = async (sessionId: string) => {
   }
 };
 
+export const completeInterviewSession = async (sessionId: string) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/interview/session/complete`,
+    {
+      method: 'PATCH',
+      credentials: 'include',
+      cache: 'no-store',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ session_id: sessionId }),
+    },
+  );
+
+  if (!res.ok) {
+    throw new Error('complete 세팅에 실패했습니다.');
+  }
+};
+
 export const submitInterviewSessionQuestion = async (
   sessionId: string,
   order: number,
@@ -42,6 +61,10 @@ export const submitInterviewSessionQuestion = async (
   if (!res.ok) {
     throw new Error('submit 세팅에 실패했습니다.');
   }
+
+  const isLast: { isLast: boolean } = await res.json();
+
+  return isLast;
 };
 
 export const startInterviewSessionQuestion = async (
