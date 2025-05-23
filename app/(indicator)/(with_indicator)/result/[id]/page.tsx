@@ -39,10 +39,7 @@ const ResultPage = async ({ params }: Props) => {
           <InfoContainer headerTitle="답변 내용 피드백">
             <AnswerTextFeedback />
           </InfoContainer>
-          <InfoContainer
-            headerTitle="비언어적 정보 피드백"
-            subtitle="음성, 시선, 표정 등의 분석결과에요."
-          >
+          <InfoContainer headerTitle="비언어적 정보 피드백">
             <AnswerCommunicationFeedback />
           </InfoContainer>
         </div>

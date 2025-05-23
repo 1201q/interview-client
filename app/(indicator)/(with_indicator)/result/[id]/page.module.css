@@ -5,11 +5,11 @@
 
 .contentsWrapper {
   display: flex;
-  column-gap: 15px;
+  column-gap: 20px;
 }
 
 .sideContainer {
-  width: 400px;
+  width: 370px;
   height: 100%;
   position: sticky;
   top: 15px;
@@ -20,4 +20,17 @@
   flex-direction: column;
   row-gap: 25px;
   flex: 1;
+}
+
+@media screen and (max-width: 1200px) {
+  .sideContainer {
+    width: 100%;
+    position: static;
+  }
+
+  .contentsWrapper {
+    display: flex;
+    flex-direction: column;
+    row-gap: 25px;
+  }
 }

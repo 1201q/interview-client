@@ -4,10 +4,6 @@ import { ReactNode } from 'react';
 import styles from './styles/answer.result.module.css';
 import { useAtomValue } from 'jotai';
 import { selectedAnswerAtom } from '@/store/result';
-import Button from '@/components/common/Button';
-import Play from '@/public/play.svg';
-
-import Check from '@/public/check.svg';
 
 const AnswerCommunicationFeedback = () => {
   const selected = useAtomValue(selectedAnswerAtom);
@@ -15,27 +11,39 @@ const AnswerCommunicationFeedback = () => {
   return (
     <div className={styles.container}>
       <div className={styles.questionContainer}>
-        <p>답변 피드백</p>
-        <div className={styles.answerContainer}>
-          강점과 약점을 균형 있게 제시했으며, 약점에 대한 개선 노력을 언급한
-          점이 좋았습니다. 답변이 구체적이고 진솔했습니다. 다만, 강점을 뒷받침할
-          수 있는 구체적인 사례를 더 추가하면 설득력이 높아질 것입니다.
+        <p>음성</p>
+        <div className={styles.resultItemContainer}>
+          <div className={styles.resultItem}>
+            <span>답변 시간</span>
+            <p>3초</p>
+          </div>
+          <div className={styles.resultItem}>
+            <span>말 속도</span> <p>적당함</p>
+          </div>
+          <div className={styles.resultItem}>
+            <span>목소리 크기</span> <p>적당함</p>
+          </div>
+          <div className={styles.resultItem}>
+            <span>억양</span> <p>자연스러움</p>
+          </div>
+          <div className={styles.resultItem}>
+            <span>침묵 시간</span> <p>5초</p>
+          </div>
         </div>
       </div>
       <div className={styles.questionContainer}>
-        <p>이런 점은 좋아요</p>
-        <div className={styles.feedbackItemContainer}>
-          <div className={styles.answerWithIconContainer}>
-            <div className={`${styles.icon} ${styles.green}`}>
-              <Check />
-            </div>
-            <p>기본적인 인사와 주문 표현을 정확하게 사용했습니다.</p>
+        <p>시각</p>
+        <div className={styles.resultItemContainer}>
+          <div className={styles.resultItem}>
+            <span>시선 집중도</span>
+            <p>75%</p>
           </div>
-          <div className={styles.answerWithIconContainer}>
-            <div className={`${styles.icon} ${styles.green}`}>
-              <Check />
-            </div>
-            <p>기본적인 인사와 주문 표현을 정확하게 사용했습니다.</p>
+          <div className={styles.resultItem}>
+            <span>고개 움직임</span> <p>적당함</p>
+          </div>
+
+          <div className={styles.resultItem}>
+            <span>얼굴 이탈 시간</span> <p>0초</p>
           </div>
         </div>
       </div>
