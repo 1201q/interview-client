@@ -9,7 +9,7 @@ const STAGE = [
   { name: '질문 선택', link: '/question_select' },
   { name: '환경 체크', link: '/device_check' },
   { name: '면접', link: '/interview' },
-  { name: '분석 결과', link: '/processing' },
+  { name: '분석 결과', link: '/result' },
 ];
 
 interface StageProps {

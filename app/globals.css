@@ -15,12 +15,14 @@
   --main-blue2-color: rgb(125, 166, 255);
   --main-blue3-color: rgb(45, 96, 200);
 
-  --main-green-color: rgb(34, 197, 94);
+  --main-green-color: rgb(55, 179, 119);
   --main-gray-color: rgba(91, 97, 110, 0.7);
 
   --bg-gray-color: rgb(243, 244, 246);
   --bg-blue-color: rgba(64, 98, 219, 0.1);
   --bg-red-color: rgba(219, 64, 64, 0.12);
+  --bg-green-color: rgba(55, 179, 119, 0.2);
+
   --bg-black-color: #242424;
   --border-main-color: rgb(209, 217, 224);
   --border-main2-color: #e5e7eb;

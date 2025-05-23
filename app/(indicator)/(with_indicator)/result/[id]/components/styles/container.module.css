@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-main-color);
+  border-radius: 16px;
+  width: 100%;
+  height: fit-content;
+  box-shadow:
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+}
+
+.headerContainer {
+  display: flex;
+  flex-direction: column;
+
+  row-gap: 3px;
+  padding: 22px;
+}
+
+.headerContainer p {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.headerContainer span {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--font-gray-color);
+}
+
+.contents {
+  display: flex;
+  flex: 1;
+
+  padding: 0px 22px 22px 22px;
+}

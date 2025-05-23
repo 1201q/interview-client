@@ -51,12 +51,13 @@ export const useInterviewControl = (
       if (session) {
         await completeInterviewSession(session.id);
         fetchSessionData();
+
+        router.replace(`/result/${session.id}`);
+
+        setLoading(false);
       }
     } catch (error) {
       console.error('Error. start:', error);
-    } finally {
-      setLoading(false);
-      router.replace('/');
     }
   };
 

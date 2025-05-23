@@ -127,5 +127,6 @@ export const config = {
     '/device_check/camera',
     '/question_delete',
     '/question_generate',
+    '/result/:id',
   ],
 };

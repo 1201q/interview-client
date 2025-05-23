@@ -1,0 +1,82 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+}
+
+.questionContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+}
+
+.questionContainer p {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--font-darkgray-color);
+}
+
+.questionContainer span {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.answerContainer,
+.answerWithIconContainer {
+  border-radius: 12px;
+  padding: 13px 16px;
+  background-color: var(--bg-gray-color);
+  line-height: 140%;
+}
+
+.feedbackItemContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.answerWithIconContainer {
+  display: flex;
+  align-items: center;
+  column-gap: 12px;
+}
+
+.answerWithIconContainer p {
+  flex: 1;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background-color: blue;
+  border-radius: 50%;
+}
+
+.icon svg {
+  width: 13px;
+  height: 13px;
+}
+
+.green {
+  background-color: var(--bg-green-color);
+}
+
+.green svg {
+  fill: var(--main-green-color);
+}
+
+.red {
+  background-color: var(--bg-red-color);
+}
+
+.red svg {
+  fill: var(--main-red-color);
+}
+
+.red p {
+  color: var(--main-red-color);
+  text-align: center;
+}
