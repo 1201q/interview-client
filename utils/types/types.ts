@@ -89,6 +89,12 @@ export type InterviewSessionQuestionStatusType =
   | 'answering'
   | 'submitted';
 
+export type InterviewSessionQuestionAnalysisStatusType =
+  | 'pending'
+  | 'processing'
+  | 'completed'
+  | 'failed';
+
 export type InterviewSessionType = {
   id: string;
   user_id: string;
@@ -106,4 +112,6 @@ export type InterviewSessionQuestionType = {
   created_at: string;
   question: QuestionType;
   status: InterviewSessionQuestionStatusType;
+  analysis_status: InterviewSessionQuestionAnalysisStatusType;
+  analysis_result: any;
 };
