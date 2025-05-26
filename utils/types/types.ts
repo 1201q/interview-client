@@ -113,5 +113,5 @@ export type InterviewSessionQuestionType = {
   question: QuestionType;
   status: InterviewSessionQuestionStatusType;
   analysis_status: InterviewSessionQuestionAnalysisStatusType;
-  analysis_result: any;
+  analysis_result: string;
 };
