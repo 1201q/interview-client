@@ -31,6 +31,21 @@
   line-height: 140%;
 }
 
+.answerContainer span {
+  margin-right: 4px;
+  transition: all 0.2s;
+}
+
+.answerContainer span.gray {
+  color: var(--font-gray-color);
+  cursor: pointer;
+}
+
+.answerContainer span.highlight {
+  color: var(--font-black-color);
+  cursor: pointer;
+}
+
 .feedbackItemContainer {
   display: flex;
   flex-direction: column;

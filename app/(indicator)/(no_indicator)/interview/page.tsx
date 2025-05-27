@@ -10,7 +10,6 @@ import { useRouter } from 'next/navigation';
 
 const Page = () => {
   const submitData = useAtomValue(submitSelectedQuestionsAtom);
-
   const router = useRouter();
 
   useEffect(() => {

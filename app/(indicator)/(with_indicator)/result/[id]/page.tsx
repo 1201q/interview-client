@@ -21,7 +21,7 @@ const ResultPage = async ({ params }: Props) => {
     redirect('/question_select');
   }
 
-  // 44a8685a-06f4-4d0f-81c3-4c5fa124bdec
+  console.log(data);
 
   return (
     <div className={styles.container}>
