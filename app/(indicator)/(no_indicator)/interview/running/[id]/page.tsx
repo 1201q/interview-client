@@ -1,5 +1,4 @@
 import InterviewClient from '../../_components/InterviewClient';
-import { getInterviewSessionServer } from '@/utils/services/question';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -8,9 +7,7 @@ interface Props {
 const InterviewPage = async ({ params }: Props) => {
   const { id } = await params;
 
-  const data = await getInterviewSessionServer(id);
-
-  return <InterviewClient data={data} />;
+  return <InterviewClient sessionId={id} />;
 };
 
 export default InterviewPage;

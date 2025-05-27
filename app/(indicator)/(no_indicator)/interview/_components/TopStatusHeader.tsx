@@ -5,10 +5,7 @@ import Clock from '@/public/clock.svg';
 import { AnimatePresence, motion } from 'motion/react';
 import Timer from './Timer';
 import { useAtomValue } from 'jotai';
-import {
-  interviewClientStatusAtom,
-  interviewSessionStatusAtom,
-} from '@/store/interview';
+import { interviewClientStatusAtom } from '@/store/interview';
 
 interface Props {
   readySec: number;
@@ -17,14 +14,13 @@ interface Props {
 
 const TopStatusHeader = ({ readySec, interviewSec }: Props) => {
   const clientStatus = useAtomValue(interviewClientStatusAtom);
-  const sessionStatus = useAtomValue(interviewSessionStatusAtom);
 
   return (
     <div className={styles.container}>
       {clientStatus === 'answering' && <Recording />}
       {clientStatus === 'waiting30' && <Status text="준비 중" />}
       <AnimatePresence>
-        {sessionStatus === 'in_progress' && clientStatus === 'waiting30' && (
+        {clientStatus === 'waiting30' && (
           <motion.div
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}

@@ -2,43 +2,36 @@
 
 import { useAtomValue } from 'jotai';
 import styles from './styles/question.module.css';
-import {
-  displayInterviewQuestionAtom,
-  interviewQuestionsAtom,
-  isLastQuestionAtom,
-} from '@/store/interview';
+import { interviewClientStatusAtom } from '@/store/interview';
 import StepIndicator from './StepIndicator';
 
 import { AnimatePresence, motion } from 'motion/react';
+import { currentQuestionAtom } from '@/store/interview';
 
 const DisplayQuestion = () => {
-  const questions = useAtomValue(interviewQuestionsAtom);
-  const displayQuestion = useAtomValue(displayInterviewQuestionAtom);
-  const isLastQuestion = useAtomValue(isLastQuestionAtom);
+  const clientStatus = useAtomValue(interviewClientStatusAtom);
+  const currentQuestion = useAtomValue(currentQuestionAtom);
 
-  const questionIndex = questions.findIndex((q) => q.id === displayQuestion.id);
+  if (!currentQuestion) {
+    return null;
+  }
 
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        key={`${displayQuestion.id}-${isLastQuestion ? '1' : '2'}`}
+        key={`${currentQuestion.question_id}-${clientStatus === 'end' ? '1' : '2'}`}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.3 }}
-        className={`${styles.container} ${isLastQuestion ? styles.isLastQuestion : ''} `}
+        className={`${styles.container} ${clientStatus === 'end' ? styles.isLastQuestion : ''} `}
       >
         <p>
-          {isLastQuestion
+          {clientStatus === 'end'
             ? '면접이 종료되었습니다.'
-            : displayQuestion.question.question_text}
+            : currentQuestion.question_text}
         </p>
-        {!isLastQuestion && (
-          <StepIndicator
-            length={questions.length}
-            currentStep={questionIndex}
-          />
-        )}
+        {clientStatus !== 'end' && <StepIndicator />}
       </motion.div>
     </AnimatePresence>
   );

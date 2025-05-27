@@ -5,12 +5,8 @@ import styles from './styles/interview.button.module.css';
 import Play from '@/public/play.svg';
 import Stop from '@/public/stop.svg';
 
-import { useAtom, useAtomValue } from 'jotai';
-import {
-  interviewClientStatusAtom,
-  interviewSessionStatusAtom,
-  isLastQuestionAtom,
-} from '@/store/interview';
+import { useAtom } from 'jotai';
+import { interviewClientStatusAtom } from '@/store/interview';
 
 import { motion } from 'motion/react';
 
@@ -32,9 +28,6 @@ const InterviewButton = ({
   onInterviewStart,
   onInterviewComplete,
 }: Props) => {
-  const sessionStatus = useAtomValue(interviewSessionStatusAtom);
-  const isLastQuestion = useAtomValue(isLastQuestionAtom);
-
   const [clientStatus, setClientStatus] = useAtom(interviewClientStatusAtom);
 
   return (
@@ -43,21 +36,19 @@ const InterviewButton = ({
       animate={{ opacity: 1, scale: 1 }}
       whileHover={{ scale: 1.03 }}
     >
-      {!isLastQuestion && sessionStatus === 'pending' && (
+      {clientStatus === 'pending' && (
         <ReadyButton loading={loading} onClick={onInterviewStart} />
       )}
-      {!isLastQuestion && clientStatus === 'answering' && (
+      {clientStatus === 'answering' && (
         <StopButton loading={loading} onClick={onAnswerSubmit} />
       )}
-      {!isLastQuestion &&
-        sessionStatus === 'in_progress' &&
-        clientStatus === 'waiting30' && (
-          <StartAnsweringButton
-            loading={loading}
-            onClick={() => setClientStatus('countdown')}
-          />
-        )}
-      {isLastQuestion && (
+      {clientStatus === 'waiting30' && (
+        <StartAnsweringButton
+          loading={loading}
+          onClick={() => setClientStatus('countdown')}
+        />
+      )}
+      {clientStatus === 'end' && (
         <CompleteButton loading={loading} onClick={onInterviewComplete} />
       )}
     </motion.div>

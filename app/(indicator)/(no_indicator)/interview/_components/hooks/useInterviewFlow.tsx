@@ -1,8 +1,5 @@
-import {
-  interviewClientStatusAtom,
-  isLastQuestionAtom,
-} from '@/store/interview';
-import { useAtom, useAtomValue } from 'jotai';
+import { interviewClientStatusAtom } from '@/store/interview';
+import { useAtom } from 'jotai';
 import { useInterviewControl } from './useInterviewControl';
 import { useEffect } from 'react';
 import { startTimer } from '@/utils/time/timer';
@@ -19,7 +16,6 @@ export const useInterviewFlow = ({
   control,
 }: Props) => {
   const [clientStatus, setClientStatus] = useAtom(interviewClientStatusAtom);
-  const isLastQuestion = useAtomValue(isLastQuestionAtom);
 
   useEffect(() => {
     if (clientStatus === 'countdown') {
@@ -44,12 +40,12 @@ export const useInterviewFlow = ({
   }, [clientStatus]);
 
   useEffect(() => {
-    if (!isLastQuestion && clientStatus === 'waiting30') {
+    if (clientStatus === 'waiting30') {
       const timer = startTimer(readySec, () => {
         setClientStatus('countdown');
       });
 
       return () => timer.cancel();
     }
-  }, [clientStatus, isLastQuestion]);
+  }, [clientStatus]);
 };

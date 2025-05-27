@@ -12,9 +12,17 @@ const AnswerResult = () => {
   const [isAudioPlay, setIsAudioPlay] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
 
-  const words = JSON.parse(selected?.analysis_result).words || [];
+  const getWords = (analysisResult?: string) => {
+    try {
+      if (!analysisResult) return null;
+      const parsed = JSON.parse(analysisResult);
+      return parsed?.words ?? null;
+    } catch {
+      return null;
+    }
+  };
 
-  console.log(words);
+  const words = getWords(selected?.analysis_result);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 

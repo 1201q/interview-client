@@ -1,19 +1,23 @@
 'use client';
 
+import { useAtomValue } from 'jotai';
 import styles from './styles/step.indicator.module.css';
+import { currentQuestionAtom } from '@/store/interview';
+import { totalQuestionsAtom } from '@/store/interview';
 
-interface Props {
-  length: number;
-  currentStep: number;
-}
+const StepIndicator = () => {
+  const currentQuestion = useAtomValue(currentQuestionAtom);
+  const totalQuestions = useAtomValue(totalQuestionsAtom);
 
-const StepIndicator = ({ length, currentStep }: Props) => {
+  if (!totalQuestions) return null;
+  if (!currentQuestion) return null;
+
   return (
     <div className={styles.container}>
       <div className={styles.indicatorContainer}>
-        {Array.from({ length }, (_, index) => (
+        {Array.from({ length: totalQuestions }, (_, index) => (
           <div
-            className={`${currentStep === index ? styles.current : styles.dot}`}
+            className={`${currentQuestion.question_order === index ? styles.current : styles.dot}`}
             key={index}
           ></div>
         ))}

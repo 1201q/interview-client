@@ -1,6 +1,3 @@
-import { InterviewSessionType } from '../types/types';
-import { fetcher } from './fetcher';
-
 export const getAudio = async (questionId: string) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/audio/${questionId}`,

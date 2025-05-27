@@ -21,8 +21,6 @@ const ResultPage = async ({ params }: Props) => {
     redirect('/question_select');
   }
 
-  console.log(data);
-
   return (
     <div className={styles.container}>
       <div className={styles.contentsWrapper}>

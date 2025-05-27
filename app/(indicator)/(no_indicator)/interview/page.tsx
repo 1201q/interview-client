@@ -5,7 +5,7 @@ import styles from './page.module.css';
 import { submitSelectedQuestionsAtom } from '@/store/select';
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { createInterviewSession } from '@/utils/actions/createInterviewSession';
+import { createInterviewSession } from '@/utils/actions/session';
 import { useRouter } from 'next/navigation';
 
 const Page = () => {
@@ -15,9 +15,9 @@ const Page = () => {
   useEffect(() => {
     const submit = async () => {
       try {
-        const session = await createInterviewSession(submitData);
+        const sessionId = await createInterviewSession(submitData);
 
-        router.replace(`/interview/running/${session.id}`);
+        router.replace(`/interview/running/${sessionId}`);
       } catch (error) {
         console.error('Error creating interview session:', error);
 

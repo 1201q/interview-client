@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import BottomController from '@/components/common/BottomController';
 import { useAtomValue } from 'jotai';
 import { submitSelectedQuestionsAtom } from '@/store/select';
-import { createInterviewSession } from '@/utils/actions/createInterviewSession';
+import { createInterviewSession } from '@/utils/actions/session';
 
 const QuestionConfirmController = () => {
   const router = useRouter();

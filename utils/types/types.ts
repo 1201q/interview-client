@@ -70,11 +70,12 @@ export type GeneratedQuestionType = { question_text: string; id: number };
 export type DirectionType = 'up' | 'down' | 'right' | 'left' | 'center';
 
 export type InterviewClientStatusType =
-  | 'ready'
+  | 'pending'
   | 'countdown'
   | 'answering'
   | 'submitting'
-  | 'waiting30';
+  | 'waiting30'
+  | 'end';
 
 export type InterviewSessionStatusType =
   | 'pending'
