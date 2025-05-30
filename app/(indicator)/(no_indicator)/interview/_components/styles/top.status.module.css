@@ -1,13 +1,29 @@
 .container {
   display: flex;
-
-  column-gap: 12px;
+  justify-content: space-between;
   width: 100%;
 
   position: relative;
 }
 
-.status {
+.leftContainer {
+  display: flex;
+
+  column-gap: 12px;
+  flex: 1;
+  height: 100%;
+}
+
+.rightContainer {
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 12px;
+  height: 100%;
+  position: relative;
+}
+
+.status,
+.statusButton {
   height: 42px;
   display: flex;
   align-items: center;
@@ -27,6 +43,11 @@
     rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
     rgba(0, 0, 0, 0.1) 0px 4px 6px -4px;
   border: 0.8px solid rgba(255, 255, 255, 0.1);
+}
+
+.statusButton {
+  padding: 0px;
+  aspect-ratio: 1/1;
 }
 
 .remainingTime {

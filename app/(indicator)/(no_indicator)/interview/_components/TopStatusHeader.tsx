@@ -6,7 +6,6 @@ import { AnimatePresence, motion } from 'motion/react';
 import Timer from './Timer';
 import { useAtomValue } from 'jotai';
 import { interviewClientStatusAtom } from '@/store/interview';
-
 interface Props {
   readySec: number;
   interviewSec: number;
@@ -17,50 +16,52 @@ const TopStatusHeader = ({ readySec, interviewSec }: Props) => {
 
   return (
     <div className={styles.container}>
-      {clientStatus === 'answering' && <Recording />}
-      {clientStatus === 'waiting30' && <Status text="준비 중" />}
-      <AnimatePresence>
-        {clientStatus === 'waiting30' && (
-          <motion.div
-            initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.45, type: 'spring' }}
-            exit={{ x: -100, opacity: 0 }}
-            className={`${styles.status} ${styles.remainingTime}`}
-          >
-            <Clock />
-            <span>준비 시간</span>
+      <div className={styles.leftContainer}>
+        {clientStatus === 'answering' && <Recording />}
+        {clientStatus === 'waiting30' && <Status text="준비 중" />}
+        <AnimatePresence>
+          {clientStatus === 'waiting30' && (
+            <motion.div
+              initial={{ x: -100, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.45, type: 'spring' }}
+              exit={{ x: -100, opacity: 0 }}
+              className={`${styles.status} ${styles.remainingTime}`}
+            >
+              <Clock />
+              <span>준비 시간</span>
 
-            <Timer
-              time={readySec}
-              onTimeOver={() => {
-                console.log(30);
-              }}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <AnimatePresence>
-        {clientStatus === 'answering' && (
-          <motion.div
-            initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.45, type: 'spring' }}
-            exit={{ x: -100, opacity: 0 }}
-            className={`${styles.status} ${styles.remainingTime}`}
-          >
-            <Clock />
-            <span>남은 시간</span>
+              <Timer
+                time={readySec}
+                onTimeOver={() => {
+                  console.log(30);
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {clientStatus === 'answering' && (
+            <motion.div
+              initial={{ x: -100, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.45, type: 'spring' }}
+              exit={{ x: -100, opacity: 0 }}
+              className={`${styles.status} ${styles.remainingTime}`}
+            >
+              <Clock />
+              <span>남은 시간</span>
 
-            <Timer
-              time={interviewSec}
-              onTimeOver={() => {
-                console.log(60);
-              }}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+              <Timer
+                time={interviewSec}
+                onTimeOver={() => {
+                  console.log(60);
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };
