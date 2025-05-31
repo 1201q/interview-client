@@ -6,12 +6,15 @@
 }
 
 .item {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   padding: 12px 14px;
   border: 1px solid var(--border-main2-color);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.12s;
+  row-gap: 3px;
 }
 
 .item:not(.select):hover {

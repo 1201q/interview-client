@@ -26,9 +26,10 @@ const AnswerResult = () => {
     }
   };
 
-  const test = JSON.parse(selected?.analysis_result);
+  const test: AnalysisResult = JSON.parse(selected?.analysis_result);
 
-  console.log(test);
+  console.log(test.matched_evaluation);
+  console.log(test.transcript.text);
 
   const renderWords = getParsedData(selected?.analysis_result)?.words;
 
@@ -74,6 +75,8 @@ const AnswerResult = () => {
       audioRef.current?.removeEventListener('ended', handleEnded);
     };
   }, [audioRef.current]);
+
+  console.log(renderWords);
 
   return (
     <div className={styles.container}>
