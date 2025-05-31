@@ -6,7 +6,9 @@ import Button from '@/components/common/Button';
 import Play from '@/public/play.svg';
 import Stop from '@/public/stop.svg';
 import { getAudio } from '@/utils/services/analysis';
-import { SegmentsType, WhisperSttType, WordsType } from '@/utils/types/types';
+import { AnalysisResult } from '@/utils/types/types';
+
+// http://localhost:3000/result/170a7fc0-6cc7-4c6f-a170-35ec2a4caff7
 
 const AnswerResult = () => {
   const selected = useAtomValue(selectedAnswerAtom);
@@ -16,7 +18,7 @@ const AnswerResult = () => {
   const getParsedData = (analysisResult?: string) => {
     try {
       if (!analysisResult) return null;
-      const parsed: WhisperSttType = JSON.parse(analysisResult);
+      const parsed: AnalysisResult = JSON.parse(analysisResult);
 
       return parsed ?? null;
     } catch {
@@ -24,69 +26,11 @@ const AnswerResult = () => {
     }
   };
 
-  const words = getParsedData(selected?.analysis_result)?.words;
-  const segments = getParsedData(selected?.analysis_result)?.segments;
+  const test = JSON.parse(selected?.analysis_result);
 
-  const getRenderWords = (
-    expected: string[][],
-    words: { start: number; end: number; word: string }[],
-    maxLookahead = 4,
-  ) => {
-    const result: {
-      word: string;
-      isSpoken: boolean;
-      start?: number;
-      end?: number;
-    }[][] = [];
+  console.log(test);
 
-    let wordIndex = 0;
-
-    const normalize = (s: string) =>
-      s.replace(/[^\p{L}\p{N}ㄱ-ㅎ가-힣a-zA-Z0-9]/gu, '').toLowerCase();
-
-    for (const group of expected) {
-      const groupResult = [];
-
-      for (const target of group) {
-        const cleanTarget = normalize(target);
-        let matched = false;
-
-        for (let lookahead = 1; lookahead <= maxLookahead; lookahead++) {
-          const candidates = words.slice(wordIndex, wordIndex + lookahead);
-          const joined = normalize(candidates.map((w) => w.word).join(''));
-
-          if (joined === cleanTarget) {
-            groupResult.push({
-              word: target,
-              isSpoken: true,
-              start: candidates[0].start,
-              end: candidates[candidates.length - 1].end,
-            });
-
-            wordIndex += lookahead;
-            matched = true;
-            break;
-          }
-        }
-
-        if (!matched) {
-          // Whisper에 해당 단어가 없음
-          groupResult.push({
-            word: target,
-            isSpoken: false,
-          });
-        }
-      }
-
-      result.push(groupResult);
-    }
-
-    return result;
-  };
-
-  const array = segments?.map((s) => s.text.trim().split(' '));
-  const renderWords = array && words && getRenderWords(array, words);
-  const flatWords = renderWords?.flatMap((data) => data);
+  const renderWords = getParsedData(selected?.analysis_result)?.words;
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -140,8 +84,8 @@ const AnswerResult = () => {
       <div className={styles.questionContainer}>
         <p>내 답변</p>
         <div className={styles.answerContainer}>
-          {flatWords &&
-            flatWords.map((w: any) => {
+          {renderWords &&
+            renderWords.map((w) => {
               const isSpeaking = currentTime >= w.start;
 
               return (
@@ -159,9 +103,9 @@ const AnswerResult = () => {
                         : styles.gray
                       : ''
                   }
-                  key={`${w.start}/${w.word}`}
+                  key={`${w.start}/${w.after}`}
                 >
-                  {w.word}
+                  {w.after}
                 </span>
               );
             })}
