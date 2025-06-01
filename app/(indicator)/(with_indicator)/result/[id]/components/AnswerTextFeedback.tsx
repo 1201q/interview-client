@@ -22,39 +22,41 @@ const AnswerTextFeedback = () => {
           수 있는 구체적인 사례를 더 추가하면 설득력이 높아질 것입니다.
         </div>
       </div>
-      <div className={styles.questionContainer}>
-        <p>이런 점은 좋아요</p>
-        <div className={styles.feedbackItemContainer}>
-          <div className={styles.answerWithIconContainer}>
-            <div className={`${styles.icon} ${styles.green}`}>
-              <Check />
+      <div className={styles.strengthWeaknessContainer}>
+        <div className={styles.questionContainer}>
+          <p>이런 점은 좋아요</p>
+          <div className={styles.feedbackItemContainer}>
+            <div className={styles.answerWithIconContainer}>
+              <div className={`${styles.icon} ${styles.green}`}>
+                <Check />
+              </div>
+              <p>기본적인 인사와 주문 표현을 정확하게 사용했습니다.</p>
             </div>
-            <p>기본적인 인사와 주문 표현을 정확하게 사용했습니다.</p>
-          </div>
-          <div className={styles.answerWithIconContainer}>
-            <div className={`${styles.icon} ${styles.green}`}>
-              <Check />
+            <div className={styles.answerWithIconContainer}>
+              <div className={`${styles.icon} ${styles.green}`}>
+                <Check />
+              </div>
+              <p>기본적인 인사와 주문 표현을 정확하게 사용했습니다.</p>
             </div>
-            <p>기본적인 인사와 주문 표현을 정확하게 사용했습니다.</p>
           </div>
         </div>
-      </div>
-      <div className={styles.questionContainer}>
-        <p>개선할 점</p>
-        <div className={styles.feedbackItemContainer}>
-          <div className={styles.answerWithIconContainer}>
-            <div className={`${styles.icon} ${styles.red}`}>
-              <p>!</p>
+        <div className={styles.questionContainer}>
+          <p>개선할 점</p>
+          <div className={styles.feedbackItemContainer}>
+            <div className={styles.answerWithIconContainer}>
+              <div className={`${styles.icon} ${styles.red}`}>
+                <p>!</p>
+              </div>
+              <p>
+                주세요 대신 더 공손한 표현인 주시겠어요?를 사용해볼 수 있습니다.
+              </p>
             </div>
-            <p>
-              주세요 대신 더 공손한 표현인 주시겠어요?를 사용해볼 수 있습니다.
-            </p>
-          </div>
-          <div className={styles.answerWithIconContainer}>
-            <div className={`${styles.icon} ${styles.red}`}>
-              <p>!</p>
+            <div className={styles.answerWithIconContainer}>
+              <div className={`${styles.icon} ${styles.red}`}>
+                <p>!</p>
+              </div>
+              <p>기본적인 인사와 주문 표현을 정확하게 사용했습니다.</p>
             </div>
-            <p>기본적인 인사와 주문 표현을 정확하게 사용했습니다.</p>
           </div>
         </div>
       </div>

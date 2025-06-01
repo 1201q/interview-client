@@ -1,0 +1,26 @@
+.container {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.centerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.textContainer {
+  margin-top: 20px;
+}
+
+.textContainer p {
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  font-size: 15px;
+  line-height: 150%;
+}

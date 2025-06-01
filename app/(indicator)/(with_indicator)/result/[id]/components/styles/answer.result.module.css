@@ -23,6 +23,11 @@
   font-weight: 500;
 }
 
+.strengthWeaknessContainer {
+  display: flex;
+  column-gap: 15px;
+}
+
 .answerContainer,
 .answerWithIconContainer {
   border-radius: 12px;
@@ -127,4 +132,12 @@
 .red p {
   color: var(--main-red-color);
   text-align: center;
+}
+
+@media screen and (max-width: 1200px) {
+  .strengthWeaknessContainer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+  }
 }

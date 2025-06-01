@@ -6,12 +6,18 @@ import Button from '@/components/common/Button';
 import Play from '@/public/play.svg';
 import Stop from '@/public/stop.svg';
 import { getAudio } from '@/utils/services/analysis';
-import { AnalysisResult } from '@/utils/types/types';
+import {
+  AnalysisResult,
+  InterviewSessionQuestionType,
+} from '@/utils/types/types';
 
 // http://localhost:3000/result/170a7fc0-6cc7-4c6f-a170-35ec2a4caff7
 
-const AnswerResult = () => {
-  const selected = useAtomValue(selectedAnswerAtom);
+const AnswerResult = ({
+  selected,
+}: {
+  selected: InterviewSessionQuestionType;
+}) => {
   const [isAudioPlay, setIsAudioPlay] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
 
@@ -25,11 +31,6 @@ const AnswerResult = () => {
       return null;
     }
   };
-
-  const test: AnalysisResult = JSON.parse(selected?.analysis_result);
-
-  console.log(test.matched_evaluation);
-  console.log(test.transcript.text);
 
   const renderWords = getParsedData(selected?.analysis_result)?.words;
 

@@ -54,7 +54,7 @@ export const useInterviewControl = (
       if (sessionId) {
         await completeInterviewSession(sessionId);
 
-        router.replace(`/result/${sessionId}`);
+        router.replace(`/analysis/${sessionId}`);
 
         setLoading(false);
       }

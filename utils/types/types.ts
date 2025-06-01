@@ -163,11 +163,6 @@ export interface QuestionEvaluation {
   expected_keywords: string[];
 }
 
-export interface EvaluationStandard {
-  job_role: string;
-  question_evaluations: QuestionEvaluation[];
-}
-
 // whisper
 export interface SegmentsType {
   avg_logprob: number;
@@ -208,6 +203,12 @@ export interface Words {
 // 반환 타입
 export interface AnalysisResult {
   words: Words[];
-  matched_evaluation: EvaluationStandard;
   transcript: WhisperSttType;
+}
+
+export interface AnalysisProgress {
+  total: number;
+  done: number;
+  percent: number;
+  status: 'pending' | 'loading' | 'done';
 }
