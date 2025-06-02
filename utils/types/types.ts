@@ -201,9 +201,18 @@ export interface Words {
 }
 
 // 반환 타입
+
+export interface Feedback {
+  feedback: string;
+  good: string[];
+  bad: string[];
+  grade: string;
+}
+
 export interface AnalysisResult {
   words: Words[];
   transcript: WhisperSttType;
+  feedback: Feedback;
 }
 
 export interface AnalysisProgress {

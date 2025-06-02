@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
 import styles from './styles/answer.result.module.css';
 import { useAtomValue } from 'jotai';
