@@ -39,7 +39,7 @@ const RWebcam = ({ isRunning }: Props) => {
   useEffect(() => {
     if (isRunning) {
       startDetection();
-      startDrawing();
+      startDrawing({ face: true, body: true, hand: true });
       human.webcam.play();
     } else {
       stopDetection();

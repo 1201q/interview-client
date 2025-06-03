@@ -1,0 +1,71 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  position: relative;
+  overflow: hidden;
+}
+
+.testButton {
+  position: absolute;
+  z-index: 100;
+  background-color: white;
+  padding: 10px;
+}
+
+.sideAlarmContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+
+  height: 300px;
+  width: 270px;
+  padding: 5px;
+}
+
+.defaultWarning {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 30px;
+  background-color: var(--main-red-color);
+  color: white;
+  border-radius: 7px;
+  z-index: 10;
+}
+
+.greenWarning {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 30px;
+  background-color: var(--main-green-color);
+  color: white;
+  border-radius: 7px;
+  z-index: 10;
+}
+
+.faceMaskoverlay {
+  width: 100%;
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  mask-image: radial-gradient(
+    circle at 50% 50%,
+    transparent 210px,
+    black 210px
+  );
+  -webkit-mask-image: radial-gradient(
+    circle at 50% 50%,
+    transparent 210px,
+    black 210px
+  );
+}

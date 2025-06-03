@@ -8,9 +8,9 @@ interface DrawTargets {
 }
 
 const DRAW_OPTIONS: Partial<DrawOptions> = {
-  drawPolygons: false,
-  drawLabels: false,
-  drawBoxes: false,
+  drawPolygons: true,
+  drawLabels: true,
+  drawBoxes: true,
 };
 
 const FACE_DRAW_OPTIONS: Partial<DrawOptions> = {

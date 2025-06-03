@@ -8,17 +8,38 @@ export const useDetect = (
 ) => {
   const animationFrameRef = useRef<number>(null);
   const isDetectingRef = useRef(false);
+  const lastTimeRef = useRef(0);
 
-  const detect = async () => {
+  const fps = 10;
+  const interval = 1000 / fps;
+
+  const detect = async (timestamp: number) => {
     if (!isDetectingRef.current) return;
-    const video = videoRef.current;
 
-    if (video && !video.paused) {
-      const result = await human.detect(video);
-      const faceDetected = result.face.length > 0;
+    const elapsed = timestamp - lastTimeRef.current;
+    if (elapsed > interval) {
+      lastTimeRef.current = timestamp;
 
-      faceDetected$.next(faceDetected);
-      gestureResults$.next(result.gesture);
+      const video = videoRef.current;
+      if (video && !video.paused) {
+        const result = await human.detect(video);
+        const faceDetected = result.face.length > 0;
+
+        // console.log(
+        //   result.gesture.filter(
+        //     (d) => 'face' in d && d.gesture.includes('facing'),
+        //   ),
+        // );
+
+        // console.log(result.gesture);
+
+        // console.log(result.gesture);
+
+        // console.log(result.gesture.filter((g) => 'iris' in g));
+
+        faceDetected$.next(faceDetected);
+        gestureResults$.next(result.gesture);
+      }
     }
 
     animationFrameRef.current = requestAnimationFrame(detect);
@@ -28,7 +49,7 @@ export const useDetect = (
     if (isDetectingRef.current) return;
     console.log('2. detection을 시작합니다.');
     isDetectingRef.current = true;
-    detect();
+    animationFrameRef.current = requestAnimationFrame(detect);
   };
 
   const stopDetection = () => {

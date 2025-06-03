@@ -8,7 +8,7 @@ export const humanConfig: Partial<Config> = {
   modelBasePath: 'https://cdn.jsdelivr.net/gh/vladmandic/human-models/models/',
   face: {
     enabled: true,
-    skipFrames: 50,
+    skipFrames: 1000,
     iris: { enabled: true },
     description: { enabled: false },
     liveness: { enabled: false },
@@ -16,7 +16,7 @@ export const humanConfig: Partial<Config> = {
     detector: { enabled: false, scale: 1.4 },
   },
   body: { enabled: true },
-  hand: { enabled: true },
+  hand: { enabled: false },
   gesture: { enabled: true },
   segmentation: { enabled: false },
   object: { enabled: false },
