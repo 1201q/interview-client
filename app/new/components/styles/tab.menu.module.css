@@ -1,0 +1,40 @@
+.container {
+  width: 100%;
+  position: relative;
+  background-color: var(--bg-gray-color);
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+  padding: 0px 5px;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+
+  height: calc(100% - 10px);
+  background-color: white;
+
+  border-radius: 7px;
+
+  cursor: pointer;
+}
+
+.selected {
+  background-color: white;
+  box-shadow:
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+
+  font-weight: 600;
+}
+
+.menu:not(.selected) {
+  background: none;
+  color: gray;
+}

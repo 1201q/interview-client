@@ -1,0 +1,20 @@
+.container {
+  width: 100%;
+  position: relative;
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+}
+
+.textContainer p {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.textContainer span {
+  font-size: 17px;
+  line-height: 120%;
+}

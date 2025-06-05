@@ -17,6 +17,16 @@ import {
   warnings$,
 } from '@/store/observable';
 import { AnimatePresence, motion } from 'framer-motion';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  ScatterChart,
+  Scatter,
+} from 'recharts';
 
 type WarningKey =
   | 'leaningLeft'
@@ -42,6 +52,20 @@ type PhaseType =
   | 'checkingStart'
   | 'checkingFail'
   | 'complete';
+
+interface DataPoint {
+  x: number; // meshRaw[10][0]
+  y: number; // meshRaw[10][1]
+}
+
+interface GazePoint {
+  bearing: number;
+  y: number;
+}
+interface FaceDirectionPoint {
+  yaw: number;
+  pitch: number;
+}
 
 const containerVariants = {
   hidden: {},
@@ -100,6 +124,12 @@ const Test = () => {
   const maskRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const progressRef = useRef<NodeJS.Timeout | null>(null);
+
+  const [data, setData] = useState<DataPoint[]>([]);
+  const [gaze, setGaze] = useState<GazePoint[]>([]);
+
+  const [test, setTest] = useState<FaceDirectionPoint[]>([]);
+  const maxPoints = 100;
 
   const [running, setRunning] = useState(false);
   const [warnings, setWarnings] = useState<Set<WarningKey>>(new Set());
@@ -213,23 +243,38 @@ const Test = () => {
   }, []);
 
   useEffect(() => {
-    const sub = capturedResult$.subscribe((data) => {
-      console.log(data);
+    const sub = capturedResult$.subscribe((frames) => {
+      const points = frames
+        .map((f) => {
+          const raw = f?.meshRaw?.[10];
+          if (!raw || raw.length < 2) return null;
 
-      const std = (arr: number[]) => {
-        const avg = arr.reduce((a, b) => a + b, 0) / arr.length;
-        const variance =
-          arr.reduce((a, b) => a + Math.pow(b - avg, 2), 0) / arr.length;
-        return Math.sqrt(variance);
-      };
+          const [x, y] = raw;
+          return { x, y };
+        })
+        .filter(Boolean) as DataPoint[];
 
-      const xs = data.map((f) => f.meshRaw[10][0]);
-      console.log(std(xs));
+      setData((prev) => {
+        const next = [...prev, ...points];
+        return next.length > maxPoints ? next.slice(-maxPoints) : next;
+      });
 
-      const diffs = xs.slice(1).map((v, i) => Math.abs(v - xs[i]));
-      const avgDiff = diffs.reduce((a, b) => a + b, 0) / diffs.length;
+      const data = frames
+        .map((f) => {
+          const angle = f?.rotation?.angle;
+          if (!angle) return null;
 
-      console.log(avgDiff);
+          return {
+            yaw: angle.yaw * (180 / Math.PI), // 라디안 → 도
+            pitch: angle.pitch * (180 / Math.PI),
+          };
+        })
+        .filter(Boolean) as FaceDirectionPoint[];
+
+      setTest((prev) => {
+        const next = [...prev, ...data];
+        return next.length > maxPoints ? next.slice(-maxPoints) : next;
+      });
     });
 
     return () => sub.unsubscribe();
@@ -256,6 +301,8 @@ const Test = () => {
   const greenWarnings = new Set<WarningKey>(['lookingCenter']);
 
   const handleStart = () => {
+    setData([]);
+    setTest([]);
     startFaceCapture$.next();
   };
 
@@ -318,6 +365,62 @@ const Test = () => {
       <button className={styles.testButton3} onClick={handleStop}>
         면접 종료
       </button>
+
+      <div className={styles.chartContainer}>
+        {data.length !== 0 && (
+          <>
+            <ScatterChart width={320} height={270}>
+              <CartesianGrid />
+              <XAxis
+                type="number"
+                dataKey="x"
+                name="X Position"
+                domain={[0.3, 0.7]}
+                tickCount={7}
+              />
+              <YAxis
+                type="number"
+                dataKey="y"
+                name="Y Position"
+                domain={[0.2, 0.6]}
+                tickCount={5}
+              />
+              <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+              <Scatter
+                name="Face Center"
+                data={data}
+                fill="#8884d8"
+                shape="circle"
+              />
+            </ScatterChart>
+
+            <ScatterChart width={600} height={300}>
+              <CartesianGrid />
+              <XAxis
+                type="number"
+                dataKey="yaw"
+                name="Yaw (좌우 회전)"
+                domain={[-45, 45]}
+                tickFormatter={(v) => `${v}°`}
+              />
+              <YAxis
+                type="number"
+                dataKey="pitch"
+                name="Pitch (상하 회전)"
+                domain={[-30, 30]}
+                tickFormatter={(v) => `${v}°`}
+              />
+              <Tooltip />
+              <Scatter
+                name="Face Direction"
+                data={test}
+                fill="#8884d8"
+                shape="circle"
+              />
+            </ScatterChart>
+          </>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,0 +1,130 @@
+.container {
+  width: 100%;
+
+  position: relative;
+  border: 1px solid var(--border-main-color);
+
+  padding: 22px;
+  box-shadow:
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+  border-radius: 12px;
+}
+
+.headerContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 3px;
+  margin-bottom: 20px;
+}
+
+.headerContainer p {
+  font-size: 23px;
+  font-weight: 700;
+}
+
+.headerContainer span {
+  font-size: 15px;
+  color: var(--font-darkgray-color);
+}
+
+.contentsContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.menuTitleContainer {
+  display: flex;
+  align-items: center;
+  column-gap: 7px;
+  margin-bottom: 10px;
+}
+
+.menuTitleContainer svg {
+  width: 20px;
+  height: 20px;
+}
+
+.menuTitleContainer p {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.textArea {
+  width: 100%;
+  height: 200px;
+  border-radius: 7px;
+  border: 1px solid var(--border-main2-color);
+  padding: 15px;
+  font-size: 16px;
+}
+
+.textArea:focus-within {
+  outline-offset: -2px;
+  outline: 2px solid var(--main-blue-color);
+}
+
+.fileUploadContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 150px;
+  border-radius: 7px;
+  padding: 15px;
+  border: 1px dashed var(--main-blue2-color);
+  cursor: pointer;
+}
+
+.fileUploadTextContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 3px;
+}
+
+.fileUploadTextContainer svg {
+  width: 30px;
+  height: 30px;
+  fill: var(--main-blue-color);
+  margin-bottom: 10px;
+}
+
+.fileUploadTextContainer p {
+  font-size: 16px;
+  font-weight: 600;
+}
+.fileUploadTextContainer span {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--font-gray-color);
+}
+
+.submitButton {
+  width: 100%;
+  height: 45px;
+  background-image: linear-gradient(
+    to right,
+    var(--main-blue-color),
+    var(--main-blue-color)
+  );
+  font-weight: 600;
+  color: white;
+  font-size: 16px;
+  border-radius: 7px;
+  border: 0.6px solid rgba(255, 255, 255, 0.3);
+}
+
+.submitButton:disabled {
+  opacity: 0.4;
+  cursor: auto;
+}

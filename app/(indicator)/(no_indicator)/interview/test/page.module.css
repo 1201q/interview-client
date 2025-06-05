@@ -112,3 +112,14 @@
   text-align: center;
   line-height: 130%;
 }
+
+.chartContainer {
+  display: flex;
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  background-color: white;
+  z-index: 202;
+}
