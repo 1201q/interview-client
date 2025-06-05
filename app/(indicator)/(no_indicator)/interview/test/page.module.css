@@ -16,6 +16,22 @@
   padding: 10px;
 }
 
+.testButton2 {
+  position: absolute;
+  z-index: 100;
+  background-color: lightgray;
+  padding: 10px;
+  left: 60px;
+}
+
+.testButton3 {
+  position: absolute;
+  z-index: 100;
+  background-color: gray;
+  padding: 10px;
+  left: 140px;
+}
+
 .sideAlarmContainer {
   display: flex;
   flex-direction: column;
@@ -59,13 +75,40 @@
   inset: 0;
   background: rgba(0, 0, 0, 0.8);
   mask-image: radial-gradient(
-    circle at 50% 50%,
+    circle at 50% 40%,
     transparent 210px,
     black 210px
   );
   -webkit-mask-image: radial-gradient(
-    circle at 50% 50%,
+    circle at 50% 40%,
     transparent 210px,
     black 210px
   );
+}
+
+.bottomTextContainer {
+  width: 100%;
+  position: absolute;
+  bottom: 0%;
+  height: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0px;
+  row-gap: 10px;
+}
+
+.textWrapper {
+  padding: 0px 20px;
+}
+
+.textWrapper p {
+  font-size: 32px;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+  line-height: 130%;
 }

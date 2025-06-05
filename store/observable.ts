@@ -1,21 +1,57 @@
 import { isFaceOrIrisCenter } from '@/utils/services/isFaceOrIrisCenter';
-import { GestureResult } from '@vladmandic/human';
+import {
+  FaceLandmark,
+  FaceResult,
+  GestureResult,
+  Point,
+} from '@vladmandic/human';
 import {
   BehaviorSubject,
   bufferTime,
   combineLatest,
+  concat,
   distinctUntilChanged,
+  EMPTY,
   filter,
   map,
+  merge,
+  of,
   pairwise,
+  race,
+  repeat,
   Subject,
+  switchMap,
+  take,
+  takeUntil,
+  timer,
 } from 'rxjs';
+import { debounceTime, reduce } from 'rxjs/operators';
 
 type LeaningDirection = 'left' | 'right' | 'none';
 type HandRaised = 'left' | 'right' | 'both' | 'none';
 type FacingDirection = 'left' | 'right' | 'center' | 'none';
 type HeadTiltDirection = 'up' | 'down' | 'none';
 type IrisDirection = 'center' | 'up' | 'down' | 'right' | 'left' | 'none';
+
+type StartCheckStatus = 'checking' | 'success' | 'fail';
+type FaceCheckStatus = 'inProgress' | 'success' | 'fail';
+
+type WarningKey =
+  | 'leaningLeft'
+  | 'leaningRight'
+  | 'handLeft'
+  | 'handRight'
+  | 'giveUp'
+  | 'facingLeft'
+  | 'facingRight'
+  | 'headUp'
+  | 'headDown'
+  | 'lookingCenter'
+  | 'lookingDown'
+  | 'lookingUp'
+  | 'lookingLeft'
+  | 'lookingRight'
+  | 'faceNotCentered';
 
 // 얼굴이 감지되었는지
 export const faceDetected$ = new Subject<boolean>();
@@ -56,7 +92,7 @@ export const faceCenterCheck$ = isLookingCenter$.pipe(
   distinctUntilChanged(),
 );
 
-// 06월 3일 새로 작성
+//======================== 06월 3일 새로 작성
 const leaning$ = gestureResults$.pipe(
   map((gestures: GestureResult[]): LeaningDirection => {
     const leanLeft = gestures.some(
@@ -256,8 +292,6 @@ export const irisDirectionWarning$ = irisDirection$.pipe(
     if (buffer.length === 0) return null;
     const filtered = buffer.filter((v) => v !== 'none');
 
-    console.log(filtered);
-
     if (filtered.length === 0) return null;
 
     const dataMap = filtered.reduce<Record<IrisDirection, number>>(
@@ -286,3 +320,59 @@ export const irisDirectionWarning$ = irisDirection$.pipe(
   filter((v): v is IrisDirection => v !== null),
   distinctUntilChanged(),
 );
+
+//======================== 얼굴 감지
+export const faceResult$ = new Subject<FaceResult>();
+
+// 얼굴이 원 안에 있는가?
+const isInCircle$ = faceResult$.pipe(
+  map((face: FaceResult) => {
+    const [xRaw, yRaw] = face.meshRaw[10];
+    return !(xRaw < 0.45 || xRaw > 0.55 || yRaw < 0.25 || yRaw > 0.4);
+  }),
+  distinctUntilChanged(),
+);
+
+// 500ms마다 모든 체킹이 true인가?
+export const isFaceInCircleWarning$ = isInCircle$.pipe(
+  bufferTime(500),
+  map((buffer: boolean[]) => {
+    const isIn = buffer.every((v) => v);
+
+    return isIn;
+  }),
+  distinctUntilChanged(),
+);
+
+//======================== 얼굴 검사 로직 수행 ==========
+export const warnings$ = new BehaviorSubject<Set<WarningKey>>(new Set());
+
+export const updateWarnings = (
+  updater: (prev: Set<WarningKey>) => Set<WarningKey>,
+) => {
+  const current = warnings$.getValue();
+  const updated = updater(current);
+  warnings$.next(updated);
+};
+
+// ======================== 면접 세션동안의 데이터 축적 ==========
+
+export const startFaceCapture$ = new Subject<void>();
+export const stopFaceCapture$ = new Subject<void>();
+export const capturedResult$ = new Subject<FaceResult[]>();
+
+const source$ = faceResult$;
+
+startFaceCapture$
+  .pipe(
+    switchMap(() =>
+      source$.pipe(
+        bufferTime(500),
+        takeUntil(stopFaceCapture$),
+        reduce((acc, curr) => [...acc, ...curr], [] as FaceResult[]),
+      ),
+    ),
+  )
+  .subscribe((data) => {
+    capturedResult$.next(data);
+  });

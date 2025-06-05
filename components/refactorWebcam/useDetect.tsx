@@ -1,4 +1,8 @@
-import { faceDetected$, gestureResults$ } from '@/store/observable';
+import {
+  faceDetected$,
+  faceResult$,
+  gestureResults$,
+} from '@/store/observable';
 import Human from '@vladmandic/human';
 import { RefObject, useRef } from 'react';
 
@@ -10,7 +14,7 @@ export const useDetect = (
   const isDetectingRef = useRef(false);
   const lastTimeRef = useRef(0);
 
-  const fps = 10;
+  const fps = 20;
   const interval = 1000 / fps;
 
   const detect = async (timestamp: number) => {
@@ -24,21 +28,14 @@ export const useDetect = (
       if (video && !video.paused) {
         const result = await human.detect(video);
         const faceDetected = result.face.length > 0;
-
-        // console.log(
-        //   result.gesture.filter(
-        //     (d) => 'face' in d && d.gesture.includes('facing'),
-        //   ),
-        // );
-
-        // console.log(result.gesture);
-
-        // console.log(result.gesture);
-
-        // console.log(result.gesture.filter((g) => 'iris' in g));
+        const faceResult = result.face[0];
 
         faceDetected$.next(faceDetected);
         gestureResults$.next(result.gesture);
+
+        if (faceResult) {
+          faceResult$.next(faceResult);
+        }
       }
     }
 

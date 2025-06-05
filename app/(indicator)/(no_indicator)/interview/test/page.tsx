@@ -2,15 +2,22 @@
 
 import WebcamInstance from '@/components/refactorWebcam/WebcamInstance';
 import styles from './page.module.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
+  capturedResult$,
   facingWarning$,
   handRaisedWarning$,
   headTiltDirectionWarning$,
   irisDirectionWarning$,
+  isFaceInCircleWarning$,
   leaningWarning$,
+  startFaceCapture$,
+  stopFaceCapture$,
+  updateWarnings,
+  warnings$,
 } from '@/store/observable';
 import { AnimatePresence, motion } from 'framer-motion';
+
 type WarningKey =
   | 'leaningLeft'
   | 'leaningRight'
@@ -25,33 +32,84 @@ type WarningKey =
   | 'lookingDown'
   | 'lookingUp'
   | 'lookingLeft'
-  | 'lookingRight';
+  | 'lookingRight'
+  | 'faceNotCentered';
+
+type PhaseType =
+  | 'welcome1'
+  | 'welcome2'
+  | 'welcome3'
+  | 'checkingStart'
+  | 'checkingFail'
+  | 'complete';
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { x: -30, opacity: 0 },
+  visible: { x: 0, opacity: 1 },
+};
+
+const RenderText = ({ phase }: { phase: PhaseType }) => {
+  if (phase === 'welcome1') {
+    return (
+      <>
+        <motion.p variants={itemVariants}>얼굴을 원 안에,</motion.p>
+        <motion.p variants={itemVariants}>시선은 중앙을 바라보세요.</motion.p>
+      </>
+    );
+  } else if (phase === 'welcome2') {
+    return (
+      <>
+        <motion.p variants={itemVariants}>가운데 원 안에</motion.p>
+        <motion.p variants={itemVariants}>얼굴을 위치시키세요.</motion.p>
+      </>
+    );
+  } else if (phase === 'checkingStart') {
+    return (
+      <>
+        <motion.p variants={itemVariants}>얼굴 감지 시작</motion.p>
+      </>
+    );
+  } else if (phase === 'checkingFail') {
+    return (
+      <>
+        <motion.p variants={itemVariants}>얼굴을 원 안에 위치시키고</motion.p>
+        <motion.p variants={itemVariants}>정면을 바라보세요.</motion.p>
+      </>
+    );
+  } else if (phase === 'complete') {
+    return (
+      <>
+        <motion.p variants={itemVariants}>얼굴 체크 성공!</motion.p>
+      </>
+    );
+  }
+
+  return <div></div>;
+};
 
 const Test = () => {
+  const maskRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const progressRef = useRef<NodeJS.Timeout | null>(null);
+
   const [running, setRunning] = useState(false);
   const [warnings, setWarnings] = useState<Set<WarningKey>>(new Set());
-  const [progress, setProgress] = useState(0);
+  const [phase, setPhase] = useState<PhaseType>('welcome1');
 
-  useEffect(() => {
-    const root = document.documentElement;
-    root.style.setProperty('--progress', progress.toString());
-  }, [progress]);
-
-  useEffect(() => {
-    if (!running) return;
-    let t = 0;
-    const interval = setInterval(() => {
-      t += 0.05;
-      setProgress(Math.min(t / 5, 1));
-      if (t >= 5) clearInterval(interval);
-    }, 50);
-
-    return () => clearInterval(interval);
-  }, [running]);
+  const [checking, setChecking] = useState(false);
 
   useEffect(() => {
     const gestureSub = leaningWarning$.subscribe((dir) => {
-      setWarnings((prev) => {
+      updateWarnings((prev) => {
         const newSet = new Set(prev);
         newSet.delete('leaningLeft');
         newSet.delete('leaningRight');
@@ -64,7 +122,7 @@ const Test = () => {
     });
 
     const handSub = handRaisedWarning$.subscribe((hand) => {
-      setWarnings((prev) => {
+      updateWarnings((prev) => {
         const newSet = new Set(prev);
         newSet.delete('handLeft');
         newSet.delete('handRight');
@@ -79,7 +137,7 @@ const Test = () => {
     });
 
     const facingSub = facingWarning$.subscribe((facing) => {
-      setWarnings((prev) => {
+      updateWarnings((prev) => {
         const newSet = new Set(prev);
         newSet.delete('facingLeft');
         newSet.delete('facingRight');
@@ -92,7 +150,7 @@ const Test = () => {
     });
 
     const headSub = headTiltDirectionWarning$.subscribe((head) => {
-      setWarnings((prev) => {
+      updateWarnings((prev) => {
         const newSet = new Set(prev);
         newSet.delete('headUp');
         newSet.delete('headDown');
@@ -105,7 +163,7 @@ const Test = () => {
     });
 
     const irisSub = irisDirectionWarning$.subscribe((iris) => {
-      setWarnings((prev) => {
+      updateWarnings((prev) => {
         const newSet = new Set(prev);
         newSet.delete('lookingCenter');
         newSet.delete('lookingRight');
@@ -123,6 +181,18 @@ const Test = () => {
       });
     });
 
+    const isInSub = isFaceInCircleWarning$.subscribe((isIn) => {
+      updateWarnings((prev) => {
+        const newSet = new Set(prev);
+        if (isIn) {
+          newSet.delete('faceNotCentered');
+        } else {
+          newSet.add('faceNotCentered');
+        }
+        return newSet;
+      });
+    });
+
     return () => {
       gestureSub.unsubscribe();
       handSub.unsubscribe();
@@ -130,7 +200,39 @@ const Test = () => {
       facingSub.unsubscribe();
       headSub.unsubscribe();
       irisSub.unsubscribe();
+
+      isInSub.unsubscribe();
     };
+  }, []);
+
+  useEffect(() => {
+    const sub = warnings$.subscribe((value) => {
+      setWarnings(new Set(value));
+    });
+    return () => sub.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const sub = capturedResult$.subscribe((data) => {
+      console.log(data);
+
+      const std = (arr: number[]) => {
+        const avg = arr.reduce((a, b) => a + b, 0) / arr.length;
+        const variance =
+          arr.reduce((a, b) => a + Math.pow(b - avg, 2), 0) / arr.length;
+        return Math.sqrt(variance);
+      };
+
+      const xs = data.map((f) => f.meshRaw[10][0]);
+      console.log(std(xs));
+
+      const diffs = xs.slice(1).map((v, i) => Math.abs(v - xs[i]));
+      const avgDiff = diffs.reduce((a, b) => a + b, 0) / diffs.length;
+
+      console.log(avgDiff);
+    });
+
+    return () => sub.unsubscribe();
   }, []);
 
   const warningMessages: Record<WarningKey, string> = {
@@ -148,14 +250,39 @@ const Test = () => {
     lookingRight: '시선이 오른쪽임',
     lookingUp: '시선이 윗방향임.',
     lookingDown: '시선이 아랫방향임.',
+    faceNotCentered: '얼굴을 원 안으로 위치시키세요.',
   };
 
   const greenWarnings = new Set<WarningKey>(['lookingCenter']);
 
+  const handleStart = () => {
+    startFaceCapture$.next();
+  };
+
+  const handleStop = () => {
+    stopFaceCapture$.next();
+  };
+
   return (
     <div className={styles.container}>
       <WebcamInstance isRunning={running} />
-      <div className={styles.faceMaskoverlay}></div>
+
+      <div ref={maskRef} className={styles.faceMaskoverlay}></div>
+      {/* <div className={styles.bottomTextContainer}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={phase}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            exit={{ x: 50, opacity: 0 }}
+            transition={{ duration: 0.1 }}
+            className={styles.textWrapper}
+          >
+            <RenderText phase={phase} />
+          </motion.div>
+        </AnimatePresence>
+      </div> */}
 
       <div className={styles.sideAlarmContainer}>
         <AnimatePresence>
@@ -182,6 +309,14 @@ const Test = () => {
         onClick={() => setRunning((prev) => !prev)}
       >
         {running ? '정지' : '시작'}
+      </button>
+
+      <button className={styles.testButton2} onClick={handleStart}>
+        면접 시작
+      </button>
+
+      <button className={styles.testButton3} onClick={handleStop}>
+        면접 종료
       </button>
     </div>
   );
