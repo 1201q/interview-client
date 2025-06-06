@@ -1,5 +1,6 @@
 import styles from './styles/new.header.module.css';
 import Logo from '@/public/openai.svg';
+import Image from 'next/image';
 
 const NewHeader = () => {
   return (
@@ -7,7 +8,7 @@ const NewHeader = () => {
       <div className={styles.wrapper}>
         <div className={styles.box}>
           <div className={styles.logo}>
-            <Logo /> <p>DevInterview AI</p>
+            <Image alt="logo" src={'/logo.png'} width={100} height={20} />
           </div>
         </div>
         <div className={styles.box}>

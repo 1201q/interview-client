@@ -1,0 +1,117 @@
+.hiddenInput {
+  display: none;
+}
+
+.fileUploadContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  border-radius: 7px;
+  padding: 25px 25px;
+  border: 1px dashed var(--main-blue2-color);
+
+  row-gap: 13px;
+}
+
+.fileUploadTextContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 3px;
+  width: 100%;
+  height: 100px;
+  cursor: pointer;
+}
+
+.fileUploadTextContainer svg {
+  width: 30px;
+  height: 30px;
+  fill: var(--main-blue-color);
+  margin-bottom: 10px;
+}
+
+.fileUploadTextContainer p {
+  font-size: 16px;
+  font-weight: 600;
+}
+.fileUploadTextContainer span {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--font-gray-color);
+}
+
+.fileItemContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 7px;
+}
+
+.fileItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 38px;
+  width: 100%;
+  background-color: var(--bg-blue-color);
+  border-radius: 5px;
+  padding: 0px 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.fileItemLeftContainer {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.fileItemLeftContainer svg {
+  width: 15px;
+  height: 15px;
+  fill: var(--main-blue-color);
+}
+
+.fileItemLeftContainer p {
+  font-size: 15px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fileRemoveButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 0px;
+  padding: 0px 5px;
+  width: 35px;
+  height: 35px;
+
+  background-color: var(--bg-blue-color);
+}
+
+.fileRemoveButton:hover svg {
+  width: 15px;
+  height: 15px;
+  fill: black;
+}
+
+.fileRemoveButton svg {
+  width: 15px;
+  height: 15px;
+  fill: gray;
+}
+
+.loading {
+  margin-right: -5px;
+  transform: scale(0.5);
+}
