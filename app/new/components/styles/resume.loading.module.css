@@ -1,0 +1,59 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 13px;
+}
+
+.loadingContainer {
+  width: 400px;
+  height: 80px;
+  background-color: var(--bg-gray-color);
+  border-radius: 12px;
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 13px;
+  margin-top: -80px;
+}
+
+@keyframes blueFlash {
+  0% {
+    color: var(--font-gray-color);
+  }
+  50% {
+    color: var(--main-blue-color);
+  }
+  100% {
+    color: var(--font-gray-color);
+  }
+}
+
+.textContainer p {
+  font-size: 26px;
+  animation: blueFlash 2s infinite;
+  font-weight: 700;
+  color: var(--font-gray-color);
+  text-align: center;
+}
+
+.remainingTime {
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+}
+
+.remainingTime svg {
+  width: 13px;
+  height: 13px;
+  fill: var(--font-gray-color);
+}
+
+.remainingTime span {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  color: var(--font-gray-color);
+}

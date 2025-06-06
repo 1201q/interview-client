@@ -9,7 +9,11 @@ import { useState } from 'react';
 import FileInput from './FileInput';
 import TextArea from './TextArea';
 
-const Container = () => {
+interface Props {
+  submit: () => void;
+}
+
+const Container = ({ submit }: Props) => {
   const [selected, setSelected] = useState<'file' | 'user'>('file');
 
   return (
@@ -41,7 +45,7 @@ const Container = () => {
               <p>이력서 내용</p>
             </div>
             <TextArea
-              max={2000}
+              max={5000}
               placeholder="이력서 내용을 입력하세요. 주요 경력, 기술 스택, 프로젝트 경험 등을 포함해주세요."
             />
           </div>
@@ -51,12 +55,12 @@ const Container = () => {
             <p>채용공고 내용</p>
           </div>
           <TextArea
-            max={1500}
+            max={1000}
             placeholder="지원하려는 회사의 채용공고 내용을 입력하세요. 직무 요구사항, 우대사항 등을 포함해주세요."
           />
         </div>
       </div>
-      <button className={styles.submitButton} disabled={true}>
+      <button className={styles.submitButton} onClick={submit}>
         맞춤형 질문 생성하기
       </button>
     </div>
