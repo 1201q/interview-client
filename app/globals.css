@@ -14,7 +14,10 @@
   --main-blue-color: rgb(76, 134, 254);
   --main-blue2-color: rgb(125, 166, 255);
   --main-blue3-color: rgb(45, 96, 200);
+  --main-blue4-color: rgb(37, 99, 235);
 
+  --main-skyblue-color: #06b6d4;
+  --main-violet-color: #6366f1;
   --main-green-color: rgb(55, 179, 119);
   --main-gray-color: rgba(91, 97, 110, 0.7);
 
@@ -26,6 +29,7 @@
   --bg-black-color: #242424;
   --border-main-color: rgb(209, 217, 224);
   --border-main2-color: #e5e7eb;
+  --border-blue-color: rgb(191, 219, 254);
 
   --font-gray-color: #94a3b8;
   --font-darkgray-color: #64748b;

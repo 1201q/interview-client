@@ -1,20 +1,24 @@
 .container {
   width: 100%;
   position: relative;
+  z-index: 3;
 }
 
 .textContainer {
   display: flex;
   flex-direction: column;
-  row-gap: 5px;
+  row-gap: 12px;
 }
 
 .textContainer p {
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 700;
+  text-align: center;
+  color: var(--main-blue4-color);
 }
 
 .textContainer span {
   font-size: 17px;
   line-height: 120%;
+  text-align: center;
 }

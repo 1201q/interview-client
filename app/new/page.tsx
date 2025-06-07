@@ -17,6 +17,9 @@ const Page = () => {
   return (
     <div className={styles.container}>
       <NewHeader />
+      <div
+        className={`${loading ? styles.loadingBgContainer : styles.bgContainer}`}
+      ></div>
       <div className={styles.contents}>
         {!loading && (
           <>

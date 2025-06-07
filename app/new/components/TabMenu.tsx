@@ -26,7 +26,7 @@ const Tabmenu = ({ selected, handleClick }: Props) => {
         }}
         className={`${styles.menu} ${selected === 'user' ? styles.selected : ''}`}
       >
-        직접 업로드
+        직접 입력
       </motion.div>
     </div>
   );

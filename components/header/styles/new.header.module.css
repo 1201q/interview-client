@@ -1,7 +1,6 @@
 .container {
   height: 56px;
 
-  border-bottom: 1px solid var(--border-main-color);
   position: sticky;
   top: 0;
 
@@ -41,6 +40,6 @@
 
 @media screen and (max-width: 768px) {
   .wrapper {
-    padding: 0px 16px;
+    padding: 0px 20px;
   }
 }
