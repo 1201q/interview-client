@@ -5,30 +5,60 @@ import styles from './page.module.css';
 import Header from './components/Header';
 import Container from './components/Container';
 import ResumeLoading from './components/ResumeLoading';
-import { useState } from 'react';
+import { useTransition } from 'react';
+import { generateQuestionsFromResume } from '@/utils/actions/resume';
 
 const Page = () => {
-  const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-  const submit = () => {
-    setLoading(true);
+  const handleSubmitWithFile = async (
+    formData: FormData,
+    resumeText: string,
+  ) => {
+    const recruitmentText = formData.get('recruitment')?.toString() || '';
+
+    try {
+      startTransition(() => {
+        generateQuestionsFromResume(resumeText, recruitmentText);
+      });
+    } catch (error) {
+      console.log(error);
+      alert('에러!');
+    }
+  };
+
+  const handleSubmitWithText = async (formData: FormData) => {
+    const resumeText = formData.get('resume')?.toString() || '';
+    const recruitmentText = formData.get('recruitment')?.toString() || '';
+
+    try {
+      startTransition(() => {
+        generateQuestionsFromResume(resumeText, recruitmentText);
+      });
+    } catch (error) {
+      console.log(error);
+      alert('에러!');
+    }
   };
 
   return (
     <div className={styles.container}>
       <NewHeader />
       <div
-        className={`${loading ? styles.loadingBgContainer : styles.bgContainer}`}
+        className={`${isPending ? styles.loadingBgContainer : styles.bgContainer}`}
       ></div>
       <div className={styles.contents}>
-        {!loading && (
+        {!isPending && (
           <>
             <Header />
-            <Container submit={submit} />
+            <Container
+              handleSubmitWithFile={handleSubmitWithFile}
+              handleSubmitWithText={handleSubmitWithText}
+            />
           </>
         )}
 
-        {loading && <ResumeLoading />}
+        {isPending && <ResumeLoading />}
       </div>
     </div>
   );
