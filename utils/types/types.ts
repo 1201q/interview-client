@@ -221,3 +221,22 @@ export interface AnalysisProgress {
   percent: number;
   status: 'pending' | 'loading' | 'done';
 }
+
+// 질문 생성후 결과 타입
+
+export type QuestionSection =
+  | 'basic'
+  | 'experience'
+  | 'job_related'
+  | 'expertise';
+
+export interface QuestionData {
+  question: string;
+  based_on: string;
+}
+
+export interface QuestionDataArray {
+  question: string;
+  based_on: string;
+  section: QuestionSection;
+}

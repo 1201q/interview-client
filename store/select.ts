@@ -12,6 +12,8 @@ export const setSelectedQuestionsAtom = atom(
   (get, set, update: QuestionType) => {
     const prev = get(selectedQuestionsAtom);
 
+    console.log(update);
+
     const exists = prev.some((q) => q.id === update.id);
 
     if (exists) {

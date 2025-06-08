@@ -1,5 +1,9 @@
 'use server';
 
+import { redirect } from 'next/navigation';
+
+type Status = 'pending' | 'working' | 'completed' | 'failed';
+
 export async function generateQuestionsFromResume(
   resumeText: string,
   recruitmentText: string,
@@ -20,5 +24,31 @@ export async function generateQuestionsFromResume(
     throw new Error('이력서를 5000자 미만으로 작성했는지 다시 확인해주세요.');
   }
 
-  await new Promise((resolve) => setTimeout(resolve, 30000));
+  const body = JSON.stringify({
+    resume_text: resumeText,
+    recruitment_text: recruitmentText,
+  });
+
+  console.log(body);
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/question/generate/new`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: body,
+    },
+  );
+
+  if (!res.ok) {
+    throw new Error('질문 생성에 실패했습니다. 다시 시도해주세요.');
+  }
+
+  const data: { id: string; status: Status } = await res.json();
+
+  if (data.status === 'completed') {
+    redirect(`/new/result/${data.id}`);
+  } else {
+    throw new Error('질문 생성에 실패했습니다. 다시 시도해주세요.');
+  }
 }
