@@ -1,5 +1,5 @@
 import styles from './styles/new.header.module.css';
-import Logo from '@/public/openai.svg';
+
 import Image from 'next/image';
 
 const NewHeader = () => {

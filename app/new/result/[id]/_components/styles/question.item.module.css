@@ -17,6 +17,18 @@
   cursor: pointer;
 }
 
+.container:not(.selected):hover {
+  outline: 2px solid var(--main-blue2-color);
+  outline-offset: 2px;
+  transition: all 0.1s;
+}
+
+.container:hover {
+  outline: 2px solid var(--main-blue4-color);
+  outline-offset: 2px;
+  transition: all 0.1s;
+}
+
 .headerContainer {
   width: 100%;
   display: flex;

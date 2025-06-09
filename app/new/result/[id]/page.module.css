@@ -44,7 +44,7 @@
   width: 300px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1000px) {
   .contents {
     width: 100%;
 

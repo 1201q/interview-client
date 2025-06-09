@@ -7,6 +7,7 @@ import Timer from '@/public/clock.svg';
 import { useSetAtom } from 'jotai';
 import { setUserSelectedQuestionsAtom } from '@/store/newSelect';
 import React from 'react';
+import { motion } from 'motion/react';
 
 interface Props {
   data: QuestionDataArray;
