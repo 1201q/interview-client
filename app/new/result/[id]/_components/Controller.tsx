@@ -6,9 +6,14 @@ import styles from './styles/controller.module.css';
 import Timer from '@/public/clock-regular.svg';
 import { userSelectedQuestionsAtom } from '@/store/newSelect';
 import { QuestionSection } from '@/utils/types/types';
+import { useParams, useRouter } from 'next/navigation';
+import { motion } from 'motion/react';
 
 const Controller = () => {
   const selectedQuestions = useAtomValue(userSelectedQuestionsAtom);
+  const router = useRouter();
+  const param = useParams();
+  const id = param.id;
 
   const timeMap: Record<QuestionSection, number> = {
     basic: 60,
@@ -25,7 +30,12 @@ const Controller = () => {
   const min = Math.round(totalTime / 60);
 
   return (
-    <div className={styles.container}>
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5 }}
+      className={styles.container}
+    >
       <div className={styles.headerContainer}></div>
       <div className={styles.itemListContainer}>
         <div className={styles.titleContainer}>
@@ -53,14 +63,19 @@ const Controller = () => {
           </div>
         </div>
         <div className={styles.buttonContainer}>
-          <button disabled={selectedQuestions.length < 5}>
+          <button
+            disabled={selectedQuestions.length < 5}
+            onClick={() => {
+              router.push(`/new/check/${id}`);
+            }}
+          >
             {selectedQuestions.length < 5
               ? '질문을 5개 이상 선택하세요'
               : '면접 시작'}
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -2,9 +2,13 @@ import styles from './styles/new.header.module.css';
 
 import Image from 'next/image';
 
-const NewHeader = () => {
+interface Props {
+  isBlack?: boolean;
+}
+
+const NewHeader = ({ isBlack = false }: Props) => {
   return (
-    <header className={styles.container}>
+    <header className={`${styles.container} ${isBlack ? styles.black : ''}`}>
       <div className={styles.wrapper}>
         <div className={styles.box}>
           <div className={styles.logo}>
