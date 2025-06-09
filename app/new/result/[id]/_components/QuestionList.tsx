@@ -16,18 +16,23 @@ const QuestionList = ({ data }: Props) => {
 
   return (
     <motion.div className={styles.container}>
-      <div className={styles.headerContainer}>
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className={styles.headerContainer}
+      >
         <p>생성된 면접 질문</p>
-      </div>
+      </motion.div>
       <div className={styles.itemListContainer}>
         {data.map((item, index) => (
           <motion.div
             key={item.id}
-            initial={{ opacity: 0, x: -10, y: index < 10 ? 10 : 0 }}
-            animate={{ opacity: 1, x: 0, y: 0 }}
+            initial={{ opacity: 0, y: index < 10 ? 10 : 0 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{
-              delay: index * 0.1,
-              duration: index < 10 ? 0.4 : 0.2,
+              delay: (index + 1) * 0.1,
+              duration: index < 10 ? 0.4 : 0.15,
             }}
           >
             <QuestionItem
