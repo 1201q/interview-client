@@ -1,6 +1,6 @@
 'use client';
 
-import { QuestionSection } from '@/utils/types/types';
+import { QuestionDataArray } from '@/utils/types/types';
 import styles from './styles/question.item.module.css';
 
 import Timer from '@/public/clock.svg';
@@ -9,30 +9,23 @@ import { setUserSelectedQuestionsAtom } from '@/store/newSelect';
 import React from 'react';
 
 interface Props {
-  based_on: string;
-  question: string;
-  section: string;
+  data: QuestionDataArray;
   selected: boolean;
 }
 
 const QuestionItem = (props: Props) => {
   const setSelected = useSetAtom(setUserSelectedQuestionsAtom);
 
-  const section = props.section as QuestionSection;
+  const section = props.data.section;
 
-  const resume = props.based_on.includes('이력서');
+  const resume = props.data.based_on.includes('이력서');
   const recruitment =
-    props.based_on.includes('채용') && props.based_on.includes('공고');
+    props.data.based_on.includes('채용') &&
+    props.data.based_on.includes('공고');
 
   return (
     <div
-      onClick={() =>
-        setSelected({
-          question: props.question,
-          section: section,
-          based_on: props.based_on,
-        })
-      }
+      onClick={() => setSelected(props.data)}
       className={`${styles.container} ${props.selected ? styles.selected : ''}`}
     >
       <div className={styles.leftContainer}></div>
@@ -67,7 +60,7 @@ const QuestionItem = (props: Props) => {
           </div>
         </div>
         <div className={styles.textContainer}>
-          <p>{props.question}</p> <span>{props.based_on}</span>
+          <p>{props.data.question}</p> <span>{props.data.based_on}</span>
         </div>
       </div>
     </div>

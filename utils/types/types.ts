@@ -236,6 +236,7 @@ export interface QuestionData {
 }
 
 export interface QuestionDataArray {
+  id: string;
   question: string;
   based_on: string;
   section: QuestionSection;

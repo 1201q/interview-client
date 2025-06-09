@@ -14,7 +14,7 @@ const ResultPage = async ({ params }: Props) => {
 
   const data = await getGeneratedQuestions(id);
 
-  // http://localhost:3000/new/result/2d21dde2-85ef-44ad-97e1-4b1a1df7dca0
+  // http://localhost:3000/new/result/fec50ca2-2f95-47c5-81a3-9308b0a94767
 
   return (
     <div className={styles.container}>

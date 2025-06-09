@@ -1,4 +1,4 @@
-import { QuestionData, QuestionSection } from '../types/types';
+import { QuestionDataArray } from '../types/types';
 import { fetcher } from './fetcher';
 
 export const getGeneratedQuestions = async (id: string) => {
@@ -11,7 +11,7 @@ export const getGeneratedQuestions = async (id: string) => {
     },
   };
 
-  const data = fetcher<{ questions: Record<QuestionSection, QuestionData[]> }>(
+  const data = fetcher<{ questions: QuestionDataArray[] }>(
     `/question/generate/${id}`,
     options,
   );

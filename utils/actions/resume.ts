@@ -20,8 +20,8 @@ export async function generateQuestionsFromResume(
     throw new Error('이력서를 100자 이상으로 작성했는지 다시 확인해주세요.');
   }
 
-  if (resumeText.length > 5000) {
-    throw new Error('이력서를 5000자 미만으로 작성했는지 다시 확인해주세요.');
+  if (resumeText.length > 10000) {
+    throw new Error('이력서를 10000자 미만으로 작성했는지 다시 확인해주세요.');
   }
 
   const body = JSON.stringify({

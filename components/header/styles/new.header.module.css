@@ -4,9 +4,10 @@
   position: sticky;
   top: 0;
 
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(24px);
 
   z-index: 100;
+  border-bottom: 1px solid var(--border-main2-color);
 }
 
 .wrapper {
