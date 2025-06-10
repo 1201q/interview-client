@@ -1,0 +1,197 @@
+.cameraContainer {
+  border-radius: 8px;
+  width: 100%;
+  height: 400px;
+  background-color: var(--bg-gray-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.black {
+  background-color: black;
+}
+
+.noPermissionContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 20px;
+}
+
+.noPermissionContainer p {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--font-gray-color);
+  line-height: 130%;
+  text-align: center;
+}
+
+.noPermissionContainer svg {
+  stroke: var(--font-gray-color);
+  margin-bottom: 15px;
+}
+
+.cameraController {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  height: 70px;
+  position: absolute;
+  bottom: 0;
+}
+
+.requestPermissionContainer {
+  position: absolute;
+  bottom: 20px;
+}
+
+.requestPermissionButton {
+  padding: 0px 30px;
+  height: 28px;
+  border-radius: 30px;
+
+  background-color: var(--bg-green-color);
+
+  border: 1px solid var(--bg-green-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.requestPermissionButton:hover {
+  transition: all 0.1s;
+  filter: brightness(75%);
+}
+
+.requestPermissionButton p {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--font-green-color);
+}
+
+.requestPermissionButton svg {
+  position: absolute;
+  left: 0;
+  stroke: var(--font-green-color);
+  opacity: 0.7;
+}
+
+/*  */
+.beforeCameraCheck {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  padding: 0px 20px;
+  row-gap: 15px;
+}
+
+/*  */
+.mask {
+  width: 100%;
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  mask-image: radial-gradient(
+    circle at 50% 40%,
+    transparent 110px,
+    black 110px
+  );
+  -webkit-mask-image: radial-gradient(
+    circle at 50% 40%,
+    transparent 110px,
+    black 110px
+  );
+  z-index: 1;
+}
+.progressCircle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 5;
+}
+
+.fg {
+  fill: none;
+  stroke: var(--main-green-color);
+  stroke-width: 5;
+}
+/*  */
+
+.maskImage {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.textContainer {
+  width: 100%;
+  padding: 0px 20px;
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 160%;
+  z-index: 10;
+}
+
+.guideTextContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+
+  padding: 50px 20px;
+  line-height: 160%;
+  z-index: 1;
+}
+
+.textContainer p,
+.guideTextContainer p {
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.gradientText {
+  font-size: 18px;
+  font-weight: 600;
+  background: linear-gradient(to right, white 0%, white 50%, gray 50%, gray 0%);
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}

@@ -15,6 +15,7 @@ import {
   filter,
   map,
   merge,
+  Observable,
   of,
   pairwise,
   race,
@@ -376,3 +377,27 @@ startFaceCapture$
   .subscribe((data) => {
     capturedResult$.next(data);
   });
+
+// 권한
+const permissionState$ = new BehaviorSubject<{
+  camera: PermissionState;
+  microphone: PermissionState;
+}>({ camera: 'prompt', microphone: 'prompt' });
+
+// 권한을 감시
+const subscribePermission = (name: PermissionName) => {
+  return new Observable<PermissionState>((observer) => {
+    navigator.permissions.query({ name }).then((status) => {
+      observer.next(status.state);
+
+      const handleChange = () => observer.next(status.state);
+
+      status.addEventListener('change', handleChange);
+
+      return () => status.removeEventListener('change', handleChange);
+    });
+  });
+};
+
+export const cameraPermission$ = subscribePermission('camera');
+export const micPermission$ = subscribePermission('microphone');

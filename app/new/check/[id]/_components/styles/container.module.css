@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+
+  flex-direction: column;
+  width: 100%;
+
+  position: relative;
+  background-color: white;
+  border: 1px solid var(--border-blue-color);
+
+  box-shadow:
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+  border-radius: 12px;
+  overflow: hidden;
+
+  row-gap: 25px;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+
+  padding: 20px 20px 0px 20px;
+}
+
+.titleTextContainer {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.titleTextContainer svg {
+  stroke: var(--main-blue3-color);
+}
+
+.titleContainer p,
+.titleTextContainer p {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--main-blue3-color);
+}
+
+.titleContainer span {
+  font-size: 15px;
+  color: var(--font-darkgray-color);
+}
+.component {
+  padding: 0px 20px 20px 20px;
+}
