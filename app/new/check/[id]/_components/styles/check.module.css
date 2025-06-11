@@ -5,6 +5,7 @@
   background-color: var(--bg-gray-color);
   position: relative;
   overflow: hidden;
+  margin-top: 25px;
 }
 
 .black {

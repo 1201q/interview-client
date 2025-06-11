@@ -3,13 +3,6 @@
 import styles from './page.module.css';
 import NewHeader from '@/components/header/NewHeader';
 
-import WebcamInstance from '@/components/refactorWebcam/WebcamInstance';
-
-import ProgressRing from './_components/ProgressRing';
-import { useEffect, useState } from 'react';
-
-import { AnimatePresence, motion } from 'motion/react';
-import TextRender from './_components/TextRender';
 import Header from '../../components/Header';
 import Controller from './_components/Controller';
 import CheckContainer from './_components/CheckContainer';

@@ -329,9 +329,9 @@ export const faceResult$ = new Subject<FaceResult>();
 const isInCircle$ = faceResult$.pipe(
   map((face: FaceResult) => {
     const [xRaw, yRaw] = face.meshRaw[10];
+
     return !(xRaw < 0.45 || xRaw > 0.55 || yRaw < 0.25 || yRaw > 0.4);
   }),
-  distinctUntilChanged(),
 );
 
 // 500ms마다 모든 체킹이 true인가?
