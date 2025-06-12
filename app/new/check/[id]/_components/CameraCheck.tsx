@@ -217,14 +217,6 @@ const CameraCheck = () => {
               )}
             </AnimatePresence>
 
-            {/* <AnimatePresence>
-              {cameraCheckStart && cameraCheckCompleted && (
-                <motion.div className={styles.guideTextContainer}>
-                  <motion.p layoutId="text1">얼굴 체크 완료!</motion.p>
-                </motion.div>
-              )}
-            </AnimatePresence> */}
-
             {/* 가이드 텍스트 */}
             <AnimatePresence>
               {cameraCheckStart && step === 'guide' && (

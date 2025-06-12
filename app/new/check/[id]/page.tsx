@@ -9,10 +9,12 @@ import CheckContainer from './_components/CheckContainer';
 import { CameraIcon, MicIcon } from 'lucide-react';
 import CameraCheck from './_components/CameraCheck';
 import MicCheck from './_components/MicCheck';
+import PermssionGuideModal from './_components/PermissionGuideModal';
 
 const CheckPage = () => {
   return (
     <div className={styles.container}>
+      <PermssionGuideModal />
       <NewHeader />
       <div className={styles.bgContainer}></div>
       <div className={styles.contents}>

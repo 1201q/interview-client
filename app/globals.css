@@ -18,13 +18,15 @@
 
   --main-skyblue-color: #06b6d4;
   --main-violet-color: #6366f1;
-  --main-green-color: rgb(55, 179, 119);
+  --main-green-color: rgb(22, 163, 74);
   --main-gray-color: rgba(91, 97, 110, 0.7);
 
   --bg-gray-color: rgb(243, 244, 246);
   --bg-blue-color: #eceffb;
   --bg-red-color: rgba(219, 64, 64, 0.12);
+  --bg-red2-color: #fef2f2;
   --bg-green-color: rgba(55, 179, 119, 0.2);
+  --bg-green2-color: #f0fdf4;
   --bg-violet-color: rgb(243, 232, 255);
 
   --bg-black-color: #242424;
@@ -36,6 +38,7 @@
   --font-darkgray-color: #64748b;
   --font-black-color: #334155;
   --font-green-color: rgb(22, 101, 52);
+  --font-red-color: rgb(185, 28, 28);
 }
 
 * {
