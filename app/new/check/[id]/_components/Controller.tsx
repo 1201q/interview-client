@@ -75,7 +75,7 @@ const Controller = () => {
                 <p>마이크</p>
               </div>
 
-              <ShieldEllipsis width={16} height={16} />
+              {micPermission && Permission(micPermission)}
             </div>
           </div>
         </motion.div>
