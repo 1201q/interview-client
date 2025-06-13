@@ -24,3 +24,9 @@ export const setUserSelectedQuestionsAtom = atom(
     }
   },
 );
+
+export const submitSelectedQuestionsAtom = atom((get) =>
+  get(userSelectedQuestionsAtom).map((q, index) => {
+    return { id: q.id, order: index };
+  }),
+);

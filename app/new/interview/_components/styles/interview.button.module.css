@@ -1,0 +1,79 @@
+.container {
+  height: 52px;
+  padding: 0px 30px 0px 25px;
+  border-radius: 50px;
+  background-image: linear-gradient(
+    to right,
+    var(--main-blue-color),
+    var(--main-blue2-color)
+  );
+
+  box-shadow:
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(76, 134, 254, 0.5) 0px 8px 30px 0px;
+
+  border: 0.6px solid rgba(255, 255, 255, 0.3);
+}
+
+.container:hover {
+  background-image: linear-gradient(
+    to right,
+    var(--main-blue3-color),
+    var(--main-blue-color)
+  );
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  column-gap: 15px;
+}
+
+.flex p {
+  font-size: 20px;
+  color: white;
+  font-weight: 600;
+}
+
+.playIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--main-blue2-color);
+}
+
+.playIcon svg {
+  width: 14px;
+  height: 14px;
+  fill: white;
+}
+
+.red .playIcon {
+  background-color: var(--main-red2-color);
+}
+
+.red {
+  background-image: linear-gradient(
+    to right,
+    var(--main-red-color),
+    var(--main-red2-color)
+  );
+  box-shadow:
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(240, 97, 109, 0.5) 0px 8px 30px 0px;
+}
+
+.red:hover {
+  background-image: linear-gradient(
+    to right,
+    var(--main-red3-color),
+    var(--main-red-color)
+  );
+
+  transform: scale(1.03);
+}

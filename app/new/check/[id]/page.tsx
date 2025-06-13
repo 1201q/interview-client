@@ -12,8 +12,12 @@ import MicCheck from './_components/MicCheck';
 import CompleteStatus from './_components/CompleteStatus';
 import { useAtomValue } from 'jotai';
 import { cameraCheckCompletedAtom, micCheckCompletedAtom } from '@/store/step';
+import { useParams, useRouter } from 'next/navigation';
 
 const CheckPage = () => {
+  const router = useRouter();
+  const params = useParams();
+  const { id } = params;
   const cameraCheck = useAtomValue(cameraCheckCompletedAtom);
   const micCheck = useAtomValue(micCheckCompletedAtom);
 
@@ -51,7 +55,14 @@ const CheckPage = () => {
           </div>
         </div>
       </div>
-
+      <button
+        className={styles.testButton}
+        onClick={() => {
+          router.push(`/new/new_session/${id}`);
+        }}
+      >
+        스킵
+      </button>
       {/* <PermssionGuideModal /> */}
     </div>
   );
