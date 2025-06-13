@@ -1,4 +1,4 @@
-import { use, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './styles/check.module.css';
 import { CameraOff } from 'lucide-react';
 import { cameraPermission$, isFaceInCircleWarning$ } from '@/store/observable';
@@ -49,6 +49,7 @@ const CameraCheck = () => {
     const camera = cameraPermission$.subscribe((p) => {
       setCameraPermission(p);
 
+      // 카메라 권한이 해제되면 바로 체크 화면 표시
       if (p !== 'granted') {
         setCameraCheckCompleted(false);
         setCameraCheckStart(false);
@@ -95,7 +96,6 @@ const CameraCheck = () => {
         if (timerRef.current) {
           clearTimeout(timerRef.current);
           timerRef.current = null;
-          console.log('중지됨');
         }
 
         pauseProgress();
@@ -156,7 +156,7 @@ const CameraCheck = () => {
         {!cameraCheckCompleted && (
           <motion.div
             exit={{ height: 0, opacity: 0 }}
-            transition={{ delay: 1 }}
+            transition={{ delay: 0.5 }}
             className={`${styles.cameraContainer} ${cameraPermission === 'granted' ? styles.black : ''}`}
           >
             {/* 카메라 권한이 없음 */}
@@ -174,7 +174,7 @@ const CameraCheck = () => {
             {cameraCheckStart && isCameraPermissionGranted && (
               <>
                 <div ref={ref} className={styles.mask}></div>
-                <WebcamInstance isRunning={true} />
+                <WebcamInstance isRunning={true} drawTargets={{}} />
               </>
             )}
 
@@ -197,7 +197,7 @@ const CameraCheck = () => {
                     strokeDasharray={dash}
                     animate={controls}
                     initial={{ strokeDashoffset: dash }}
-                    transition={{ duration: 5, ease: 'easeIn' }}
+                    transition={{ duration: 5, ease: 'easeOut' }}
                     style={{
                       transform: 'rotate(-90deg)',
                       transformOrigin: 'center',
@@ -207,14 +207,35 @@ const CameraCheck = () => {
                 </svg>
               )}
               {/* 텍스트 */}
-              {step === 'checking' && isCameraPermissionGranted && (
-                <motion.div key={'text'} className={styles.guideTextContainer}>
-                  <motion.p layoutId="text1">5초간 정면을 바라보면서</motion.p>
-                  <motion.p layoutId="text">
-                    얼굴을 가운데 원에 맞춰주세요
-                  </motion.p>
-                </motion.div>
-              )}
+              {/* 얼굴을 안으로 들어오게 유도*/}
+              {step === 'checking' &&
+                isCameraPermissionGranted &&
+                !progressRunning && (
+                  <motion.div
+                    key={`center-${progressRunning}`}
+                    className={styles.guideTextContainer}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <motion.p>5초간 정면을 바라보면서</motion.p>
+                    <motion.p>얼굴을 가운데 원에 맞춰주세요</motion.p>
+                  </motion.div>
+                )}
+              {/* 얼굴이 안임 */}
+              {step === 'checking' &&
+                isCameraPermissionGranted &&
+                progressRunning && (
+                  <motion.div
+                    key={`center-${progressRunning}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className={styles.guideTextContainer}
+                  >
+                    <motion.p>얼굴을 인식중이에요</motion.p>
+                  </motion.div>
+                )}
             </AnimatePresence>
 
             {/* 가이드 텍스트 */}
@@ -277,7 +298,7 @@ const GuideText = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className={styles.beforeCameraCheck}
+      className={styles.guideContainer}
     >
       <SquareUserRound
         className={styles.maskImage}

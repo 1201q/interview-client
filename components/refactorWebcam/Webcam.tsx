@@ -6,11 +6,18 @@ import { initWebcam } from './initWebcam';
 import { useDetect } from './useDetect';
 import { useDraw } from './useDraw';
 
-interface Props {
-  isRunning: boolean;
+interface DrawTargets {
+  face?: boolean;
+  body?: boolean;
+  hand?: boolean;
 }
 
-const RWebcam = ({ isRunning }: Props) => {
+interface Props {
+  isRunning: boolean;
+  drawTargets: DrawTargets;
+}
+
+const RWebcam = ({ isRunning, drawTargets }: Props) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -39,7 +46,7 @@ const RWebcam = ({ isRunning }: Props) => {
   useEffect(() => {
     if (isRunning) {
       startDetection();
-      startDrawing({ face: true, body: true, hand: true });
+      startDrawing(drawTargets);
       human.webcam.play();
     } else {
       stopDetection();

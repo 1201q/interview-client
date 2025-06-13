@@ -9,8 +9,14 @@ import CheckContainer from './_components/CheckContainer';
 import { CameraIcon, MicIcon } from 'lucide-react';
 import CameraCheck from './_components/CameraCheck';
 import MicCheck from './_components/MicCheck';
+import CompleteStatus from './_components/CompleteStatus';
+import { useAtomValue } from 'jotai';
+import { cameraCheckCompletedAtom, micCheckCompletedAtom } from '@/store/step';
 
 const CheckPage = () => {
+  const cameraCheck = useAtomValue(cameraCheckCompletedAtom);
+  const micCheck = useAtomValue(micCheckCompletedAtom);
+
   return (
     <div className={styles.container}>
       <NewHeader />
@@ -27,6 +33,7 @@ const CheckPage = () => {
               subTitle="면접 중 화상 통화를 위해 카메라가 필요합니다."
               icon={<CameraIcon height={20} width={20} />}
             >
+              {cameraCheck && <CompleteStatus />}
               <CameraCheck />
             </CheckContainer>
             <CheckContainer
@@ -34,6 +41,7 @@ const CheckPage = () => {
               subTitle="면접 답변을 위해 마이크가 필요합니다."
               icon={<MicIcon height={20} width={20} />}
             >
+              {micCheck && <CompleteStatus />}
               <MicCheck />
             </CheckContainer>
           </div>
