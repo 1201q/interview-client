@@ -1,4 +1,7 @@
-import { InterviewClientStatusType } from '@/utils/types/types';
+import {
+  InterviewClientStatusType,
+  QuestionSection,
+} from '@/utils/types/types';
 import { atom } from 'jotai';
 
 export const interviewClientStatusAtom =
@@ -11,10 +14,12 @@ interviewClientStatusAtom.onMount = (set) => {
 };
 export const interviewSessionIdAtom = atom<string>();
 export const totalQuestionsAtom = atom<number>();
+
 type CurrentQuestionType = {
   question_id: string;
   question_text: string;
   question_order: number;
+  section: QuestionSection;
 };
 
 export const currentQuestionAtom = atom<CurrentQuestionType>();

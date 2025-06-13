@@ -5,14 +5,23 @@ import Clock from '@/public/clock.svg';
 import { AnimatePresence, motion } from 'motion/react';
 import Timer from './Timer';
 import { useAtomValue } from 'jotai';
-import { interviewClientStatusAtom } from '@/store/interview';
+import {
+  currentQuestionAtom,
+  interviewClientStatusAtom,
+} from '@/store/interview';
+import { getInterviewSecBySection } from '@/utils/time/duration';
+
 interface Props {
   readySec: number;
-  interviewSec: number;
 }
 
-const TopStatusHeader = ({ readySec, interviewSec }: Props) => {
+const TopStatusHeader = ({ readySec }: Props) => {
   const clientStatus = useAtomValue(interviewClientStatusAtom);
+  const currentQuestion = useAtomValue(currentQuestionAtom);
+
+  const interviewSec = getInterviewSecBySection(
+    currentQuestion?.section ?? 'basic',
+  );
 
   return (
     <div className={styles.container}>

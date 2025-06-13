@@ -19,7 +19,6 @@ import { useInterviewRecorder } from './hooks/useInterviewRecorder';
 import { interviewSessionIdAtom } from '@/store/interview';
 
 const READY_SEC = 10;
-const INTERVIEW_SEC = 60;
 
 const InterviewClient = ({ sessionId }: { sessionId: string }) => {
   const clientStatus = useAtomValue(interviewClientStatusAtom);
@@ -30,7 +29,6 @@ const InterviewClient = ({ sessionId }: { sessionId: string }) => {
 
   useInterviewFlow({
     readySec: READY_SEC,
-    interviewSec: INTERVIEW_SEC,
     control,
   });
 
@@ -41,7 +39,7 @@ const InterviewClient = ({ sessionId }: { sessionId: string }) => {
   return (
     <div className={styles.container}>
       <div className={styles.topContainer}>
-        <TopStatusHeader readySec={READY_SEC} interviewSec={INTERVIEW_SEC} />
+        <TopStatusHeader readySec={READY_SEC} />
       </div>
 
       <WebcamInstance isRunning={true} />

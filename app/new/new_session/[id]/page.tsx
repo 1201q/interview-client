@@ -5,10 +5,7 @@ import styles from './page.module.css';
 import { submitSelectedQuestionsAtom } from '@/store/newSelect';
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import {
-  createInterviewSession,
-  newCreateInterviewSession,
-} from '@/utils/actions/session';
+import { newCreateInterviewSession } from '@/utils/actions/session';
 import { useParams, useRouter } from 'next/navigation';
 
 const Page = () => {

@@ -37,6 +37,7 @@ export const useInterviewControl = (
           question_id: data.question.question_id,
           question_text: data.question.question_text,
           question_order: data.current_order,
+          section: data.question.section,
         });
         setTotalQuestionsAtom(data.total_questions);
         setClientStatus('waiting30');
@@ -102,6 +103,7 @@ export const useInterviewControl = (
               question_id: result.question.question_id,
               question_text: result.question.question_text,
               question_order: result.current_order,
+              section: result.question.section,
             });
           }
         }

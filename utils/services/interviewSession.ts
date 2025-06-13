@@ -1,8 +1,11 @@
+import { QuestionSection } from '../types/types';
+
 interface StartSessionRes {
   message: string;
   question: {
     question_id: string;
     question_text: string;
+    section: QuestionSection;
   };
   current_order: number;
   total_questions: number;
@@ -14,6 +17,7 @@ interface SubmitAnswerRes {
   question?: {
     question_id: string;
     question_text: string;
+    section: QuestionSection;
   };
   current_order?: number;
 }

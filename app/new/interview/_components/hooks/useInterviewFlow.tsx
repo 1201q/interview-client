@@ -1,21 +1,22 @@
-import { interviewClientStatusAtom } from '@/store/interview';
+import {
+  currentQuestionAtom,
+  interviewClientStatusAtom,
+} from '@/store/interview';
 import { useAtom } from 'jotai';
 import { useInterviewControl } from './useInterviewControl';
 import { useEffect } from 'react';
 import { startTimer } from '@/utils/time/timer';
+import { getInterviewSecBySection } from '@/utils/time/duration';
 
 interface Props {
   readySec?: number;
-  interviewSec?: number;
+
   control: ReturnType<typeof useInterviewControl>;
 }
 
-export const useInterviewFlow = ({
-  readySec = 30,
-  interviewSec = 60,
-  control,
-}: Props) => {
+export const useInterviewFlow = ({ readySec = 30, control }: Props) => {
   const [clientStatus, setClientStatus] = useAtom(interviewClientStatusAtom);
+  const [currentQuestion] = useAtom(currentQuestionAtom);
 
   useEffect(() => {
     if (clientStatus === 'countdown') {
@@ -31,13 +32,15 @@ export const useInterviewFlow = ({
     if (clientStatus === 'answering') {
       control.startAnswer();
 
-      const timer = startTimer(interviewSec, async () => {
+      const sec = getInterviewSecBySection(currentQuestion?.section ?? 'basic');
+
+      const timer = startTimer(sec, async () => {
         await control.submitAnswer();
       });
 
       return () => timer.cancel();
     }
-  }, [clientStatus]);
+  }, [clientStatus, currentQuestion?.section]);
 
   useEffect(() => {
     if (clientStatus === 'waiting30') {
