@@ -3,7 +3,7 @@
 import styles from './styles/controller.module.css';
 
 import { useParams, useRouter } from 'next/navigation';
-import { motion } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 import { MicIcon } from 'lucide-react';
 import { Camera } from 'lucide-react';
 import { CircleCheck } from 'lucide-react';
@@ -11,6 +11,8 @@ import { CircleAlert } from 'lucide-react';
 import { ShieldCheck, ShieldEllipsis, ShieldAlert } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { cameraPermission$, micPermission$ } from '@/store/observable';
+import { useAtom, useAtomValue } from 'jotai';
+import { cameraCheckCompletedAtom, micCheckCompletedAtom } from '@/store/step';
 
 const Permission = (permission: PermissionState) => {
   if (permission === 'prompt') {
@@ -22,6 +24,12 @@ const Permission = (permission: PermissionState) => {
   }
 };
 
+const CompleteIcon = (comeplte: boolean) => {
+  if (!comeplte)
+    return <CircleAlert width={16} height={16} className={styles.red} />;
+  else return <CircleCheck width={16} height={16} className={styles.green} />;
+};
+
 const Controller = () => {
   const [cameraPermission, setCameraPermission] =
     useState<PermissionState | null>(null);
@@ -29,6 +37,9 @@ const Controller = () => {
   const [micPermission, setMicPermission] = useState<PermissionState | null>(
     null,
   );
+
+  const cameraCheck = useAtomValue(cameraCheckCompletedAtom);
+  const micCheck = useAtomValue(micCheckCompletedAtom);
 
   const router = useRouter();
   const param = useParams();
@@ -79,45 +90,51 @@ const Controller = () => {
             </div>
           </div>
         </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.05 }}
-          className={styles.boxContainer}
-        >
-          <div className={styles.titleContainer}>
-            <p>디바이스 체크 상태</p>
-            <span>디바이스 체크를 통과하면 면접을 진행합니다.</span>
-          </div>
-          <div className={styles.infoContainer}>
-            <div className={styles.info}>
-              <div className={styles.infoLeft}>
-                <Camera width={16} height={16} strokeWidth={2} />
-                <p>카메라 체크</p>
-              </div>
-              <CircleCheck width={16} height={16} />
-            </div>
-            <div className={styles.info}>
-              <div className={styles.infoLeft}>
-                <MicIcon width={16} height={16} strokeWidth={2} />
-                <p>마이크 체크</p>
-              </div>
-
-              <CircleAlert width={16} height={16} />
-            </div>
-          </div>
-          <div className={styles.buttonContainer}>
-            <button
-              disabled={false}
-              onClick={() => {
-                router.push(`/new/check/${id}`);
-              }}
+        <AnimatePresence>
+          {cameraPermission !== 'denied' && micPermission !== 'denied' && (
+            <motion.div
+              layout
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.05 }}
+              className={styles.boxContainer}
             >
-              면접 시작
-            </button>
-          </div>
-        </motion.div>
+              <div className={styles.titleContainer}>
+                <p>디바이스 체크 상태</p>
+                <span>디바이스 체크를 통과하면 면접을 진행합니다.</span>
+              </div>
+              <div className={styles.infoContainer}>
+                <div className={styles.info}>
+                  <div className={styles.infoLeft}>
+                    <Camera width={16} height={16} strokeWidth={2} />
+                    <p>카메라 체크</p>
+                  </div>
+                  {CompleteIcon(cameraCheck)}
+                </div>
+                <div className={styles.info}>
+                  <div className={styles.infoLeft}>
+                    <MicIcon width={16} height={16} strokeWidth={2} />
+                    <p>마이크 체크</p>
+                  </div>
+
+                  {CompleteIcon(micCheck)}
+                </div>
+              </div>
+              <div className={styles.buttonContainer}>
+                <button
+                  disabled={cameraCheck && micCheck ? false : true}
+                  onClick={() => {
+                    router.push(`/new/check/${id}`);
+                  }}
+                >
+                  면접 시작
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <motion.div
+          layout
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
