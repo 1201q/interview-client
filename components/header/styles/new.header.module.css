@@ -60,3 +60,7 @@
 .black img {
   filter: brightness(1000%);
 }
+
+.transparent {
+  background: none;
+}

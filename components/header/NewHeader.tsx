@@ -4,11 +4,14 @@ import Image from 'next/image';
 
 interface Props {
   isBlack?: boolean;
+  isTransparentBg?: boolean;
 }
 
-const NewHeader = ({ isBlack = false }: Props) => {
+const NewHeader = ({ isBlack = false, isTransparentBg = false }: Props) => {
   return (
-    <header className={`${styles.container} ${isBlack ? styles.black : ''}`}>
+    <header
+      className={`${styles.container} ${isBlack ? styles.black : ''} ${isTransparentBg ? styles.transparent : ''}`}
+    >
       <div className={styles.wrapper}>
         <div className={styles.box}>
           <div className={styles.logo}>

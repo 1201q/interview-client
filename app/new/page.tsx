@@ -43,7 +43,7 @@ const Page = () => {
 
   return (
     <div className={styles.container}>
-      <NewHeader />
+      <NewHeader isTransparentBg={!isPending ? false : true} />
       <div
         className={`${isPending ? styles.loadingBgContainer : styles.bgContainer}`}
       ></div>
