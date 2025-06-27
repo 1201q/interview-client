@@ -8,7 +8,6 @@ import JotaiProvider from '@/components/provider/JotaiProvider';
 interface Props {
   children: React.ReactNode;
   modal: React.ReactNode;
-  questionModal: React.ReactNode;
 }
 
 const pretendard = localFont({
@@ -18,11 +17,7 @@ const pretendard = localFont({
   variable: '--font-pretendard',
 });
 
-export default function RootLayout({
-  children,
-  modal,
-  questionModal,
-}: Readonly<Props>) {
+export default function RootLayout({ children, modal }: Readonly<Props>) {
   return (
     <html lang="ko">
       <body className={pretendard.variable}>
@@ -31,7 +26,6 @@ export default function RootLayout({
           <Analytics />
           {children}
           {modal}
-          {questionModal}
         </JotaiProvider>
       </body>
     </html>
