@@ -2,11 +2,14 @@ export const uploadPdfToServer = async (file: File) => {
   const formData = new FormData();
   formData.append('file', file);
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pdf/extract`, {
-    method: 'POST',
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/question/generate/extract`,
+    {
+      method: 'POST',
 
-    body: formData,
-  });
+      body: formData,
+    },
+  );
 
   if (!res.ok) {
     const err = await res.json();

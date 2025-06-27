@@ -34,9 +34,6 @@ type FacingDirection = 'left' | 'right' | 'center' | 'none';
 type HeadTiltDirection = 'up' | 'down' | 'none';
 type IrisDirection = 'center' | 'up' | 'down' | 'right' | 'left' | 'none';
 
-type StartCheckStatus = 'checking' | 'success' | 'fail';
-type FaceCheckStatus = 'inProgress' | 'success' | 'fail';
-
 type WarningKey =
   | 'leaningLeft'
   | 'leaningRight'

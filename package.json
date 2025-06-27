@@ -31,7 +31,6 @@
     "recharts": "^2.15.3",
     "rxjs": "^7.8.2",
     "socket.io-client": "^4.8.1",
-    "ts-ebml": "^3.0.1",
     "uuid": "^11.1.0"
   },
   "devDependencies": {

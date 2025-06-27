@@ -1,0 +1,18 @@
+.wrapper {
+  display: flex;
+  gap: 2px;
+  align-items: flex-end;
+  width: 240px;
+  height: 32px;
+  background-color: #f3f4f6;
+  border-radius: 9999px;
+  padding: 4px 8px;
+  overflow: hidden;
+}
+
+.bar {
+  width: 2px;
+  background-color: #9ca3af;
+  border-radius: 2px;
+  transition: height 0.1s linear;
+}

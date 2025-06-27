@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 30px;
+}
+
+.indicatorContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin: 0px 20px;
+  column-gap: 9px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: #888;
+  border-radius: 50%;
+}
+
+.current {
+  width: 25px;
+  height: 8px;
+  background-color: white;
+  border-radius: 25px;
+}
