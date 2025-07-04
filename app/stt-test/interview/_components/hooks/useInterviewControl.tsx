@@ -91,6 +91,7 @@ export const useInterviewControl = (
             sessionId,
             currentQuestion?.question_id,
             audioBlob,
+            'answerText',
           );
 
           if (result.is_last) {

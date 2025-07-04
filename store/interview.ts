@@ -15,6 +15,8 @@ interviewClientStatusAtom.onMount = (set) => {
 export const interviewSessionIdAtom = atom<string>();
 export const totalQuestionsAtom = atom<number>();
 
+export const answerTextAtom = atom<string>('');
+
 type CurrentQuestionType = {
   question_id: string;
   question_text: string;

@@ -7,7 +7,7 @@ import TopStatusHeader from '../_components/TopStatusHeader';
 import WebcamInstance from '@/components/refactorWebcam/WebcamInstance';
 
 import InterviewButton from './InterviewButton';
-import { interviewClientStatusAtom } from '@/store/interview';
+import { answerTextAtom, interviewClientStatusAtom } from '@/store/interview';
 import { useAtomValue, useSetAtom } from 'jotai';
 import DisplayQuestion from './DisplayQuestion';
 
@@ -23,6 +23,8 @@ const READY_SEC = 10;
 const InterviewClient = ({ sessionId }: { sessionId: string }) => {
   const clientStatus = useAtomValue(interviewClientStatusAtom);
   const setSessionId = useSetAtom(interviewSessionIdAtom);
+
+  const setAnswerText = useSetAtom(answerTextAtom);
 
   const recorder = useInterviewRecorder();
   const control = useInterviewControl(recorder);
@@ -56,6 +58,12 @@ const InterviewClient = ({ sessionId }: { sessionId: string }) => {
             />
           )}
         </div>
+        <textarea
+          className={styles.textarea}
+          onChange={(e) => {
+            setAnswerText(e.target.value);
+          }}
+        ></textarea>
       </div>
       <AnimatePresence>
         {clientStatus === 'countdown' && <Countdown />}

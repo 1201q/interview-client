@@ -64,11 +64,13 @@ export const submitAnswerData = async (
   sessionId: string,
   questionId: string,
   audioBlob: Blob,
+  answerText: string,
 ): Promise<SubmitAnswerRes> => {
   const formData = new FormData();
   formData.append('audio', audioBlob, 'answer.webm');
   formData.append('session_id', sessionId);
   formData.append('question_id', questionId);
+  formData.append('answer_text', answerText);
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/answer/submit`, {
     method: 'PATCH',

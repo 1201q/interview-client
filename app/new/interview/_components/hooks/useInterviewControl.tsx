@@ -1,4 +1,4 @@
-import { interviewClientStatusAtom } from '@/store/interview';
+import { answerTextAtom, interviewClientStatusAtom } from '@/store/interview';
 
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useState } from 'react';
@@ -24,6 +24,8 @@ export const useInterviewControl = (
   const setTotalQuestionsAtom = useSetAtom(totalQuestionsAtom);
 
   const [clientStatus, setClientStatus] = useAtom(interviewClientStatusAtom);
+  const [answerText, setAnswerText] = useAtom(answerTextAtom);
+
   const [loading, setLoading] = useState(false);
 
   const startInterview = async () => {
@@ -86,11 +88,14 @@ export const useInterviewControl = (
       if (sessionId) {
         const audioBlob = await recorder.stopRecording();
 
+        console.log(answerText);
+
         if (sessionId && currentQuestion) {
           const result = await submitAnswerData(
             sessionId,
             currentQuestion?.question_id,
             audioBlob,
+            answerText,
           );
 
           if (result.is_last) {
