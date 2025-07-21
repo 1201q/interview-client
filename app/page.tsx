@@ -1,13 +1,18 @@
+import Header from '@/components/shared/Header';
 import styles from './page.module.css';
-import Landing from '@/components/landing/Landing';
+import Footer from '@/components/shared/Footer';
 
 const Page = () => {
   // page
   return (
     <div className={styles.container}>
-      <div className={styles.contentsContainer}>
-        <Landing />
-      </div>
+      <Header />
+      <main className={styles.main}>
+        <div className={styles.contents}>
+          <div style={{ height: '1200px' }}>1</div>
+        </div>
+      </main>
+      <Footer />
     </div>
   );
 };
