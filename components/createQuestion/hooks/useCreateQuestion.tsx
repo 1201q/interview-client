@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 
 const useCreateQuestion = () => {
+  const [stage, setStage] = useState<'input' | 'loading' | 'result'>('input');
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [resumeData, setResumeData] = useState<{ text: string; ok: boolean }>();
   const [jobData, setJobData] = useState<{ text: string; ok: boolean }>();
@@ -32,9 +33,12 @@ const useCreateQuestion = () => {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     console.log(jobData?.text, resumeData?.text);
+
+    setStage('loading');
   };
 
   return {
+    stage,
     buttonDisabled,
     onSubmit,
     handleResumeInputChange,

@@ -25,6 +25,8 @@
   --bg-gray2-color: rgb(249, 250, 251);
   --bg-blue-color: #eceffb;
   --bg-red-color: rgba(219, 64, 64, 0.12);
+  --bg-rose-color: rgb(255 228 230);
+
   --bg-red2-color: #fef2f2;
   --bg-green-color: rgba(55, 179, 119, 0.2);
   --bg-green2-color: #f0fdf4;
@@ -45,6 +47,15 @@
   --font-red-color: #e11d48;
 
   --red-bg-gradient: linear-gradient(to right, #e61e4d 0%, #d70466 100%);
+  --red-rose-gradient: linear-gradient(
+    120deg,
+    rgb(251 113 133),
+    rgb(244 63 94),
+    #ec4899,
+    #ec4899
+  );
+  --red-animation-gradient: linear-gradient(120deg, #ec4899, #e11d48, #ec4899);
+
   --box-shadow:
     rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
     rgba(229, 231, 235, 0.5) 0px 10px 15px -3px,
