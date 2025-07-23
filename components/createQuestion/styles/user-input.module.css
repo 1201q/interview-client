@@ -1,0 +1,51 @@
+.userInfoContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  border-radius: 15px;
+  border: 1px solid var(--border-main2-color);
+  box-shadow: var(--box-shadow);
+  row-gap: 20px;
+}
+
+/* title */
+.titleContainer {
+  display: flex;
+  align-items: center;
+  column-gap: 16px;
+}
+
+.titleTextContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 3px;
+}
+
+.titleTextContainer p {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.titleTextContainer span {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--font-darkgray-color);
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background-color: var(--bg-gray-color);
+  border-radius: 7px;
+}
+
+.logoContainer svg {
+  stroke: var(--font-darkgray-color);
+}
+
+/* inputContainer */
+.inputContainer {
+}

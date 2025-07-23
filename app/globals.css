@@ -42,7 +42,18 @@
   --font-black-color: #334155;
   --font-black2-color: #4b5563;
   --font-green-color: rgb(22, 101, 52);
-  --font-red-color: rgb(185, 28, 28);
+  --font-red-color: #e11d48;
+
+  --red-bg-gradient: linear-gradient(to right, #e61e4d 0%, #d70466 100%);
+  --box-shadow:
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(229, 231, 235, 0.5) 0px 10px 15px -3px,
+    rgba(229, 231, 235, 0.5) 0px 4px 6px -4px;
+
+  --box-red-shadow:
+    #e61e4d 0px 0px 0px 0px, #e61e4d 0px 0px 0px 0px,
+    rgb(244 63 94 / 0.4) 0px 10px 15px -3px,
+    rgb(244 63 94 / 0.4) 0px 4px 6px -4px;
 }
 
 * {

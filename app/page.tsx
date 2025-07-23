@@ -1,6 +1,7 @@
 import Header from '@/components/shared/Header';
 import styles from './page.module.css';
 import Footer from '@/components/shared/Footer';
+import CreateQuestion from '@/components/createQuestion/CreateQuestion';
 
 const Page = () => {
   // page
@@ -9,7 +10,7 @@ const Page = () => {
       <Header />
       <main className={styles.main}>
         <div className={styles.contents}>
-          <div style={{ height: '1200px' }}>1</div>
+          <CreateQuestion />
         </div>
       </main>
       <Footer />
