@@ -3,7 +3,7 @@ export const uploadPdfToServer = async (file: File) => {
   formData.append('file', file);
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/generate-request/extract`,
+    `${process.env.NEXT_PUBLIC_API_URL}/generate-question/extract`,
     {
       method: 'POST',
 

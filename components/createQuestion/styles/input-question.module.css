@@ -33,6 +33,21 @@
   min-width: 0;
 }
 
+.listContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.listHeaderContainer {
+  width: 100%;
+  height: 40px;
+}
+
+.listHeaderContainer p {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
 .buttonContainer {
   width: 100%;
 }

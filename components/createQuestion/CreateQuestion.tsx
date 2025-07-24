@@ -19,18 +19,46 @@ import useCreateQuestion from './hooks/useCreateQuestion';
 import { Timer, ZapIcon } from 'lucide-react';
 
 import { motion } from 'motion/react';
+import { useEffect } from 'react';
+
+const TEST_ID = '4e88866e-2a7a-4e66-b49f-12a29e67109e';
 
 const CreateQuestion = () => {
   const props = useCreateQuestion();
 
+  return <LoadingComponent />;
+
   if (props.stage === 'input') {
     return <InputComponent props={props} />;
-  } else if (props.stage === 'loading') {
-    return <LoadingComponent />;
   }
 };
 
 const LoadingComponent = () => {
+  useEffect(() => {
+    const eventSource = new EventSource(
+      `${process.env.NEXT_PUBLIC_API_URL}/generate-question/test/${TEST_ID}?mock=true`,
+    );
+
+    eventSource.addEventListener('question', (e) => {
+      const q = JSON.parse(e.data);
+      console.log(q);
+    });
+
+    eventSource.addEventListener('done', () => {
+      console.log('DONE');
+      eventSource.close();
+    });
+
+    eventSource.onerror = (error) => {
+      console.log('EventSource failed:', error);
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
+
   return (
     <div className={styles.createQuestionContainer}>
       <div className={styles.leftContainer}>
@@ -120,7 +148,13 @@ const LoadingComponent = () => {
           </div>
         </div>
       </div>
-      <div className={styles.rightContainer}>1</div>
+      <div className={styles.rightContainer}>
+        <div className={styles.listContainer}>
+          <div className={styles.listHeaderContainer}>
+            <p>생성된 면접 질문</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
