@@ -141,9 +141,11 @@ export type QuestionSection =
   | 'job_related'
   | 'expertise';
 
-export interface QuestionData {
+export interface GeneratedQuestionItem {
+  id: string;
   question: string;
   based_on: string;
+  section: QuestionSection;
 }
 
 export interface QuestionDataArray {

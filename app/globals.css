@@ -44,6 +44,8 @@
   --font-black-color: #334155;
   --font-black2-color: #4b5563;
   --font-green-color: rgb(22, 101, 52);
+  --font-blue-color: #1d4ed8;
+  --font-violet-color: #7e22ce;
   --font-red-color: #e11d48;
 
   --red-bg-gradient: linear-gradient(to right, #e61e4d 0%, #d70466 100%);
