@@ -8,7 +8,7 @@ import CreateQuestion from '@/components/createQuestion/CreateQuestion';
 const Page = () => {
   // page
   return (
-    <div className={styles.container}>
+    <div className={styles.pageContainer}>
       <Header />
       <main className={styles.main}>
         <div className={styles.contents}>

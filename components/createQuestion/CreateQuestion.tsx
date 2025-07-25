@@ -2,20 +2,20 @@
 
 import useCreateQuestion from './hooks/useCreateQuestion';
 
-import InputComponent from './InputComponent';
-import LoadingComponent from './LoadingComponent';
+import InputPage from './InputPage';
+import LoadingPage from './LoadingPage';
 
 const TEST_ID = '4e88866e-2a7a-4e66-b49f-12a29e67109e';
 
 const CreateQuestion = () => {
   const props = useCreateQuestion();
 
-  // return <InputComponent props={props} />;
+  // return <InputPage props={props} />;
 
-  return <LoadingComponent />;
+  return <LoadingPage />;
 
   if (props.stage === 'input') {
-    return <InputComponent props={props} />;
+    return <InputPage props={props} />;
   }
 };
 

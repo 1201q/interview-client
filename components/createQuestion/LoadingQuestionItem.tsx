@@ -8,7 +8,7 @@ interface QuestionLoadingItemProps {
   questionSection: QuestionSection;
 }
 
-const QuestionLoadingItem = (props: QuestionLoadingItemProps) => {
+const LoadingQuestionItem = (props: QuestionLoadingItemProps) => {
   const getBadgeStyle = (section: QuestionSection) => {
     switch (section) {
       case 'basic':
@@ -46,13 +46,13 @@ const QuestionLoadingItem = (props: QuestionLoadingItemProps) => {
           <div className={styles.circleContainer}>{props.index + 1}</div>
           <p className={styles.titleText}>{props.questionText}</p>
         </div>
-        <div className={styles.rightItem}>
+        {/* <div className={styles.rightItem}>
           <div
             className={`${styles.badgeContainer} ${getBadgeStyle(props.questionSection)}`}
           >
             {getBadgeText(props.questionSection)}
           </div>
-        </div>
+        </div> */}
       </div>
       <div className={styles.bottomContainer}>
         <p>{props.basedOnText}</p>
@@ -61,4 +61,4 @@ const QuestionLoadingItem = (props: QuestionLoadingItemProps) => {
   );
 };
 
-export default QuestionLoadingItem;
+export default LoadingQuestionItem;

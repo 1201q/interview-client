@@ -9,7 +9,7 @@ interface UserInputProps {
 
 const UserInput = ({ titleText, subText, icon, children }: UserInputProps) => {
   return (
-    <div className={styles.userInfoContainer}>
+    <div className={styles.userInputContainer}>
       <div className={styles.titleContainer}>
         <div className={styles.logoContainer}>{icon}</div>
         <div className={styles.titleTextContainer}>
@@ -17,7 +17,7 @@ const UserInput = ({ titleText, subText, icon, children }: UserInputProps) => {
           <span>{subText}</span>
         </div>
       </div>
-      <div className={styles.inputContainer}>{children}</div>
+      <div>{children}</div>
     </div>
   );
 };

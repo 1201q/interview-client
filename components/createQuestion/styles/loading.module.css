@@ -1,10 +1,10 @@
-/* 왼쪽 로딩 스타일 */
-
+/* 왼쪽 로딩 */
 .loadingContainer {
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  height: 100%;
   row-gap: 20px;
 }
 
@@ -144,6 +144,11 @@
 }
 
 @media screen and (max-width: 1024px) {
+  .loadingContainer {
+    position: relative;
+    top: 0;
+  }
+
   .loadingContentsContainer {
     padding: 0;
   }

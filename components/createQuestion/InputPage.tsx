@@ -7,7 +7,7 @@ import TextArea from './TextArea';
 import FileUpload from './FileUpload';
 import useCreateQuestion from './hooks/useCreateQuestion';
 
-const InputComponent = ({
+const InputPage = ({
   props,
 }: {
   props: ReturnType<typeof useCreateQuestion>;
@@ -50,4 +50,4 @@ const InputComponent = ({
   );
 };
 
-export default InputComponent;
+export default InputPage;

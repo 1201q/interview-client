@@ -8,13 +8,14 @@ import { Timer, ZapIcon } from 'lucide-react';
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import QuestionLoadingItem from './QuestionLoadingItem';
+
 import { GeneratedQuestionItem } from '@/utils/types/types';
 import { v4 as uuid } from 'uuid';
+import LoadingQuestionList from './LoadingQuestionList';
 
 const TEST_ID = '4e88866e-2a7a-4e66-b49f-12a29e67109e';
 
-const LoadingComponent = () => {
+const LoadingPage = () => {
   const [generatedQuestions, setGeneratedQuestions] = useState<
     GeneratedQuestionItem[]
   >([]);
@@ -145,18 +146,10 @@ const LoadingComponent = () => {
         </div>
       </div>
       <div className={styles.rightContainer}>
-        {generatedQuestions.map((item, index) => (
-          <QuestionLoadingItem
-            key={item.id}
-            index={index}
-            questionSection={item.section}
-            questionText={item.question}
-            basedOnText={item.based_on}
-          />
-        ))}
+        <LoadingQuestionList questions={generatedQuestions} />
       </div>
     </div>
   );
 };
 
-export default LoadingComponent;
+export default LoadingPage;
