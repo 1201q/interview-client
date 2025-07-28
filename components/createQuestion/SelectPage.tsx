@@ -142,6 +142,9 @@ export const MOCK_QUESTIONS: MockType[] = [
   },
 ];
 
+const minSelectedQuestionsCount = 3; // 최소 선택해야 하는 질문 개수
+const maxSelectedQuestionsCount = 10; // 최대로 선택할수 있는 질문 개수
+
 const SelectPage = () => {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>(
     () => {
@@ -168,6 +171,11 @@ const SelectPage = () => {
       {},
     );
   }, []);
+
+  const selectedQuestionsCount = selectedQuestions.length;
+  const isOutOfRange =
+    selectedQuestionsCount < minSelectedQuestionsCount ||
+    selectedQuestionsCount > maxSelectedQuestionsCount;
 
   const getBadgeText = (section: QuestionSection) => {
     switch (section) {
@@ -196,7 +204,61 @@ const SelectPage = () => {
       <div
         className={`${styles.leftContainer} ${selectStyles.stickyLeftContainer}`}
       >
-        <h1>면접 질문을 선택하세요</h1>
+        <AnimatePresence initial={false} mode="wait">
+          {/* 기본 */}
+          {selectedQuestionsCount < 1 && (
+            <motion.h1
+              key="header-default"
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -10, opacity: 0 }}
+              transition={{ duration: 0.06 }}
+            >
+              면접 질문을 선택하세요
+            </motion.h1>
+          )}
+          {/* 현재 선택개수가 최소구간 미만인 경우 */}
+          {selectedQuestionsCount >= 1 &&
+            selectedQuestionsCount < minSelectedQuestionsCount && (
+              <motion.h1
+                key="header-min-selected"
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -10, opacity: 0 }}
+                transition={{ duration: 0.06 }}
+              >
+                최소 {minSelectedQuestionsCount - selectedQuestionsCount}개 더
+                선택해야해요
+              </motion.h1>
+            )}
+          {/* 현재 선택개수가 최대개수 미만인 경우 (~까지 선택가능) */}
+          {selectedQuestionsCount >= minSelectedQuestionsCount &&
+            selectedQuestionsCount < maxSelectedQuestionsCount && (
+              <motion.h1
+                key="header-max-selected"
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -10, opacity: 0 }}
+                transition={{ duration: 0.06 }}
+              >
+                {maxSelectedQuestionsCount - selectedQuestionsCount}개 더 선택할
+                수 있어요
+              </motion.h1>
+            )}
+          {/* 최대에 도달 */}
+          {selectedQuestionsCount >= maxSelectedQuestionsCount && (
+            <motion.h1
+              key="header-limit-reached"
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -10, opacity: 0 }}
+              transition={{ duration: 0.06 }}
+            >
+              최대 선택 개수에 도달했어요
+            </motion.h1>
+          )}
+        </AnimatePresence>
+
         <p>
           AI가 생성한 맞춤형 질문 중에서 연습하고 싶은 질문을 선택해주세요.
           선택한 질문들로 실제 면접과 같은 환경에서 연습할 수 있습니다.
@@ -208,7 +270,7 @@ const SelectPage = () => {
           <div className={selectStyles.interviewInfoItemContainer}>
             <div className={selectStyles.interviewInfoItem}>
               <span>선택된 질문</span>
-              <p>0개</p>
+              <p>{selectedQuestionsCount}개</p>
             </div>
             <div className={selectStyles.interviewInfoItem}>
               <span>예상 소요시간</span>
@@ -216,13 +278,16 @@ const SelectPage = () => {
             </div>
             <div className={selectStyles.interviewInfoItem}>
               <span>총 생성된 질문</span>
-              <p>0개</p>
+              <p>{MOCK_QUESTIONS.length}개</p>
             </div>
           </div>
+          {/* 버튼 */}
           <div
             className={`${styles.buttonContainer} ${selectStyles.interviewButtonContainer}`}
           >
-            <button>질문을 선택해주세요</button>
+            <button disabled={isOutOfRange}>
+              {isOutOfRange ? '질문을 선택해주세요' : '다음 단계로 넘어가기'}
+            </button>
           </div>
         </div>
         {/* 면접 팁 */}
@@ -247,6 +312,7 @@ const SelectPage = () => {
                 className={selectStyles.title}
                 onClick={() => toggleSection(section)}
               >
+                {/* 섹션 타이틀 */}
                 <p>{getBadgeText(section as QuestionSection)}</p>
                 <motion.div
                   animate={{ rotate: isOpen ? 0 : 180 }}
@@ -256,6 +322,7 @@ const SelectPage = () => {
                 </motion.div>
               </motion.div>
 
+              {/* 섹션 아이템들 */}
               <AnimatePresence initial={false}>
                 {isOpen && (
                   <motion.div
