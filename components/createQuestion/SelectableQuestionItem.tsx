@@ -1,11 +1,15 @@
 import { QuestionSection } from '@/utils/types/types';
 import styles from './styles/question-item.module.css';
+import { CheckIcon } from 'lucide-react';
 
 interface QuestionLoadingItemProps {
   index: number;
   questionText: string;
   basedOnText: string;
   questionSection: QuestionSection;
+  id: string;
+  onClick: () => void;
+  selected: boolean;
 }
 
 const SelectableQuestionItem = (props: QuestionLoadingItemProps) => {
@@ -25,18 +29,27 @@ const SelectableQuestionItem = (props: QuestionLoadingItemProps) => {
   };
 
   return (
-    <div className={styles.questionLoadingContainer}>
+    <div
+      onClick={props.onClick}
+      className={`${styles.questionLoadingContainer} ${styles.selectable} ${props.selected ? styles.selected : ''}`}
+    >
       <div className={styles.topContainer}>
         <div className={styles.leftItem}>
           <div
-            className={`${styles.circleContainer} ${getBadgeStyle(props.questionSection)}`}
+            className={`${styles.circleContainer} ${props.selected ? styles.selectedCircle : getBadgeStyle(props.questionSection)}`}
           >
-            {props.index + 1}
+            {props.selected ? (
+              <CheckIcon width={15} height={15} color="white" strokeWidth={3} />
+            ) : (
+              props.index + 1
+            )}
           </div>
           <p className={styles.titleText}>{props.questionText}</p>
         </div>
       </div>
-      <div className={styles.bottomContainer}>
+      <div
+        className={`${styles.bottomContainer} ${props.selected ? styles.bottomSelected : ''}`}
+      >
         <p>{props.basedOnText}</p>
       </div>
     </div>

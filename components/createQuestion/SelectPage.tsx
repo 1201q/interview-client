@@ -4,13 +4,19 @@ import styles from './styles/container.module.css';
 import selectStyles from './styles/select.module.css';
 
 import { ChevronUp } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
+
+import { v4 as uuid } from 'uuid';
 
 interface MockType {
   question: string;
   based_on: string;
   section: QuestionSection;
+}
+
+interface ItemType extends MockType {
+  id: string;
 }
 
 export const MOCK_QUESTIONS: MockType[] = [
@@ -147,16 +153,21 @@ const SelectPage = () => {
     },
   );
 
-  const groupedQuestions = MOCK_QUESTIONS.reduce<
-    Record<string, typeof MOCK_QUESTIONS>
-  >((acc, question) => {
-    if (!acc[question.section]) {
-      acc[question.section] = [];
-    }
+  const [selectedQuestions, setSelectedQuestions] = useState<ItemType[]>([]);
 
-    acc[question.section].push(question);
-    return acc;
-  }, {});
+  const groupedQuestions = useMemo(() => {
+    return MOCK_QUESTIONS.reduce<Record<string, ItemType[]>>(
+      (acc, question) => {
+        if (!acc[question.section]) {
+          acc[question.section] = [];
+        }
+
+        acc[question.section].push({ ...question, id: uuid() });
+        return acc;
+      },
+      {},
+    );
+  }, []);
 
   const getBadgeText = (section: QuestionSection) => {
     switch (section) {
@@ -260,7 +271,24 @@ const SelectPage = () => {
                   >
                     {items.map((item, index) => (
                       <SelectableQuestionItem
-                        key={`${section}-${index}`}
+                        key={item.id}
+                        id={item.id}
+                        selected={
+                          selectedQuestions.findIndex(
+                            (si) => si.id === item.id,
+                          ) !== -1
+                        }
+                        onClick={() => {
+                          setSelectedQuestions((prev) => {
+                            if (
+                              prev.findIndex((si) => si.id === item.id) !== -1
+                            ) {
+                              return prev.filter((si) => si.id !== item.id);
+                            } else {
+                              return [...prev, item];
+                            }
+                          });
+                        }}
                         index={index}
                         questionSection={item.section as QuestionSection}
                         questionText={item.question}
