@@ -37,10 +37,15 @@ const useCreateQuestion = () => {
     setStage('loading');
   };
 
+  const onLoadingComplete = () => {
+    setStage('result');
+  };
+
   return {
     stage,
     buttonDisabled,
     onSubmit,
+    onLoadingComplete,
     handleResumeInputChange,
     handleJobInputChange,
   };

@@ -15,12 +15,19 @@ import LoadingQuestionList from './LoadingQuestionList';
 
 const TEST_ID = '4e88866e-2a7a-4e66-b49f-12a29e67109e';
 
-const LoadingPage = () => {
+interface LoadingPageProps {
+  onLoadingComplete: () => void;
+}
+
+const LoadingPage = (props: LoadingPageProps) => {
   const [generatedQuestions, setGeneratedQuestions] = useState<
     GeneratedQuestionItem[]
   >([]);
 
   const [progress, setProgress] = useState(0);
+  const [status, setStatus] = useState<'loading' | 'fail' | 'success'>(
+    'loading',
+  );
 
   useEffect(() => {
     const eventSource = new EventSource(
@@ -34,11 +41,15 @@ const LoadingPage = () => {
 
     eventSource.addEventListener('done', () => {
       console.log('DONE');
+      setStatus('success');
+
       eventSource.close();
     });
 
     eventSource.onerror = (error) => {
       console.log('EventSource failed:', error);
+
+      setStatus('fail');
       eventSource.close();
     };
 
@@ -55,6 +66,12 @@ const LoadingPage = () => {
       setProgress(questions * (100 / goal));
     }
   }, [generatedQuestions]);
+
+  useEffect(() => {
+    if (status === 'success') {
+      props.onLoadingComplete();
+    }
+  }, [props, status]);
 
   return (
     <div className={styles.container}>
