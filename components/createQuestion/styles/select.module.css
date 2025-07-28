@@ -98,7 +98,7 @@
 
 .listContainer .title {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   row-gap: 3px;
   position: relative;
   cursor: pointer;

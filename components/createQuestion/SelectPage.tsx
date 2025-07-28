@@ -3,7 +3,7 @@ import SelectableQuestionItem from './SelectableQuestionItem';
 import styles from './styles/container.module.css';
 import selectStyles from './styles/select.module.css';
 
-import { TimerIcon, MousePointer2Icon, CircleCheck } from 'lucide-react';
+import { ChevronUp } from 'lucide-react';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 
@@ -227,48 +227,52 @@ const SelectPage = () => {
         </div>
       </div>
       <div className={styles.rightContainer}>
-        <div className={selectStyles.listContainer}>
-          {Object.entries(groupedQuestions).map(([section, items]) => {
-            const isOpen = openSections[section] ?? true;
+        {Object.entries(groupedQuestions).map(([section, items]) => {
+          const isOpen = openSections[section] ?? true;
 
-            return (
-              <div className={selectStyles.listContainer} key={section}>
+          return (
+            <div className={selectStyles.listContainer} key={section}>
+              <motion.div
+                className={selectStyles.title}
+                onClick={() => toggleSection(section)}
+              >
+                <p>{getBadgeText(section as QuestionSection)}</p>
                 <motion.div
-                  className={selectStyles.title}
-                  onClick={() => toggleSection(section)}
+                  animate={{ rotate: isOpen ? 0 : 180 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  <p>{getBadgeText(section as QuestionSection)}</p>
+                  <ChevronUp />
                 </motion.div>
+              </motion.div>
 
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      key={`section-${section}`}
-                      className={selectStyles.listItemContainer}
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{
-                        duration: 0.3,
-                        ease: 'easeInOut',
-                      }}
-                    >
-                      {items.map((item, index) => (
-                        <SelectableQuestionItem
-                          key={`${section}-${index}`}
-                          index={index}
-                          questionSection={item.section as QuestionSection}
-                          questionText={item.question}
-                          basedOnText={item.based_on}
-                        />
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
-        </div>
+              <AnimatePresence initial={false}>
+                {isOpen && (
+                  <motion.div
+                    key={`section-${section}`}
+                    className={selectStyles.listItemContainer}
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{
+                      duration: 0.3,
+                      ease: 'easeInOut',
+                    }}
+                  >
+                    {items.map((item, index) => (
+                      <SelectableQuestionItem
+                        key={`${section}-${index}`}
+                        index={index}
+                        questionSection={item.section as QuestionSection}
+                        questionText={item.question}
+                        basedOnText={item.based_on}
+                      />
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
