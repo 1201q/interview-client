@@ -4,10 +4,11 @@
   padding: 20px;
   border-radius: 12px;
   border: 1px solid var(--border-main2-color);
-  box-shadow: var(--box-shadow);
+
   row-gap: 15px;
 
   user-select: none;
+  opacity: 0.8;
 }
 
 .topContainer {
@@ -110,6 +111,7 @@
   user-select: auto;
   cursor: pointer;
   transition: border 0.2s;
+  opacity: 1;
 }
 
 .selectable:hover:not(.selected) {

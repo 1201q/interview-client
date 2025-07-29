@@ -6,7 +6,7 @@ import loadingStyles from './styles/loading.module.css';
 
 import { Timer, ZapIcon } from 'lucide-react';
 
-import { motion } from 'motion/react';
+import { motion, Variants } from 'motion/react';
 import { useEffect, useState } from 'react';
 
 import { GeneratedQuestionItem } from '@/utils/types/types';
@@ -18,6 +18,27 @@ const TEST_ID = '4e88866e-2a7a-4e66-b49f-12a29e67109e';
 interface LoadingPageProps {
   onLoadingComplete: () => void;
 }
+
+// 등장 애니메이션
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1, // 자식간
+      delayChildren: 0.1, // 첫 자식 시작까지 딜레이
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { stiffness: 80, type: 'spring' },
+  },
+};
 
 const LoadingPage = (props: LoadingPageProps) => {
   const [generatedQuestions, setGeneratedQuestions] = useState<
@@ -76,9 +97,17 @@ const LoadingPage = (props: LoadingPageProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.leftContainer}>
-        <div className={loadingStyles.loadingContainer}>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className={loadingStyles.loadingContainer}
+        >
           {/* 상단 로딩 원 */}
-          <div className={loadingStyles.loadingCircleContainer}>
+          <motion.div
+            variants={itemVariants}
+            className={loadingStyles.loadingCircleContainer}
+          >
             <div className={loadingStyles.loadingCircle}>
               <motion.div
                 className={loadingStyles.rotatingCircle}
@@ -118,25 +147,34 @@ const LoadingPage = (props: LoadingPageProps) => {
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* 그라디언트 텍스트 */}
-          <div className={loadingStyles.loadingContentsContainer}>
+          <motion.div
+            variants={itemVariants}
+            className={loadingStyles.loadingContentsContainer}
+          >
             <h3 className={loadingStyles.gradientText}>
               AI가 면접 질문을 생성하고 있어요
             </h3>
-          </div>
+          </motion.div>
 
           {/* 안내 텍스트  */}
-          <div className={loadingStyles.loadingContentsContainer}>
+          <motion.div
+            variants={itemVariants}
+            className={loadingStyles.loadingContentsContainer}
+          >
             <p>
               이력서와 채용공고를 꼼꼼히 분석하여 맞춤형 면접 질문을 만들고
               있어요. 조금만 기다려 주세요.
             </p>
-          </div>
+          </motion.div>
 
           {/* 프로그레스 바 */}
-          <div className={loadingStyles.loadingContentsContainer}>
+          <motion.div
+            variants={itemVariants}
+            className={loadingStyles.loadingContentsContainer}
+          >
             <div className={loadingStyles.progressbarContainer}>
               <div className={loadingStyles.progressbarHeaderContainer}>
                 <span>진행률</span>
@@ -151,16 +189,19 @@ const LoadingPage = (props: LoadingPageProps) => {
                 ></motion.div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* 남은 시간 */}
-          <div className={loadingStyles.loadingContentsContainer}>
+          <motion.div
+            variants={itemVariants}
+            className={loadingStyles.loadingContentsContainer}
+          >
             <div className={loadingStyles.timeLeftContainer}>
               <Timer width={14} height={14} />
               <p>예상 분석시간 : 30초 ~ 1분</p>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
       <div className={styles.rightContainer}>
         <LoadingQuestionList questions={generatedQuestions} />

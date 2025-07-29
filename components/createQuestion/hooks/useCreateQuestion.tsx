@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 
 const useCreateQuestion = () => {
-  const [stage, setStage] = useState<'input' | 'loading' | 'result'>('loading');
+  const [stage, setStage] = useState<'input' | 'loading' | 'result'>('input');
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [resumeData, setResumeData] = useState<{ text: string; ok: boolean }>();
   const [jobData, setJobData] = useState<{ text: string; ok: boolean }>();

@@ -5,7 +5,7 @@ import selectStyles from './styles/select.module.css';
 
 import { ChevronUp } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, motion, Variants } from 'motion/react';
 
 import { v4 as uuid } from 'uuid';
 
@@ -142,6 +142,23 @@ export const MOCK_QUESTIONS: MockType[] = [
   },
 ];
 
+// 등장 애니메이션
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15, // 자식간
+      delayChildren: 0.1, // 첫 자식 시작까지 딜레이
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { stiffness: 80, type: 'spring' } },
+};
+
 const minSelectedQuestionsCount = 3; // 최소 선택해야 하는 질문 개수
 const maxSelectedQuestionsCount = 10; // 최대로 선택할수 있는 질문 개수
 
@@ -200,71 +217,80 @@ const SelectPage = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className={styles.container}
+    >
       <div className={`${styles.leftContainer}`}>
         <div className={selectStyles.stickyLeftContainer}>
-          <AnimatePresence initial={false} mode="wait">
-            {/* 기본 */}
-            {selectedQuestionsCount < 1 && (
-              <motion.h1
-                key="header-default"
-                initial={{ y: 10, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -10, opacity: 0 }}
-                transition={{ duration: 0.06 }}
-              >
-                면접 질문을 선택하세요
-              </motion.h1>
-            )}
-            {/* 현재 선택개수가 최소구간 미만인 경우 */}
-            {selectedQuestionsCount >= 1 &&
-              selectedQuestionsCount < minSelectedQuestionsCount && (
+          <motion.div variants={itemVariants}>
+            <AnimatePresence initial={false} mode="wait">
+              {/* 기본 */}
+              {selectedQuestionsCount < 1 && (
                 <motion.h1
-                  key="header-min-selected"
+                  key="header-default"
                   initial={{ y: 10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -10, opacity: 0 }}
                   transition={{ duration: 0.06 }}
                 >
-                  최소 {minSelectedQuestionsCount - selectedQuestionsCount}개 더
-                  선택해야해요
+                  면접 질문을 선택하세요
                 </motion.h1>
               )}
-            {/* 현재 선택개수가 최대개수 미만인 경우 (~까지 선택가능) */}
-            {selectedQuestionsCount >= minSelectedQuestionsCount &&
-              selectedQuestionsCount < maxSelectedQuestionsCount && (
+              {/* 현재 선택개수가 최소구간 미만인 경우 */}
+              {selectedQuestionsCount >= 1 &&
+                selectedQuestionsCount < minSelectedQuestionsCount && (
+                  <motion.h1
+                    key="header-min-selected"
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -10, opacity: 0 }}
+                    transition={{ duration: 0.06 }}
+                  >
+                    최소 {minSelectedQuestionsCount - selectedQuestionsCount}개
+                    더 선택해야해요
+                  </motion.h1>
+                )}
+              {/* 현재 선택개수가 최대개수 미만인 경우 (~까지 선택가능) */}
+              {selectedQuestionsCount >= minSelectedQuestionsCount &&
+                selectedQuestionsCount < maxSelectedQuestionsCount && (
+                  <motion.h1
+                    key="header-max-selected"
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -10, opacity: 0 }}
+                    transition={{ duration: 0.06 }}
+                  >
+                    {maxSelectedQuestionsCount - selectedQuestionsCount}개 더
+                    선택할 수 있어요
+                  </motion.h1>
+                )}
+              {/* 최대에 도달 */}
+              {selectedQuestionsCount >= maxSelectedQuestionsCount && (
                 <motion.h1
-                  key="header-max-selected"
+                  key="header-limit-reached"
                   initial={{ y: 10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -10, opacity: 0 }}
                   transition={{ duration: 0.06 }}
                 >
-                  {maxSelectedQuestionsCount - selectedQuestionsCount}개 더
-                  선택할 수 있어요
+                  최대 선택 개수에 도달했어요
                 </motion.h1>
               )}
-            {/* 최대에 도달 */}
-            {selectedQuestionsCount >= maxSelectedQuestionsCount && (
-              <motion.h1
-                key="header-limit-reached"
-                initial={{ y: 10, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -10, opacity: 0 }}
-                transition={{ duration: 0.06 }}
-              >
-                최대 선택 개수에 도달했어요
-              </motion.h1>
-            )}
-          </AnimatePresence>
-
-          <p>
+            </AnimatePresence>
+          </motion.div>
+          <motion.p variants={itemVariants}>
             AI가 생성한 맞춤형 질문 중에서 연습하고 싶은 질문을 선택해주세요.
             선택한 질문들로 실제 면접과 같은 환경에서 연습할 수 있습니다.
-          </p>
+          </motion.p>
 
           {/* 면접 정보 */}
-          <div className={selectStyles.interviewInfoContainer}>
+          <motion.div
+            variants={itemVariants}
+            className={selectStyles.interviewInfoContainer}
+          >
             <p>면접 정보</p>
             <div className={selectStyles.interviewInfoItemContainer}>
               <div className={selectStyles.interviewInfoItem}>
@@ -273,7 +299,7 @@ const SelectPage = () => {
               </div>
               <div className={selectStyles.interviewInfoItem}>
                 <span>예상 소요시간</span>
-                <p>0개</p>
+                <p>-</p>
               </div>
               <div className={selectStyles.interviewInfoItem}>
                 <span>총 생성된 질문</span>
@@ -288,9 +314,12 @@ const SelectPage = () => {
                 {isOutOfRange ? '질문을 선택해주세요' : '다음 단계로 넘어가기'}
               </button>
             </div>
-          </div>
+          </motion.div>
           {/* 면접 팁 */}
-          <div className={selectStyles.interviewTipContainer}>
+          <motion.div
+            variants={itemVariants}
+            className={selectStyles.interviewTipContainer}
+          >
             <div className={selectStyles.header}>
               <h4>💡 면접 팁</h4>
             </div>
@@ -299,7 +328,7 @@ const SelectPage = () => {
               <li>• 구체적인 경험과 사례를 포함해 답변하세요</li>
               <li>• 질문의 유형과 근거를 참고해 답변을 준비하세요</li>
             </ul>
-          </div>
+          </motion.div>
         </div>
       </div>
       <div
@@ -310,7 +339,11 @@ const SelectPage = () => {
           const isOpen = openSections[section] ?? true;
 
           return (
-            <div className={selectStyles.listContainer} key={section}>
+            <motion.div
+              variants={itemVariants}
+              className={selectStyles.listContainer}
+              key={section}
+            >
               <motion.div
                 whileTap={{ scale: 0.98 }}
                 whileHover={{ backgroundColor: 'var(--main-gray-hover-color)' }}
@@ -370,11 +403,11 @@ const SelectPage = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
+            </motion.div>
           );
         })}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
