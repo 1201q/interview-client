@@ -1,6 +1,5 @@
 'use client';
 
-import { AnimatePresence, motion } from 'motion/react';
 import useCreateQuestion from './hooks/useCreateQuestion';
 
 import InputPage from './InputPage';
@@ -12,15 +11,19 @@ const TEST_ID = '4e88866e-2a7a-4e66-b49f-12a29e67109e';
 const CreateQuestion = () => {
   const props = useCreateQuestion();
 
-  // return <InputPage props={props} />;
+  if (props.stage === 'loading') {
+    return <LoadingPage onLoadingComplete={props.onLoadingComplete} />;
+  } else if (props.stage === 'result') {
+    return <SelectPage />;
+  } else {
+    return <div>1</div>;
+  }
 
-  return <SelectPage />;
+  // return <InputPage props={props} />;
 
   if (props.stage === 'result') {
     return <SelectPage />;
   }
-
-  return <LoadingPage onLoadingComplete={props.onLoadingComplete} />;
 
   if (props.stage === 'input') {
     return <InputPage props={props} />;

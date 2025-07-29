@@ -1,10 +1,9 @@
 .stickyLeftContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  height: 100%;
   position: sticky;
   top: 140px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
 }
 
 /* interview info */
@@ -102,15 +101,19 @@
   row-gap: 3px;
   position: relative;
   cursor: pointer;
+  padding: 10px 12px;
+  margin: -10px -12px;
+  border-radius: 9px;
+  background-color: white;
 }
 
 .listContainer .title::before {
   content: '';
   position: absolute;
-  top: -8px;
-  bottom: -8px;
-  left: -8px;
-  right: -8px;
+  top: -4px;
+  bottom: -4px;
+  left: -4px;
+  right: -4px;
   z-index: 0;
 }
 

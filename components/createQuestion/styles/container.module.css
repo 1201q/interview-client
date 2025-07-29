@@ -1,17 +1,16 @@
 .container {
   display: flex;
   column-gap: 80px;
-  height: 100%;
-  position: relative;
+  flex: 1;
 }
 
 .leftContainer {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
 
   row-gap: 15px;
-  position: relative;
+  height: 100%;
   flex: 1;
 }
 
@@ -29,6 +28,7 @@
 .rightContainer {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   row-gap: 30px;
   flex: 1;
   position: relative;
