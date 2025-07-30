@@ -2,6 +2,7 @@ import { QuestionSection } from '@/utils/types/types';
 import SelectableQuestionItem from './SelectableQuestionItem';
 import styles from './styles/container.module.css';
 import selectStyles from './styles/select.module.css';
+import sharedStyles from './styles/shared.module.css';
 
 import { ChevronUp } from 'lucide-react';
 import { useMemo, useState } from 'react';
@@ -289,26 +290,26 @@ const SelectPage = () => {
           {/* 면접 정보 */}
           <motion.div
             variants={itemVariants}
-            className={selectStyles.interviewInfoContainer}
+            className={sharedStyles.interviewInfoContainer}
           >
             <p>면접 정보</p>
-            <div className={selectStyles.interviewInfoItemContainer}>
-              <div className={selectStyles.interviewInfoItem}>
+            <div className={sharedStyles.interviewInfoItemContainer}>
+              <div className={sharedStyles.interviewInfoItem}>
                 <span>선택된 질문</span>
                 <p>{selectedQuestionsCount}개</p>
               </div>
-              <div className={selectStyles.interviewInfoItem}>
+              <div className={sharedStyles.interviewInfoItem}>
                 <span>예상 소요시간</span>
                 <p>-</p>
               </div>
-              <div className={selectStyles.interviewInfoItem}>
+              <div className={sharedStyles.interviewInfoItem}>
                 <span>총 생성된 질문</span>
                 <p>{MOCK_QUESTIONS.length}개</p>
               </div>
             </div>
             {/* 버튼 */}
             <div
-              className={`${styles.buttonContainer} ${selectStyles.interviewButtonContainer}`}
+              className={`${styles.buttonContainer} ${sharedStyles.interviewButtonContainer}`}
             >
               <button disabled={isOutOfRange}>
                 {isOutOfRange ? '질문을 선택해주세요' : '다음 단계로 넘어가기'}
@@ -318,9 +319,9 @@ const SelectPage = () => {
           {/* 면접 팁 */}
           <motion.div
             variants={itemVariants}
-            className={selectStyles.interviewTipContainer}
+            className={sharedStyles.tipContainer}
           >
-            <div className={selectStyles.header}>
+            <div className={sharedStyles.header}>
               <h4>💡 면접 팁</h4>
             </div>
             <ul>

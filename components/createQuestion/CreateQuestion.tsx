@@ -1,5 +1,6 @@
 'use client';
 
+import CheckPage from './CheckPage';
 import useCreateQuestion from './hooks/useCreateQuestion';
 
 import InputPage from './InputPage';
@@ -12,6 +13,8 @@ const TEST_ID = '4e88866e-2a7a-4e66-b49f-12a29e67109e';
 
 const CreateQuestion = () => {
   const props = useCreateQuestion();
+
+  // return <SelectPage />;
 
   // return <LoadingPage onLoadingComplete={props.onLoadingComplete} />;
   // return <InputPage props={props} />;
@@ -61,6 +64,18 @@ const CreateQuestion = () => {
           style={{ display: 'flex', justifyContent: 'center' }}
         >
           <SelectPage />
+        </motion.div>
+      )}
+      {props.stage === 'check' && (
+        <motion.div
+          key="check"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.15 }}
+          style={{ display: 'flex', flex: 1, justifyContent: 'center' }}
+        >
+          <CheckPage props={props} />
         </motion.div>
       )}
     </AnimatePresence>

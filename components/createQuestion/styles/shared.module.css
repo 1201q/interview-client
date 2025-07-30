@@ -1,0 +1,116 @@
+/* ######### interview info */
+.interviewInfoContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  border-radius: 15px;
+  border: 1px solid var(--border-main2-color);
+  box-shadow: var(--box-shadow);
+  margin: 10px 0px 10px 0px;
+}
+
+.interviewInfoContainer p:first-child {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* item */
+.interviewInfoItemContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+  margin-bottom: 25px;
+}
+
+.interviewInfoItem {
+  display: flex;
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+.interviewInfoItem span {
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.interviewInfoItem p {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.interviewInfoStatusItem {
+  display: flex;
+  align-items: center;
+
+  column-gap: 11px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--bg-gray-color);
+}
+
+.status svg {
+  stroke: var(--font-gray-color);
+  stroke-width: 2px;
+}
+
+.red {
+  background-color: var(--bg-red-color);
+
+  svg {
+    stroke: var(--font-red-color);
+    stroke-width: 3px;
+  }
+}
+
+.green {
+  background-color: var(--bg-green-color);
+
+  svg {
+    stroke: var(--font-green-color);
+    stroke-width: 3px;
+  }
+}
+
+/* interview button */
+.interviewButtonContainer button {
+  height: 45px;
+  font-size: 1rem;
+}
+
+/* ######### 파란색 tip */
+.tipContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-blue-color);
+  padding: 18px 16px;
+  border-radius: 12px;
+}
+
+.tipContainer .header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.tipContainer .header h4 {
+  color: var(--font-blue-color);
+}
+
+.tipContainer ul li {
+  font-size: 0.9rem;
+  color: var(--font-blue-color);
+  margin-left: 2px;
+}
+
+.tipContainer ul li:not(:first-child) {
+  margin-top: 8px;
+}

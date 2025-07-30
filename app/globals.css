@@ -27,6 +27,8 @@
   --bg-red-color: rgba(255 241 242);
   --bg-rose-color: rgb(255 228 230);
 
+  --bg-yellow-color: rgb(254 252 232);
+  --bg-darkblue-color: #111827;
   --bg-red2-color: #fef2f2;
   --bg-green-color: rgba(55, 179, 119, 0.2);
   --bg-green2-color: #f0fdf4;
@@ -36,8 +38,9 @@
   --border-main-color: rgb(209, 217, 224);
   --border-main2-color: #e5e7eb;
   --border-main3-color: rgb(228, 228, 231);
-
+  --border-red-color: rgba(254 202 202);
   --border-blue-color: rgb(191, 219, 254);
+  --border-yellow-color: rgb(254 240 138);
 
   --font-gray-color: #94a3b8;
   --font-darkgray-color: #64748b;
@@ -47,6 +50,7 @@
   --font-blue-color: #1d4ed8;
   --font-violet-color: #7e22ce;
   --font-red-color: #e11d48;
+  --font-yellow-color: rgb(113 63 18);
 
   --red-bg-gradient: linear-gradient(to right, #e61e4d 0%, #d70466 100%);
   --red-rose-gradient: linear-gradient(
