@@ -64,20 +64,20 @@
 
 .red {
   background-color: var(--bg-red-color);
+}
 
-  svg {
-    stroke: var(--font-red-color);
-    stroke-width: 3px;
-  }
+.red svg {
+  stroke: var(--font-red-color);
+  stroke-width: 3px;
 }
 
 .green {
   background-color: var(--bg-green-color);
+}
 
-  svg {
-    stroke: var(--font-green-color);
-    stroke-width: 3px;
-  }
+.green svg {
+  stroke: var(--font-green-color);
+  stroke-width: 3px;
 }
 
 /* interview button */
