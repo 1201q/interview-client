@@ -77,7 +77,7 @@ const LoadingQuestionList = ({
               <LoadingQuestionItem
                 index={index}
                 questionSection={item.section}
-                questionText={item.question}
+                questionText={item.text}
                 basedOnText={item.based_on}
               />
             </motion.div>
