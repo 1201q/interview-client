@@ -1,9 +1,14 @@
+import { useRouter } from 'next/navigation';
 import { FormEvent, useEffect, useState } from 'react';
+
+const TEST_ID = '4e88866e-2a7a-4e66-b49f-12a29e67109e';
 
 const useCreateQuestion = () => {
   const [stage, setStage] = useState<'input' | 'loading' | 'result' | 'check'>(
     'input',
   );
+  const router = useRouter();
+
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [resumeData, setResumeData] = useState<{ text: string; ok: boolean }>();
   const [jobData, setJobData] = useState<{ text: string; ok: boolean }>();
@@ -40,7 +45,8 @@ const useCreateQuestion = () => {
   };
 
   const onLoadingComplete = () => {
-    setStage('result');
+    // setStage('result');
+    router.push(`/select/${TEST_ID}`);
   };
 
   return {
