@@ -1,4 +1,6 @@
-import { QuestionSection } from '@/utils/types/types';
+'use client';
+
+import { GeneratedQuestionItem, QuestionSection } from '@/utils/types/types';
 import SelectableQuestionItem from './SelectableQuestionItem';
 import styles from './styles/container.module.css';
 import selectStyles from './styles/select.module.css';
@@ -8,140 +10,9 @@ import { ChevronUp } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { AnimatePresence, motion, Variants } from 'motion/react';
 
-import { v4 as uuid } from 'uuid';
-
-interface MockType {
-  question: string;
-  based_on: string;
-  section: QuestionSection;
+interface SelectPageProps {
+  questions: GeneratedQuestionItem[];
 }
-
-interface ItemType extends MockType {
-  id: string;
-}
-
-export const MOCK_QUESTIONS: MockType[] = [
-  {
-    question:
-      "채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요. 채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요.",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'basic',
-  },
-  {
-    question:
-      "채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요. 채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요. ",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'basic',
-  },
-  {
-    question:
-      "채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요.",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'basic',
-  },
-  {
-    question:
-      "채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요.  주세요.",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'experience',
-  },
-  {
-    question:
-      "채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요. 주세요.",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'experience',
-  },
-  {
-    question:
-      "채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요.  주세요.",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'experience',
-  },
-  {
-    question:
-      "채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요.",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'experience',
-  },
-  {
-    question:
-      "채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히  채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요. 설명해 주세요.",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'experience',
-  },
-  {
-    question:
-      "채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요.",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'experience',
-  },
-  {
-    question:
-      "채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히  채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요. 설명해 주세요.",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'experience',
-  },
-  {
-    question:
-      "채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요.  설명해 주세요.",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'experience',
-  },
-  {
-    question:
-      "채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요.",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'job_related',
-  },
-  {
-    question:
-      "자신이 팀 프로젝트에서 맡았채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요. 던 역할과 성과를 구체적으로 설명해 주세요.",
-    based_on: "이력서의 '배움과 성장' 섹션",
-    section: 'job_related',
-  },
-  {
-    question:
-      "채용공고에 나온 '고가채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요. 용성 설계' 경험이 있으신가요? 자세히 설명해 주세요.",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'job_related',
-  },
-  {
-    question:
-      "채용공고에 나온 '고가용성채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요.  설계' 경험이 있으신가요? 자세히 설명해 주세요.",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'job_related',
-  },
-  {
-    question:
-      "채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요.",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'expertise',
-  },
-  {
-    question:
-      "채용공고에 나온 '고가용채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요. 성 설계' 경험이 있으신가요? 자세히 설명해 주세요.",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'expertise',
-  },
-  {
-    question:
-      "채용공고에 나온 '고가용채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요. 성 설계' 경험이 있으신가요? 자세히 설명해 주세요.",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'expertise',
-  },
-  {
-    question:
-      "채용공고에 나온 '고가채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요. 용성 설계' 경험이 있으신가요? 자세히 설명해 주세요.",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'expertise',
-  },
-  {
-    question:
-      "채용공고에 나온 '고채용공고에 나온 '고가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요. 가용성 설계' 경험이 있으신가요? 자세히 설명해 주세요.",
-    based_on: "채용공고의 '고가용성 설계' 키워드",
-    section: 'expertise',
-  },
-];
 
 // 등장 애니메이션
 const containerVariants: Variants = {
@@ -163,7 +34,7 @@ const itemVariants: Variants = {
 const minSelectedQuestionsCount = 3; // 최소 선택해야 하는 질문 개수
 const maxSelectedQuestionsCount = 10; // 최대로 선택할수 있는 질문 개수
 
-const SelectPage = () => {
+const SelectPage = (props: SelectPageProps) => {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>(
     () => {
       const initial: Record<string, boolean> = {};
@@ -174,23 +45,26 @@ const SelectPage = () => {
     },
   );
 
-  const [selectedQuestions, setSelectedQuestions] = useState<ItemType[]>([]);
+  const [selectedQuestions, setSelectedQuestions] = useState<
+    GeneratedQuestionItem[]
+  >([]);
 
   const groupedQuestions = useMemo(() => {
-    return MOCK_QUESTIONS.reduce<Record<string, ItemType[]>>(
+    return props.questions.reduce<Record<string, GeneratedQuestionItem[]>>(
       (acc, question) => {
         if (!acc[question.section]) {
           acc[question.section] = [];
         }
 
-        acc[question.section].push({ ...question, id: uuid() });
+        acc[question.section].push({ ...question });
         return acc;
       },
       {},
     );
-  }, []);
+  }, [props.questions]);
 
   const selectedQuestionsCount = selectedQuestions.length;
+
   const isOutOfRange =
     selectedQuestionsCount < minSelectedQuestionsCount ||
     selectedQuestionsCount > maxSelectedQuestionsCount;
@@ -304,7 +178,7 @@ const SelectPage = () => {
               </div>
               <div className={sharedStyles.interviewInfoItem}>
                 <span>총 생성된 질문</span>
-                <p>{MOCK_QUESTIONS.length}개</p>
+                <p>{props.questions.length}개</p>
               </div>
             </div>
             {/* 버튼 */}
@@ -397,7 +271,7 @@ const SelectPage = () => {
                         }}
                         index={index}
                         questionSection={item.section as QuestionSection}
-                        questionText={item.question}
+                        questionText={item.text}
                         basedOnText={item.based_on}
                       />
                     ))}

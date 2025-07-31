@@ -143,7 +143,7 @@ export type QuestionSection =
 
 export interface GeneratedQuestionItem {
   id: string;
-  question: string;
+  text: string;
   based_on: string;
   section: QuestionSection;
 }

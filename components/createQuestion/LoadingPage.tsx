@@ -52,7 +52,7 @@ const LoadingPage = (props: LoadingPageProps) => {
 
   useEffect(() => {
     const eventSource = new EventSource(
-      `${process.env.NEXT_PUBLIC_API_URL}/generate-question/test/${TEST_ID}?mock=true`,
+      `${process.env.NEXT_PUBLIC_API_URL}/generate-question/test/${TEST_ID}?mock=false`,
     );
 
     eventSource.addEventListener('question', (e) => {

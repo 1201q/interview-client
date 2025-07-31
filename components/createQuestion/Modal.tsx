@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import styles from './styles/modal.module.css';
 import { CameraIcon, Mic, HelpCircle } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
+import CameraCheck from '@/app/new/check/[id]/_components/CameraCheck';
 
 interface ModalProps {
   onClose?: () => void;
@@ -115,7 +116,9 @@ const FaceTest = (props: ModalProps & { onHelpButtonClick: () => void }) => {
           <p>음성 인식</p>
         </div>
       </motion.div>
-      <motion.div className={styles.cameraContainer}>1</motion.div>
+      <motion.div className={styles.cameraContainer}>
+        <CameraCheck />
+      </motion.div>
       {/* 버튼 */}
       <div className={styles.buttonContainer}>
         <button className={styles.blue}>얼굴 인식 시작</button>

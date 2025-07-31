@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useState } from 'react';
 
 const useCreateQuestion = () => {
   const [stage, setStage] = useState<'input' | 'loading' | 'result' | 'check'>(
-    'check',
+    'input',
   );
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [resumeData, setResumeData] = useState<{ text: string; ok: boolean }>();

@@ -14,21 +14,6 @@ const TEST_ID = '4e88866e-2a7a-4e66-b49f-12a29e67109e';
 const CreateQuestion = () => {
   const props = useCreateQuestion();
 
-  // return <SelectPage />;
-
-  // return <LoadingPage onLoadingComplete={props.onLoadingComplete} />;
-  // return <InputPage props={props} />;
-
-  // return <SelectPage />;
-
-  // if (props.stage === 'loading') {
-  //   return <LoadingPage onLoadingComplete={props.onLoadingComplete} />;
-  // } else if (props.stage === 'result') {
-  //   return <SelectPage />;
-  // } else {
-  //   return <InputPage props={props} />;
-  // }
-
   return (
     <AnimatePresence mode="wait">
       {props.stage === 'input' && (
@@ -54,7 +39,8 @@ const CreateQuestion = () => {
           <LoadingPage onLoadingComplete={props.onLoadingComplete} />
         </motion.div>
       )}
-      {props.stage === 'result' && (
+
+      {/* {props.stage === 'result' && (
         <motion.div
           key="result"
           initial={{ opacity: 0 }}
@@ -65,7 +51,8 @@ const CreateQuestion = () => {
         >
           <SelectPage />
         </motion.div>
-      )}
+      )} */}
+
       {props.stage === 'check' && (
         <motion.div
           key="check"
