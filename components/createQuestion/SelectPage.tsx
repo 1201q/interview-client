@@ -165,6 +165,7 @@ const SelectPage = (props: SelectPageProps) => {
           <motion.div
             variants={itemVariants}
             className={sharedStyles.interviewInfoContainer}
+            style={{ margin: '10px 0' }}
           >
             <p>면접 정보</p>
             <div className={sharedStyles.interviewInfoItemContainer}>

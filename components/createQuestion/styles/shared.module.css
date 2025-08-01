@@ -6,7 +6,8 @@
   border-radius: 15px;
   border: 1px solid var(--border-main2-color);
   box-shadow: var(--box-shadow);
-  margin: 10px 0px 10px 0px;
+  margin: 0px 0px 0px 0px;
+  line-height: 130%;
 }
 
 .interviewInfoContainer p:first-child {
@@ -93,6 +94,7 @@
   background-color: var(--bg-blue-color);
   padding: 18px 16px;
   border-radius: 12px;
+  line-height: 120%;
 }
 
 .tipContainer .header {
@@ -112,5 +114,5 @@
 }
 
 .tipContainer ul li:not(:first-child) {
-  margin-top: 8px;
+  margin-top: 4px;
 }

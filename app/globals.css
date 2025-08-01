@@ -71,6 +71,13 @@
     #e61e4d 0px 0px 0px 0px, #e61e4d 0px 0px 0px 0px,
     rgb(244 63 94 / 0.4) 0px 10px 15px -3px,
     rgb(244 63 94 / 0.4) 0px 4px 6px -4px;
+
+  --box-blue-shadow:
+    #2563eb 0px 0px 0px 0px, #2563eb 0px 0px 0px 0px,
+    rgb(37 99 235 / 0.4) 0px 10px 15px -3px,
+    rgb(37 99 235 / 0.4) 0px 4px 6px -4px;
+
+  --blue-bg-gradient: linear-gradient(to right, #2563eb 0%, #244ccf 100%);
 }
 
 * {

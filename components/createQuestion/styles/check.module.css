@@ -1,0 +1,75 @@
+.videoContainer {
+  height: 260px;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--bg-darkblue-color);
+}
+
+/* 거부시 컨테이너 */
+.cameraDeniedContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cameraDeniedContainer span {
+  font-size: 1.1rem;
+  color: var(--font-darkgray-color);
+  font-weight: 600;
+  margin: 0.5rem 0;
+}
+
+.cameraDeniedContainer button {
+  border-radius: 8px;
+  background-color: var(--main-blue4-color);
+  padding: 10px 17px;
+  color: white;
+  font-weight: 600;
+  font-weight: 1rem;
+  margin-top: 1rem;
+}
+
+/* list */
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+
+.listContainer:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+.listContainer .title {
+  display: flex;
+  justify-content: space-between;
+  row-gap: 3px;
+  position: relative;
+
+  border-radius: 9px;
+  background-color: white;
+}
+
+.listContainer .title p {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: black;
+}
+
+.listContainer .title span {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--font-black-color);
+}
+
+.listItemContainer {
+  display: flex;
+  flex-direction: column;
+
+  row-gap: 15px;
+  overflow: hidden;
+}

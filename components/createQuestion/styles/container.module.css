@@ -72,6 +72,22 @@
   box-shadow: var(--box-red-shadow);
 }
 
+/* blue button */
+.buttonContainer.blue button {
+  background: var(--main-blue4-color);
+  transition: all 0.2s;
+}
+
+.buttonContainer.blue button:not(:disabled):hover {
+  box-shadow: var(--box-blue-shadow);
+}
+
+.buttonContainer.blue button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  box-shadow: var(--box-blue-shadow);
+}
+
 @media screen and (max-width: 1024px) {
   .container {
     max-height: fit-content;

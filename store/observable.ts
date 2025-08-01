@@ -13,6 +13,7 @@ import {
   distinctUntilChanged,
   EMPTY,
   filter,
+  from,
   map,
   merge,
   Observable,
@@ -26,7 +27,7 @@ import {
   takeUntil,
   timer,
 } from 'rxjs';
-import { debounceTime, reduce } from 'rxjs/operators';
+import { catchError, debounceTime, reduce } from 'rxjs/operators';
 
 type LeaningDirection = 'left' | 'right' | 'none';
 type HandRaised = 'left' | 'right' | 'both' | 'none';
@@ -376,23 +377,25 @@ startFaceCapture$
   });
 
 // 권한
-const permissionState$ = new BehaviorSubject<{
-  camera: PermissionState;
-  microphone: PermissionState;
-}>({ camera: 'prompt', microphone: 'prompt' });
-
 // 권한을 감시
-const subscribePermission = (name: PermissionName) => {
+const subscribePermission = (
+  name: PermissionName,
+): Observable<PermissionState> => {
   return new Observable<PermissionState>((observer) => {
-    navigator.permissions.query({ name }).then((status) => {
-      observer.next(status.state);
+    navigator.permissions
+      ?.query({ name })
+      .then((status) => {
+        observer.next(status.state);
 
-      const handleChange = () => observer.next(status.state);
+        const handleChange = () => observer.next(status.state);
+        status.addEventListener('change', handleChange);
 
-      status.addEventListener('change', handleChange);
-
-      return () => status.removeEventListener('change', handleChange);
-    });
+        return () => status.removeEventListener('change', handleChange);
+      })
+      .catch(() => {
+        observer.next('prompt');
+        observer.complete();
+      });
   });
 };
 

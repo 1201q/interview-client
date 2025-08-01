@@ -5,7 +5,7 @@ const TEST_ID = '4e88866e-2a7a-4e66-b49f-12a29e67109e';
 
 const useCreateQuestion = () => {
   const [stage, setStage] = useState<'input' | 'loading' | 'result' | 'check'>(
-    'input',
+    'check',
   );
   const router = useRouter();
 

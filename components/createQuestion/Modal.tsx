@@ -8,6 +8,7 @@ import CameraCheck from '@/app/new/check/[id]/_components/CameraCheck';
 
 interface ModalProps {
   onClose?: () => void;
+  firstMenu?: 'face' | 'voice' | 'help';
 }
 
 // 안내 텍스트
@@ -54,7 +55,9 @@ const SAFARI_HELP_TEXT = [
 ];
 
 const Modal = (props: ModalProps) => {
-  const [content, setContent] = useState<'face' | 'voice' | 'help'>('face');
+  const [content, setContent] = useState<'face' | 'voice' | 'help'>(
+    props.firstMenu ?? 'face',
+  );
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -116,9 +119,7 @@ const FaceTest = (props: ModalProps & { onHelpButtonClick: () => void }) => {
           <p>음성 인식</p>
         </div>
       </motion.div>
-      <motion.div className={styles.cameraContainer}>
-        <CameraCheck />
-      </motion.div>
+      <motion.div className={styles.cameraContainer}></motion.div>
       {/* 버튼 */}
       <div className={styles.buttonContainer}>
         <button className={styles.blue}>얼굴 인식 시작</button>
@@ -145,11 +146,7 @@ const Help = (props: ModalProps) => {
       </div>
       {/* 내용 */}
 
-      <motion.div
-        initial={{ opacity: 0, x: -30 }}
-        animate={{ opacity: 1, x: 0 }}
-        className={styles.helpContainer}
-      >
+      <div className={styles.helpContainer}>
         <section>
           <div
             className={`${styles.infoContainer} ${styles.smallInfo} ${styles.blueInfo}`}
@@ -242,12 +239,11 @@ const Help = (props: ModalProps) => {
             </ul>
           </div>
         </section>
-      </motion.div>
+      </div>
       {/* 버튼 */}
       <div className={styles.buttonContainer}>
-        <button className={styles.blue}>얼굴 인식 시작</button>
-        <button className={styles.default} onClick={props.onClose}>
-          나중에
+        <button className={styles.blue} onClick={props.onClose}>
+          알겠어요
         </button>
       </div>
     </>
