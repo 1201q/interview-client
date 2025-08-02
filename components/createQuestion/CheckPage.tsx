@@ -13,6 +13,7 @@ import { useMediaPermissions } from './hooks/useMediaPermissions';
 
 import WebcamInstance from '../refactorWebcam/WebcamInstance';
 import { VideoOff } from 'lucide-react';
+import CameraCheck from './CameraCheck';
 
 // 등장 애니메이션
 const containerVariants: Variants = {
@@ -176,26 +177,7 @@ const CheckPage = ({
           </div>
           <motion.div className={sharedStyles.interviewInfoContainer}>
             <p>얼굴 인식</p>
-            <div className={checkStyles.videoContainer}>
-              {cameraPermission === 'granted' && (
-                <WebcamInstance isRunning={isCameraOn} drawTargets={{}} />
-              )}
-              {cameraPermission !== 'granted' && (
-                <div className={checkStyles.cameraDeniedContainer}>
-                  <VideoOff
-                    color="var(--font-darkgray-color)"
-                    width={50}
-                    height={50}
-                  />
-                  {cameraPermission === 'denied' && (
-                    <>
-                      <span>카메라 접근 권한이 거부되었습니다</span>
-                      <button>권한 설정 가이드 보기</button>
-                    </>
-                  )}
-                </div>
-              )}
-            </div>
+            <CameraCheck cameraPermission={cameraPermission} />
           </motion.div>
         </motion.div>
         <motion.div
