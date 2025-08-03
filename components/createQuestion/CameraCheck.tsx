@@ -3,7 +3,7 @@ import WebcamInstance from '../refactorWebcam/WebcamInstance';
 import styles from './styles/check.module.css';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { AnimatePresence, motion, useAnimation } from 'motion/react';
+import { AnimatePresence, motion, useAnimation, Variants } from 'motion/react';
 
 interface CameraCheckProps {
   cameraPermission: PermissionState;
@@ -12,10 +12,13 @@ interface CameraCheckProps {
 const CameraCheck = (props: CameraCheckProps) => {
   const [click, setClick] = useState(false);
 
+  const [isDetecting, setIsDetecting] = useState(false);
+
   const maskRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
 
   const controls = useAnimation();
+  const startControls = useAnimation();
 
   useEffect(() => {
     if (!maskRef.current) return;
@@ -42,6 +45,13 @@ const CameraCheck = (props: CameraCheckProps) => {
     });
   };
 
+  const startDetecting = () => {
+    startControls.start({
+      strokeDashoffset: dash,
+      transition: { duration: 3, ease: 'linear' },
+    });
+  };
+
   return (
     <div className={styles.videoContainer} ref={maskRef}>
       {props.cameraPermission === 'granted' && (
@@ -50,8 +60,10 @@ const CameraCheck = (props: CameraCheckProps) => {
           <AnimatePresence>
             {!click && (
               <motion.div
-                layoutId="cameraOverlay"
-                onClick={() => setClick(true)}
+                onClick={() => {
+                  setClick(true);
+                  setIsDetecting(true);
+                }}
                 className={styles.cameraOverlayContainer}
               >
                 <h2>클릭시 얼굴 인식을 시작합니다</h2>
@@ -62,15 +74,8 @@ const CameraCheck = (props: CameraCheckProps) => {
           <AnimatePresence>
             {click && (
               <>
-                <motion.div
-                  layoutId="cameraOverlay"
-                  className={styles.bottomContainer}
-                  onClick={() => setClick(false)}
-                >
-                  <div className={styles.bottomTextContainer}>1</div>
-                </motion.div>
                 <div className={styles.mask}></div>
-                <svg
+                {/* <svg
                   className={styles.progressCircle}
                   width="100%"
                   height="100%"
@@ -91,6 +96,58 @@ const CameraCheck = (props: CameraCheckProps) => {
                       transformBox: 'fill-box',
                     }}
                   />
+                </svg> */}
+              </>
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {isDetecting && (
+              <>
+                <div
+                  className={styles.blurOverlay}
+                  style={{
+                    width: r * 1.85,
+                    height: r * 1.85,
+                    left: '50%',
+                    top: '40%',
+                    transform: 'translate(-50%, -50%)',
+                  }}
+                ></div>
+                <svg
+                  className={styles.progressCircle}
+                  width="100%"
+                  height="100%"
+                >
+                  <motion.circle
+                    className={styles.thinBg}
+                    cx={cx}
+                    cy={cy}
+                    r={r - 2}
+                    animate={startControls}
+                    strokeDasharray={dash}
+                    initial={{ strokeDashoffset: 0 }}
+                    transition={{ duration: 3 }}
+                    style={{
+                      transform: 'rotate(270deg)',
+                      transformOrigin: 'center',
+                      transformBox: 'fill-box',
+                    }}
+                  />
+                  {/* <motion.circle
+                    className={styles.fg}
+                    cx={cx}
+                    cy={cy}
+                    r={r}
+                    animate={controls}
+                    strokeDasharray={dash}
+                    initial={{ strokeDashoffset: dash }}
+                    transition={{ duration: 5 }}
+                    style={{
+                      transform: 'rotate(-90deg)',
+                      transformOrigin: 'center',
+                      transformBox: 'fill-box',
+                    }}
+                  /> */}
                 </svg>
               </>
             )}
@@ -113,6 +170,12 @@ const CameraCheck = (props: CameraCheckProps) => {
         style={{ position: 'fixed', bottom: 0, zIndex: 100 }}
       >
         시작
+      </button>
+      <button
+        onClick={() => startDetecting()}
+        style={{ position: 'fixed', bottom: '10px', left: '50px', zIndex: 100 }}
+      >
+        con 시작
       </button>
     </div>
   );
