@@ -20,7 +20,7 @@ export const uploadAudioForSTT = async (audioBlob: Blob): Promise<string> => {
 
 export const getEphemeralToken = async () => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/stt/realtime/token`,
+    `${process.env.NEXT_PUBLIC_API_URL}/transcribe/realtime/token`,
     {
       method: 'POST',
       credentials: 'include',
@@ -35,7 +35,9 @@ export const getEphemeralToken = async () => {
     throw new Error('토큰 획득 실패');
   }
 
-  const { client_secret } = await response.json();
+  const { client_secret } = (await response.json()) as {
+    client_secret: { value: string; expires_at: number };
+  };
 
   return client_secret;
 };
