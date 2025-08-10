@@ -105,7 +105,21 @@ const Page = () => {
   };
 
   const handleEvent = (msg: any) => {
-    console.log(msg);
+    if (
+      msg.type === 'conversation.item.input_audio_transcription.delta' &&
+      msg.delta
+    ) {
+      console.log(msg);
+      setLive((p) => p + msg.delta);
+    }
+    if (
+      msg.type === 'conversation.item.input_audio_transcription.completed' &&
+      msg.transcript
+    ) {
+      console.log(msg);
+      setStable((p) => (p ? p + ' ' : '') + msg.transcript);
+      setLive('');
+    }
   };
 
   const cleanup = () => {
