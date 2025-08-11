@@ -1,33 +1,16 @@
-import { isFaceOrIrisCenter } from '@/utils/services/isFaceOrIrisCenter';
-import {
-  FaceLandmark,
-  FaceResult,
-  GestureResult,
-  Point,
-} from '@vladmandic/human';
+import { FaceResult, GestureResult } from '@vladmandic/human';
 import {
   BehaviorSubject,
   bufferTime,
-  combineLatest,
-  concat,
   distinctUntilChanged,
-  EMPTY,
   filter,
-  from,
   map,
-  merge,
   Observable,
-  of,
-  pairwise,
-  race,
-  repeat,
   Subject,
   switchMap,
-  take,
   takeUntil,
-  timer,
 } from 'rxjs';
-import { catchError, debounceTime, reduce } from 'rxjs/operators';
+import { reduce } from 'rxjs/operators';
 
 type LeaningDirection = 'left' | 'right' | 'none';
 type HandRaised = 'left' | 'right' | 'both' | 'none';
@@ -60,36 +43,6 @@ export const distinctFaceDetected$ = faceDetected$.pipe(distinctUntilChanged());
 
 // gesture results
 export const gestureResults$ = new Subject<GestureResult[]>();
-
-// 0.25초동안 gesture의 50%가 center인지
-export const isFaceOrIrisCenter$ = gestureResults$.pipe(
-  bufferTime(250),
-  map((results) => {
-    if (results.length === 0) return false;
-
-    const count = results.filter(isFaceOrIrisCenter).length;
-    const ratio = count / results.length;
-
-    return ratio >= 0.5;
-  }),
-  distinctUntilChanged(),
-);
-
-// 5초동안 얼굴이 중간인지 체크
-export const isLookingCenter$ = combineLatest([
-  faceDetected$,
-  isFaceOrIrisCenter$,
-]).pipe(
-  map(([face, center]) => face && center),
-
-  distinctUntilChanged(),
-);
-
-export const faceCenterCheck$ = isLookingCenter$.pipe(
-  bufferTime(5000),
-  map((results) => results.length > 0 && results.every(Boolean)),
-  distinctUntilChanged(),
-);
 
 //======================== 06월 3일 새로 작성
 const leaning$ = gestureResults$.pipe(

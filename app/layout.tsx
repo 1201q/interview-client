@@ -3,7 +3,7 @@ import './globals.css';
 import localFont from 'next/font/local';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
-import JotaiProvider from '@/components/provider/JotaiProvider';
+import JotaiProvider from '@/components/shared/JotaiProvider';
 
 interface Props {
   children: React.ReactNode;
