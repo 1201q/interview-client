@@ -1,8 +1,8 @@
 import { QuestionSection } from '@/utils/types/types';
-import styles from './styles/question-item.module.css';
+import styles from './styles/select-item.module.css';
 import { CheckIcon } from 'lucide-react';
 
-interface QuestionLoadingItemProps {
+interface SelectItemProps {
   index: number;
   questionText: string;
   basedOnText: string;
@@ -12,7 +12,7 @@ interface QuestionLoadingItemProps {
   selected: boolean;
 }
 
-const SelectableQuestionItem = (props: QuestionLoadingItemProps) => {
+const SelectItem = (props: SelectItemProps) => {
   const getBadgeStyle = (section: QuestionSection) => {
     switch (section) {
       case 'basic':
@@ -56,4 +56,4 @@ const SelectableQuestionItem = (props: QuestionLoadingItemProps) => {
   );
 };
 
-export default SelectableQuestionItem;
+export default SelectItem;

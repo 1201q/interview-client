@@ -1,3 +1,11 @@
+.stickyContainer {
+  position: sticky;
+  top: 140px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+
 /* ######### interview info */
 .interviewInfoContainer {
   display: flex;
@@ -41,50 +49,36 @@
   font-weight: 600;
 }
 
-.interviewInfoStatusItem {
-  display: flex;
-  align-items: center;
-
-  column-gap: 11px;
+.buttonContainer {
+  width: 100%;
 }
 
-.status {
+.buttonContainer button {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: var(--bg-gray-color);
-}
-
-.status svg {
-  stroke: var(--font-gray-color);
-  stroke-width: 2px;
-}
-
-.red {
-  background-color: var(--bg-red-color);
-}
-
-.red svg {
-  stroke: var(--font-red-color);
-  stroke-width: 3px;
-}
-
-.green {
-  background-color: var(--bg-green-color);
-}
-
-.green svg {
-  stroke: var(--font-green-color);
-  stroke-width: 3px;
-}
-
-/* interview button */
-.interviewButtonContainer button {
+  width: 100%;
   height: 45px;
   font-size: 1rem;
+
+  border-radius: 12px;
+
+  font-weight: 600;
+  color: white;
+
+  background: var(--red-bg-gradient);
+  box-shadow: var(--box-shadow);
+  transition: all 0.2s;
+}
+
+.buttonContainer button:not(:disabled):hover {
+  box-shadow: var(--box-red-shadow);
+}
+
+.buttonContainer button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  box-shadow: var(--box-red-shadow);
 }
 
 /* ######### 파란색 tip */
@@ -117,11 +111,9 @@
   margin-top: 4px;
 }
 
-.redTipContainer {
-  background-color: var(--bg-red-color);
-}
-
-.redTipContainer .header h4,
-.redTipContainer ul li {
-  color: var(--font-red-color);
+@media screen and (max-width: 1024px) {
+  .stickyContainer {
+    position: relative;
+    top: 0;
+  }
 }

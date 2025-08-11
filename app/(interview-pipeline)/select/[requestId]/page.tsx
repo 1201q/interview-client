@@ -1,4 +1,4 @@
-import SelectPage from '@/components/createQuestion/SelectPage';
+import SelectPage from '@/components/interviewPipeline/SelectPage';
 import { GeneratedQuestionItem } from '@/utils/types/types';
 
 const TEST_ID = '4e88866e-2a7a-4e66-b49f-12a29e67109e';

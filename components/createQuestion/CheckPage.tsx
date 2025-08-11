@@ -1,17 +1,11 @@
 'use client';
 
-import styles from './styles/container.module.css';
-import sharedStyles from './styles/shared.module.css';
+import useCreateQuestion from '@/utils/hooks/useCreateQuestion';
+import { Variants, motion } from 'motion/react';
 
-import useCreateQuestion from './hooks/useCreateQuestion';
-import { AnimatePresence, Variants, motion } from 'motion/react';
+import { useMediaPermissions } from '@/utils/hooks/useMediaPermissions';
 
-import { Circle, Check, X } from 'lucide-react';
-
-import { useState } from 'react';
-import { useMediaPermissions } from './hooks/useMediaPermissions';
-
-import { FilesetResolver, FaceLandmarker } from '@mediapipe/tasks-vision';
+import { FilesetResolver } from '@mediapipe/tasks-vision';
 
 // 등장 애니메이션
 const containerVariants: Variants = {

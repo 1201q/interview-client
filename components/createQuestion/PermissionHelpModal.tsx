@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styles from './styles/modal.module.css';
-import { CameraIcon, Mic, HelpCircle } from 'lucide-react';
+import { CameraIcon } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import CameraCheck from '@/app/new/check/[id]/_components/CameraCheck';
 
 interface ModalProps {
   onClose?: () => void;
