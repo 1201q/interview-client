@@ -10,6 +10,8 @@ const Page = async ({ params }: { params: Promise<{ requestId: string }> }) => {
     `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${TEST_ID}`,
   );
 
+  console.log(data);
+
   if (!data.ok) {
     console.error('Failed to fetch data:', data.statusText);
     return <div>Error</div>;

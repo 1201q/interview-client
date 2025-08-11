@@ -116,3 +116,12 @@
 .tipContainer ul li:not(:first-child) {
   margin-top: 4px;
 }
+
+.redTipContainer {
+  background-color: var(--bg-red-color);
+}
+
+.redTipContainer .header h4,
+.redTipContainer ul li {
+  color: var(--font-red-color);
+}

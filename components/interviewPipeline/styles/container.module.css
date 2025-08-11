@@ -1,0 +1,98 @@
+.container {
+  display: flex;
+  column-gap: 80px;
+  flex: 1;
+}
+
+.leftContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  row-gap: 15px;
+  height: 100%;
+  flex: 1;
+}
+
+.leftContainer h1 {
+  font-size: 44px;
+  color: black;
+}
+
+.leftContainer p {
+  font-size: 1.2rem;
+  line-height: 130%;
+  color: var(--font-gray2-color);
+}
+
+.rightContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 30px;
+  flex: 1;
+  position: relative;
+  height: 100%;
+}
+
+.leftContainer,
+.rightContainer {
+  min-width: 0;
+}
+
+.buttonContainer {
+  width: 100%;
+}
+
+.buttonContainer button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 54px;
+
+  border-radius: 12px;
+
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: white;
+
+  background: var(--red-bg-gradient);
+  box-shadow: var(--box-shadow);
+  transition: all 0.2s;
+}
+
+.buttonContainer button:not(:disabled):hover {
+  box-shadow: var(--box-red-shadow);
+}
+
+.buttonContainer button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  box-shadow: var(--box-red-shadow);
+}
+
+/* blue button */
+.buttonContainer.blue button {
+  background: var(--main-blue4-color);
+  transition: all 0.2s;
+}
+
+.buttonContainer.blue button:not(:disabled):hover {
+  box-shadow: var(--box-blue-shadow);
+}
+
+.buttonContainer.blue button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  box-shadow: var(--box-blue-shadow);
+}
+
+@media screen and (max-width: 1024px) {
+  .container {
+    max-height: fit-content;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+  }
+}

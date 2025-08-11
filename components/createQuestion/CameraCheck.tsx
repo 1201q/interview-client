@@ -3,15 +3,14 @@ import WebcamInstance from '../refactorWebcam/WebcamInstance';
 import styles from './styles/check.module.css';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { AnimatePresence, motion, useAnimation, Variants } from 'motion/react';
+import { AnimatePresence, motion, useAnimation } from 'motion/react';
 
 interface CameraCheckProps {
   cameraPermission: PermissionState;
+  toggleCameraCheckPhase: (b: boolean) => void;
 }
 
 const CameraCheck = (props: CameraCheckProps) => {
-  const [click, setClick] = useState(false);
-
   const [isDetecting, setIsDetecting] = useState(false);
 
   const maskRef = useRef<HTMLDivElement>(null);
@@ -58,10 +57,10 @@ const CameraCheck = (props: CameraCheckProps) => {
         <>
           <WebcamInstance isRunning={true} drawTargets={{}} />
           <AnimatePresence>
-            {!click && (
+            {!isDetecting && (
               <motion.div
                 onClick={() => {
-                  setClick(true);
+                  props.toggleCameraCheckPhase(true);
                   setIsDetecting(true);
                 }}
                 className={styles.cameraOverlayContainer}
@@ -72,7 +71,7 @@ const CameraCheck = (props: CameraCheckProps) => {
             )}
           </AnimatePresence>
           <AnimatePresence>
-            {click && (
+            {isDetecting && (
               <>
                 <div className={styles.mask}></div>
                 {/* <svg

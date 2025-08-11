@@ -45,7 +45,6 @@ const useCreateQuestion = () => {
   };
 
   const onLoadingComplete = () => {
-    // setStage('result');
     router.push(`/select/${TEST_ID}`);
   };
 
