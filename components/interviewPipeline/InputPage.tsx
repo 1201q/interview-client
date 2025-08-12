@@ -7,6 +7,7 @@ import TextArea from '@/components/interviewPipeline/inputPage/TextArea';
 import FileUpload from '@/components/interviewPipeline/inputPage/FileUpload';
 import useCreateQuestion from '@/utils/hooks/useCreateQuestion';
 import { Variants, motion } from 'motion/react';
+import Button from '../shared/Button';
 
 // 등장 애니메이션
 const containerVariants: Variants = {
@@ -74,11 +75,8 @@ const InputPage = ({
             />
           </UserInput>
         </motion.div>
-        <motion.div variants={itemVariants} className={styles.buttonContainer}>
-          {/* <button type="submit" disabled={props.buttonDisabled}>
-            면접 질문 생성
-          </button> */}
-          <button type="submit">면접 질문 생성</button>
+        <motion.div variants={itemVariants}>
+          <Button text="면접 질문 생성" attributes={{ type: 'submit' }} />
         </motion.div>
       </form>
     </motion.div>

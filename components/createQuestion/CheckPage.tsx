@@ -1,11 +1,9 @@
 'use client';
 
-import useCreateQuestion from '@/utils/hooks/useCreateQuestion';
 import { Variants, motion } from 'motion/react';
 
-import { useMediaPermissions } from '@/utils/hooks/useMediaPermissions';
-
-import { FilesetResolver } from '@mediapipe/tasks-vision';
+import dynamic from 'next/dynamic';
+import Button from '../shared/Button';
 
 // 등장 애니메이션
 const containerVariants: Variants = {
@@ -24,26 +22,11 @@ const itemVariants: Variants = {
   visible: { y: 0, opacity: 1, transition: { stiffness: 80, type: 'spring' } },
 };
 
-const CheckPage = ({
-  props,
-}: {
-  props: ReturnType<typeof useCreateQuestion>;
-}) => {
-  const { cameraPermission, micPermission, requestPermission } =
-    useMediaPermissions();
-
-  const loading = async () => {
-    const vision = await FilesetResolver.forVisionTasks(
-      'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm',
-    );
-  };
-
+const CheckPage = () => {
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    ></motion.div>
+    <div style={{ width: '100%' }}>
+      <Button text="ㅌㅅㅌ" />
+    </div>
   );
 };
 

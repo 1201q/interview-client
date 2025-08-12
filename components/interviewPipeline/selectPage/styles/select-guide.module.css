@@ -49,38 +49,6 @@
   font-weight: 600;
 }
 
-.buttonContainer {
-  width: 100%;
-}
-
-.buttonContainer button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 45px;
-  font-size: 1rem;
-
-  border-radius: 12px;
-
-  font-weight: 600;
-  color: white;
-
-  background: var(--red-bg-gradient);
-  box-shadow: var(--box-shadow);
-  transition: all 0.2s;
-}
-
-.buttonContainer button:not(:disabled):hover {
-  box-shadow: var(--box-red-shadow);
-}
-
-.buttonContainer button:disabled {
-  opacity: 0.5;
-  pointer-events: none;
-  box-shadow: var(--box-red-shadow);
-}
-
 /* ######### 파란색 tip */
 .tipContainer {
   display: flex;

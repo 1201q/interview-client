@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, Variants } from 'motion/react';
 import styles from './styles/select-guide.module.css';
+import Button from '@/components/shared/Button';
 
 interface SelectGuideProps {
   itemVariants: Variants;
@@ -105,11 +106,11 @@ const SelectGuide = ({
           </div>
         </div>
         {/* 버튼 */}
-        <div className={styles.buttonContainer}>
-          <button disabled={isOutOfRange}>
-            {isOutOfRange ? '질문을 선택해주세요' : '다음 단계로 넘어가기'}
-          </button>
-        </div>
+        <Button
+          isSmallButton={true}
+          disabled={isOutOfRange}
+          text={isOutOfRange ? '질문을 선택해주세요' : '다음 단계로 넘어가기'}
+        />
       </motion.div>
       {/* 면접 팁 */}
       <motion.div variants={itemVariants} className={styles.tipContainer}>
