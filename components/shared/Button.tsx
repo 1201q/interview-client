@@ -7,6 +7,7 @@ interface ButtonProps {
   disabled?: boolean;
   color?: 'blue' | 'red';
   isSmallButton?: boolean;
+  shadow?: boolean;
   onClick?: () => void;
 }
 
@@ -16,11 +17,12 @@ const Button = ({
   disabled = false,
   color = 'red',
   isSmallButton = false,
+  shadow = true,
   onClick,
 }: ButtonProps) => {
   return (
     <div
-      className={`${styles.buttonContainer} ${color === 'blue' ? styles.blue : ''} ${isSmallButton ? styles.smallButton : ''}`}
+      className={`${styles.buttonContainer} ${shadow ? '' : styles.noshadow} ${color === 'blue' ? styles.blue : ''} ${isSmallButton ? styles.smallButton : ''}`}
     >
       <button {...attributes} disabled={disabled} onClick={onClick}>
         {text}

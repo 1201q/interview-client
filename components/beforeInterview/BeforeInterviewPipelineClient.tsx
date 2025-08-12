@@ -6,7 +6,7 @@ import LoadingPage from './LoadingPage';
 
 import { AnimatePresence, motion } from 'motion/react';
 
-const PipelineClient = () => {
+const BeforeInterviewPipelineClient = () => {
   const props = useCreateQuestion();
 
   return (
@@ -38,4 +38,4 @@ const PipelineClient = () => {
   );
 };
 
-export default PipelineClient;
+export default BeforeInterviewPipelineClient;

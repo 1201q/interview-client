@@ -2,9 +2,9 @@
 
 import { FileTextIcon, BriefcaseIcon } from 'lucide-react';
 import styles from './styles/container.module.css';
-import UserInput from '@/components/interviewPipeline/inputPage/UserInput';
-import TextArea from '@/components/interviewPipeline/inputPage/TextArea';
-import FileUpload from '@/components/interviewPipeline/inputPage/FileUpload';
+import UserInput from '@/components/beforeInterview/inputPage/UserInput';
+import TextArea from '@/components/beforeInterview/inputPage/TextArea';
+import FileUpload from '@/components/beforeInterview/inputPage/FileUpload';
 import useCreateQuestion from '@/utils/hooks/useCreateQuestion';
 import { Variants, motion } from 'motion/react';
 import Button from '../shared/Button';

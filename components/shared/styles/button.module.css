@@ -25,7 +25,12 @@
   font-size: 1rem;
 }
 
-.buttonContainer button:not(:disabled):hover {
+.noshadow button {
+  box-shadow: none;
+}
+
+.buttonContainer button:not(:disabled):hover,
+.buttonContainer button:not(.noshadow):hover {
   box-shadow: var(--box-red-shadow);
 }
 
@@ -41,7 +46,8 @@
   transition: all 0.2s;
 }
 
-.buttonContainer.blue button:not(:disabled):hover {
+.buttonContainer.blue button:not(:disabled):hover,
+.buttonContainer.blue button:not(.noshadow):hover {
   box-shadow: var(--box-blue-shadow);
 }
 

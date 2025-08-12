@@ -1,4 +1,4 @@
-import SelectPage from '@/components/interviewPipeline/SelectPage';
+import SelectPage from '@/components/beforeInterview/SelectPage';
 import { GeneratedQuestionItem } from '@/utils/types/types';
 
 const TEST_ID = '4e88866e-2a7a-4e66-b49f-12a29e67109e';
@@ -9,8 +9,6 @@ const Page = async ({ params }: { params: Promise<{ requestId: string }> }) => {
   const data = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${TEST_ID}`,
   );
-
-  console.log(data);
 
   if (!data.ok) {
     console.error('Failed to fetch data:', data.statusText);
