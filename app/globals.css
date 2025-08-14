@@ -78,6 +78,11 @@
     rgb(37 99 235 / 0.4) 0px 4px 6px -4px;
 
   --blue-bg-gradient: linear-gradient(to right, #2563eb 0%, #244ccf 100%);
+  --skyblue-bg-gradient: linear-gradient(
+    to right,
+    rgb(76, 134, 254) 0%,
+    rgb(125, 166, 255) 100%
+  );
 }
 
 * {

@@ -3,12 +3,7 @@ import InterviewFaceCameraController from './InterviewFaceCameraController';
 import styles from './styles/interview-camera.module.css';
 
 const InterviewFaceCamera = () => {
-  return (
-    <div className={styles.cameraContainer}>
-      <WebcamInstance isRunning={false} drawTargets={{}} />
-      <InterviewFaceCameraController />
-    </div>
-  );
+  return <div className={styles.cameraContainer}></div>;
 };
 
 export default InterviewFaceCamera;

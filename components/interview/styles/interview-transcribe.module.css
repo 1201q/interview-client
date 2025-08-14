@@ -1,0 +1,69 @@
+.transcribeContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.2rem 1.1rem 1.2rem;
+  row-gap: 0.6rem;
+}
+
+.transcribeContainer .header {
+  display: flex;
+  align-items: center;
+  column-gap: 0.6rem;
+  height: 1.5rem;
+}
+
+.header .dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: var(--main-green-color);
+}
+
+.header p {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.transcribeContainer .list {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+  row-gap: 0.7rem;
+  overflow: scroll;
+}
+
+.transcribeItem {
+  padding: 0.9rem 0.8rem;
+  border-radius: 0.8rem;
+  background-color: var(--bg-gray2-color);
+}
+
+.transcribeItem p {
+  font-weight: 400;
+  line-height: 130%;
+  font-size: 0.9rem;
+}
+
+.transcribeItem span {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--font-gray-color);
+  margin-top: 2px;
+}
+
+.transcribeItem.blue {
+  border-left: 0.3rem solid var(--main-blue-color);
+  padding: 0.6rem 0.7rem;
+  border-radius: 0.6rem;
+  background-color: var(--bg-blue-color);
+}
+
+.transcribeItem.blue p {
+  color: var(--font-blue-color);
+}
+
+.transcribeItem.blue span {
+  color: var(--main-blue-color);
+}
