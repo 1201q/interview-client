@@ -60,11 +60,87 @@
   font-weight: 500;
 }
 
-.center .text {
-  font-size: 28px;
+.text.center {
+  font-size: 26px;
 }
 
-.center .badge {
+.badge.center {
   height: 28px;
   font-size: 18px;
+}
+
+.timerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 37px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 0px 50px;
+}
+
+.timerLineContainer {
+  width: 100%;
+  height: 2px;
+  background-color: rgba(55, 143, 251, 0.3);
+  border-radius: 10px;
+  opacity: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.timerLine {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 10px;
+  background-color: #378ffb;
+}
+
+.remainingTimeContainer {
+  font-size: 14px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 34px;
+  width: 49px;
+  height: 22px;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+}
+
+.sideButtonContainer {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+}
+
+.sideButtonContainer button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #18191b;
+  backdrop-filter: blur(10px);
+  border: 0.5px solid rgba(255, 255, 255, 0.03);
+  position: relative;
+  overflow: hidden;
+}
+
+.sideButtonContainer button p {
+  position: absolute;
+  bottom: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
 }
