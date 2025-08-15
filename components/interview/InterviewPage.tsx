@@ -5,15 +5,18 @@ import { motion, AnimatePresence, useAnimationControls } from 'motion/react';
 
 import styles from './styles/interview.module.css';
 import WebcamInstance from '../refactorWebcam/WebcamInstance';
-import { TextIcon } from 'lucide-react';
+import InterviewPanel from './InterviewPanel';
+import InterviewTranscribe from './InterviewTranscribe';
 
 const time = 60;
 
+type SideComponent = 'transcrie' | 'questionList';
+
 const InterviewPage = () => {
   const [cameraOn, setCameraOn] = useState(false);
-  const [remainingTime, setRemainingTime] = useState(time);
-
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const [expandedComponent, setExpandedComponent] = useState<SideComponent[]>(
+    [],
+  );
 
   const controls = useAnimationControls();
 
@@ -29,7 +32,14 @@ const InterviewPage = () => {
 
   const stopTimer = useCallback(() => {
     controls.stop();
-    controls.set({ translateX: '0%' });
+    controls
+      .start({
+        translateX: '0%',
+        transition: { duration: 1.2 },
+      })
+      .then(() => {
+        controls.set({ translateX: '0%' });
+      });
   }, [controls]);
 
   useEffect(() => {
@@ -40,6 +50,16 @@ const InterviewPage = () => {
     }
   }, [cameraOn, startTimer, stopTimer]);
 
+  const handleComponentClick = useCallback((type: SideComponent) => {
+    setExpandedComponent((prev) => {
+      if (prev.includes(type)) {
+        return prev.filter((item) => item !== type);
+      } else {
+        return [...prev, type];
+      }
+    });
+  }, []);
+
   return (
     <div className={styles.container}>
       <div className={styles.mainContainer}>
@@ -47,7 +67,7 @@ const InterviewPage = () => {
           <motion.div
             layout
             animate={{ scale: cameraOn ? 1 : 0.9, opacity: cameraOn ? 1 : 0.3 }}
-            transition={{ delay: cameraOn ? 1.5 : 0 }}
+            transition={{ delay: cameraOn ? 0.05 : 0 }}
             className={styles.cameraContainer}
           >
             <WebcamInstance isRunning={cameraOn} drawTargets={{}} />
@@ -58,13 +78,13 @@ const InterviewPage = () => {
             <motion.div
               layoutId="questionBadge"
               className={styles.badge}
-              transition={{ ease: 'easeInOut', delay: 0.05 }}
+              transition={{ ease: 'easeInOut', duration: 0.25 }}
             >
               질문 1
             </motion.div>
             <motion.p
               layoutId="questionText"
-              transition={{ ease: 'easeInOut' }}
+              transition={{ ease: 'easeInOut', duration: 0.25 }}
               className={styles.text}
             >
               도토리 서비스의 슬로우 쿼리(페이징 조회) 문제를 개선하셨다고
@@ -78,7 +98,7 @@ const InterviewPage = () => {
       {!cameraOn && (
         <motion.div className={styles.overlayQuestionContainer}>
           <motion.div
-            transition={{ ease: 'easeInOut' }}
+            transition={{ ease: 'easeInOut', duration: 0.3 }}
             layoutId="questionBadge"
             className={`${styles.badge} ${styles.center}`}
           >
@@ -87,7 +107,7 @@ const InterviewPage = () => {
 
           <motion.p
             layoutId="questionText"
-            transition={{ ease: 'easeInOut', delay: 0.05 }}
+            transition={{ ease: 'easeInOut', duration: 0.3 }}
             className={`${styles.text} ${styles.center}`}
           >
             도토리 서비스의 슬로우 쿼리(페이징 조회) 문제를 개선하셨다고 했는데,
@@ -108,21 +128,21 @@ const InterviewPage = () => {
       </div>
       <div className={styles.remainingTimeContainer}>2:59</div>
 
-      <div className={styles.sideButtonContainer}>
-        <motion.button
-          whileHover={{
-            scale: 1.1,
-          }}
+      <div className={styles.sideListContainer}>
+        <InterviewPanel
+          id="questionList"
+          titleText="필사 텍스트"
+          isExpanded={expandedComponent.includes('questionList')}
+          onToggle={handleComponentClick}
         >
-          <p>텍스트</p>
-          <TextIcon
-            color="rgba(255, 255, 255, 0.4)"
-            width={19}
-            height={19}
-            strokeWidth={3}
-            style={{ marginBottom: '12px' }}
-          />
-        </motion.button>
+          <InterviewTranscribe />
+        </InterviewPanel>
+        <InterviewPanel
+          id="transcrie"
+          titleText="질문 목록"
+          isExpanded={expandedComponent.includes('transcrie')}
+          onToggle={handleComponentClick}
+        ></InterviewPanel>
       </div>
       <div style={{ position: 'fixed', top: 0, left: 0 }}>
         <button

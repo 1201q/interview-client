@@ -78,7 +78,7 @@
   position: fixed;
   left: 0;
   top: 0;
-  padding: 0px 50px;
+  padding: 0px 16px;
 }
 
 .timerLineContainer {
@@ -143,4 +143,15 @@
   font-size: 10px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.4);
+}
+
+.sideListContainer {
+  width: 250px;
+  position: fixed;
+  height: calc(100% - 52px);
+  top: 37px;
+  right: 15px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
 }

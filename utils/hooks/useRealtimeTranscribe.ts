@@ -2,6 +2,7 @@
 
 import { useCallback, useState, useRef, useEffect } from 'react';
 import { getEphemeralToken } from '../services/stt';
+import { Delta, Transcript } from '../types/types';
 
 export type AudioSource = 'mic' | 'tab';
 
@@ -20,34 +21,38 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
   const [stable, setStable] = useState('');
   const [live, setLive] = useState('');
 
+  const [rawStableData, setRawStableData] = useState<Transcript[]>([]);
+  const [rawLiveData, setRawLiveData] = useState<Delta[]>([]);
+
   const resetText = useCallback(() => {
     setStable('');
     setLive('');
+    setRawLiveData([]);
+    setRawStableData([]);
   }, []);
 
   const handleEvent = useCallback(
     (msg: any) => {
       onEvent?.(msg);
 
-      if (msg.type === 'transcript.delta' && msg.text) {
-        setLive((p) => p + msg.text);
-        return;
-      }
-      if (msg.type === 'transcript.final' && msg.text) {
-        setStable((p) => (p ? p + ' ' : '') + msg.text);
-        setLive('');
-        return;
-      }
-
       if (msg.type?.endsWith('input_audio_transcription.delta') && msg.delta) {
-        setLive((p) => p + msg.delta);
+        const data = msg as Delta;
+
+        setLive((p) => p + data.delta);
+        setRawLiveData((prev) => [...prev, data]);
+
         return;
       }
       if (
         msg.type?.endsWith('input_audio_transcription.completed') &&
         msg.transcript
       ) {
-        setStable((p) => (p ? p + ' ' : '') + msg.transcript);
+        const data = msg as Transcript;
+
+        setRawStableData((prev) => [...prev, data]);
+        setRawLiveData([]);
+
+        setStable((p) => (p ? p + ' ' : '') + data.transcript);
         setLive('');
         return;
       }
@@ -239,6 +244,7 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
     flushAndStop,
     stop: cleanup,
     resetText,
+    rawStableData,
     refs: { pcRef, dcRef, streamRef },
   };
 };
