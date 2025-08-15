@@ -7,6 +7,7 @@ import styles from './styles/interview.module.css';
 import WebcamInstance from '../refactorWebcam/WebcamInstance';
 import InterviewPanel from './InterviewPanel';
 import InterviewTranscribe from './InterviewTranscribe';
+import InterviewQuestionList from './InterviewQuestionList';
 
 const time = 60;
 
@@ -142,7 +143,9 @@ const InterviewPage = () => {
           titleText="질문 목록"
           isExpanded={expandedComponent.includes('transcrie')}
           onToggle={handleComponentClick}
-        ></InterviewPanel>
+        >
+          <InterviewQuestionList />
+        </InterviewPanel>
       </div>
       <div style={{ position: 'fixed', top: 0, left: 0 }}>
         <button
