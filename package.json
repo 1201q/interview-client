@@ -2,13 +2,15 @@
   "name": "interview-client",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write --cache .",
-    "commit": "powershell -Command \"node genmsg.js | git commit -F -\""
+    "aicommit": "powershell -Command \"[Console]::OutputEncoding=[Text.UTF8Encoding]::UTF8; git add .; node genmsg.js | git commit -F -\"",
+    "commit": "powershell -Command \"[Console]::OutputEncoding=[Text.UTF8Encoding]::UTF8; node genmsg.js | git commit --amend -F -\""
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

@@ -1,23 +1,29 @@
+import 'dotenv/config';
 import { execSync } from 'child_process';
 import OpenAI from 'openai';
 
-const diff = execSync('git diff --cached', { encoding: 'utf-8' });
+// 마지막 커밋의 diff만 추출 (메타데이터 제외)
+const diff = execSync('git show --format= --no-color', {
+  encoding: 'utf-8',
+});
 
 const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
 const res = await client.chat.completions.create({
   model: 'gpt-4o-mini',
   messages: [
     {
       role: 'user',
-      content: `다음 Git diff를 보고 Git 커밋 메시지를 작성해줘.
-- 첫 줄: Gitmoji + 한국어 제목 (예: ✨ feat: 로그인 기능 추가)
+      content: `너는 Git 커밋 메시지 작성기야.
+다음 Git diff를 보고 메시지를 작성해.
+- 제목: Gitmoji + 한국어 한 줄 요약 (50자 이내)
 - 두 번째 줄은 비워두기
-- 세 번째 줄 이후: 상세 설명 (한국어, bullet point, 이모지 사용 ❌)
-- 제목은 50자 이내, 본문 줄은 72자 이내로 작성
+- 세 번째 줄 이후: bullet point 한국어 설명
+
 \n\n${diff}`,
     },
   ],
+  temperature: 0.3,
 });
 
+// 그냥 메시지만 출력
 console.log(res.choices[0].message.content.trim());
