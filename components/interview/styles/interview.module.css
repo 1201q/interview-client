@@ -116,6 +116,36 @@
   border-radius: 20px;
 }
 
+.interviewInfoContainer {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 34px;
+
+  height: 22px;
+  column-gap: 10px;
+}
+
+.interviewInfoContainer p {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.blueGradientText {
+  color: rgba(76, 134, 254, 1);
+}
+
+.grayText {
+  color: var(--font-darkgray-color);
+}
+
+.divider {
+  width: 2.5px;
+  height: 60%;
+  background-color: rgba(76, 134, 254, 0.2);
+  border-radius: 30px;
+}
+
 .sideButtonContainer {
   position: fixed;
   top: 50%;
@@ -154,4 +184,13 @@
   display: flex;
   flex-direction: column;
   row-gap: 15px;
+}
+
+.bottomButtonController {
+  position: fixed;
+
+  display: flex;
+  align-items: center;
+  position: fixed;
+  bottom: 15px;
 }

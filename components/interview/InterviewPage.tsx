@@ -9,6 +9,8 @@ import InterviewPanel from './InterviewPanel';
 import InterviewTranscribe from './InterviewTranscribe';
 import InterviewQuestionList from './InterviewQuestionList';
 
+import InterviewSubmitButton from './InterviewSubmitButton';
+
 const time = 60;
 
 type SideComponent = 'transcrie' | 'questionList';
@@ -127,8 +129,12 @@ const InterviewPage = () => {
           ></motion.div>
         </motion.div>
       </div>
-      <div className={styles.remainingTimeContainer}>2:59</div>
-
+      {/* <div className={styles.remainingTimeContainer}>2:59</div> */}
+      <div className={styles.interviewInfoContainer}>
+        <p className={styles.blueGradientText}>모의 인터뷰</p>
+        <div className={styles.divider}></div>
+        <p className={styles.grayText}>프론트엔드 직군</p>
+      </div>
       <motion.div layout className={styles.sideListContainer}>
         <InterviewPanel
           id="questionList"
@@ -147,6 +153,9 @@ const InterviewPage = () => {
           <InterviewQuestionList />
         </InterviewPanel>
       </motion.div>
+      <div className={styles.bottomButtonController}>
+        <InterviewSubmitButton />
+      </div>
 
       <div style={{ position: 'fixed', top: 0, left: 0 }}>
         <button
