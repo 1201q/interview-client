@@ -129,7 +129,7 @@ const InterviewPage = () => {
       </div>
       <div className={styles.remainingTimeContainer}>2:59</div>
 
-      <div className={styles.sideListContainer}>
+      <motion.div layout className={styles.sideListContainer}>
         <InterviewPanel
           id="questionList"
           titleText="필사 텍스트"
@@ -146,7 +146,8 @@ const InterviewPage = () => {
         >
           <InterviewQuestionList />
         </InterviewPanel>
-      </div>
+      </motion.div>
+
       <div style={{ position: 'fixed', top: 0, left: 0 }}>
         <button
           onClick={() => {

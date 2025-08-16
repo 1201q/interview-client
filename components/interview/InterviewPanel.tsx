@@ -17,7 +17,7 @@ const InterviewPanel = (props: InterviewPanelProps) => {
     <motion.div
       layout
       className={`${styles.sidePanelContainer} ${props.isExpanded ? styles.expanded : ''}`}
-      style={{ borderRadius: 12 }}
+      style={{ borderRadius: 12, overflow: 'hidden' }}
     >
       <motion.div
         layout="position"
@@ -34,13 +34,11 @@ const InterviewPanel = (props: InterviewPanelProps) => {
         </motion.div>
       </motion.div>
 
-      <AnimatePresence initial={false}>
-        {props.isExpanded && (
-          <motion.div key={props.id} className={`${styles.sidePanelContent}`}>
-            {props.children}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {props.isExpanded && (
+        <motion.div key={props.id} className={`${styles.sidePanelContent}`}>
+          {props.children}
+        </motion.div>
+      )}
     </motion.div>
   );
 };

@@ -43,7 +43,9 @@ const CollapsibleQuestionItem = ({
       layout
       className={itemStyle}
       onClick={() => setExpanded((v) => !v)}
-      // whileHover={{ backdropFilter: ""}}
+      whileHover={{
+        filter: itemType === 'default' ? 'brightness(130%)' : '',
+      }}
     >
       <motion.div layout="position" className={styles.bigText}>
         {titleText}
