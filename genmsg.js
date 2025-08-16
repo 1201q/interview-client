@@ -18,8 +18,9 @@ const res = await client.chat.completions.create({
 - 제목: Gitmoji + 한국어 한 줄 요약 (50자 이내)
 - 두 번째 줄은 비워두기
 - 세 번째 줄 이후: bullet point 한국어 설명
+- 절대로 백틱(\`)이나 코드블록(\`\`\`)을 쓰지 말고, 메시지 텍스트만 출력해.
 
-\n\n${diff}`,
+${diff}`,
     },
   ],
   temperature: 0.3,
