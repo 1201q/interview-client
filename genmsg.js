@@ -3,7 +3,7 @@ import { execSync } from 'child_process';
 import OpenAI from 'openai';
 
 // 마지막 커밋의 diff만 추출 (메타데이터 제외)
-const diff = execSync('git show --format= --no-color', {
+const diff = execSync('git diff --cached --no-color', {
   encoding: 'utf-8',
 });
 
