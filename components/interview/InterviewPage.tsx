@@ -33,6 +33,8 @@ const InterviewPage = () => {
   }, []);
 
   const handleSubmitAnswer = async () => {
+    if (interviewPhase !== 'answering') return;
+
     setInterviewPhase('submitting');
 
     try {
@@ -45,6 +47,8 @@ const InterviewPage = () => {
   };
 
   const handleStartCountdown = async () => {
+    if (interviewPhase !== 'start') return;
+
     setInterviewPhase('starting');
 
     try {
@@ -58,6 +62,14 @@ const InterviewPage = () => {
   const handleStartAnswer = () => {
     setInterviewPhase('answering');
   };
+
+  useEffect(() => {
+    if (interviewPhase === 'startCountdown3') {
+      setCameraOn(true);
+    } else if (interviewPhase === 'submitting') {
+      setCameraOn(false);
+    }
+  }, [interviewPhase]);
 
   return (
     <div className={styles.container}>
@@ -117,7 +129,11 @@ const InterviewPage = () => {
         </motion.div>
       )}
       <div className={styles.timerContainer}>
-        <InterviewTimebar phase={interviewPhase} />
+        <InterviewTimebar
+          phase={interviewPhase}
+          handleSubmitAnswer={handleSubmitAnswer}
+          handleStartCountdown={handleStartCountdown}
+        />
       </div>
       {/* <div className={styles.remainingTimeContainer}>2:59</div> */}
       <div className={styles.interviewInfoContainer}>
