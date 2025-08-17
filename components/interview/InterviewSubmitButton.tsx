@@ -4,21 +4,23 @@ import styles from './styles/interview-button.module.css';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, useAnimationControls } from 'motion/react';
 import { Loader2, Check, Space } from 'lucide-react';
+import { InterviewPhase } from '@/utils/types/interview';
 
-type ButtonPhase =
-  | 'start'
-  | 'starting'
-  | 'startCountdown3'
-  | 'submitting'
-  | 'submitSuccess'
-  | 'answering'
-  | 'end';
+interface SubmitButtonProps {
+  phase: InterviewPhase;
+  handleSubmitAnswer: () => Promise<void>;
+  handleStartAnswer: () => void;
+  handleStartCountdown: () => Promise<void>;
+}
 
-const InterviewSubmitButton = () => {
+const InterviewSubmitButton = ({
+  phase,
+  handleStartAnswer,
+  handleStartCountdown,
+  handleSubmitAnswer,
+}: SubmitButtonProps) => {
   const countdownControls = useAnimationControls(); // 카운트다운 애니메이션
   const buttonRef = useRef<HTMLButtonElement>(null); // 스페이스바로 버튼 제어
-
-  const [phase, setPhase] = useState<ButtonPhase>('start');
   const [isPressed, setIsPressed] = useState(false); // 스페이스바로 눌림 애니메이션 구현 위함
 
   // =========== button 구분
@@ -27,7 +29,7 @@ const InterviewSubmitButton = () => {
     'startCountdown3',
     'submitting',
     'submitSuccess',
-  ] as ButtonPhase[];
+  ] as InterviewPhase[];
 
   const buttonGroup =
     phase === 'answering' || phase === 'submitting' || phase === 'submitSuccess'
@@ -39,36 +41,13 @@ const InterviewSubmitButton = () => {
   // =========== 버튼 클릭 이벤트
   const handleClick = async () => {
     if (phase === 'start') {
-      handleStartAnswer();
+      handleStartCountdown();
     } else if (phase === 'answering') {
       handleSubmitAnswer();
     }
   };
 
-  const handleSubmitAnswer = async () => {
-    setPhase('submitting');
-
-    try {
-      await new Promise((r) => setTimeout(r, 1000));
-      setPhase('submitSuccess');
-      setTimeout(() => setPhase('start'), 1200);
-    } catch (error) {
-      setPhase('answering');
-    }
-  };
-
-  const handleStartAnswer = async () => {
-    setPhase('starting');
-
-    try {
-      await new Promise((r) => setTimeout(r, 1000));
-      setPhase('startCountdown3');
-    } catch (error) {
-      setPhase('start');
-    }
-  };
-
-  const startCountdown = useCallback(() => {
+  const startCountdownAnimation = useCallback(() => {
     countdownControls.set({ x: '0%' });
     countdownControls
       .start({
@@ -77,15 +56,15 @@ const InterviewSubmitButton = () => {
       })
       .then(() => {
         countdownControls.stop();
-        setPhase('answering');
+        handleStartAnswer();
       });
   }, [countdownControls]);
 
   useEffect(() => {
     if (phase === 'startCountdown3') {
-      startCountdown();
+      startCountdownAnimation();
     }
-  }, [phase, startCountdown]);
+  }, [phase, startCountdownAnimation]);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {

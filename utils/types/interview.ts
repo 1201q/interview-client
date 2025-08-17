@@ -1,0 +1,8 @@
+export type InterviewPhase =
+  | 'start' // 시작 (버튼: 시작) [타이머: 30초]
+  | 'starting' // 시작 중... (버튼: 시작 로딩) [타이머: 초기화]
+  | 'startCountdown3' // 3초 대기 (버튼: 3초 애니메이션)
+  | 'answering' // 답변 중... (버튼: 제출하기) [타이머: 질문유형에 맞게 세팅]
+  | 'submitting' // 제출 중... [타이머: pause]
+  | 'submitSuccess' // 제출 성공 [타이머: 초기화]
+  | 'end'; // 인터뷰 종료

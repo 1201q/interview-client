@@ -1,7 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence, useAnimationControls } from 'motion/react';
+import { useCallback, useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 
 import styles from './styles/interview.module.css';
 import WebcamInstance from '../refactorWebcam/WebcamInstance';
@@ -10,8 +10,8 @@ import InterviewTranscribe from './InterviewTranscribe';
 import InterviewQuestionList from './InterviewQuestionList';
 
 import InterviewSubmitButton from './InterviewSubmitButton';
-
-const time = 60;
+import InterviewTimebar from './InterviewTimebar';
+import { InterviewPhase } from '@/utils/types/interview';
 
 type SideComponent = 'transcrie' | 'questionList';
 
@@ -20,38 +20,7 @@ const InterviewPage = () => {
   const [expandedComponent, setExpandedComponent] = useState<SideComponent[]>(
     [],
   );
-
-  const controls = useAnimationControls();
-
-  const startTimer = useCallback(
-    (time: number) => {
-      controls.start({
-        translateX: '-100%',
-        transition: { duration: time, ease: 'linear' },
-      });
-    },
-    [controls],
-  );
-
-  const stopTimer = useCallback(() => {
-    controls.stop();
-    controls
-      .start({
-        translateX: '0%',
-        transition: { duration: 1.2 },
-      })
-      .then(() => {
-        controls.set({ translateX: '0%' });
-      });
-  }, [controls]);
-
-  useEffect(() => {
-    if (cameraOn) {
-      startTimer(time);
-    } else {
-      stopTimer();
-    }
-  }, [cameraOn, startTimer, stopTimer]);
+  const [interviewPhase, setInterviewPhase] = useState<InterviewPhase>('start');
 
   const handleComponentClick = useCallback((type: SideComponent) => {
     setExpandedComponent((prev) => {
@@ -62,6 +31,33 @@ const InterviewPage = () => {
       }
     });
   }, []);
+
+  const handleSubmitAnswer = async () => {
+    setInterviewPhase('submitting');
+
+    try {
+      await new Promise((r) => setTimeout(r, 1000));
+      setInterviewPhase('submitSuccess');
+      setTimeout(() => setInterviewPhase('start'), 1200);
+    } catch (error) {
+      setInterviewPhase('answering');
+    }
+  };
+
+  const handleStartCountdown = async () => {
+    setInterviewPhase('starting');
+
+    try {
+      await new Promise((r) => setTimeout(r, 1000));
+      setInterviewPhase('startCountdown3');
+    } catch (error) {
+      setInterviewPhase('start');
+    }
+  };
+
+  const handleStartAnswer = () => {
+    setInterviewPhase('answering');
+  };
 
   return (
     <div className={styles.container}>
@@ -121,13 +117,7 @@ const InterviewPage = () => {
         </motion.div>
       )}
       <div className={styles.timerContainer}>
-        <motion.div className={styles.timerLineContainer}>
-          <motion.div
-            animate={controls}
-            onAnimationComplete={() => setCameraOn(false)}
-            className={styles.timerLine}
-          ></motion.div>
-        </motion.div>
+        <InterviewTimebar phase={interviewPhase} />
       </div>
       {/* <div className={styles.remainingTimeContainer}>2:59</div> */}
       <div className={styles.interviewInfoContainer}>
@@ -154,7 +144,12 @@ const InterviewPage = () => {
         </InterviewPanel>
       </motion.div>
       <div className={styles.bottomButtonController}>
-        <InterviewSubmitButton />
+        <InterviewSubmitButton
+          phase={interviewPhase}
+          handleStartAnswer={handleStartAnswer}
+          handleSubmitAnswer={handleSubmitAnswer}
+          handleStartCountdown={handleStartCountdown}
+        />
       </div>
 
       <div style={{ position: 'fixed', top: 0, left: 0 }}>
