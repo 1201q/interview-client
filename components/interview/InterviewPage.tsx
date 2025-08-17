@@ -12,6 +12,7 @@ import InterviewQuestionList from './InterviewQuestionList';
 import InterviewSubmitButton from './InterviewSubmitButton';
 import InterviewTimebar from './InterviewTimebar';
 import { InterviewPhase } from '@/utils/types/interview';
+import InterviewTimer from './InterviewTimer';
 
 type SideComponent = 'transcrie' | 'questionList';
 
@@ -106,6 +107,7 @@ const InterviewPage = () => {
           </motion.div>
         )}
       </div>
+      <InterviewTimer />
       {!cameraOn && (
         <motion.div className={styles.overlayQuestionContainer}>
           <motion.div
@@ -128,14 +130,13 @@ const InterviewPage = () => {
           </motion.p>
         </motion.div>
       )}
-      <div className={styles.timerContainer}>
-        <InterviewTimebar
-          phase={interviewPhase}
-          handleSubmitAnswer={handleSubmitAnswer}
-          handleStartCountdown={handleStartCountdown}
-        />
-      </div>
-      {/* <div className={styles.remainingTimeContainer}>2:59</div> */}
+
+      <InterviewTimebar
+        phase={interviewPhase}
+        handleSubmitAnswer={handleSubmitAnswer}
+        handleStartCountdown={handleStartCountdown}
+      />
+
       <div className={styles.interviewInfoContainer}>
         <p className={styles.blueGradientText}>모의 인터뷰</p>
         <div className={styles.divider}></div>
@@ -159,24 +160,13 @@ const InterviewPage = () => {
           <InterviewQuestionList />
         </InterviewPanel>
       </motion.div>
-      <div className={styles.bottomButtonController}>
-        <InterviewSubmitButton
-          phase={interviewPhase}
-          handleStartAnswer={handleStartAnswer}
-          handleSubmitAnswer={handleSubmitAnswer}
-          handleStartCountdown={handleStartCountdown}
-        />
-      </div>
 
-      <div style={{ position: 'fixed', top: 0, left: 0 }}>
-        <button
-          onClick={() => {
-            setCameraOn((prev) => !prev);
-          }}
-        >
-          애니메이션
-        </button>
-      </div>
+      <InterviewSubmitButton
+        phase={interviewPhase}
+        handleStartAnswer={handleStartAnswer}
+        handleSubmitAnswer={handleSubmitAnswer}
+        handleStartCountdown={handleStartCountdown}
+      />
     </div>
   );
 };

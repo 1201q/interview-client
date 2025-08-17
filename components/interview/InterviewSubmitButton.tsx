@@ -115,170 +115,176 @@ const InterviewSubmitButton = ({
   }, [isDisabled, isPressed]);
 
   return (
-    <motion.button
-      ref={buttonRef}
-      onClick={handleClick}
-      disabled={isDisabled}
-      whileHover={{
-        backgroundColor: !isDisabled ? 'rgba(76, 134, 254,0.9)' : '',
-      }}
-      whileTap={isDisabled ? '' : { scale: 0.94 }}
-      animate={
-        isPressed
-          ? { scale: 0.94, backgroundColor: 'rgba(76, 134, 254,0.9)' }
-          : { scale: 1 }
-      }
-      layout
-      transition={{
-        type: 'spring',
-        layout: { duration: 0.15, ease: 'easeInOut' },
-      }}
-      className={styles.submitButton}
-    >
-      <AnimatePresence initial={false} mode="wait">
-        {/* 1. 답변 시작 */}
-        {buttonGroup === 'startGroup' ? (
-          <motion.div
-            initial={{ y: 8, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -8, opacity: 0 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
-            key="startGroup"
-            style={{ height: '100%', position: 'relative' }}
-          >
-            {/* 답변 시작하기 */}
-            {phase === 'start' && (
-              <motion.div layout key={'start'} className={styles.buttonWrapper}>
-                <div className={styles.text}>답변 시작하기</div>
-                <div className={styles.iconContainer}>
-                  <Space
-                    color="white"
-                    size={19}
-                    style={{ marginBottom: '5px' }}
-                  />
-                </div>
-              </motion.div>
-            )}
-            {/* 답변 시작 로딩 중 */}
-            {phase === 'starting' && (
-              <motion.div
-                layout
-                key={'starting'}
-                className={styles.buttonWrapper}
-              >
-                <div className={styles.text}>시작 준비 중....</div>
-                <motion.span
-                  animate={{ rotate: 360 }}
-                  transition={{
-                    repeat: Infinity,
-                    duration: 0.9,
-                    ease: 'linear',
-                  }}
-                  style={{
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Loader2 color="rgba(255, 255, 255, 0.8)" size={19} />
-                </motion.span>
-              </motion.div>
-            )}
-            {/* 답변 3초 대기 (3초 후 answering)  */}
-            {phase === 'startCountdown3' && (
-              <motion.div
-                layout
-                key={'startCountdown3'}
-                className={styles.buttonWrapper}
-              >
-                <div className={styles.text}>잠시 후 답변을 시작합니다.</div>
+    <div className={styles.bottomButtonController}>
+      <motion.button
+        ref={buttonRef}
+        onClick={handleClick}
+        disabled={isDisabled}
+        whileHover={{
+          backgroundColor: !isDisabled ? 'rgba(76, 134, 254,0.9)' : '',
+        }}
+        whileTap={isDisabled ? '' : { scale: 0.94 }}
+        animate={
+          isPressed
+            ? { scale: 0.94, backgroundColor: 'rgba(76, 134, 254,0.9)' }
+            : { scale: 1 }
+        }
+        layout
+        transition={{
+          type: 'spring',
+          layout: { duration: 0.15, ease: 'easeInOut' },
+        }}
+        className={styles.submitButton}
+      >
+        <AnimatePresence initial={false} mode="wait">
+          {/* 1. 답변 시작 */}
+          {buttonGroup === 'startGroup' ? (
+            <motion.div
+              initial={{ y: 8, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -8, opacity: 0 }}
+              transition={{ duration: 0.2, ease: 'easeInOut' }}
+              key="startGroup"
+              style={{ height: '100%', position: 'relative' }}
+            >
+              {/* 답변 시작하기 */}
+              {phase === 'start' && (
                 <motion.div
-                  animate={countdownControls}
-                  className={styles.barBg}
-                ></motion.div>
-              </motion.div>
-            )}
-          </motion.div>
-        ) : (
-          <motion.div
-            key="answeringGroup"
-            initial={{ y: 8, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -8, opacity: 0 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
-          >
-            {/* 답변 제출하기 */}
-            {phase === 'answering' && (
-              <motion.div
-                layout
-                key={'answering'}
-                className={styles.buttonWrapper}
-              >
-                <div className={styles.text}>답변 제출하기</div>
-                <div className={styles.iconContainer}>
-                  <Space
-                    color="white"
-                    size={19}
-                    style={{ marginBottom: '5px' }}
-                  />
-                </div>
-              </motion.div>
-            )}
-            {/* 답변 제출 로딩 */}
-            {phase === 'submitting' && (
-              <motion.div
-                layout
-                key={'submitting'}
-                className={styles.buttonWrapper}
-              >
-                <div className={styles.text}>답변을 제출 중입니다..</div>
-                <motion.span
-                  animate={{ rotate: 360 }}
-                  transition={{
-                    repeat: Infinity,
-                    duration: 0.9,
-                    ease: 'linear',
-                  }}
-                  style={{
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
+                  layout
+                  key={'start'}
+                  className={styles.buttonWrapper}
                 >
-                  <Loader2 color="rgba(255, 255, 255, 0.8)" size={19} />
-                </motion.span>
-              </motion.div>
-            )}
+                  <div className={styles.text}>답변 시작하기</div>
+                  <div className={styles.iconContainer}>
+                    <Space
+                      color="white"
+                      size={19}
+                      style={{ marginBottom: '5px' }}
+                    />
+                  </div>
+                </motion.div>
+              )}
+              {/* 답변 시작 로딩 중 */}
+              {phase === 'starting' && (
+                <motion.div
+                  layout
+                  key={'starting'}
+                  className={styles.buttonWrapper}
+                >
+                  <div className={styles.text}>시작 준비 중....</div>
+                  <motion.span
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 0.9,
+                      ease: 'linear',
+                    }}
+                    style={{
+                      height: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Loader2 color="rgba(255, 255, 255, 0.8)" size={19} />
+                  </motion.span>
+                </motion.div>
+              )}
+              {/* 답변 3초 대기 (3초 후 answering)  */}
+              {phase === 'startCountdown3' && (
+                <motion.div
+                  layout
+                  key={'startCountdown3'}
+                  className={styles.buttonWrapper}
+                >
+                  <div className={styles.text}>잠시 후 답변을 시작합니다.</div>
+                  <motion.div
+                    animate={countdownControls}
+                    className={styles.barBg}
+                  ></motion.div>
+                </motion.div>
+              )}
+            </motion.div>
+          ) : (
+            <motion.div
+              key="answeringGroup"
+              initial={{ y: 8, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -8, opacity: 0 }}
+              transition={{ duration: 0.2, ease: 'easeInOut' }}
+            >
+              {/* 답변 제출하기 */}
+              {phase === 'answering' && (
+                <motion.div
+                  layout
+                  key={'answering'}
+                  className={styles.buttonWrapper}
+                >
+                  <div className={styles.text}>답변 제출하기</div>
+                  <div className={styles.iconContainer}>
+                    <Space
+                      color="white"
+                      size={19}
+                      style={{ marginBottom: '5px' }}
+                    />
+                  </div>
+                </motion.div>
+              )}
+              {/* 답변 제출 로딩 */}
+              {phase === 'submitting' && (
+                <motion.div
+                  layout
+                  key={'submitting'}
+                  className={styles.buttonWrapper}
+                >
+                  <div className={styles.text}>답변을 제출 중입니다..</div>
+                  <motion.span
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 0.9,
+                      ease: 'linear',
+                    }}
+                    style={{
+                      height: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Loader2 color="rgba(255, 255, 255, 0.8)" size={19} />
+                  </motion.span>
+                </motion.div>
+              )}
 
-            {/* 답변 제출 성공 */}
-            {phase === 'submitSuccess' && (
-              <motion.div
-                layout
-                key={'submitSuccess'}
-                className={styles.buttonWrapper}
-              >
-                <div className={styles.text}>제출 성공!</div>
-                <motion.span
-                  style={{
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                  initial={{ scale: 0.7, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
+              {/* 답변 제출 성공 */}
+              {phase === 'submitSuccess' && (
+                <motion.div
+                  layout
+                  key={'submitSuccess'}
+                  className={styles.buttonWrapper}
                 >
-                  <Check
-                    color="rgba(255, 255, 255, 0.8)"
-                    size={19}
-                    style={{ marginRight: '-2px' }}
-                  />
-                </motion.span>
-              </motion.div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.button>
+                  <div className={styles.text}>제출 성공!</div>
+                  <motion.span
+                    style={{
+                      height: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                    initial={{ scale: 0.7, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                  >
+                    <Check
+                      color="rgba(255, 255, 255, 0.8)"
+                      size={19}
+                      style={{ marginRight: '-2px' }}
+                    />
+                  </motion.span>
+                </motion.div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.button>
+    </div>
   );
 };
 

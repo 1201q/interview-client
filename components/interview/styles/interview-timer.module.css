@@ -1,0 +1,27 @@
+.timerContainer {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  column-gap: 4px;
+
+  left: 50%;
+  transform: translateX(-50%);
+  top: 37px;
+
+  height: 24px;
+  background-color: rgba(76, 134, 254, 0.1);
+  backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.3);
+  border-radius: 20px;
+
+  padding: 0px 7px;
+}
+
+.timerContainer p {
+  color: white;
+  font-size: 14px;
+  font-weight: 400;
+}
