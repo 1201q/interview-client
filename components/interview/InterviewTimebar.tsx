@@ -55,12 +55,14 @@ const InterviewTimebar = ({
 
   return (
     <div className={styles.fixedContainer}>
-      <motion.div className={styles.timebarContainer}>
-        <motion.div
-          animate={controls}
-          onAnimationComplete={() => {}}
-          className={styles.timerbar}
-        ></motion.div>
+      <motion.div
+        animate={{
+          scale: phase === 'submitting' || phase === 'starting' ? 0.98 : 1,
+          opacity: phase === 'submitting' || phase === 'starting' ? 0.5 : 1,
+        }}
+        className={styles.timebarContainer}
+      >
+        <motion.div animate={controls} className={styles.timerbar}></motion.div>
       </motion.div>
     </div>
   );
