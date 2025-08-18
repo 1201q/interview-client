@@ -43,9 +43,9 @@ const InterviewTimebar = ({
 
   useEffect(() => {
     if (phase === 'start') {
-      start(5, handleStartCountdown);
+      start(15, handleStartCountdown);
     } else if (phase === 'answering') {
-      start(10, handleSubmitAnswer);
+      start(60, handleSubmitAnswer);
     } else if (phase === 'submitting' || phase === 'starting') {
       stop();
     } else if (phase === 'submitSuccess' || phase === 'startCountdown3') {
@@ -57,8 +57,8 @@ const InterviewTimebar = ({
     <div className={styles.fixedContainer}>
       <motion.div
         animate={{
-          scale: phase === 'submitting' || phase === 'starting' ? 0.98 : 1,
-          opacity: phase === 'submitting' || phase === 'starting' ? 0.5 : 1,
+          scale: phase === 'submitting' || phase === 'starting' ? 0.97 : 1,
+          opacity: phase === 'submitting' || phase === 'starting' ? 0.6 : 1,
         }}
         className={styles.timebarContainer}
       >

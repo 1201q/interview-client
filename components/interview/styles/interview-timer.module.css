@@ -6,10 +6,9 @@
   position: fixed;
   column-gap: 4px;
 
-  left: 50%;
-  transform: translateX(-50%);
   top: 37px;
 
+  width: 66px;
   height: 24px;
   background-color: rgba(76, 134, 254, 0.1);
   backdrop-filter: blur(20px);
@@ -18,10 +17,31 @@
   border-radius: 20px;
 
   padding: 0px 7px;
+  transform-origin: center;
+  user-select: none;
 }
 
 .timerContainer p {
   color: white;
   font-size: 14px;
   font-weight: 400;
+}
+
+.redAlram {
+  backdrop-filter: blur(20px);
+  animation: red-blink 1.5s infinite;
+}
+
+@keyframes red-blink {
+  0% {
+    background-color: rgba(76, 134, 254, 0.1);
+  }
+  50% {
+    background-color: rgba(225, 29, 72, 0.3);
+    box-shadow: 0 6px 18px rgba(146, 19, 47, 0.7);
+  }
+
+  100% {
+    background-color: rgba(76, 134, 254, 0.1);
+  }
 }

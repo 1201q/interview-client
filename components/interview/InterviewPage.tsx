@@ -107,7 +107,7 @@ const InterviewPage = () => {
           </motion.div>
         )}
       </div>
-      <InterviewTimer />
+      <InterviewTimer phase={interviewPhase} />
       {!cameraOn && (
         <motion.div className={styles.overlayQuestionContainer}>
           <motion.div
