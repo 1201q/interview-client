@@ -18,7 +18,7 @@ interface QuestionListProps {
 interface QuestionItemProps {
   titleText: string;
   text: string;
-  itemType?: 'default' | 'blue';
+  itemType?: 'default' | 'blue' | 'green';
 }
 
 const InterviewQuestionList = ({
@@ -64,11 +64,12 @@ const InterviewQuestionList = ({
                 text={q.text}
               />
             ))}
-          {submittedQuestions.map((q, index) => (
+          {submittedQuestions.map((q) => (
             <CollapsibleQuestionItem
-              key={`sub-${q.id}-${index}`}
-              titleText={'제출한 질문'}
+              key={`submitted-${q.id}`}
+              titleText={`제출 완료한 질문`}
               text={q.text}
+              itemType="green"
             />
           ))}
         </motion.div>
@@ -110,7 +111,11 @@ const CollapsibleQuestionItem = ({
 
   const itemStyle = [
     styles.questionItem,
-    itemType === 'blue' ? styles.blueQuestionItem : '',
+    itemType === 'blue'
+      ? styles.blueQuestionItem
+      : itemType === 'green'
+        ? styles.greenQuestionItem
+        : '',
   ]
     .filter(Boolean)
     .join(' ');
@@ -135,7 +140,7 @@ const CollapsibleQuestionItem = ({
         >
           {text}
         </div>
-        {!expanded && isOverflowing && itemType !== 'blue' && (
+        {!expanded && isOverflowing && itemType === 'default' && (
           <div className={styles.fadeShadow}></div>
         )}
       </motion.div>

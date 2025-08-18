@@ -57,10 +57,16 @@
 
 .blueQuestionItem {
   background-color: rgba(55, 143, 251, 0.3);
-  color: #378ffb;
+  color: rgb(55, 143, 251);
 }
 
-.blueQuestionItem .bigText {
+.greenQuestionItem {
+  background-color: rgba(58, 255, 176, 0.21);
+  color: rgb(21, 196, 126);
+}
+
+.blueQuestionItem .bigText,
+.greenQuestionItem .bigText {
   font-size: 17px;
   font-weight: 700;
   color: white;
@@ -72,6 +78,7 @@
 .textWrapper {
   position: relative;
 }
+
 .fadeShadow {
   pointer-events: none;
   position: absolute;
@@ -87,6 +94,7 @@
     rgba(24, 25, 27, 1)
   );
 }
+
 .clamp {
   display: -webkit-box;
   line-clamp: 2;
