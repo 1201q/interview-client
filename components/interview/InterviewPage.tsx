@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 import styles from './styles/interview.module.css';
@@ -13,6 +13,7 @@ import InterviewSubmitButton from './InterviewSubmitButton';
 import InterviewTimebar from './InterviewTimebar';
 import { InterviewPhase } from '@/utils/types/interview';
 import InterviewTimer from './InterviewTimer';
+import { QUESTION_MOCK_DATA } from '@/utils/constants/question.mock';
 
 type SideComponent = 'transcrie' | 'questionList';
 
@@ -22,6 +23,24 @@ const InterviewPage = () => {
     [],
   );
   const [interviewPhase, setInterviewPhase] = useState<InterviewPhase>('start');
+
+  // question
+  const questionList = useMemo(() => {
+    return QUESTION_MOCK_DATA.map((q, index) => {
+      return { ...q, order: index };
+    });
+  }, []);
+
+  const [questions, setQuestions] = useState(questionList);
+  const [currentQuestion, setCurrentQuestion] = useState<
+    (typeof questionList)[number] | null
+  >(questionList[0]);
+  const [nextQuestion, setNextQuestion] = useState<
+    (typeof questionList)[number] | null
+  >(questionList[1]);
+  const [submittedQuestions, setSubmittedQuestions] = useState<
+    typeof questionList
+  >([]);
 
   const handleComponentClick = useCallback((type: SideComponent) => {
     setExpandedComponent((prev) => {
@@ -34,13 +53,48 @@ const InterviewPage = () => {
   }, []);
 
   const handleSubmitAnswer = async () => {
+    console.log(currentQuestion);
     if (interviewPhase !== 'answering') return;
 
     setInterviewPhase('submitting');
 
     try {
       await new Promise((r) => setTimeout(r, 1000));
+
+      // 제출 성공 시
+      // 1. 상태 변경
       setInterviewPhase('submitSuccess');
+      // 2. mock data 변경
+      const currentQ = currentQuestion; // 방금 제출 완료된 질문 => 제출 완료 배열에 넣기
+      // nextQuestion : 제출 시점에서의 다음 질문 => currentQuestion으로 지정
+
+      if (currentQ) {
+        setSubmittedQuestions((prev) => {
+          const updatedArray = [...prev, currentQ];
+
+          const uniqueArray = updatedArray.filter(
+            (q, index, self) => index === self.findIndex((x) => x.id === q.id),
+          );
+
+          return uniqueArray;
+        }); // 제출 완료 배열에 추가
+      }
+
+      if (nextQuestion) {
+        setCurrentQuestion(nextQuestion);
+
+        // 다음 질문 가져오기 로직 => 실제로는 api 호출해서 받아옴
+        const nextQ = questions.find((q) => q.order > nextQuestion.order);
+
+        if (nextQ) {
+          setNextQuestion(nextQ);
+        } else {
+          setNextQuestion(null);
+        }
+      } else {
+        // 마지막 질문이므로 종료
+      }
+
       setTimeout(() => setInterviewPhase('start'), 1200);
     } catch (error) {
       setInterviewPhase('answering');
@@ -92,17 +146,14 @@ const InterviewPage = () => {
               className={styles.badge}
               transition={{ ease: 'easeInOut', duration: 0.25 }}
             >
-              질문 1
+              {`질문 ${currentQuestion && currentQuestion?.order + 1}`}
             </motion.div>
             <motion.p
               layoutId="questionText"
               transition={{ ease: 'easeInOut', duration: 0.25 }}
               className={styles.text}
             >
-              도토리 서비스의 슬로우 쿼리(페이징 조회) 문제를 개선하셨다고
-              했는데, 해당 이슈를 발견하게 된 계기와 개선 과정에서 가장 신경
-              썼던 부분, 그리고 만약 성능 개선이 기대에 미치지 않았다면 어떤
-              추가적인 시도를 했을지 말씀해 주세요.
+              {currentQuestion?.text}
             </motion.p>
           </motion.div>
         )}
@@ -115,7 +166,7 @@ const InterviewPage = () => {
             layoutId="questionBadge"
             className={`${styles.badge} ${styles.center}`}
           >
-            질문 1
+            {`질문 ${currentQuestion && currentQuestion?.order + 1}`}
           </motion.div>
 
           <motion.p
@@ -123,10 +174,7 @@ const InterviewPage = () => {
             transition={{ ease: 'easeInOut', duration: 0.3 }}
             className={`${styles.text} ${styles.center}`}
           >
-            도토리 서비스의 슬로우 쿼리(페이징 조회) 문제를 개선하셨다고 했는데,
-            해당 이슈를 발견하게 된 계기와 개선 과정에서 가장 신경 썼던 부분,
-            그리고 만약 성능 개선이 기대에 미치지 않았다면 어떤 추가적인 시도를
-            했을지 말씀해 주세요.
+            {currentQuestion?.text}
           </motion.p>
         </motion.div>
       )}
@@ -157,7 +205,12 @@ const InterviewPage = () => {
           isExpanded={expandedComponent.includes('transcrie')}
           onToggle={handleComponentClick}
         >
-          <InterviewQuestionList />
+          <InterviewQuestionList
+            questions={questions}
+            currentQuestion={currentQuestion}
+            nextQuestion={nextQuestion}
+            submittedQuestions={submittedQuestions}
+          />
         </InterviewPanel>
       </motion.div>
 

@@ -4,11 +4,88 @@ import { useEffect, useRef, useState } from 'react';
 import { LayoutGroup, motion } from 'motion/react';
 import { QUESTION_MOCK_DATA } from '@/utils/constants/question.mock';
 
+type Question = (typeof QUESTION_MOCK_DATA)[number] & { order: number };
+
+// list props
+interface QuestionListProps {
+  questions: Question[];
+  currentQuestion: Question | null;
+  nextQuestion: Question | null;
+  submittedQuestions: Question[];
+}
+
+// item props
 interface QuestionItemProps {
   titleText: string;
   text: string;
   itemType?: 'default' | 'blue';
 }
+
+const InterviewQuestionList = ({
+  questions,
+  currentQuestion,
+  nextQuestion,
+  submittedQuestions,
+}: QuestionListProps) => {
+  const completedQuestionCount = submittedQuestions.length;
+  const remainingQuestionCount = questions.length - submittedQuestions.length;
+
+  return (
+    <div className={styles.questionListContainer}>
+      <div className={styles.fixedContainer}>
+        {currentQuestion && (
+          <CollapsibleQuestionItem
+            titleText={'현재 질문'}
+            text={currentQuestion.text}
+            itemType="blue"
+          />
+        )}
+      </div>
+      <LayoutGroup>
+        <motion.div
+          layout
+          layoutScroll
+          className={styles.questionItemContainer}
+        >
+          {questions
+            .filter(
+              (q) =>
+                q.id !== (currentQuestion && currentQuestion.id) &&
+                !submittedQuestions.some((submitted) => submitted.id === q.id),
+            )
+            .map((q) => (
+              <CollapsibleQuestionItem
+                key={q.id}
+                titleText={
+                  q.id === nextQuestion?.id
+                    ? '다음 질문'
+                    : `질문 ${q.order + 1}`
+                }
+                text={q.text}
+              />
+            ))}
+          {submittedQuestions.map((q, index) => (
+            <CollapsibleQuestionItem
+              key={`sub-${q.id}-${index}`}
+              titleText={'제출한 질문'}
+              text={q.text}
+            />
+          ))}
+        </motion.div>
+      </LayoutGroup>
+      <div className={styles.bottomContainer}>
+        <div className={styles.bottomStatus}>
+          <div className={styles.title}>완료:</div>
+          <div className={styles.text}>{completedQuestionCount}개</div>
+        </div>
+        <div className={styles.bottomStatus}>
+          <div className={styles.title}>남은 질문:</div>
+          <div className={styles.text}>{remainingQuestionCount}개</div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const CollapsibleQuestionItem = ({
   text,
@@ -63,47 +140,6 @@ const CollapsibleQuestionItem = ({
         )}
       </motion.div>
     </motion.div>
-  );
-};
-
-const InterviewQuestionList = () => {
-  const [questions, setQuestions] = useState(QUESTION_MOCK_DATA);
-
-  return (
-    <div className={styles.questionListContainer}>
-      <div className={styles.fixedContainer}>
-        <CollapsibleQuestionItem
-          titleText={'현재 질문'}
-          text={questions[0].text}
-          itemType="blue"
-        />
-      </div>
-      <LayoutGroup>
-        <motion.div
-          layout
-          layoutScroll
-          className={styles.questionItemContainer}
-        >
-          {questions.map((q, index) => (
-            <CollapsibleQuestionItem
-              key={q.id}
-              titleText={`질문 ${index + 1}`}
-              text={q.text}
-            />
-          ))}
-        </motion.div>
-      </LayoutGroup>
-      <div className={styles.bottomContainer}>
-        <div className={styles.bottomStatus}>
-          <div className={styles.title}>완료:</div>
-          <div className={styles.text}>3개</div>
-        </div>
-        <div className={styles.bottomStatus}>
-          <div className={styles.title}>남은 질문:</div>
-          <div className={styles.text}>5개</div>
-        </div>
-      </div>
-    </div>
   );
 };
 

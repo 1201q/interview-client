@@ -1,4 +1,4 @@
-export const QUESTION_MOCK_DATA = [
+export const RAW_QUESTION_MOCK_DATA = [
   {
     id: '99e14fbe-1877-400c-8c67-0aed11bbe6e1',
     text: '도토리 서비스의 슬로우 쿼리(페이징 조회) 문제를 개선하셨다고 했는데, 해당 이슈를 발견하게 된 계기와 개선 과정에서 가장 신경 썼던 부분, 그리고 만약 성능 개선이 기대에 미치지 않았다면 어떤 추가적인 시도를 했을지 말씀해 주세요.',
@@ -558,3 +558,5 @@ export const QUESTION_MOCK_DATA = [
     section: 'job_related',
   },
 ];
+
+export const QUESTION_MOCK_DATA = RAW_QUESTION_MOCK_DATA.slice(0, 10);
