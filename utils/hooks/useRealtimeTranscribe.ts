@@ -18,6 +18,9 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
   const streamRef = useRef<MediaStream | null>(null);
 
   const [connected, setConnected] = useState(false);
+  const [audioSource, setAudioSource] = useState<AudioSource>('mic');
+  const [paused, setPaused] = useState(false);
+
   const [stable, setStable] = useState('');
   const [live, setLive] = useState('');
 
@@ -71,12 +74,17 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
       pcRef.current = null;
       streamRef.current = null;
       setConnected(false);
+      setPaused(false);
     }
   }, []);
 
   const start = useCallback(
-    async (audioSource: AudioSource) => {
+    async (source: AudioSource) => {
       resetText();
+      setAudioSource(source);
+      setPaused(false);
+
+      if (pcRef.current) cleanup();
 
       // 1. 토큰 확인
       const tokenRes = await getEphemeralToken();
@@ -122,7 +130,7 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
       };
 
       let stream: MediaStream;
-      if (audioSource === 'mic') {
+      if (source === 'mic') {
         stream = await navigator.mediaDevices.getUserMedia({
           audio: {
             echoCancellation: true,
@@ -152,6 +160,7 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
 
       streamRef.current = stream;
       const [track] = stream.getAudioTracks();
+      if (!track) throw new Error('오디오 트랙 없음');
 
       if (track && 'contentHint' in track) track.contentHint = 'speech';
       stream.getTracks().forEach((t) => pc.addTrack(t, stream));
@@ -195,15 +204,39 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
   const flushAndStop = useCallback(async () => {
     const dc = dcRef.current;
 
+    // pause
+    const track = streamRef.current?.getAudioTracks()[0];
+    if (track) track.enabled = false;
+
     if (!dc || dc.readyState !== 'open') {
+      const text = getTranscriptSnapshot();
+
       cleanup();
-      return;
+      return { text, segments: rawStableData, deltas: rawLiveData };
     }
 
+    const segments: Transcript[] = [];
+    const deltas: Delta[] = [];
     let isFinal = false;
+
     const onMessage = (e: MessageEvent) => {
       try {
         const msg = JSON.parse(e.data);
+
+        if (
+          msg.type?.endsWith('input_audio_transcription.delta') &&
+          msg.delta
+        ) {
+          deltas.push(msg as Delta);
+        }
+
+        if (
+          msg.type?.endsWith('input_audio_transcription.completed') &&
+          msg.transcript
+        ) {
+          segments.push(msg as Transcript);
+          isFinal = true;
+        }
 
         if (
           (msg.type === 'transcript.final' && msg.text) ||
@@ -231,20 +264,142 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
     });
 
     dc?.removeEventListener('message', onMessage);
+
+    const stableData = [...rawStableData, ...segments];
+    const liveData = [...rawLiveData, ...deltas];
+
+    const stableText = stableData
+      .map((s) => s.transcript)
+      .join(' ')
+      .trim();
+    const liveText = liveData
+      .map((d) => d.delta)
+      .join(' ')
+      .trim();
+
+    const finalText =
+      stableText && liveText
+        ? `${stableText} ${liveText}`.trim()
+        : stableText || liveText;
+
     cleanup();
-  }, [cleanup]);
+
+    return { text: finalText, segments: stableData, deltas: liveData };
+  }, [cleanup, rawLiveData, rawStableData]);
+
+  const getAudioSender = (pc: RTCPeerConnection | null) => {
+    return pc?.getSenders().find((s) => s.track?.kind === 'audio') ?? null;
+  };
+
+  // 탭과 마이크 전환 (테스트용)
+  const switchAudioSource = useCallback(async (source: AudioSource) => {
+    const pc = pcRef.current;
+    const sender = getAudioSender(pc);
+
+    if (!pc || !sender) throw new Error('오디오 송신자 없음');
+
+    let newStream: MediaStream;
+
+    if (source === 'mic') {
+      newStream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      });
+    } else {
+      const displayStream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+        audio: true,
+      });
+
+      displayStream.getVideoTracks().forEach((t) => t.stop());
+      const audio = displayStream.getAudioTracks();
+
+      if (!audio.length)
+        throw new Error(
+          '탭 오디오를 사용할 수 없습니다. 오디오가 활성화된 탭을 선택하세요.',
+        );
+      newStream = new MediaStream([audio[0]]);
+    }
+
+    const [newTrack] = newStream.getAudioTracks();
+    if (!newTrack) throw new Error('새 오디오 트랙이 없습니다.');
+    if ('contentHint' in newTrack) newTrack.contentHint = 'speech';
+
+    // 기존 트랙을 교체함.
+    await sender.replaceTrack(newTrack);
+
+    streamRef.current?.getTracks().forEach((t) => t.stop());
+    streamRef.current = newStream;
+
+    newTrack.enabled = true;
+    setPaused(false);
+    setAudioSource(source);
+  }, []);
+
+  // 정지
+  const pauseTranscription = useCallback(() => {
+    const track = streamRef.current?.getAudioTracks()[0];
+    if (track) {
+      track.enabled = false;
+      setPaused(true);
+    }
+  }, []);
+
+  // 시작
+  const resumeTranscription = useCallback(() => {
+    const track = streamRef.current?.getAudioTracks()[0];
+    if (track) {
+      track.enabled = true;
+      setPaused(false);
+    }
+  }, []);
+
+  const getTranscriptSnapshot = useCallback(() => {
+    const stableText = rawStableData
+      .map((s) => s.transcript)
+      .join(' ')
+      .trim();
+    const liveText = rawLiveData
+      .map((d) => d.delta)
+      .join('')
+      .trim();
+    if (!stableText) return liveText;
+    if (!liveText) return stableText;
+    return `${stableText} ${liveText}`.trim();
+  }, [rawLiveData, rawStableData]);
+
+  const canResume = !!streamRef.current && !!getAudioSender(pcRef.current);
 
   useEffect(() => () => cleanup(), [cleanup]);
 
   return {
     connected,
+    audioSource,
+    paused,
+    canResume,
+
+    // 텍스트
     stable,
     live,
+    rawStableData,
+    rawLiveData,
+
+    // 제어
     start,
     flushAndStop,
     stop: cleanup,
     resetText,
-    rawStableData,
+    getTranscriptSnapshot,
+
+    // 제어 2
+    switchAudioSource,
+    pauseTranscription,
+    resumeTranscription,
+
+    // refs
     refs: { pcRef, dcRef, streamRef },
   };
 };

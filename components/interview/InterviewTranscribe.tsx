@@ -1,18 +1,21 @@
 import { useRealtimeTranscribe } from '@/utils/hooks/useRealtimeTranscribe';
 import styles from './styles/interview-transcribe.module.css';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 
 const InterviewTranscribe = () => {
   const {
     connected,
-    stable,
+    paused,
+    canResume,
     rawStableData,
-    live,
     start,
     flushAndStop,
     resetText,
+    pauseTranscription,
+    resumeTranscription,
+    getTranscriptSnapshot,
   } = useRealtimeTranscribe({
     onEvent: (e: any) => {
       console.log(e);
@@ -20,8 +23,6 @@ const InterviewTranscribe = () => {
   });
 
   useEffect(() => {
-    console.log('rawStableData', rawStableData);
-
     const fullText = rawStableData.map((d) => d.transcript).join(' ');
 
     console.log(fullText);
@@ -60,9 +61,24 @@ const InterviewTranscribe = () => {
         }}
       >
         <button onClick={() => start('tab')}>탭시작</button>
-        <button onClick={() => flushAndStop()}>종료</button>
-        <button onClick={() => resetText()}>지워</button>
-        {/* <div>{stable}</div> */}
+        <button
+          onClick={() => {
+            console.log(flushAndStop());
+          }}
+        >
+          종료
+        </button>
+        <button onClick={() => resetText()}>지워/</button>
+        <button onClick={() => pauseTranscription()}>pause</button>
+        <button onClick={() => resumeTranscription()}>resume</button>
+        <button>{paused ? '정지됨' : '듣고 있음'}</button>
+        <button
+          onClick={() => {
+            console.log(getTranscriptSnapshot());
+          }}
+        >
+          getTranscriptSnapshot
+        </button>
       </div>
     </>
   );

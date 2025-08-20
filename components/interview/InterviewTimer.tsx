@@ -53,7 +53,7 @@ const InterviewTimer = ({ phase }: TimerProps) => {
     switch (phase) {
       case 'startCountdown3':
         clearTimer();
-        setRemainingTime(60);
+        setRemainingTime(180);
         break;
       case 'answering':
         startTimer();
@@ -62,13 +62,13 @@ const InterviewTimer = ({ phase }: TimerProps) => {
         clearTimer();
         break;
       case 'submitSuccess':
-        setRemainingTime(15);
+        setRemainingTime(60);
         break;
       case 'start':
         startTimer();
         break;
       case 'beforeStartLoading':
-        setRemainingTime(15);
+        setRemainingTime(60);
         break;
       default:
         clearTimer();

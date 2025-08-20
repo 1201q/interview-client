@@ -231,7 +231,6 @@ const InterviewPage = () => {
           handleSubmitAnswer={handleSubmitAnswer}
           handleStartCountdown={handleStartCountdown}
         />
-
         <InterviewTimer phase={interviewPhase} />
 
         <div className={styles.interviewInfoContainer}>
