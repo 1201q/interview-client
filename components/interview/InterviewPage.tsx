@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, LayoutGroup, Transition } from 'motion/react';
 
 import styles from './styles/interview.module.css';
 import WebcamInstance from '../refactorWebcam/WebcamInstance';
@@ -11,18 +11,26 @@ import InterviewQuestionList from './InterviewQuestionList';
 
 import InterviewSubmitButton from './InterviewSubmitButton';
 import InterviewTimebar from './InterviewTimebar';
-import { InterviewPhase } from '@/utils/types/interview';
+import { InterviewPhase as InterviewPhaseType } from '@/utils/types/interview';
 import InterviewTimer from './InterviewTimer';
 import { QUESTION_MOCK_DATA } from '@/utils/constants/question.mock';
 
 type SideComponent = 'transcrie' | 'questionList';
+
+const spring: Transition = {
+  type: 'spring',
+  stiffness: 500,
+  damping: 40,
+  mass: 0.2,
+};
 
 const InterviewPage = () => {
   const [cameraOn, setCameraOn] = useState(false);
   const [expandedComponent, setExpandedComponent] = useState<SideComponent[]>(
     [],
   );
-  const [interviewPhase, setInterviewPhase] = useState<InterviewPhase>('start');
+  const [interviewPhase, setInterviewPhase] =
+    useState<InterviewPhaseType>('beforeStart');
 
   // question
   const questionList = useMemo(() => {
@@ -34,10 +42,10 @@ const InterviewPage = () => {
   const [questions, setQuestions] = useState(questionList);
   const [currentQuestion, setCurrentQuestion] = useState<
     (typeof questionList)[number] | null
-  >(questionList[0]);
+  >(null);
   const [nextQuestion, setNextQuestion] = useState<
     (typeof questionList)[number] | null
-  >(questionList[1]);
+  >(null);
   const [submittedQuestions, setSubmittedQuestions] = useState<
     typeof questionList
   >([]);
@@ -118,6 +126,19 @@ const InterviewPage = () => {
     setInterviewPhase('answering');
   };
 
+  const handleStartInterview = async () => {
+    setInterviewPhase('beforeStartLoading');
+
+    try {
+      await new Promise((r) => setTimeout(r, 1000));
+      setInterviewPhase('start');
+      setCurrentQuestion(questions[0]);
+      setNextQuestion(questions[1]);
+    } catch (error) {
+      setInterviewPhase('beforeStart');
+    }
+  };
+
   useEffect(() => {
     if (interviewPhase === 'startCountdown3') {
       setCameraOn(true);
@@ -126,101 +147,130 @@ const InterviewPage = () => {
     }
   }, [interviewPhase]);
 
+  const isBelowTextVisible = (
+    ['startCountdown3', 'answering'] as InterviewPhaseType[]
+  ).includes(interviewPhase);
+  const isOverlayTextVisible = (
+    ['start', 'starting'] as InterviewPhaseType[]
+  ).includes(interviewPhase);
+
   return (
-    <div className={styles.container}>
-      <div className={styles.mainContainer}>
-        <AnimatePresence>
-          <motion.div
-            layout
-            animate={{ scale: cameraOn ? 1 : 0.9, opacity: cameraOn ? 1 : 0.3 }}
-            transition={{ delay: cameraOn ? 0.05 : 0 }}
-            className={styles.cameraContainer}
-          >
-            <WebcamInstance isRunning={cameraOn} drawTargets={{}} />
-          </motion.div>
-        </AnimatePresence>
-        {cameraOn && (
-          <motion.div className={styles.questionBelowContainer}>
+    <LayoutGroup>
+      <div className={styles.container}>
+        <div className={styles.mainContainer}>
+          <AnimatePresence>
             <motion.div
-              layoutId="questionBadge"
-              className={styles.badge}
-              transition={{ ease: 'easeInOut', duration: 0.25 }}
+              layout
+              animate={{
+                scale: cameraOn ? 1 : 0.9,
+                opacity:
+                  cameraOn && interviewPhase !== 'startCountdown3' ? 1 : 0.3,
+              }}
+              transition={{ delay: cameraOn ? 0.05 : 0 }}
+              className={styles.cameraContainer}
             >
-              {`질문 ${currentQuestion && currentQuestion?.order + 1}`}
+              <WebcamInstance isRunning={cameraOn} drawTargets={{}} />
             </motion.div>
-            <motion.p
-              layoutId="questionText"
-              transition={{ ease: 'easeInOut', duration: 0.25 }}
-              className={styles.text}
+          </AnimatePresence>
+          <AnimatePresence mode="wait">
+            {isBelowTextVisible && (
+              <motion.div
+                className={styles.questionBelowContainer}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={spring}
+              >
+                <motion.div
+                  layoutId="questionBadge"
+                  className={styles.badge}
+                  transition={spring}
+                >
+                  {`질문 ${currentQuestion && currentQuestion?.order + 1}`}
+                </motion.div>
+                <motion.p
+                  layoutId="questionText"
+                  transition={spring}
+                  className={styles.text}
+                >
+                  {currentQuestion?.text}
+                </motion.p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+        <AnimatePresence mode="wait">
+          {isOverlayTextVisible && (
+            <motion.div
+              className={styles.overlayQuestionContainer}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={spring}
             >
-              {currentQuestion?.text}
-            </motion.p>
-          </motion.div>
-        )}
-      </div>
-      <InterviewTimer phase={interviewPhase} />
-      {!cameraOn && (
-        <motion.div className={styles.overlayQuestionContainer}>
-          <motion.div
-            transition={{ ease: 'easeInOut', duration: 0.3 }}
-            layoutId="questionBadge"
-            className={`${styles.badge} ${styles.center}`}
-          >
-            {`질문 ${currentQuestion && currentQuestion?.order + 1}`}
-          </motion.div>
+              <motion.div
+                transition={spring}
+                layoutId="questionBadge"
+                className={`${styles.badge} ${styles.center}`}
+              >
+                {`질문 ${currentQuestion && currentQuestion?.order + 1}`}
+              </motion.div>
 
-          <motion.p
-            layoutId="questionText"
-            transition={{ ease: 'easeInOut', duration: 0.3 }}
-            className={`${styles.text} ${styles.center}`}
+              <motion.p
+                layoutId="questionText"
+                transition={spring}
+                className={`${styles.text} ${styles.center}`}
+              >
+                {currentQuestion?.text}
+              </motion.p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <InterviewTimebar
+          phase={interviewPhase}
+          handleSubmitAnswer={handleSubmitAnswer}
+          handleStartCountdown={handleStartCountdown}
+        />
+
+        <InterviewTimer phase={interviewPhase} />
+
+        <div className={styles.interviewInfoContainer}>
+          <p className={styles.blueGradientText}>모의 인터뷰</p>
+          <div className={styles.divider}></div>
+          <p className={styles.grayText}>프론트엔드 직군</p>
+        </div>
+        <motion.div layout className={styles.sideListContainer}>
+          <InterviewPanel
+            id="questionList"
+            titleText="필사 텍스트"
+            isExpanded={expandedComponent.includes('questionList')}
+            onToggle={handleComponentClick}
           >
-            {currentQuestion?.text}
-          </motion.p>
+            <InterviewTranscribe />
+          </InterviewPanel>
+          <InterviewPanel
+            id="transcrie"
+            titleText="질문 목록"
+            isExpanded={expandedComponent.includes('transcrie')}
+            onToggle={handleComponentClick}
+          >
+            <InterviewQuestionList
+              questions={questions}
+              currentQuestion={currentQuestion}
+              nextQuestion={nextQuestion}
+              submittedQuestions={submittedQuestions}
+            />
+          </InterviewPanel>
         </motion.div>
-      )}
-
-      <InterviewTimebar
-        phase={interviewPhase}
-        handleSubmitAnswer={handleSubmitAnswer}
-        handleStartCountdown={handleStartCountdown}
-      />
-
-      <div className={styles.interviewInfoContainer}>
-        <p className={styles.blueGradientText}>모의 인터뷰</p>
-        <div className={styles.divider}></div>
-        <p className={styles.grayText}>프론트엔드 직군</p>
+        <InterviewSubmitButton
+          phase={interviewPhase}
+          handleStartAnswer={handleStartAnswer}
+          handleSubmitAnswer={handleSubmitAnswer}
+          handleStartCountdown={handleStartCountdown}
+          handleStartInterview={handleStartInterview}
+        />
       </div>
-      <motion.div layout className={styles.sideListContainer}>
-        <InterviewPanel
-          id="questionList"
-          titleText="필사 텍스트"
-          isExpanded={expandedComponent.includes('questionList')}
-          onToggle={handleComponentClick}
-        >
-          <InterviewTranscribe />
-        </InterviewPanel>
-        <InterviewPanel
-          id="transcrie"
-          titleText="질문 목록"
-          isExpanded={expandedComponent.includes('transcrie')}
-          onToggle={handleComponentClick}
-        >
-          <InterviewQuestionList
-            questions={questions}
-            currentQuestion={currentQuestion}
-            nextQuestion={nextQuestion}
-            submittedQuestions={submittedQuestions}
-          />
-        </InterviewPanel>
-      </motion.div>
-
-      <InterviewSubmitButton
-        phase={interviewPhase}
-        handleStartAnswer={handleStartAnswer}
-        handleSubmitAnswer={handleSubmitAnswer}
-        handleStartCountdown={handleStartCountdown}
-      />
-    </div>
+    </LayoutGroup>
   );
 };
 

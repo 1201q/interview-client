@@ -11,6 +11,7 @@ interface SubmitButtonProps {
   handleSubmitAnswer: () => Promise<void>;
   handleStartAnswer: () => void;
   handleStartCountdown: () => Promise<void>;
+  handleStartInterview: () => Promise<void>;
 }
 
 const InterviewSubmitButton = ({
@@ -18,6 +19,7 @@ const InterviewSubmitButton = ({
   handleStartAnswer,
   handleStartCountdown,
   handleSubmitAnswer,
+  handleStartInterview,
 }: SubmitButtonProps) => {
   const countdownControls = useAnimationControls(); // 카운트다운 애니메이션
   const buttonRef = useRef<HTMLButtonElement>(null); // 스페이스바로 버튼 제어
@@ -25,6 +27,7 @@ const InterviewSubmitButton = ({
 
   // =========== button 구분
   const disabledPhases = [
+    'beforeStartLoading',
     'starting',
     'startCountdown3',
     'submitting',
@@ -32,15 +35,21 @@ const InterviewSubmitButton = ({
   ] as InterviewPhase[];
 
   const buttonGroup =
-    phase === 'answering' || phase === 'submitting' || phase === 'submitSuccess'
-      ? 'answerGroup'
-      : 'startGroup';
+    phase === 'beforeStartLoading' || phase === 'beforeStart'
+      ? 'beforeStartGroup'
+      : phase === 'answering' ||
+          phase === 'submitting' ||
+          phase === 'submitSuccess'
+        ? 'answerGroup'
+        : 'startGroup';
 
   const isDisabled = disabledPhases.includes(phase);
 
   // =========== 버튼 클릭 이벤트
   const handleClick = async () => {
-    if (phase === 'start') {
+    if (phase === 'beforeStart') {
+      handleStartInterview();
+    } else if (phase === 'start') {
       handleStartCountdown();
     } else if (phase === 'answering') {
       handleSubmitAnswer();
@@ -137,8 +146,60 @@ const InterviewSubmitButton = ({
         className={styles.submitButton}
       >
         <AnimatePresence initial={false} mode="wait">
-          {/* 1. 답변 시작 */}
-          {buttonGroup === 'startGroup' ? (
+          {/* 인터뷰  시작 전 */}
+          {buttonGroup === 'beforeStartGroup' && (
+            <motion.div
+              initial={{ y: 8, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -8, opacity: 0 }}
+              transition={{ duration: 0.2, ease: 'easeInOut' }}
+              key="beforeStartGroup"
+              style={{ height: '100%', position: 'relative' }}
+            >
+              {phase === 'beforeStart' && (
+                <motion.div
+                  layout
+                  key={'beforStart'}
+                  className={styles.buttonWrapper}
+                >
+                  <div className={styles.text}>면접 시작하기</div>
+                  <div className={styles.iconContainer}>
+                    <Space
+                      color="white"
+                      size={19}
+                      style={{ marginBottom: '5px' }}
+                    />
+                  </div>
+                </motion.div>
+              )}
+              {phase === 'beforeStartLoading' && (
+                <motion.div
+                  layout
+                  key={'beforeStartLoading'}
+                  className={styles.buttonWrapper}
+                >
+                  <div className={styles.text}>면접을 시작 중입니다...</div>
+                  <motion.span
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 0.9,
+                      ease: 'linear',
+                    }}
+                    style={{
+                      height: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Loader2 color="rgba(255, 255, 255, 0.8)" size={19} />
+                  </motion.span>
+                </motion.div>
+              )}
+            </motion.div>
+          )}
+          {/* 질문 시작 */}
+          {buttonGroup === 'startGroup' && (
             <motion.div
               initial={{ y: 8, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -204,7 +265,9 @@ const InterviewSubmitButton = ({
                 </motion.div>
               )}
             </motion.div>
-          ) : (
+          )}
+          {/*  답변 시작 */}
+          {buttonGroup === 'answerGroup' && (
             <motion.div
               key="answeringGroup"
               initial={{ y: 8, opacity: 0 }}

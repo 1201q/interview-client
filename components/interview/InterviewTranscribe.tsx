@@ -21,6 +21,10 @@ const InterviewTranscribe = () => {
 
   useEffect(() => {
     console.log('rawStableData', rawStableData);
+
+    const fullText = rawStableData.map((d) => d.transcript).join(' ');
+
+    console.log(fullText);
   }, [rawStableData]);
 
   return (

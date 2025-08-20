@@ -1,4 +1,6 @@
 export type InterviewPhase =
+  | 'beforeStart' // 시작 전 (버튼: 면접 시작) 누르면 인터뷰 시작
+  | 'beforeStartLoading' // 시작 전 로딩 (버튼: 면접 시작 로딩) 완료되면 첫번째 질문 카운트
   | 'start' // 시작 (버튼: 시작) [타이머: 30초]
   | 'starting' // 시작 중... (버튼: 시작 로딩) [타이머: 초기화]
   | 'startCountdown3' // 3초 대기 (버튼: 3초 애니메이션)

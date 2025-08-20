@@ -67,6 +67,9 @@ const InterviewTimer = ({ phase }: TimerProps) => {
       case 'start':
         startTimer();
         break;
+      case 'beforeStartLoading':
+        setRemainingTime(15);
+        break;
       default:
         clearTimer();
         break;
