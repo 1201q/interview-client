@@ -19,7 +19,7 @@ const Page = () => {
         <button onClick={() => start('tab')} disabled={connected}>
           Start (tab)
         </button>
-        <button onClick={flushAndStop} disabled={!connected}>
+        <button onClick={() => flushAndStop()} disabled={!connected}>
           Stop (Flush & Close)
         </button>
         <button onClick={resetText}>Clear Text</button>
