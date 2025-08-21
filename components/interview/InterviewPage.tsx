@@ -14,6 +14,7 @@ import InterviewTimebar from './InterviewTimebar';
 import { InterviewPhase as InterviewPhaseType } from '@/utils/types/interview';
 import InterviewTimer from './InterviewTimer';
 import { QUESTION_MOCK_DATA } from '@/utils/constants/question.mock';
+import { useRealtimeTranscribe } from '@/utils/hooks/useRealtimeTranscribe';
 
 type SideComponent = 'transcrie' | 'questionList';
 
@@ -50,6 +51,23 @@ const InterviewPage = () => {
     typeof questionList
   >([]);
 
+  const {
+    connected,
+    paused,
+    canResume,
+    rawStableData,
+    start,
+    flushAndStop,
+    resetText,
+    pauseTranscription,
+    resumeTranscription,
+    getTranscriptSnapshot,
+    connectTranscription,
+    prepareAudioTrack,
+  } = useRealtimeTranscribe({
+    onEvent: (e: any) => {},
+  });
+
   const handleComponentClick = useCallback((type: SideComponent) => {
     setExpandedComponent((prev) => {
       if (prev.includes(type)) {
@@ -61,7 +79,6 @@ const InterviewPage = () => {
   }, []);
 
   const handleSubmitAnswer = async () => {
-    console.log(currentQuestion);
     if (interviewPhase !== 'answering') return;
 
     setInterviewPhase('submitting');
@@ -112,10 +129,12 @@ const InterviewPage = () => {
   const handleStartCountdown = async () => {
     if (interviewPhase !== 'start') return;
 
+    console.log(interviewPhase);
     setInterviewPhase('starting');
 
     try {
       await new Promise((r) => setTimeout(r, 1000));
+
       setInterviewPhase('startCountdown3');
     } catch (error) {
       setInterviewPhase('start');
@@ -131,6 +150,7 @@ const InterviewPage = () => {
 
     try {
       await new Promise((r) => setTimeout(r, 1000));
+
       setInterviewPhase('start');
       setCurrentQuestion(questions[0]);
       setNextQuestion(questions[1]);
@@ -229,7 +249,9 @@ const InterviewPage = () => {
         <InterviewTimebar
           phase={interviewPhase}
           handleSubmitAnswer={handleSubmitAnswer}
-          handleStartCountdown={handleStartCountdown}
+          handleStartCountdown={async () => {
+            console.log('1');
+          }}
         />
         <InterviewTimer phase={interviewPhase} />
 

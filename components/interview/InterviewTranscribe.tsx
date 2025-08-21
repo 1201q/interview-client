@@ -16,6 +16,7 @@ const InterviewTranscribe = () => {
     pauseTranscription,
     resumeTranscription,
     getTranscriptSnapshot,
+    connectTranscription,
   } = useRealtimeTranscribe({
     onEvent: (e: any) => {
       console.log(e);
@@ -31,7 +32,7 @@ const InterviewTranscribe = () => {
   return (
     <>
       <div className={styles.transcribeContainer}>
-        <div className={styles.transribeTextContainer}>
+        {/* <div className={styles.transribeTextContainer}>
           {rawStableData.map((data) => (
             <motion.div
               initial={{ y: 10, opacity: 0 }}
@@ -50,7 +51,7 @@ const InterviewTranscribe = () => {
               듣고 있어요..
             </motion.div>
           </div>
-        )}
+        )} */}
       </div>
       <div
         style={{
@@ -60,7 +61,8 @@ const InterviewTranscribe = () => {
           backgroundColor: 'gray',
         }}
       >
-        <button onClick={() => start('tab')}>탭시작</button>
+        <button onClick={() => connectTranscription()}>connect / </button>
+
         <button
           onClick={() => {
             console.log(flushAndStop());

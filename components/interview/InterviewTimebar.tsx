@@ -27,7 +27,7 @@ const InterviewTimebar = ({
           onAnimationComplete();
         });
     },
-    [controls],
+    [controls, phase],
   );
 
   const stop = useCallback(() => {
