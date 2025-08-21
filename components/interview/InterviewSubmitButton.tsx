@@ -67,7 +67,7 @@ const InterviewSubmitButton = ({
         countdownControls.stop();
         handleStartAnswer();
       });
-  }, [countdownControls]);
+  }, [countdownControls, handleStartAnswer]);
 
   useEffect(() => {
     if (phase === 'startCountdown3') {

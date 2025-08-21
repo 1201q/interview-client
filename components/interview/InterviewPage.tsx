@@ -56,12 +56,8 @@ const InterviewPage = () => {
     paused,
     canResume,
     rawStableData,
-    start,
     flushAndStop,
-    resetText,
-    pauseTranscription,
     resumeTranscription,
-    getTranscriptSnapshot,
     connectTranscription,
     prepareAudioTrack,
   } = useRealtimeTranscribe({
@@ -82,6 +78,10 @@ const InterviewPage = () => {
     if (interviewPhase !== 'answering') return;
 
     setInterviewPhase('submitting');
+
+    const textData = await flushAndStop();
+
+    console.log(textData);
 
     try {
       await new Promise((r) => setTimeout(r, 1000));
@@ -129,11 +129,13 @@ const InterviewPage = () => {
   const handleStartCountdown = async () => {
     if (interviewPhase !== 'start') return;
 
-    console.log(interviewPhase);
     setInterviewPhase('starting');
 
     try {
       await new Promise((r) => setTimeout(r, 1000));
+
+      await connectTranscription();
+      await prepareAudioTrack('tab');
 
       setInterviewPhase('startCountdown3');
     } catch (error) {
@@ -141,9 +143,19 @@ const InterviewPage = () => {
     }
   };
 
-  const handleStartAnswer = () => {
-    setInterviewPhase('answering');
-  };
+  const handleStartAnswer = useCallback(() => {
+    if (!canResume) {
+      throw new Error('stt 미연결');
+    }
+
+    try {
+      resumeTranscription();
+
+      setInterviewPhase('answering');
+    } catch (error) {
+      throw new Error('resume 실패');
+    }
+  }, [canResume, connected, paused, setInterviewPhase]);
 
   const handleStartInterview = async () => {
     setInterviewPhase('beforeStartLoading');
@@ -265,7 +277,10 @@ const InterviewPage = () => {
             isExpanded={expandedComponent.includes('questionList')}
             onToggle={handleComponentClick}
           >
-            <InterviewTranscribe />
+            <InterviewTranscribe
+              rawStableData={rawStableData}
+              canResume={canResume}
+            />
           </InterviewPanel>
           <InterviewPanel
             id="transcrie"
