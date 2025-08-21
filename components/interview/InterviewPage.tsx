@@ -249,9 +249,7 @@ const InterviewPage = () => {
         <InterviewTimebar
           phase={interviewPhase}
           handleSubmitAnswer={handleSubmitAnswer}
-          handleStartCountdown={async () => {
-            console.log('1');
-          }}
+          handleStartCountdown={handleStartCountdown}
         />
         <InterviewTimer phase={interviewPhase} />
 
