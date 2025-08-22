@@ -6,7 +6,7 @@ import LoadingPage from './LoadingPage';
 
 import { AnimatePresence, motion } from 'motion/react';
 
-const BeforeInterviewPipelineClient = () => {
+const InputPipelineClient = () => {
   const props = useCreateQuestion();
 
   return (
@@ -21,7 +21,6 @@ const BeforeInterviewPipelineClient = () => {
           <InputPage props={props} />
         </motion.div>
       )}
-
       {props.stage === 'loading' && (
         <motion.div
           key="loading"
@@ -38,4 +37,4 @@ const BeforeInterviewPipelineClient = () => {
   );
 };
 
-export default BeforeInterviewPipelineClient;
+export default InputPipelineClient;

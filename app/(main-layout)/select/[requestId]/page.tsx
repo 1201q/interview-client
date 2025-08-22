@@ -1,4 +1,5 @@
 import SelectPage from '@/components/beforeInterview/SelectPage';
+import SelectPipelineClient from '@/components/beforeInterview/SelectPipelineClient';
 import { GeneratedQuestionItem } from '@/utils/types/types';
 
 const TEST_ID = '4e88866e-2a7a-4e66-b49f-12a29e67109e';
@@ -18,7 +19,7 @@ const Page = async ({ params }: { params: Promise<{ requestId: string }> }) => {
   const json = await data.json();
   const questions = json.questions as GeneratedQuestionItem[];
 
-  return <SelectPage questions={questions} />;
+  return <SelectPipelineClient questions={questions} />;
 };
 
 export default Page;

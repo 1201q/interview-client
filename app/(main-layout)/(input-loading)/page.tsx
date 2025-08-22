@@ -2,10 +2,10 @@
 
 // input페이지, loading 페이지
 
-import BeforeInterviewPipelineClient from '@/components/beforeInterview/BeforeInterviewPipelineClient';
+import InputPipelineClient from '@/components/beforeInterview/InputPipelineClient';
 
 const Page = () => {
-  return <BeforeInterviewPipelineClient />;
+  return <InputPipelineClient />;
 };
 
 export default Page;
