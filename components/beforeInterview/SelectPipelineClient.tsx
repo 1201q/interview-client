@@ -11,12 +11,12 @@ interface SelectPageProps {
 }
 
 const SelectPipelineClient = (props: SelectPageProps) => {
-  const [stage, setStage] = useState<'select' | 'loading'>('select');
+  const [stage, setStage] = useState<'select' | 'loading'>('loading');
 
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        key="input"
+        key="select"
         exit={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.15 }}
         style={{ display: 'flex', flex: 1, justifyContent: 'center' }}
@@ -24,7 +24,11 @@ const SelectPipelineClient = (props: SelectPageProps) => {
         <SelectPage {...props} />
       </motion.div>
 
-      {stage === 'select' && <SelectLoading />}
+      {stage === 'loading' && (
+        <motion.div key={'selectLoading'}>
+          <SelectLoading />
+        </motion.div>
+      )}
     </AnimatePresence>
   );
 };

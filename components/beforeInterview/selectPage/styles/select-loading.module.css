@@ -35,12 +35,57 @@
   z-index: 101;
 }
 
+.contetnsContainer {
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: absolute;
+  bottom: 40px;
+  z-index: 102;
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.text {
+  position: relative;
+  font-size: 24px;
+  font-weight: 600;
+  color: white;
+  overflow: hidden;
+
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(76, 134, 254, 0.85) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+
+  animation: loadingGradient 3s linear infinite;
+}
+@keyframes loadingGradient {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
 @keyframes fadeInBg {
   from {
     opacity: 0;
   }
   to {
-    opacity: 1;
+    opacity: 0.95;
   }
 }
 

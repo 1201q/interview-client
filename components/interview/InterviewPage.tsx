@@ -1,7 +1,13 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { motion, AnimatePresence, LayoutGroup, Transition } from 'motion/react';
+import {
+  motion,
+  AnimatePresence,
+  LayoutGroup,
+  Transition,
+  Variants,
+} from 'motion/react';
 
 import styles from './styles/interview.module.css';
 import WebcamInstance from '../refactorWebcam/WebcamInstance';
@@ -23,6 +29,23 @@ const spring: Transition = {
   stiffness: 500,
   damping: 40,
   mass: 0.2,
+};
+
+// 등장 애니메이션
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      delay: 1.5,
+      duration: 1,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { stiffness: 80, type: 'spring' } },
 };
 
 const InterviewPage = () => {
@@ -188,7 +211,12 @@ const InterviewPage = () => {
 
   return (
     <LayoutGroup>
-      <div className={styles.container}>
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className={styles.container}
+      >
         <div className={styles.mainContainer}>
           <AnimatePresence>
             <motion.div
@@ -303,7 +331,7 @@ const InterviewPage = () => {
           handleStartCountdown={handleStartCountdown}
           handleStartInterview={handleStartInterview}
         />
-      </div>
+      </motion.div>
     </LayoutGroup>
   );
 };

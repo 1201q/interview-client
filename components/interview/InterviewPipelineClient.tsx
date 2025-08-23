@@ -1,12 +1,20 @@
 'use client';
 
-import { AnimatePresence } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 import InterviewPage from './InterviewPage';
 
 const InterviewPipelineClient = () => {
   return (
     <AnimatePresence mode="wait">
-      <InterviewPage />
+      <motion.div
+        key={'interview'}
+        style={{
+          height: '100%',
+          display: 'flex',
+        }}
+      >
+        <InterviewPage />
+      </motion.div>
     </AnimatePresence>
   );
 };
