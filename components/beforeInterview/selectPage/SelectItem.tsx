@@ -1,15 +1,17 @@
 import { QuestionSection } from '@/utils/types/types';
 import styles from './styles/select-item.module.css';
 import { CheckIcon } from 'lucide-react';
+import { useAtomValue } from 'jotai';
+import { selectedQuestionIdSetAtom } from '@/store/selectedQuestions';
 
 interface SelectItemProps {
   index: number;
+
   questionText: string;
   basedOnText: string;
   questionSection: QuestionSection;
   id: string;
   onClick: () => void;
-  selected: boolean;
 }
 
 const SelectItem = (props: SelectItemProps) => {
@@ -28,17 +30,19 @@ const SelectItem = (props: SelectItemProps) => {
     }
   };
 
+  const selected = useAtomValue(selectedQuestionIdSetAtom).has(props.id);
+
   return (
     <div
       onClick={props.onClick}
-      className={`${styles.questionLoadingContainer} ${styles.selectable} ${props.selected ? styles.selected : ''}`}
+      className={`${styles.questionLoadingContainer} ${styles.selectable} ${selected ? styles.selected : ''}`}
     >
       <div className={styles.topContainer}>
         <div className={styles.leftItem}>
           <div
-            className={`${styles.circleContainer} ${props.selected ? styles.selectedCircle : getBadgeStyle(props.questionSection)}`}
+            className={`${styles.circleContainer} ${selected ? styles.selectedCircle : getBadgeStyle(props.questionSection)}`}
           >
-            {props.selected ? (
+            {selected ? (
               <CheckIcon width={15} height={15} color="white" strokeWidth={3} />
             ) : (
               props.index + 1
@@ -48,7 +52,7 @@ const SelectItem = (props: SelectItemProps) => {
         </div>
       </div>
       <div
-        className={`${styles.bottomContainer} ${props.selected ? styles.bottomSelected : ''}`}
+        className={`${styles.bottomContainer} ${selected ? styles.bottomSelected : ''}`}
       >
         <p>{props.basedOnText}</p>
       </div>

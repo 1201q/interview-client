@@ -4,6 +4,8 @@ import { AnimatePresence, motion, Variants } from 'motion/react';
 import SelectableItem from './SelectItem';
 
 import styles from './styles/select-list.module.css';
+import { useSetAtom } from 'jotai';
+import { toggleSelectedQuestionsAtom } from '@/store/selectedQuestions';
 
 interface SelectItemListProps {
   itemVariants: Variants;
@@ -12,7 +14,6 @@ interface SelectItemListProps {
   isOpen: boolean;
   allItems: GeneratedQuestionItem[];
   selectedItems: GeneratedQuestionItem[];
-  onItemClick: (item: GeneratedQuestionItem) => void;
 }
 
 const SelectItemList = ({
@@ -20,9 +21,7 @@ const SelectItemList = ({
   toggleSection,
   section,
   isOpen,
-  selectedItems,
   allItems,
-  onItemClick,
 }: SelectItemListProps) => {
   const getBadgeText = (section: QuestionSection) => {
     switch (section) {
@@ -38,6 +37,8 @@ const SelectItemList = ({
         return '그외';
     }
   };
+
+  const toggleQuestion = useSetAtom(toggleSelectedQuestionsAtom);
 
   return (
     <motion.div variants={itemVariants} className={styles.listContainer}>
@@ -75,10 +76,7 @@ const SelectItemList = ({
               <SelectableItem
                 key={item.id}
                 id={item.id}
-                selected={
-                  selectedItems.findIndex((si) => si.id === item.id) !== -1
-                }
-                onClick={() => onItemClick(item)}
+                onClick={() => toggleQuestion(item)}
                 index={index}
                 questionSection={item.section as QuestionSection}
                 questionText={item.text}

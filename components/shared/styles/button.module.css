@@ -6,14 +6,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
   width: 100%;
   height: 54px;
 
   border-radius: 12px;
-
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: white;
 
   background: var(--red-bg-gradient);
   box-shadow: var(--box-shadow);
@@ -22,7 +19,17 @@
 
 .smallButton button {
   height: 45px;
+}
+
+.buttonText {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: white;
+}
+
+.smallButton .buttonText {
   font-size: 1rem;
+  color: white;
 }
 
 .noshadow button {

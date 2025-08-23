@@ -8,6 +8,8 @@ import { useMemo, useState } from 'react';
 import { motion, Variants } from 'motion/react';
 import SelectGuide from './selectPage/SelectGuide';
 import SelectableItemList from './selectPage/SelectItemList';
+import { useAtomValue } from 'jotai';
+import { selectedQuestionsAtom } from '@/store/selectedQuestions';
 
 interface SelectPageProps {
   questions: GeneratedQuestionItem[];
@@ -30,9 +32,6 @@ const itemVariants: Variants = {
   visible: { y: 0, opacity: 1, transition: { stiffness: 80, type: 'spring' } },
 };
 
-const minSelectedQuestionsCount = 3; // 최소 선택해야 하는 질문 개수
-const maxSelectedQuestionsCount = 10; // 최대로 선택할수 있는 질문 개수
-
 const SelectPage = (props: SelectPageProps) => {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>(
     () => {
@@ -44,9 +43,7 @@ const SelectPage = (props: SelectPageProps) => {
     },
   );
 
-  const [selectedQuestions, setSelectedQuestions] = useState<
-    GeneratedQuestionItem[]
-  >([]);
+  const selected = useAtomValue(selectedQuestionsAtom);
 
   const groupedQuestions = useMemo(() => {
     return props.questions.reduce<Record<string, GeneratedQuestionItem[]>>(
@@ -61,8 +58,6 @@ const SelectPage = (props: SelectPageProps) => {
       {},
     );
   }, [props.questions]);
-
-  const selectedQuestionsCount = selectedQuestions.length;
 
   const toggleSection = (section: string) => {
     setOpenSections((prev) => ({
@@ -81,9 +76,6 @@ const SelectPage = (props: SelectPageProps) => {
       <div className={styles.leftContainer}>
         <SelectGuide
           itemVariants={itemVariants}
-          selectedQuestionsCount={selectedQuestionsCount}
-          maxSelectedQuestionsCount={maxSelectedQuestionsCount}
-          minSelectedQuestionsCount={minSelectedQuestionsCount}
           questionLength={props.questions.length}
         />
       </div>
@@ -101,17 +93,8 @@ const SelectPage = (props: SelectPageProps) => {
               toggleSection={toggleSection}
               section={section}
               isOpen={isOpen}
-              selectedItems={selectedQuestions}
+              selectedItems={selected}
               allItems={items}
-              onItemClick={(item: GeneratedQuestionItem) => {
-                setSelectedQuestions((prev) => {
-                  if (prev.findIndex((si) => si.id === item.id) !== -1) {
-                    return prev.filter((si) => si.id !== item.id);
-                  } else {
-                    return [...prev, item];
-                  }
-                });
-              }}
             />
           );
         })}

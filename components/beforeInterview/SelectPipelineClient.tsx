@@ -4,15 +4,12 @@ import { AnimatePresence, motion } from 'motion/react';
 import SelectPage from './SelectPage';
 import { GeneratedQuestionItem } from '@/utils/types/types';
 import { useState } from 'react';
-import SelectLoading from './selectPage/SelectLoading';
 
 interface SelectPageProps {
   questions: GeneratedQuestionItem[];
 }
 
 const SelectPipelineClient = (props: SelectPageProps) => {
-  const [stage, setStage] = useState<'select' | 'loading'>('loading');
-
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -23,12 +20,6 @@ const SelectPipelineClient = (props: SelectPageProps) => {
       >
         <SelectPage {...props} />
       </motion.div>
-
-      {stage === 'loading' && (
-        <motion.div key={'selectLoading'}>
-          <SelectLoading />
-        </motion.div>
-      )}
     </AnimatePresence>
   );
 };

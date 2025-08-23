@@ -1,14 +1,18 @@
-import { ButtonHTMLAttributes } from 'react';
 import styles from './styles/button.module.css';
+import { AnimatePresence, HTMLMotionProps, motion } from 'framer-motion';
+import { LoaderCircle } from 'lucide-react';
+
+type MotionBtnAttrs = Omit<HTMLMotionProps<'button'>, 'onClick' | 'disabled'>;
 
 interface ButtonProps {
-  attributes?: ButtonHTMLAttributes<HTMLButtonElement>;
+  attributes?: MotionBtnAttrs;
   text: string;
   disabled?: boolean;
   color?: 'blue' | 'red';
   isSmallButton?: boolean;
   shadow?: boolean;
   onClick?: () => void;
+  loading?: boolean;
 }
 
 const Button = ({
@@ -18,16 +22,42 @@ const Button = ({
   color = 'red',
   isSmallButton = false,
   shadow = true,
+  loading,
   onClick,
 }: ButtonProps) => {
   return (
-    <div
+    <motion.div
       className={`${styles.buttonContainer} ${shadow ? '' : styles.noshadow} ${color === 'blue' ? styles.blue : ''} ${isSmallButton ? styles.smallButton : ''}`}
     >
-      <button {...attributes} disabled={disabled} onClick={onClick}>
-        {text}
-      </button>
-    </div>
+      <motion.button
+        layout
+        {...attributes}
+        disabled={disabled || loading}
+        onClick={onClick}
+      >
+        <AnimatePresence mode="wait" initial={false}>
+          {loading && (
+            <motion.div
+              key="loader"
+              style={{ display: 'flex' }}
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: 28, opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              transition={{ duration: 0.5, type: 'spring' }}
+            >
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }}
+                style={{ display: 'flex' }}
+              >
+                <LoaderCircle color="white" size={20} strokeWidth={2} />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <motion.div className={styles.buttonText}>{text}</motion.div>
+      </motion.button>
+    </motion.div>
   );
 };
 

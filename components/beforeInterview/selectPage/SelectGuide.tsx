@@ -1,22 +1,42 @@
 import { AnimatePresence, motion, Variants } from 'motion/react';
 import styles from './styles/select-guide.module.css';
 import Button from '@/components/shared/Button';
+import { useAtomValue } from 'jotai';
+import {
+  selectedQuestionsCountAtom,
+  selectedTotalSecondsAtom,
+} from '@/store/selectedQuestions';
+import {
+  maxSelectedQuestionsCount,
+  minSelectedQuestionsCount,
+} from '@/utils/constants/common';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface SelectGuideProps {
   itemVariants: Variants;
-  selectedQuestionsCount: number;
-  minSelectedQuestionsCount: number;
-  maxSelectedQuestionsCount: number;
   questionLength: number;
 }
 
-const SelectGuide = ({
-  itemVariants,
-  selectedQuestionsCount,
-  minSelectedQuestionsCount,
-  maxSelectedQuestionsCount,
-  questionLength,
-}: SelectGuideProps) => {
+const formatting = (sec: number) => {
+  const minutes = Math.floor(sec / 60);
+  const seconds = sec % 60;
+
+  if (seconds === 0) {
+    return `${minutes}분`;
+  }
+
+  return `${minutes}분 ${seconds}초`;
+};
+
+const SelectGuide = ({ itemVariants, questionLength }: SelectGuideProps) => {
+  const selectedQuestionsCount = useAtomValue(selectedQuestionsCountAtom);
+  const totalSec = useAtomValue(selectedTotalSecondsAtom);
+
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
+
   const isOutOfRange =
     selectedQuestionsCount < minSelectedQuestionsCount ||
     selectedQuestionsCount > maxSelectedQuestionsCount;
@@ -98,7 +118,7 @@ const SelectGuide = ({
           </div>
           <div className={styles.interviewInfoItem}>
             <span>예상 소요시간</span>
-            <p>-</p>
+            <p>{formatting(totalSec)}</p>
           </div>
           <div className={styles.interviewInfoItem}>
             <span>총 생성된 질문</span>
@@ -110,6 +130,13 @@ const SelectGuide = ({
           isSmallButton={true}
           disabled={isOutOfRange}
           text={isOutOfRange ? '질문을 선택해주세요' : '다음 단계로 넘어가기'}
+          loading={loading}
+          onClick={() => {
+            setLoading(true);
+            setTimeout(() => {
+              setLoading(false);
+            }, 2000);
+          }}
         />
       </motion.div>
       {/* 면접 팁 */}
