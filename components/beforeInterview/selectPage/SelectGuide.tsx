@@ -3,6 +3,7 @@ import styles from './styles/select-guide.module.css';
 import Button from '@/components/shared/Button';
 import { useAtomValue } from 'jotai';
 import {
+  selectedQuestionsAtom,
   selectedQuestionsCountAtom,
   selectedTotalSecondsAtom,
 } from '@/store/selectedQuestions';
@@ -12,6 +13,7 @@ import {
 } from '@/utils/constants/common';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { createInterviewSession } from '@/utils/services/interviewSession';
 
 interface SelectGuideProps {
   itemVariants: Variants;
@@ -30,6 +32,8 @@ const formatting = (sec: number) => {
 };
 
 const SelectGuide = ({ itemVariants, questionLength }: SelectGuideProps) => {
+  const selectedQuestions = useAtomValue(selectedQuestionsAtom);
+
   const selectedQuestionsCount = useAtomValue(selectedQuestionsCountAtom);
   const totalSec = useAtomValue(selectedTotalSecondsAtom);
 
@@ -40,6 +44,31 @@ const SelectGuide = ({ itemVariants, questionLength }: SelectGuideProps) => {
   const isOutOfRange =
     selectedQuestionsCount < minSelectedQuestionsCount ||
     selectedQuestionsCount > maxSelectedQuestionsCount;
+
+  const handleCreateSession = async () => {
+    const formatting = selectedQuestions.map((sq, index) => ({
+      question_id: sq.id,
+      order: index,
+    }));
+
+    try {
+      setLoading(true);
+
+      const res = await createInterviewSession(
+        '4e88866e-2a7a-4e66-b49f-12a29e67109e',
+        formatting,
+      );
+
+      if (res.status === 'not_started' && res.id) {
+        router.push(`/interview/${res.id}`);
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
 
   return (
     <div className={styles.stickyContainer}>
@@ -132,10 +161,7 @@ const SelectGuide = ({ itemVariants, questionLength }: SelectGuideProps) => {
           text={isOutOfRange ? '질문을 선택해주세요' : '다음 단계로 넘어가기'}
           loading={loading}
           onClick={() => {
-            setLoading(true);
-            setTimeout(() => {
-              setLoading(false);
-            }, 2000);
+            handleCreateSession();
           }}
         />
       </motion.div>

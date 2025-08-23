@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState, useRef, useEffect, useMemo } from 'react';
+import { useCallback, useState, useRef, useEffect } from 'react';
 import { getEphemeralToken } from '../services/stt';
 import { Delta, Transcript } from '../types/types';
 

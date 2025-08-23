@@ -3,7 +3,6 @@
 import { AnimatePresence, motion } from 'motion/react';
 import SelectPage from './SelectPage';
 import { GeneratedQuestionItem } from '@/utils/types/types';
-import { useState } from 'react';
 
 interface SelectPageProps {
   questions: GeneratedQuestionItem[];

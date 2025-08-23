@@ -1,0 +1,230 @@
+import {
+  InterviewSessionStatus,
+  QSessionQuestionItem,
+} from '../types/interview';
+
+// create
+type CreateSessionBody = {
+  request_id: string;
+  questions: { question_id: string; order: number }[];
+};
+
+type CreateSessionResponse = {
+  id: string;
+  status: InterviewSessionStatus;
+};
+
+export const createInterviewSession = async (
+  requestId: string,
+  questions: { question_id: string; order: number }[],
+  options?: { timeoutMs?: number },
+) => {
+  const uniqueCheck = new Map<string, { question_id: string; order: number }>();
+
+  for (const q of questions) {
+    if (!uniqueCheck.has(q.question_id)) {
+      uniqueCheck.set(q.question_id, q);
+    }
+  }
+
+  const sorted = [...uniqueCheck.values()].sort((a, b) => a.order - b.order);
+
+  const body: CreateSessionBody = { request_id: requestId, questions: sorted };
+
+  const controller = new AbortController();
+  const timeout = setTimeout(
+    () => controller.abort(),
+    options?.timeoutMs ?? 15000,
+  );
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/interview-session/create`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(body),
+        signal: controller.signal,
+      },
+    );
+
+    if (!res.ok) {
+      let error = '';
+
+      try {
+        error = await res.text();
+      } catch {
+        throw new Error(`세션 생성 실패: ${res.status}${error ? error : ''}`);
+      }
+    }
+
+    const json = (await res.json()) as CreateSessionResponse;
+
+    if (!json.id) throw new Error('세션 응답에 id가 없음.');
+
+    return json;
+  } catch (error) {
+    if ((error as any)?.name === 'AbortError') {
+      throw new Error('세션 생성 요청이 시간 초과되었습니다.');
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
+};
+
+// jobRole
+type CreateJobRoleResponse = {
+  job_role: string;
+  status: 'completed' | 'failed';
+};
+
+export const createInterviewJobRole = async (
+  sessionId: string,
+  options?: { timeoutMs?: number },
+) => {
+  const controller = new AbortController();
+  const timeout = setTimeout(
+    () => controller.abort(),
+    options?.timeoutMs ?? 15000,
+  );
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/interview-session/${sessionId}/role`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
+      },
+    );
+
+    if (!res.ok) {
+      let error = '';
+
+      try {
+        error = await res.text();
+      } catch {
+        throw new Error(`직군 생성 실패: ${res.status}${error ? error : ''}`);
+      }
+    }
+
+    const json = (await res.json()) as CreateJobRoleResponse;
+
+    if (json.status === 'failed') throw new Error('직군이 미존재.');
+
+    return json;
+  } catch (error) {
+    if ((error as any)?.name === 'AbortError') {
+      throw new Error('세션 생성 요청이 시간 초과되었습니다.');
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
+};
+
+// keywords
+type CreateSttKeywordsResponse = {
+  keywords: { id: string; stt_keywords: string[] }[];
+};
+
+export const createInterviewSttKeywords = async (
+  sessionId: string,
+  options?: { timeoutMs?: number },
+) => {
+  const controller = new AbortController();
+  const timeout = setTimeout(
+    () => controller.abort(),
+    options?.timeoutMs ?? 60000,
+  );
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/interview-session/${sessionId}/keywords`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
+      },
+    );
+
+    if (!res.ok) {
+      let error = '';
+
+      try {
+        error = await res.text();
+      } catch {
+        throw new Error(
+          `keywords 생성 실패: ${res.status}${error ? error : ''}`,
+        );
+      }
+    }
+
+    const json = (await res.json()) as CreateSttKeywordsResponse;
+
+    if (!json.keywords) throw new Error('세션 응답에 keywords가 없음.');
+
+    return json;
+  } catch (error) {
+    if ((error as any)?.name === 'AbortError') {
+      throw new Error('세션 생성 요청이 시간 초과되었습니다.');
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
+};
+
+// session data
+
+type GetSessionDetailResponse = {
+  id: string;
+  status: InterviewSessionStatus;
+  created_at: string;
+  questions: QSessionQuestionItem[];
+};
+
+export const getInterviewSessionDetail = async (
+  sessionId: string,
+  options?: { timeoutMs?: number },
+) => {
+  const controller = new AbortController();
+  const timeout = setTimeout(
+    () => controller.abort(),
+    options?.timeoutMs ?? 15000,
+  );
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/interview-session/${sessionId}`,
+      {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
+      },
+    );
+
+    if (!res.ok) {
+      let error = '';
+
+      try {
+        error = await res.text();
+      } catch {
+        throw new Error(`detail get 실패: ${res.status}${error ? error : ''}`);
+      }
+    }
+
+    const json = (await res.json()) as GetSessionDetailResponse;
+
+    return json;
+  } catch (error) {
+    if ((error as any)?.name === 'AbortError') {
+      throw new Error('세션 생성 요청이 시간 초과되었습니다.');
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
+};

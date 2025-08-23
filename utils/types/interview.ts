@@ -8,3 +8,28 @@ export type InterviewPhase =
   | 'submitting' // 제출 중... [타이머: pause]
   | 'submitSuccess' // 제출 성공 [타이머: 초기화]
   | 'end'; // 인터뷰 종료
+
+export type InterviewSessionStatus =
+  | 'not_started'
+  | 'in_progress'
+  | 'completed'
+  | 'expired';
+
+export type SessionQuestionStatus =
+  | 'waiting'
+  | 'ready'
+  | 'answering'
+  | 'submitted';
+
+export interface SessionQuestionItem {
+  id: string;
+  order: number;
+  type: 'main' | 'followup';
+  text: string;
+  status: SessionQuestionStatus;
+  answer: any;
+}
+
+export interface QSessionQuestionItem extends SessionQuestionItem {
+  question_id: string;
+}
