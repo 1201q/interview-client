@@ -1,38 +1,35 @@
 'use client';
 
 import { AnimatePresence, motion } from 'motion/react';
-import InterviewPage from './InterviewPage';
 import SelectLoading from '../beforeInterview/selectPage/SelectLoading';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   createInterviewJobRole,
   createInterviewSttKeywords,
+  getInterviewSessionDetail,
 } from '@/utils/services/interviewSession';
 
 interface InterviewPipelineClientProps {
   sessionId: string;
 }
 
+type LoadingStatus = 'beforeLoading' | 'loading' | 'error' | 'completed';
+
 const InterviewPipelineClient = ({
   sessionId,
 }: InterviewPipelineClientProps) => {
-  useEffect(() => {
-    createInterviewJobRole(sessionId);
-
-    createInterviewSttKeywords(sessionId);
-  }, []);
-
   return (
     <AnimatePresence mode="wait">
-      <motion.div
-        key={'interviewLoading'}
-        style={{
-          height: '100%',
-          display: 'flex',
-        }}
-      >
-        <SelectLoading />
-      </motion.div>
+      {/* {
+        <motion.div
+          style={{
+            height: '100%',
+            display: 'flex',
+          }}
+        >
+          <SelectLoading />
+        </motion.div>
+      } */}
       {/* <motion.div
         key={'interview'}
         style={{
