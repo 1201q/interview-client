@@ -34,6 +34,10 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
 
   // 추가
   const [readyToResume, setReadyToResume] = useState(false);
+  const [readyToRecording, setReadyToRecording] = useState(false);
+
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const recordChunksRef = useRef<BlobPart[]>([]);
 
   const resetText = useCallback(() => {
     setStable('');
@@ -272,6 +276,9 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
 
     await senderRef.current.replaceTrack(track);
 
+    // recorder 세팅
+    await initRecorder(track);
+
     // 준비 완료!
     setReadyToResume(true);
   }, []);
@@ -328,6 +335,8 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
     await senderRef.current.replaceTrack(track);
 
     //
+    await initRecorder(track);
+
     setReadyToResume(true);
   }, []);
 
@@ -438,6 +447,42 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
           ? `${stableText} ${liveText}`.trim()
           : stableText || liveText;
 
+      // 오디오 blob 생성
+      const recorder = mediaRecorderRef.current;
+      let audioBlob: Blob | null = null;
+
+      if (recorder) {
+        audioBlob = await new Promise<Blob>((resolve) => {
+          const run = () => {
+            try {
+              const blob = new Blob(recordChunksRef.current, {
+                type: recorder.mimeType || 'audio/webm',
+              });
+
+              resolve(blob);
+            } catch {
+              resolve(new Blob([]));
+            } finally {
+              recordChunksRef.current = [];
+              mediaRecorderRef.current = null;
+            }
+          };
+
+          try {
+            recorder.requestData?.();
+          } catch {
+            setTimeout(() => {
+              try {
+                recorder.onstop = run;
+                recorder.stop();
+              } catch (error) {
+                run();
+              }
+            }, 200);
+          }
+        });
+      }
+
       if (!keepConnection) {
         cleanup();
       } else {
@@ -452,11 +497,17 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
           streamRef.current = null;
           trackRef.current = null;
 
+          setReadyToRecording(false);
           setReadyToResume(false);
         }
       }
 
-      return { text: finalText, segments: stableData, deltas: liveData };
+      return {
+        text: finalText,
+        segments: stableData,
+        deltas: liveData,
+        audioBlob: audioBlob,
+      };
     },
     [cleanup, getTranscriptSnapshot, rawLiveData, rawStableData],
   );
@@ -521,8 +572,14 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
   // 정지
   const pauseTranscription = useCallback(() => {
     const track = streamRef.current?.getAudioTracks()[0];
+
     if (track) {
       track.enabled = false;
+
+      try {
+        mediaRecorderRef.current?.pause();
+      } catch {}
+
       setPaused(true);
     }
   }, []);
@@ -532,140 +589,43 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
     const track = streamRef.current?.getAudioTracks()[0];
     if (track) {
       track.enabled = true;
+
+      try {
+        mediaRecorderRef.current?.resume();
+      } catch {}
+
       setPaused(false);
     }
   }, []);
 
-  // const canResume =
-  //   !!streamRef.current &&
-  //   !!pcRef.current?.getSenders().find((s) => s.track?.kind === 'audio');
+  const initRecorder = async (track: MediaStreamTrack) => {
+    const cloned = track.clone();
+    const stream = new MediaStream([cloned]);
 
-  const canResume = readyToResume;
+    const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+      ? 'audio/webm;codecs=opus'
+      : MediaRecorder.isTypeSupported('audio/webm')
+        ? 'audio/webm'
+        : '';
 
-  // 1. 이전 코드 ///////////
-  const start = useCallback(
-    async (source: AudioSource) => {
-      resetText();
-      setAudioSource(source);
-      setPaused(false);
+    const recorder = new MediaRecorder(
+      stream,
+      mimeType ? { mimeType } : undefined,
+    );
 
-      if (pcRef.current) cleanup();
+    mediaRecorderRef.current = recorder;
+    recordChunksRef.current = [];
 
-      // 1. 토큰 확인
-      const tokenRes = await getEphemeralToken();
-      const token = tokenRes.value ?? null;
-      if (!token) throw new Error('EphemeralToken 없음');
-
-      // 2. RTCPeerConnection
-      // OpenAI Realtime과 WebRTC 연결할 객체.
-      const pc = new RTCPeerConnection({
-        iceServers: [{ urls: ['stun:stun.l.google.com:19302'] }],
-      });
-      pcRef.current = pc;
-
-      pc.oniceconnectionstatechange = () => {
-        const st = pc.iceConnectionState;
-
-        if (st === 'connected') setConnected(true);
-        if (['disconnected', 'failed', 'closed'].includes(st)) cleanup();
-      };
-
-      // 만약 서버가 dc를 생성할 경우?
-      pc.ondatachannel = (e) => {
-        const ch = e.channel;
-
-        ch.onmessage = (event) => {
-          try {
-            handleEvent(JSON.parse(event.data));
-          } catch (error) {
-            console.log(error);
-          }
-        };
-      };
-
-      // 클라가 dc를 생성
-      const dc = pc.createDataChannel('oai-events');
-      dcRef.current = dc;
-      dc.onmessage = (e) => {
-        try {
-          handleEvent(JSON.parse(e.data));
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-      let stream: MediaStream;
-      if (source === 'mic') {
-        stream = await navigator.mediaDevices.getUserMedia({
-          audio: {
-            echoCancellation: true,
-            noiseSuppression: true,
-            autoGainControl: true,
-          },
-        });
-      } else {
-        const displayStream = await navigator.mediaDevices.getDisplayMedia({
-          video: true,
-          audio: true,
-        });
-
-        // 비디오는 바로 끔
-        displayStream.getVideoTracks().forEach((t) => t.stop());
-
-        const audio = displayStream.getAudioTracks();
-
-        if (!audio.length) {
-          throw new Error(
-            '탭 오디오를 사용할 수 없습니다. 오디오가 활성화된 탭을 선택하세요.',
-          );
-        }
-
-        stream = new MediaStream([audio[0]]);
+    recorder.ondataavailable = (e) => {
+      if (e.data && e.data.size > 0) {
+        recordChunksRef.current.push(e.data);
       }
+    };
+    recorder.onstop = () => {};
 
-      streamRef.current = stream;
-      const [track] = stream.getAudioTracks();
-      if (!track) throw new Error('오디오 트랙 없음');
-
-      if (track && 'contentHint' in track) track.contentHint = 'speech';
-      stream.getTracks().forEach((t) => pc.addTrack(t, stream));
-
-      // 4. sdp 생성/설정
-      await pc.setLocalDescription(await pc.createOffer());
-
-      // 5. ICE gathering 완료 대기
-      await new Promise<void>((resolve) => {
-        if (pc.iceGatheringState === 'complete') return resolve();
-        pc.addEventListener('icegatheringstatechange', () => {
-          if (pc.iceGatheringState === 'complete') resolve();
-        });
-      });
-
-      // 6. OpenAI Realtime 요청
-      const sdpRes = await fetch(
-        'https://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-12-17',
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/sdp',
-            'OpenAI-Beta': 'realtime=v1',
-          },
-          body: pc.localDescription!.sdp,
-        },
-      );
-
-      const raw = await sdpRes.text();
-      if (!sdpRes.ok || !raw.startsWith('v=')) {
-        console.error('SDP POST 실패:', sdpRes.status, raw.slice(0, 200));
-        throw new Error('Realtime SDP 교환 실패');
-      }
-
-      await pc.setRemoteDescription({ type: 'answer', sdp: raw });
-    },
-    [resetText, handleEvent, cleanup],
-  );
-  // 이전 코드 ///////////
+    recorder.start();
+    setReadyToRecording(true);
+  };
 
   useEffect(() => () => cleanup(), [cleanup]);
 
@@ -673,7 +633,7 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
     connected,
     audioSource,
     paused,
-    canResume,
+    canResume: readyToResume,
 
     // 텍스트
     stable,
@@ -698,7 +658,7 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
     refs: { pcRef, dcRef, streamRef },
 
     // 레거시
-    start,
+
     startSendingAudio,
   };
 };
