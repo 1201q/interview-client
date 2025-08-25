@@ -1,44 +1,47 @@
 'use client';
 
 import { AnimatePresence, motion } from 'motion/react';
-import SelectLoading from '../beforeInterview/selectPage/SelectLoading';
-import { useEffect, useState } from 'react';
-import {
-  createInterviewJobRole,
-  createInterviewSttKeywords,
-  getInterviewSessionDetail,
-} from '@/utils/services/interviewSession';
+
+import InterviewInit from './InterviewInit';
+import { useAtomValue } from 'jotai';
+import { InterviewInitAtom } from '@/store/interviewSession';
+import InterviewPage from './InterviewPage';
 
 interface InterviewPipelineClientProps {
   sessionId: string;
 }
 
-type LoadingStatus = 'beforeLoading' | 'loading' | 'error' | 'completed';
-
 const InterviewPipelineClient = ({
   sessionId,
 }: InterviewPipelineClientProps) => {
+  const interviewInit = useAtomValue(InterviewInitAtom);
+
   return (
     <AnimatePresence mode="wait">
-      {/* {
+      {interviewInit !== 'completed' ? (
         <motion.div
+          key="initPage"
+          style={{
+            height: '100%',
+            display: 'flex',
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <InterviewInit sessionId={sessionId} />
+        </motion.div>
+      ) : (
+        <motion.div
+          key="interviewPage"
           style={{
             height: '100%',
             display: 'flex',
           }}
         >
-          <SelectLoading />
+          <InterviewPage />
         </motion.div>
-      } */}
-      {/* <motion.div
-        key={'interview'}
-        style={{
-          height: '100%',
-          display: 'flex',
-        }}
-      >
-        <InterviewPage />
-      </motion.div> */}
+      )}
     </AnimatePresence>
   );
 };

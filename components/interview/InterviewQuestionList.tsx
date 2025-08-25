@@ -2,17 +2,8 @@ import styles from './styles/interview-question.module.css';
 import { useEffect, useRef, useState } from 'react';
 
 import { LayoutGroup, motion } from 'motion/react';
-import { QUESTION_MOCK_DATA } from '@/utils/constants/question.mock';
-
-type Question = (typeof QUESTION_MOCK_DATA)[number] & { order: number };
-
-// list props
-interface QuestionListProps {
-  questions: Question[];
-  currentQuestion: Question | null;
-  nextQuestion: Question | null;
-  submittedQuestions: Question[];
-}
+import { useAtomValue } from 'jotai';
+import { SessionQuestionsAtom } from '@/store/interviewSession';
 
 // item props
 interface QuestionItemProps {
@@ -21,12 +12,12 @@ interface QuestionItemProps {
   itemType?: 'default' | 'blue' | 'green';
 }
 
-const InterviewQuestionList = ({
-  questions,
-  currentQuestion,
-  nextQuestion,
-  submittedQuestions,
-}: QuestionListProps) => {
+const InterviewQuestionList = () => {
+  const questions = useAtomValue(SessionQuestionsAtom);
+
+  const currentQuestion = questions.find((q) => q.status === 'ready');
+  const submittedQuestions = questions.filter((q) => q.status === 'submitted');
+
   const completedQuestionCount = submittedQuestions.length;
   const remainingQuestionCount = questions.length - submittedQuestions.length;
 
@@ -56,11 +47,7 @@ const InterviewQuestionList = ({
             .map((q) => (
               <CollapsibleQuestionItem
                 key={q.id}
-                titleText={
-                  q.id === nextQuestion?.id
-                    ? '다음 질문'
-                    : `질문 ${q.order + 1}`
-                }
+                titleText={`질문 ${q.order + 1}`}
                 text={q.text}
               />
             ))}

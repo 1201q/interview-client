@@ -21,6 +21,13 @@ export type SessionQuestionStatus =
   | 'answering'
   | 'submitted';
 
+// 인터뷰 init 로딩 상태
+export type InterviewInitStatus =
+  | 'beforeInit'
+  | 'loading'
+  | 'completed'
+  | 'error';
+
 export interface SessionQuestionItem {
   id: string;
   order: number;

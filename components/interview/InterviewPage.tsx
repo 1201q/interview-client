@@ -1,13 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import {
-  motion,
-  AnimatePresence,
-  LayoutGroup,
-  Transition,
-  Variants,
-} from 'motion/react';
+import { motion, AnimatePresence, LayoutGroup, Transition } from 'motion/react';
 
 import styles from './styles/interview.module.css';
 import WebcamInstance from '../refactorWebcam/WebcamInstance';
@@ -21,6 +15,8 @@ import { InterviewPhase as InterviewPhaseType } from '@/utils/types/interview';
 import InterviewTimer from './InterviewTimer';
 import { QUESTION_MOCK_DATA } from '@/utils/constants/question.mock';
 import { useRealtimeTranscribe } from '@/utils/hooks/useRealtimeTranscribe';
+import { useAtomValue } from 'jotai';
+import { InterviewJobRoleAtom } from '@/store/interviewSession';
 
 type SideComponent = 'transcrie' | 'questionList';
 
@@ -29,23 +25,6 @@ const spring: Transition = {
   stiffness: 500,
   damping: 40,
   mass: 0.2,
-};
-
-// 등장 애니메이션
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      delay: 1.5,
-      duration: 1,
-    },
-  },
-};
-
-const itemVariants: Variants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { stiffness: 80, type: 'spring' } },
 };
 
 const InterviewPage = () => {
@@ -209,10 +188,12 @@ const InterviewPage = () => {
     ['start', 'starting'] as InterviewPhaseType[]
   ).includes(interviewPhase);
 
+  // jotai
+  const jobRole = useAtomValue(InterviewJobRoleAtom);
+
   return (
     <LayoutGroup>
       <motion.div
-        variants={containerVariants}
         initial="hidden"
         animate="visible"
         className={styles.container}
@@ -295,8 +276,12 @@ const InterviewPage = () => {
 
         <div className={styles.interviewInfoContainer}>
           <p className={styles.blueGradientText}>모의 인터뷰</p>
-          <div className={styles.divider}></div>
-          <p className={styles.grayText}>프론트엔드 직군</p>
+          {jobRole && (
+            <>
+              <div className={styles.divider}></div>
+              <p className={styles.grayText}>{jobRole}</p>
+            </>
+          )}
         </div>
         <motion.div layout className={styles.sideListContainer}>
           <InterviewPanel
@@ -316,12 +301,7 @@ const InterviewPage = () => {
             isExpanded={expandedComponent.includes('transcrie')}
             onToggle={handleComponentClick}
           >
-            <InterviewQuestionList
-              questions={questions}
-              currentQuestion={currentQuestion}
-              nextQuestion={nextQuestion}
-              submittedQuestions={submittedQuestions}
-            />
+            <InterviewQuestionList />
           </InterviewPanel>
         </motion.div>
         <InterviewSubmitButton
