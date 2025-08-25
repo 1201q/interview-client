@@ -11,7 +11,6 @@ import {
 import { useCallback, useEffect, useRef } from 'react';
 import {
   createInterviewJobRole,
-  createInterviewSession,
   createInterviewSttKeywords,
   getInterviewSessionDetail,
 } from '@/utils/services/interviewSession';

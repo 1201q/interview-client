@@ -62,13 +62,13 @@ const InterviewTimer = ({ phase }: TimerProps) => {
         clearTimer();
         break;
       case 'submitSuccess':
-        setRemainingTime(60);
+        setRemainingTime(600);
         break;
       case 'start':
         startTimer();
         break;
       case 'beforeStartLoading':
-        setRemainingTime(60);
+        setRemainingTime(600);
         break;
       default:
         clearTimer();

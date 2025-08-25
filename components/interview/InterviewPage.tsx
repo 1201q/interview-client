@@ -15,8 +15,15 @@ import { InterviewPhase as InterviewPhaseType } from '@/utils/types/interview';
 import InterviewTimer from './InterviewTimer';
 import { QUESTION_MOCK_DATA } from '@/utils/constants/question.mock';
 import { useRealtimeTranscribe } from '@/utils/hooks/useRealtimeTranscribe';
-import { useAtomValue } from 'jotai';
-import { InterviewJobRoleAtom } from '@/store/interviewSession';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import {
+  ClientInterviewPhaseAtom,
+  CurrentSessionQuestionAtom,
+  InterviewJobRoleAtom,
+  SessionQuestionsAtom,
+  StartAnswerCountdownAtom,
+  StartInterviewSessionAtom,
+} from '@/store/interviewSession';
 
 type SideComponent = 'transcrie' | 'questionList';
 
@@ -27,31 +34,39 @@ const spring: Transition = {
   mass: 0.2,
 };
 
-const InterviewPage = () => {
+const InterviewPage = ({ sessionId }: { sessionId: string }) => {
   const [cameraOn, setCameraOn] = useState(false);
   const [expandedComponent, setExpandedComponent] = useState<SideComponent[]>(
     [],
   );
-  const [interviewPhase, setInterviewPhase] =
-    useState<InterviewPhaseType>('beforeStart');
+  // const [interviewPhase, setInterviewPhase] =
+  //   useState<InterviewPhaseType>('beforeStart');
+
+  const [interviewPhase, setInterviewPhase] = useAtom(ClientInterviewPhaseAtom);
+
+  const questions = useAtomValue(SessionQuestionsAtom);
+  const currentQuestion = useAtomValue(CurrentSessionQuestionAtom);
+
+  const startInterviewSession = useSetAtom(StartInterviewSessionAtom);
+  const startAnswerCountdown = useSetAtom(StartAnswerCountdownAtom);
 
   // question
-  const questionList = useMemo(() => {
-    return QUESTION_MOCK_DATA.map((q, index) => {
-      return { ...q, order: index };
-    });
-  }, []);
+  // const questionList = useMemo(() => {
+  //   return QUESTION_MOCK_DATA.map((q, index) => {
+  //     return { ...q, order: index };
+  //   });
+  // }, []);
 
-  const [questions, setQuestions] = useState(questionList);
-  const [currentQuestion, setCurrentQuestion] = useState<
-    (typeof questionList)[number] | null
-  >(null);
-  const [nextQuestion, setNextQuestion] = useState<
-    (typeof questionList)[number] | null
-  >(null);
-  const [submittedQuestions, setSubmittedQuestions] = useState<
-    typeof questionList
-  >([]);
+  // const [questions, setQuestions] = useState(questionList);
+  // const [currentQuestion, setCurrentQuestion] = useState<
+  //   (typeof questionList)[number] | null
+  // >(null);
+  // const [nextQuestion, setNextQuestion] = useState<
+  //   (typeof questionList)[number] | null
+  // >(null);
+  // const [submittedQuestions, setSubmittedQuestions] = useState<
+  //   typeof questionList
+  // >([]);
 
   const {
     connected,
@@ -76,6 +91,58 @@ const InterviewPage = () => {
     });
   }, []);
 
+  // const handleSubmitAnswer = async () => {
+  //   if (interviewPhase !== 'answering') return;
+
+  //   setInterviewPhase('submitting');
+
+  //   const textData = await flushAndStop();
+
+  //   console.log(textData);
+
+  //   try {
+  //     await new Promise((r) => setTimeout(r, 1000));
+
+  //     // 제출 성공 시
+  //     // 1. 상태 변경
+  //     setInterviewPhase('submitSuccess');
+  //     // 2. mock data 변경
+  //     const currentQ = currentQuestion; // 방금 제출 완료된 질문 => 제출 완료 배열에 넣기
+  //     // nextQuestion : 제출 시점에서의 다음 질문 => currentQuestion으로 지정
+
+  //     if (currentQ) {
+  //       setSubmittedQuestions((prev) => {
+  //         const updatedArray = [...prev, currentQ];
+
+  //         const uniqueArray = updatedArray.filter(
+  //           (q, index, self) => index === self.findIndex((x) => x.id === q.id),
+  //         );
+
+  //         return uniqueArray;
+  //       }); // 제출 완료 배열에 추가
+  //     }
+
+  //     if (nextQuestion) {
+  //       setCurrentQuestion(nextQuestion);
+
+  //       // 다음 질문 가져오기 로직 => 실제로는 api 호출해서 받아옴
+  //       const nextQ = questions.find((q) => q.order > nextQuestion.order);
+
+  //       if (nextQ) {
+  //         setNextQuestion(nextQ);
+  //       } else {
+  //         setNextQuestion(null);
+  //       }
+  //     } else {
+  //       // 마지막 질문이므로 종료
+  //     }
+
+  //     setTimeout(() => setInterviewPhase('start'), 1200);
+  //   } catch (error) {
+  //     setInterviewPhase('answering');
+  //   }
+  // };
+
   const handleSubmitAnswer = async () => {
     if (interviewPhase !== 'answering') return;
 
@@ -91,36 +158,6 @@ const InterviewPage = () => {
       // 제출 성공 시
       // 1. 상태 변경
       setInterviewPhase('submitSuccess');
-      // 2. mock data 변경
-      const currentQ = currentQuestion; // 방금 제출 완료된 질문 => 제출 완료 배열에 넣기
-      // nextQuestion : 제출 시점에서의 다음 질문 => currentQuestion으로 지정
-
-      if (currentQ) {
-        setSubmittedQuestions((prev) => {
-          const updatedArray = [...prev, currentQ];
-
-          const uniqueArray = updatedArray.filter(
-            (q, index, self) => index === self.findIndex((x) => x.id === q.id),
-          );
-
-          return uniqueArray;
-        }); // 제출 완료 배열에 추가
-      }
-
-      if (nextQuestion) {
-        setCurrentQuestion(nextQuestion);
-
-        // 다음 질문 가져오기 로직 => 실제로는 api 호출해서 받아옴
-        const nextQ = questions.find((q) => q.order > nextQuestion.order);
-
-        if (nextQ) {
-          setNextQuestion(nextQ);
-        } else {
-          setNextQuestion(null);
-        }
-      } else {
-        // 마지막 질문이므로 종료
-      }
 
       setTimeout(() => setInterviewPhase('start'), 1200);
     } catch (error) {
@@ -129,21 +166,31 @@ const InterviewPage = () => {
   };
 
   const handleStartCountdown = async () => {
-    if (interviewPhase !== 'start') return;
-
-    setInterviewPhase('starting');
-
     try {
-      await new Promise((r) => setTimeout(r, 1000));
+      startAnswerCountdown(sessionId);
 
       await connectTranscription();
-      await prepareAudioTrack('tab');
+      await prepareAudioTrack('mic');
 
       setInterviewPhase('startCountdown3');
     } catch (error) {
       setInterviewPhase('start');
     }
   };
+
+  // const handleStartAnswer = useCallback(() => {
+  //   if (!canResume) {
+  //     throw new Error('stt 미연결');
+  //   }
+
+  //   try {
+  //     resumeTranscription();
+
+  //     setInterviewPhase('answering');
+  //   } catch (error) {
+  //     throw new Error('resume 실패');
+  //   }
+  // }, [canResume, connected, paused, setInterviewPhase]);
 
   const handleStartAnswer = useCallback(() => {
     if (!canResume) {
@@ -160,17 +207,7 @@ const InterviewPage = () => {
   }, [canResume, connected, paused, setInterviewPhase]);
 
   const handleStartInterview = async () => {
-    setInterviewPhase('beforeStartLoading');
-
-    try {
-      await new Promise((r) => setTimeout(r, 1000));
-
-      setInterviewPhase('start');
-      setCurrentQuestion(questions[0]);
-      setNextQuestion(questions[1]);
-    } catch (error) {
-      setInterviewPhase('beforeStart');
-    }
+    startInterviewSession(sessionId);
   };
 
   useEffect(() => {

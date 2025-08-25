@@ -39,7 +39,7 @@ const InterviewPipelineClient = ({
             display: 'flex',
           }}
         >
-          <InterviewPage />
+          <InterviewPage sessionId={sessionId} />
         </motion.div>
       )}
     </AnimatePresence>

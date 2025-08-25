@@ -228,3 +228,102 @@ export const getInterviewSessionDetail = async (
     clearTimeout(timeout);
   }
 };
+
+// session start
+type StartSessionResponse = {
+  id: string;
+  status: InterviewSessionStatus;
+};
+
+export const startInterviewSession = async (
+  sessionId: string,
+  options?: { timeoutMs?: number },
+) => {
+  const controller = new AbortController();
+  const timeout = setTimeout(
+    () => controller.abort(),
+    options?.timeoutMs ?? 15000,
+  );
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/interview-session/${sessionId}/start`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
+      },
+    );
+
+    if (!res.ok) {
+      let error = '';
+
+      try {
+        error = await res.text();
+      } catch {
+        throw new Error(
+          `SESSION start 실패: ${res.status}${error ? error : ''}`,
+        );
+      }
+    }
+
+    const json = (await res.json()) as StartSessionResponse;
+
+    if (json.status !== 'in_progress') {
+      throw new Error('시작 실패');
+    }
+
+    return json;
+  } catch (error) {
+    if ((error as any)?.name === 'AbortError') {
+      throw new Error('세션 시작 요청이 시간 초과되었습니다.');
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
+};
+
+// answer start
+
+export const startAnswer = async (
+  sessionId: string,
+  sqId: string,
+  options?: { timeoutMs?: number },
+) => {
+  const controller = new AbortController();
+  const timeout = setTimeout(
+    () => controller.abort(),
+    options?.timeoutMs ?? 15000,
+  );
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/interview-answer/${sessionId}/${sqId}/start`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
+      },
+    );
+
+    if (!res.ok) {
+      let error = '';
+
+      try {
+        error = await res.text();
+      } catch {
+        throw new Error(
+          `answer start 실패: ${res.status}${error ? error : ''}`,
+        );
+      }
+    }
+  } catch (error) {
+    if ((error as any)?.name === 'AbortError') {
+      throw new Error('답변 시작 요청이 시간 초과되었습니다.');
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
+};
