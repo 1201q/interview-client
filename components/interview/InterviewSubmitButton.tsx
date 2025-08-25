@@ -25,6 +25,8 @@ const InterviewSubmitButton = ({
   const buttonRef = useRef<HTMLButtonElement>(null); // 스페이스바로 버튼 제어
   const [isPressed, setIsPressed] = useState(false); // 스페이스바로 눌림 애니메이션 구현 위함
 
+  const isCountdown = useRef<boolean>(false);
+
   // =========== button 구분
   const disabledPhases = [
     'beforeStartLoading',
@@ -49,14 +51,20 @@ const InterviewSubmitButton = ({
   const handleClick = async () => {
     if (phase === 'beforeStart') {
       handleStartInterview();
+      console.log('클릭1');
     } else if (phase === 'start') {
       handleStartCountdown();
+      console.log('클릭2');
     } else if (phase === 'answering') {
       handleSubmitAnswer();
+      console.log('클릭3');
     }
   };
 
   const startCountdownAnimation = useCallback(() => {
+    if (isCountdown.current) return;
+    isCountdown.current = true;
+
     countdownControls.set({ x: '0%' });
     countdownControls
       .start({
@@ -66,6 +74,8 @@ const InterviewSubmitButton = ({
       .then(() => {
         countdownControls.stop();
         handleStartAnswer();
+
+        isCountdown.current = false;
       });
   }, [countdownControls, handleStartAnswer]);
 

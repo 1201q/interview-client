@@ -2,6 +2,7 @@ import {
   getInterviewSessionDetail,
   startAnswer,
   startInterviewSession,
+  testSubmitAnswer,
 } from '@/utils/services/interviewSession';
 import {
   InterviewInitStatus,
@@ -89,18 +90,38 @@ export const StartAnswerCountdownAtom = atom(
     const currentQuestion = get(CurrentSessionQuestionAtom);
     const clientPhase = get(ClientInterviewPhaseAtom);
 
-    if (clientPhase !== 'start') return;
+    if (clientPhase !== 'starting') return;
     if (!currentQuestion) return;
 
     try {
-      set(ClientInterviewPhaseAtom, 'starting');
-
       await startAnswer(sessionId, currentQuestion.id);
-
-      // 성공하면 countdown 진입.
-      set(ClientInterviewPhaseAtom, 'startCountdown3');
     } catch (error) {
-      set(ClientInterviewPhaseAtom, 'start');
+      console.log(error);
+    }
+  },
+);
+
+export const SubmitAnswerAtom = atom(
+  null,
+  async (get, set, update: { sessionId: string }) => {
+    const currentQuestion = get(CurrentSessionQuestionAtom);
+    const clientPhase = get(ClientInterviewPhaseAtom);
+
+    if (clientPhase !== 'submitting') return;
+    if (!currentQuestion) return;
+
+    try {
+      const res = await testSubmitAnswer(update.sessionId, currentQuestion.id);
+
+      if (!res.finished) {
+        set(RefreshSessionQuestionsAtom, update.sessionId);
+      }
+
+      set(ClientInterviewPhaseAtom, 'submitSuccess');
+
+      setTimeout(() => set(ClientInterviewPhaseAtom, 'start'), 1200);
+    } catch (error) {
+      set(ClientInterviewPhaseAtom, 'answering');
     }
   },
 );

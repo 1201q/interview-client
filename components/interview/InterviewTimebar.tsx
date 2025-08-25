@@ -54,9 +54,9 @@ const InterviewTimebar = ({
 
   useEffect(() => {
     if (phase === 'start') {
-      start(600, handleStartCountdown);
+      start(10, handleStartCountdown);
     } else if (phase === 'answering') {
-      start(180, handleSubmitAnswer);
+      start(10, handleSubmitAnswer);
     } else if (phase === 'submitting' || phase === 'starting') {
       stop();
     } else if (phase === 'submitSuccess' || phase === 'startCountdown3') {

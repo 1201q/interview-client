@@ -32,6 +32,9 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
   const [rawStableData, setRawStableData] = useState<Transcript[]>([]);
   const [rawLiveData, setRawLiveData] = useState<Delta[]>([]);
 
+  // 추가
+  const [readyToResume, setReadyToResume] = useState(false);
+
   const resetText = useCallback(() => {
     setStable('');
     setLive('');
@@ -118,11 +121,13 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
 
       setConnected(false);
       setPaused(false);
+      setReadyToResume(false);
     }
   }, [resetMedia]);
 
   const connectTranscription = useCallback(async () => {
     resetText();
+    setReadyToResume(false);
 
     if (pcRef.current) {
       cleanup();
@@ -223,6 +228,7 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
 
     setAudioSource(source);
     setPaused(true);
+    setReadyToResume(false);
 
     let stream: MediaStream;
     if (source === 'mic') {
@@ -265,6 +271,9 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
     trackRef.current = track;
 
     await senderRef.current.replaceTrack(track);
+
+    // 준비 완료!
+    setReadyToResume(true);
   }, []);
 
   // 오디오를 전송함. 재협상 x
@@ -317,6 +326,9 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
 
     // 시작~
     await senderRef.current.replaceTrack(track);
+
+    //
+    setReadyToResume(true);
   }, []);
 
   const getAudioSender = (pc: RTCPeerConnection | null) => {
@@ -439,6 +451,8 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
         } finally {
           streamRef.current = null;
           trackRef.current = null;
+
+          setReadyToResume(false);
         }
       }
 
@@ -522,9 +536,11 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
     }
   }, []);
 
-  const canResume =
-    !!streamRef.current &&
-    !!pcRef.current?.getSenders().find((s) => s.track?.kind === 'audio');
+  // const canResume =
+  //   !!streamRef.current &&
+  //   !!pcRef.current?.getSenders().find((s) => s.track?.kind === 'audio');
+
+  const canResume = readyToResume;
 
   // 1. 이전 코드 ///////////
   const start = useCallback(
