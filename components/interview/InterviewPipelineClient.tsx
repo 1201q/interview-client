@@ -3,9 +3,10 @@
 import { AnimatePresence, motion } from 'motion/react';
 
 import InterviewInit from './InterviewInit';
-import { useAtomValue } from 'jotai';
-import { InterviewInitAtom } from '@/store/interviewSession';
+import { useAtom, useAtomValue } from 'jotai';
+import { InterviewInitAtom, SessionIdAtom } from '@/store/interviewSession';
 import InterviewPage from './InterviewPage';
+import { useEffect } from 'react';
 
 interface InterviewPipelineClientProps {
   sessionId: string;
@@ -15,6 +16,13 @@ const InterviewPipelineClient = ({
   sessionId,
 }: InterviewPipelineClientProps) => {
   const interviewInit = useAtomValue(InterviewInitAtom);
+  const [sId, setSId] = useAtom(SessionIdAtom);
+
+  useEffect(() => {
+    setSId(sessionId);
+  }, []);
+
+  if (!sId) return null;
 
   return (
     <AnimatePresence mode="wait">
@@ -39,7 +47,7 @@ const InterviewPipelineClient = ({
             display: 'flex',
           }}
         >
-          <InterviewPage sessionId={sessionId} />
+          <InterviewPage />
         </motion.div>
       )}
     </AnimatePresence>

@@ -19,6 +19,7 @@ import {
   ClientInterviewPhaseAtom,
   CurrentSessionQuestionAtom,
   InterviewJobRoleAtom,
+  SessionIdAtom,
   StartAnswerCountdownAtom,
   StartInterviewSessionAtom,
   SubmitAnswerAtom,
@@ -35,7 +36,7 @@ const spring: Transition = {
   mass: 0.2,
 };
 
-const InterviewPage = ({ sessionId }: { sessionId: string }) => {
+const InterviewPage = () => {
   const [cameraOn, setCameraOn] = useState(false);
   const [expandedComponent, setExpandedComponent] = useState<SideComponent[]>(
     [],
@@ -48,6 +49,7 @@ const InterviewPage = ({ sessionId }: { sessionId: string }) => {
   const startInterviewSession = useSetAtom(StartInterviewSessionAtom);
   const startAnswerCountdown = useSetAtom(StartAnswerCountdownAtom);
   const submitAnswer = useSetAtom(SubmitAnswerAtom);
+  const sessionId = useAtomValue(SessionIdAtom);
 
   const {
     connected,
@@ -81,7 +83,6 @@ const InterviewPage = ({ sessionId }: { sessionId: string }) => {
     console.log(data);
 
     submitAnswer({
-      sessionId: sessionId,
       audioBlob: data.audioBlob,
       answerText: data.text,
     });
@@ -96,7 +97,7 @@ const InterviewPage = ({ sessionId }: { sessionId: string }) => {
       await connectTranscription();
       await prepareAudioTrack('tab');
 
-      startAnswerCountdown(sessionId);
+      startAnswerCountdown();
 
       setInterviewPhase('startCountdown3');
     } catch (error) {
@@ -120,7 +121,7 @@ const InterviewPage = ({ sessionId }: { sessionId: string }) => {
   }, [canResume, connected, isRecording, setInterviewPhase, interviewPhase]);
 
   const handleStartInterview = async () => {
-    startInterviewSession(sessionId);
+    startInterviewSession();
   };
 
   useEffect(() => {
@@ -269,6 +270,8 @@ const InterviewPage = ({ sessionId }: { sessionId: string }) => {
       >
         <button
           onClick={async () => {
+            if (!sessionId) return;
+
             const res = await resetInterviewSession(sessionId);
 
             if (res.status === 'not_started') {
