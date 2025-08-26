@@ -21,3 +21,26 @@ export const getEphemeralToken = async () => {
 
   return client_secret;
 };
+
+export const testUploadAudio = async (file: File) => {
+  const formd = new FormData();
+
+  formd.append('audio', file);
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/interview-answer/upload/test`,
+    {
+      method: 'POST',
+      body: formd,
+    },
+  );
+
+  if (!res.ok) {
+    throw new Error('error');
+  }
+
+  const json = await res.json();
+  console.log(json);
+
+  return json;
+};

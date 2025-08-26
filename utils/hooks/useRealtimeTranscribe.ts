@@ -6,84 +6,121 @@ import { Delta, Transcript } from '../types/types';
 
 export type AudioSource = 'mic' | 'tab';
 
-export interface RealtimeOptions {
+type ConnStatus = 'idle' | 'connecting' | 'connected';
+type RecStatus = 'idle' | 'prepared' | 'recording' | 'paused';
+
+const STT_URL =
+  'https://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-12-17';
+
+export interface Options {
   onEvent?: (e: any) => void;
 }
 
-export const useRealtimeTranscribe = (options: RealtimeOptions) => {
-  const { onEvent } = options;
-
+export const useTranscribe = ({ onEvent }: Options) => {
+  // --------- webrtc, media refs --------
   const pcRef = useRef<RTCPeerConnection | null>(null);
   const dcRef = useRef<RTCDataChannel | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
-
-  // 송 신 제어
   const senderRef = useRef<RTCRtpSender | null>(null);
-  const trackRef = useRef<MediaStreamTrack | null>(null);
   const transceiverRef = useRef<RTCRtpTransceiver | null>(null);
 
-  const [connected, setConnected] = useState(false);
-  const [audioSource, setAudioSource] = useState<AudioSource>('mic');
-  const [paused, setPaused] = useState(false);
-
-  const [stable, setStable] = useState('');
-  const [live, setLive] = useState('');
-
-  const [rawStableData, setRawStableData] = useState<Transcript[]>([]);
-  const [rawLiveData, setRawLiveData] = useState<Delta[]>([]);
-
-  // 추가
-  const [readyToResume, setReadyToResume] = useState(false);
-  const [readyToRecording, setReadyToRecording] = useState(false);
-
+  // ---- recorder refs ----
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const recordChunksRef = useRef<BlobPart[]>([]);
 
+  // ---- hook states ----
+  const [connStatus, setConnStatus] = useState<ConnStatus>('idle');
+  const [recStatus, setRecStatus] = useState<RecStatus>('idle');
+
+  const [audioSource, setAudioSource] = useState<AudioSource>('mic');
+  const [canResume, setCanResume] = useState(false);
+
+  // ---- text ----
+  const [stable, setStable] = useState('');
+  const [live, setLive] = useState('');
+  const [rawStableData, setRawStableData] = useState<Transcript[]>([]);
+  const [rawLiveData, setRawLiveData] = useState<Delta[]>([]);
+
+  // ==============================================================
+  // ---- 공용 유틸 ----
   const resetText = useCallback(() => {
     setStable('');
     setLive('');
-    setRawLiveData([]);
     setRawStableData([]);
+    setRawLiveData([]);
   }, []);
+
+  const getTranscriptSnapshot = useCallback(() => {
+    const sd = rawStableData
+      .map((d) => d.transcript)
+      .join(' ')
+      .trim();
+    const ld = rawLiveData
+      .map((d) => d.delta)
+      .join('')
+      .trim();
+
+    return sd && ld ? `${sd} ${ld}`.trim() : sd || ld;
+  }, [rawLiveData, rawStableData]);
 
   const resetMedia = useCallback(() => {
-    if (senderRef.current) {
-      try {
-        senderRef.current = null;
-      } catch (error) {}
-    }
+    try {
+      senderRef.current = null;
+    } catch {}
 
-    // 트랙을 정리
-    if (trackRef.current) {
-      try {
-        trackRef.current.stop();
-      } catch (error) {}
-
-      trackRef.current = null;
-    }
-
-    // 스트림을 정리
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach((t) => {
+    try {
+      streamRef.current?.getTracks().forEach((track) => {
+        // track stop
         try {
-          t.stop();
-        } catch (error) {}
+          track.stop();
+        } catch {}
+        //
       });
+    } catch {}
 
-      streamRef.current = null;
-    }
+    streamRef.current = null;
   }, []);
+
+  const cleanup = useCallback(() => {
+    //
+    try {
+      dcRef.current?.close();
+    } catch {}
+
+    try {
+      transceiverRef.current?.stop();
+    } catch {}
+
+    try {
+      pcRef.current?.close();
+    } catch {}
+
+    //
+    resetMedia();
+
+    //
+    dcRef.current = null;
+    transceiverRef.current = null;
+    pcRef.current = null;
+
+    try {
+      mediaRecorderRef.current?.stop();
+    } catch {}
+
+    mediaRecorderRef.current = null;
+    recordChunksRef.current = [];
+
+    setCanResume(false);
+    setRecStatus('idle');
+    setConnStatus('idle');
+  }, [resetMedia]);
 
   const handleEvent = useCallback(
     (msg: any) => {
       onEvent?.(msg);
-
       if (msg.type?.endsWith('input_audio_transcription.delta') && msg.delta) {
-        const data = msg as Delta;
-
-        setLive((p) => p + data.delta);
-        setRawLiveData((prev) => [...prev, data]);
-
+        setLive((p) => p + (msg as Delta).delta);
+        setRawLiveData((prev) => [...prev, msg as Delta]);
         return;
       }
       if (
@@ -91,10 +128,8 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
         msg.transcript
       ) {
         const data = msg as Transcript;
-
         setRawStableData((prev) => [...prev, data]);
         setRawLiveData([]);
-
         setStable((p) => (p ? p + ' ' : '') + data.transcript);
         setLive('');
         return;
@@ -103,44 +138,23 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
     [onEvent],
   );
 
-  const cleanup = useCallback(() => {
-    try {
-      try {
-        dcRef.current?.close();
-      } catch (error) {}
-
-      resetMedia();
-
-      try {
-        transceiverRef.current?.stop();
-      } catch {}
-
-      try {
-        pcRef.current?.close();
-      } catch {}
-    } finally {
-      dcRef.current = null;
-      pcRef.current = null;
-      transceiverRef.current = null;
-
-      setConnected(false);
-      setPaused(false);
-      setReadyToResume(false);
-    }
-  }, [resetMedia]);
-
+  // ==============================================================
+  // ---- connect 관련 ----
   const connectTranscription = useCallback(async () => {
     resetText();
-    setReadyToResume(false);
+    setCanResume(false);
 
-    if (pcRef.current) {
-      cleanup();
-    }
+    if (pcRef.current) cleanup();
+
+    setConnStatus('connecting');
 
     // 1. 토큰 확인
     const tokenRes = await getEphemeralToken();
     const token = tokenRes.value ?? null;
-    if (!token) throw new Error('EphemeralToken 없음');
+    if (!token) {
+      setConnStatus('idle');
+      throw new Error('EphemeralToken 없음');
+    }
 
     // 2. RTCPeerConnection
     // OpenAI Realtime과 WebRTC 연결할 객체.
@@ -152,33 +166,30 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
     pc.oniceconnectionstatechange = () => {
       const st = pc.iceConnectionState;
 
-      if (st === 'connected') setConnected(true);
+      if (st === 'connected') {
+        setConnStatus('connected');
+      }
       if (['disconnected', 'failed', 'closed'].includes(st)) cleanup();
     };
 
     // 만약 서버가 dc를 생성할 경우?
     pc.ondatachannel = (e) => {
-      const ch = e.channel;
-
-      ch.onmessage = (event) => {
+      e.channel.onmessage = (event) => {
         try {
           handleEvent(JSON.parse(event.data));
-        } catch (error) {
-          console.log(error);
-        }
+        } catch {}
       };
     };
 
     // 클라가 dc를 생성
     const dc = pc.createDataChannel('oai-events');
-    dcRef.current = dc;
+
     dc.onmessage = (e) => {
       try {
         handleEvent(JSON.parse(e.data));
-      } catch (error) {
-        console.log(error);
-      }
+      } catch {}
     };
+    dcRef.current = dc;
 
     // 핵심: 오디오 m=라인을 선점 (재협상 없이 나중에 트랙만 붙임)
     transceiverRef.current = pc.addTransceiver('audio', {
@@ -202,37 +213,35 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
     });
 
     // OpenAI Realtime 요청
-    const sdpRes = await fetch(
-      'https://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-12-17',
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/sdp',
-          'OpenAI-Beta': 'realtime=v1',
-        },
-        body: pc.localDescription!.sdp,
+    const sdpRes = await fetch(STT_URL, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/sdp',
+        'OpenAI-Beta': 'realtime=v1',
       },
-    );
+      body: pc.localDescription!.sdp,
+    });
 
     const raw = await sdpRes.text();
     if (!sdpRes.ok || !raw.startsWith('v=')) {
       console.error('SDP POST 실패:', sdpRes.status, raw.slice(0, 200));
+      setConnStatus('idle');
       throw new Error('Realtime SDP 교환 실패');
     }
 
     await pc.setRemoteDescription({ type: 'answer', sdp: raw });
   }, [cleanup, handleEvent, resetText]);
 
-  // prepare
+  // ==============================================================
+  // ---- prepare  ----
   const prepareAudioTrack = useCallback(async (source: AudioSource) => {
     if (!pcRef.current || !senderRef.current) {
       throw new Error('PeerConnection 없음. 먼저 connect() 호출하세요.');
     }
 
     setAudioSource(source);
-    setPaused(true);
-    setReadyToResume(false);
+    setCanResume(false);
 
     let stream: MediaStream;
     if (source === 'mic') {
@@ -252,664 +261,392 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
       // 비디오는 바로 끔
       displayStream.getVideoTracks().forEach((t) => t.stop());
 
-      const audio = displayStream.getAudioTracks();
-
-      if (!audio.length) {
-        throw new Error(
-          '탭 오디오를 사용할 수 없습니다. 오디오가 활성화된 탭을 선택하세요.',
-        );
-      }
-
-      stream = new MediaStream([audio[0]]);
-    }
-
-    streamRef.current = stream;
-    const [track] = stream.getAudioTracks();
-    if (!track) throw new Error('오디오 트랙 없음');
-
-    try {
-      if (track && 'contentHint' in track) track.contentHint = 'speech';
-    } catch {}
-
-    track.enabled = false;
-    trackRef.current = track;
-
-    await senderRef.current.replaceTrack(track);
-
-    // 준비 완료!
-    setReadyToResume(true);
-  }, []);
-
-  // 오디오를 전송함. 재협상 x
-  const startSendingAudio = useCallback(async (source: AudioSource) => {
-    if (!pcRef.current || !senderRef.current) {
-      throw new Error('PeerConnection 없음. 먼저 connect() 호출하세요.');
-    }
-
-    setAudioSource(source);
-    setPaused(false);
-
-    let stream: MediaStream;
-    if (source === 'mic') {
-      stream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true,
-        },
-      });
-    } else {
-      const displayStream = await navigator.mediaDevices.getDisplayMedia({
-        video: true,
-        audio: true,
-      });
-
-      // 비디오는 바로 끔
-      displayStream.getVideoTracks().forEach((t) => t.stop());
-
-      const audio = displayStream.getAudioTracks();
-
-      if (!audio.length) {
-        throw new Error(
-          '탭 오디오를 사용할 수 없습니다. 오디오가 활성화된 탭을 선택하세요.',
-        );
-      }
-
-      stream = new MediaStream([audio[0]]);
-    }
-
-    streamRef.current = stream;
-    const [track] = stream.getAudioTracks();
-    if (!track) throw new Error('오디오 트랙 없음');
-
-    try {
-      if (track && 'contentHint' in track) track.contentHint = 'speech';
-    } catch {}
-
-    trackRef.current = track;
-
-    // 시작~
-    await senderRef.current.replaceTrack(track);
-
-    //
-    await initRecorder(track);
-
-    setReadyToResume(true);
-  }, []);
-
-  const getAudioSender = (pc: RTCPeerConnection | null) => {
-    return pc?.getSenders().find((s) => s.track?.kind === 'audio') ?? null;
-  };
-
-  const getTranscriptSnapshot = useCallback(() => {
-    const stableText = rawStableData
-      .map((s) => s.transcript)
-      .join(' ')
-      .trim();
-    const liveText = rawLiveData
-      .map((d) => d.delta)
-      .join('')
-      .trim();
-
-    if (!stableText) return liveText;
-    if (!liveText) return stableText;
-    return `${stableText} ${liveText}`.trim();
-  }, [rawLiveData, rawStableData]);
-
-  // 버퍼 커밋후 -> 마지막 텍스트까지 수집
-  // 옵션으로 연결을 유지할지를 받습니다.
-  const tflushAndStop = useCallback(
-    async (opt?: { keepConnection?: boolean }) => {
-      const keepConnection = !!opt?.keepConnection;
-      const dc = dcRef.current;
-
-      // pause
-      const track = streamRef.current?.getAudioTracks()[0];
-      if (track) track.enabled = false;
-
-      if (!dc || dc.readyState !== 'open') {
-        const text = getTranscriptSnapshot();
-
-        if (!keepConnection) {
-          cleanup();
-        }
-      }
-
-      const segments: Transcript[] = [];
-      const deltas: Delta[] = [];
-      let isFinal = false;
-
-      const onMessage = (e: MessageEvent) => {
-        try {
-          const msg = JSON.parse(e.data);
-
-          if (
-            msg.type?.endsWith('input_audio_transcription.delta') &&
-            msg.delta
-          ) {
-            deltas.push(msg as Delta);
-          }
-
-          if (
-            msg.type?.endsWith('input_audio_transcription.completed') &&
-            msg.transcript
-          ) {
-            segments.push(msg as Transcript);
-            isFinal = true;
-          }
-
-          if (
-            (msg.type === 'transcript.final' && msg.text) ||
-            (msg.type?.endsWith('input_audio_transcription.completed') &&
-              msg.transcript)
-          ) {
-            isFinal = true;
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-      dc?.addEventListener('message', onMessage);
-
-      // 지금까지 버퍼 커밋
-      dc?.send(JSON.stringify({ type: 'input_audio_buffer.commit' }));
-
-      await new Promise<void>((resolve) => {
-        const t = setTimeout(() => resolve(), 1200);
-
-        const polling = () =>
-          isFinal ? (clearTimeout(t), resolve()) : setTimeout(polling, 50);
-        polling();
-      });
-
-      dc?.removeEventListener('message', onMessage);
-
-      const stableData = [...rawStableData, ...segments];
-      const liveData = [...rawLiveData, ...deltas];
-
-      const stableText = stableData
-        .map((s) => s.transcript)
-        .join(' ')
-        .trim();
-      const liveText = liveData
-        .map((d) => d.delta)
-        .join(' ')
-        .trim();
-
-      const finalText =
-        stableText && liveText
-          ? `${stableText} ${liveText}`.trim()
-          : stableText || liveText;
-
-      console.log(finalText);
-
-      // 오디오 blob 생성
-      const recorder = mediaRecorderRef.current;
-      let audioBlob: Blob | null = null;
-
-      if (recorder) {
-        audioBlob = await new Promise<Blob>((resolve) => {
-          const run = () => {
-            try {
-              const blob = new Blob(recordChunksRef.current, {
-                type: recorder.mimeType || 'audio/webm',
-              });
-
-              resolve(blob);
-            } catch {
-              resolve(new Blob([]));
-            } finally {
-              recordChunksRef.current = [];
-              mediaRecorderRef.current = null;
-            }
-          };
-
-          try {
-            recorder.requestData?.();
-          } catch {
-            setTimeout(() => {
-              try {
-                recorder.onstop = run;
-                recorder.stop();
-              } catch (error) {
-                run();
-              }
-            }, 200);
-          }
-        });
-      }
-
-      if (!keepConnection) {
-        cleanup();
-      } else {
-        // 연결은 유지합니다.
-        try {
-          streamRef.current?.getTracks().forEach((t) => {
-            try {
-              t.stop();
-            } catch {}
-          });
-        } finally {
-          streamRef.current = null;
-          trackRef.current = null;
-
-          setReadyToRecording(false);
-          setReadyToResume(false);
-        }
-      }
-
-      return {
-        text: finalText,
-        segments: stableData,
-        deltas: liveData,
-        audioBlob: audioBlob,
-      };
-    },
-    [cleanup, getTranscriptSnapshot, rawLiveData, rawStableData],
-  );
-
-  const flushAndStop = useCallback(
-    async (opt?: { keepConnection?: boolean }) => {
-      const keepConnection = !!opt?.keepConnection;
-
-      try {
-        // 0) 송출 일시 정지
-        const track = streamRef.current?.getAudioTracks()[0];
-        if (track) track.enabled = false;
-        try {
-          mediaRecorderRef.current?.pause();
-        } catch {}
-
-        const dc = dcRef.current;
-        const pc = pcRef.current;
-
-        // 1) DataChannel이 없거나 열려있지 않다면: 스냅샷으로 즉시 반환
-        if (!dc || dc.readyState !== 'open') {
-          const text = getTranscriptSnapshot();
-
-          if (!keepConnection) cleanup();
-          else {
-            // 연결 유지 시 트랙만 정리
-            try {
-              streamRef.current?.getTracks().forEach((t) => {
-                try {
-                  t.stop();
-                } catch {}
-              });
-            } finally {
-              streamRef.current = null;
-              trackRef.current = null;
-              setReadyToRecording(false);
-              setReadyToResume(false);
-            }
-          }
-
-          // 녹음본 정리 (있으면)
-          let audioBlob: Blob | null = null;
-          if (mediaRecorderRef.current) {
-            audioBlob = await new Promise<Blob>((resolve) => {
-              const rec = mediaRecorderRef.current!;
-              const run = () => {
-                try {
-                  const blob = new Blob(recordChunksRef.current, {
-                    type: rec.mimeType || 'audio/webm',
-                  });
-                  resolve(blob);
-                } catch {
-                  resolve(new Blob([]));
-                } finally {
-                  recordChunksRef.current = [];
-                  mediaRecorderRef.current = null;
-                }
-              };
-              try {
-                rec.requestData?.();
-
-                setTimeout(() => {
-                  try {
-                    rec.onstop = run;
-                    rec.stop();
-                  } catch {
-                    run();
-                  }
-                }, 100);
-              } catch {
-                run();
-              }
-            });
-          }
-
-          return {
-            text,
-            segments: rawStableData,
-            deltas: rawLiveData,
-            audioBlob,
-          };
-        }
-
-        // 2) 열린 DataChannel: 커밋 후 최종 델타를 잠시 더 수집
-        const collectedSegments: Transcript[] = [];
-        const collectedDeltas: Delta[] = [];
-        let sawFinal = false;
-
-        const onMessage = (e: MessageEvent) => {
-          try {
-            const msg = JSON.parse(e.data);
-            if (
-              msg.type?.endsWith('input_audio_transcription.delta') &&
-              msg.delta
-            ) {
-              collectedDeltas.push(msg as Delta);
-            }
-            if (
-              msg.type?.endsWith('input_audio_transcription.completed') &&
-              msg.transcript
-            ) {
-              collectedSegments.push(msg as Transcript);
-              sawFinal = true;
-            }
-            if (msg.type === 'transcript.final' && msg.text) {
-              sawFinal = true;
-            }
-          } catch {}
-        };
-
-        // addEventListener가 없는 브라우저 대비
-        const removeListener = (() => {
-          if ('addEventListener' in dc) {
-            dc.addEventListener('message', onMessage as any);
-            return () => {
-              try {
-                dc.removeEventListener('message', onMessage as any);
-              } catch {}
-            };
-          } else {
-            const prev = (dc as any).onmessage;
-            (dc as any).onmessage = (ev: MessageEvent) => {
-              prev?.(ev);
-              onMessage(ev);
-            };
-            return () => {
-              try {
-                (dc as any).onmessage = prev;
-              } catch {}
-            };
-          }
-        })();
-
-        // 커밋 전: 혹시 버퍼가 비어있으면 의미 없음이므로 그냥 진행
-        try {
-          dc.send(JSON.stringify({ type: 'input_audio_buffer.commit' }));
-        } catch {}
-
-        // 3) 레이스
-        await Promise.race([
-          new Promise<void>((resolve) => {
-            const start = performance.now();
-            const tick = () => {
-              if (sawFinal) return resolve();
-              if (performance.now() - start > 1500) return resolve();
-              setTimeout(tick, 40);
-            };
-            tick();
-          }),
-          // 안전망: DataChannel이 갑자기 닫혀도 끝내기
-          new Promise<void>((resolve) => {
-            const check = () => {
-              if (!pc || !dc || dc.readyState !== 'open') return resolve();
-              setTimeout(check, 60);
-            };
-            check();
-          }),
-        ]);
-
-        removeListener();
-
-        // 4) 최종 텍스트 병합
-        const stableData = [...rawStableData, ...collectedSegments];
-        const liveData = [...rawLiveData, ...collectedDeltas];
-
-        const stableText = stableData
-          .map((s) => s.transcript)
-          .join(' ')
-          .trim();
-        const liveText = liveData
-          .map((d) => d.delta)
-          .join('')
-          .trim();
-        const finalText =
-          stableText && liveText
-            ? `${stableText} ${liveText}`.trim()
-            : stableText || liveText;
-
-        // 5) 오디오 Blob 생성
-        let audioBlob: Blob | null = null;
-        if (mediaRecorderRef.current) {
-          audioBlob = await new Promise<Blob>((resolve) => {
-            const rec = mediaRecorderRef.current!;
-            const run = () => {
-              try {
-                const blob = new Blob(recordChunksRef.current, {
-                  type: rec.mimeType || 'audio/webm',
-                });
-                resolve(blob);
-              } catch {
-                resolve(new Blob([]));
-              } finally {
-                recordChunksRef.current = [];
-                mediaRecorderRef.current = null;
-              }
-            };
-            try {
-              rec.requestData?.();
-            } catch {}
-            // stop이 예외나도 반드시 resolve
-            setTimeout(() => {
-              try {
-                rec.onstop = run;
-                rec.stop();
-              } catch {
-                run();
-              }
-            }, 100);
-          });
-        }
-
-        // 6) 연결 정리/유지
-        if (!keepConnection) {
-          cleanup();
-        } else {
-          try {
-            streamRef.current?.getTracks().forEach((t) => {
-              try {
-                t.stop();
-              } catch {}
-            });
-          } finally {
-            streamRef.current = null;
-            trackRef.current = null;
-            setReadyToRecording(false);
-            setReadyToResume(false);
-          }
-        }
-
-        return {
-          text: finalText,
-          segments: stableData,
-          deltas: liveData,
-          audioBlob,
-        };
-      } catch (e) {
-        console.error('flushAndStop error', e);
-        if (!opt?.keepConnection) {
-          try {
-            cleanup();
-          } catch {}
-        }
-        return {
-          text: getTranscriptSnapshot(),
-          segments: rawStableData,
-          deltas: rawLiveData,
-          audioBlob: null,
-          error: String(e),
-        };
-      }
-    },
-    [cleanup, getTranscriptSnapshot, rawLiveData, rawStableData],
-  );
-
-  // 탭과 마이크 전환 (테스트용)
-  const switchAudioSource = useCallback(async (source: AudioSource) => {
-    const pc = pcRef.current;
-    const sender = senderRef.current ?? getAudioSender(pc);
-
-    if (!pc || !sender) throw new Error('오디오 송신자 없음');
-
-    let newStream: MediaStream;
-
-    if (source === 'mic') {
-      newStream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true,
-        },
-      });
-    } else {
-      const displayStream = await navigator.mediaDevices.getDisplayMedia({
-        video: true,
-        audio: true,
-      });
-
-      displayStream.getVideoTracks().forEach((t) => t.stop());
       const audio = displayStream.getAudioTracks();
 
       if (!audio.length)
         throw new Error(
           '탭 오디오를 사용할 수 없습니다. 오디오가 활성화된 탭을 선택하세요.',
         );
-      newStream = new MediaStream([audio[0]]);
+
+      stream = new MediaStream([audio[0]]);
     }
 
-    const [newTrack] = newStream.getAudioTracks();
-    if (!newTrack) throw new Error('새 오디오 트랙이 없습니다.');
+    streamRef.current = stream;
+    const [track] = stream.getAudioTracks();
+    if (!track) throw new Error('오디오 트랙 없음');
 
     try {
-      if (newTrack && 'contentHint' in newTrack)
-        newTrack.contentHint = 'speech';
+      if (track && 'contentHint' in track) track.contentHint = 'speech';
     } catch {}
 
-    // 기존 트랙을 교체함.
-    await sender.replaceTrack(newTrack);
+    track.enabled = false; // 송출 x
+    await senderRef.current.replaceTrack(track);
 
-    streamRef.current?.getTracks().forEach((t) => {
-      try {
-        t.stop();
-      } catch {}
-    });
-    streamRef.current = newStream;
-
-    trackRef.current = newTrack;
-    newTrack.enabled = true;
-    setPaused(false);
-    setAudioSource(source);
+    setCanResume(true);
+    setRecStatus('prepared');
   }, []);
 
-  // 정지
-  const pauseTranscription = useCallback(() => {
-    const track = streamRef.current?.getAudioTracks()[0];
+  // ==============================================================
+  // ---- recorder  ----
+  const startRecorder = useCallback(async (track: MediaStreamTrack) => {
+    if (mediaRecorderRef.current) return;
 
-    if (track) {
-      track.enabled = false;
+    const stream = new MediaStream([track]);
 
-      setPaused(true);
-    }
+    let mime = '';
+    if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus'))
+      mime = 'audio/webm;codecs=opus';
+    else if (MediaRecorder.isTypeSupported('audio/webm')) mime = 'audio/webm';
+
+    const rec = new MediaRecorder(
+      stream,
+      mime ? { mimeType: mime } : undefined,
+    );
+    mediaRecorderRef.current = rec;
+    recordChunksRef.current = [];
+
+    rec.ondataavailable = (e) => {
+      if (e.data && e.data.size > 0) {
+        recordChunksRef.current.push(e.data);
+      }
+    };
+    rec.start(250);
   }, []);
 
-  // 재개
+  // ==============================================================
+  // ---- resume / pause  ----
   const resumeTranscription = useCallback(async () => {
     const track = streamRef.current?.getAudioTracks()[0];
-
     if (!track) return;
 
-    if (!mediaRecorderRef.current) {
-      await initRecorder(track);
-    }
-
+    await startRecorder(track);
     track.enabled = true;
 
     try {
       mediaRecorderRef.current?.resume();
     } catch {}
 
-    setPaused(false);
+    setRecStatus('recording');
+  }, [startRecorder]);
+
+  const pauseTranscription = useCallback(() => {
+    const track = streamRef.current?.getAudioTracks()[0];
+    if (track) track.enabled = false;
+
+    setRecStatus('paused');
   }, []);
 
-  const initRecorder = async (track: MediaStreamTrack) => {
-    // 무음 클론 금지
-    // const cloned = track.clone();
-    // const stream = new MediaStream([cloned]);
+  // ==============================================================
+  // ---- flush, stop  ----
+  const flushAndStop = useCallback(
+    async (opt?: { keepConnection?: boolean }) => {
+      const keepConnection = !!opt?.keepConnection;
 
-    const stream = new MediaStream([track]);
+      // 1. 송출 pause
+      try {
+        if (streamRef.current?.getAudioTracks()[0]) {
+          streamRef.current.getAudioTracks()[0].enabled = false;
+        }
+      } catch {}
 
-    const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
-      ? 'audio/webm;codecs=opus'
-      : MediaRecorder.isTypeSupported('audio/webm')
-        ? 'audio/webm'
-        : '';
+      try {
+        mediaRecorderRef.current?.pause();
+      } catch {}
 
-    const recorder = new MediaRecorder(
-      stream,
-      mimeType ? { mimeType } : undefined,
-    );
+      //
+      const dc = dcRef.current;
+      const pc = pcRef.current;
 
-    mediaRecorderRef.current = recorder;
-    recordChunksRef.current = [];
+      // 2. 데이터채널이 없다면 -> 스냅샷 반환
+      if (!dc || dc.readyState !== 'open') {
+        const audioBlob = await finalizeBlob();
+        const text = getTranscriptSnapshot();
 
-    recorder.ondataavailable = (e) => {
-      if (e.data && e.data.size > 0) {
-        recordChunksRef.current.push(e.data);
+        if (!keepConnection) {
+          cleanup();
+        } else {
+          clearStreams();
+        }
+
+        return {
+          text,
+          segments: rawStableData,
+          deltas: rawLiveData,
+          audioBlob,
+        };
       }
-    };
-    recorder.onstop = () => {};
 
-    recorder.start(250);
-    setReadyToRecording(true);
+      // 3. 커밋 직후 짧게 수집
+      const segments: Transcript[] = [];
+      const deltas: Delta[] = [];
+      let isFinalText = false;
+
+      const onMessage = (e: MessageEvent) => {
+        try {
+          const msg = JSON.parse(e.data);
+          if (
+            msg.type?.endsWith('input_audio_transcription.delta') &&
+            msg.delta
+          ) {
+            deltas.push(msg as Delta);
+          }
+          if (
+            msg.type?.endsWith('input_audio_transcription.completed') &&
+            msg.transcript
+          ) {
+            segments.push(msg as Transcript);
+            isFinalText = true;
+          }
+          if (msg.type === 'transcript.final' && msg.text) {
+            isFinalText = true;
+          }
+        } catch {}
+      };
+
+      const removeListener = attachDcListener(dc, onMessage);
+      try {
+        dc.send(JSON.stringify({ type: 'input_audio_buffer.commit' }));
+      } catch {}
+
+      await Promise.race([
+        waitFinalFlag(() => isFinalText, 1500),
+        waitDcClose(pc, dc),
+      ]);
+
+      removeListener();
+
+      // 4. 최종 텍스트 조립
+      const stableData = [...rawStableData, ...segments];
+      const liveData = [...rawLiveData, ...deltas];
+      const s = stableData
+        .map((v) => v.transcript)
+        .join(' ')
+        .trim();
+      const l = liveData
+        .map((v) => v.delta)
+        .join('')
+        .trim();
+      const finalText = s && l ? `${s} ${l}`.trim() : s || l;
+
+      // 5. blob 정리
+      const audioBlob = await finalizeBlob();
+
+      // 6. 연결 유지 / 정리
+      if (!keepConnection) {
+        cleanup();
+      } else {
+        clearStreams();
+      }
+
+      return {
+        text: finalText,
+        segments: stableData,
+        deltas: liveData,
+        audioBlob,
+      };
+    },
+    [cleanup, getTranscriptSnapshot, rawLiveData, rawStableData],
+  );
+
+  // ==============================================================
+  // ---- helpers  ----
+  const finalizeBlob = async (): Promise<Blob | null> => {
+    const rec = mediaRecorderRef.current;
+
+    if (!rec) return null;
+
+    return await new Promise<Blob>((resolve) => {
+      // run
+      const run = () => {
+        try {
+          const blob = new Blob(recordChunksRef.current, {
+            type: rec.mimeType || 'audio/webm',
+          });
+          resolve(blob);
+        } catch {
+          resolve(new Blob([]));
+        } finally {
+          recordChunksRef.current = [];
+          mediaRecorderRef.current = null;
+        }
+      };
+
+      // try catch
+      try {
+        rec.requestData?.();
+      } catch {}
+
+      // time
+      setTimeout(() => {
+        try {
+          (rec as any).onstop = run;
+          rec.stop();
+        } catch {
+          run();
+        }
+      }, 100);
+    });
   };
 
+  const clearStreams = () => {
+    try {
+      streamRef.current?.getTracks().forEach((track) => {
+        try {
+          track.stop();
+        } catch {}
+      });
+    } finally {
+      streamRef.current = null;
+      setCanResume(false);
+      setRecStatus('idle');
+      setConnStatus('connected');
+    }
+  };
+
+  const attachDcListener = (
+    dc: RTCDataChannel,
+    onMessage: (e: MessageEvent) => void,
+  ) => {
+    if ('addEventListener' in dc) {
+      dc.addEventListener('message', onMessage as any);
+
+      return () => {
+        try {
+          dc.removeEventListener('message', onMessage as any);
+        } catch {}
+      };
+    } else {
+      const prev = (dc as any).onmessage;
+
+      (dc as any).onmessage = (e: MessageEvent) => {
+        prev?.(e);
+        onMessage(e);
+      };
+
+      return () => {
+        try {
+          (dc as any).onmessage = prev;
+        } catch {}
+      };
+    }
+  };
+
+  const waitFinalFlag = (isDone: () => boolean, timeoutMs: number) => {
+    return new Promise<void>((resolve) => {
+      const start = performance.now();
+
+      const tick = () => {
+        if (isDone()) return resolve();
+        if (performance.now() - start > timeoutMs) return resolve();
+        setTimeout(tick, 40);
+      };
+
+      tick();
+    });
+  };
+
+  const waitDcClose = (
+    pc: RTCPeerConnection | null,
+    dc: RTCDataChannel | null,
+  ) => {
+    return new Promise<void>((resolve) => {
+      const check = () => {
+        if (!pc || !dc || dc.readyState !== 'open') return resolve();
+        setTimeout(check, 60);
+      };
+      check();
+    });
+  };
+
+  // ==============================================================
+  // ---- switch source  ----
+  const switchAudioSource = useCallback(
+    async (source: AudioSource) => {
+      const pc = pcRef.current;
+      const sender = senderRef.current;
+
+      if (!pc || !sender) throw new Error('오디오 송신자 없음');
+
+      let newStream: MediaStream;
+
+      if (source === 'mic') {
+        newStream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true,
+          },
+        });
+      } else {
+        const displayStream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: true,
+        });
+
+        displayStream.getVideoTracks().forEach((t) => t.stop());
+        const audio = displayStream.getAudioTracks();
+
+        if (!audio.length)
+          throw new Error(
+            '탭 오디오를 사용할 수 없습니다. 오디오가 활성화된 탭을 선택하세요.',
+          );
+        newStream = new MediaStream([audio[0]]);
+      }
+
+      const [newTrack] = newStream.getAudioTracks();
+
+      try {
+        if (newTrack && 'contentHint' in newTrack)
+          newTrack.contentHint = 'speech';
+      } catch {}
+
+      // 기존 트랙을 교체함.
+      await sender.replaceTrack(newTrack);
+
+      try {
+        streamRef.current?.getTracks().forEach((t) => {
+          try {
+            t.stop();
+          } catch {}
+        });
+      } catch (error) {}
+      streamRef.current = newStream;
+
+      newTrack.enabled = recStatus === 'recording';
+      setAudioSource(source);
+    },
+    [recStatus],
+  );
+
+  // ==============================================================
+  // ---- useEffect  ----
   useEffect(() => () => cleanup(), [cleanup]);
 
   return {
-    connected,
-    audioSource,
-    paused,
-    canResume: readyToResume,
+    // 상태
+    connStatus,
+    recStatus,
+    connected: connStatus === 'connected',
+    isRecording: recStatus === 'recording',
+    canResume,
 
     // 텍스트
     stable,
     live,
     rawStableData,
     rawLiveData,
+    getTranscriptSnapshot,
+    resetText,
 
     // 제어
     connectTranscription,
-    flushAndStop,
-    stop: cleanup,
-    resetText,
-    getTranscriptSnapshot,
     prepareAudioTrack,
-
-    // 제어 2
-    switchAudioSource,
-    pauseTranscription,
     resumeTranscription,
+    pauseTranscription,
+    flushAndStop,
+    switchAudioSource,
+    stop: cleanup,
 
-    // refs
     refs: { pcRef, dcRef, streamRef },
-
-    // 레거시
-
-    startSendingAudio,
   };
 };

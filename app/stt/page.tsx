@@ -1,17 +1,19 @@
 'use client';
 
-import { useRealtimeTranscribe } from '@/utils/hooks/useRealtimeTranscribe';
+import { useTranscribe } from '@/utils/hooks/useRealtimeTranscribe';
+import { testUploadAudio } from '@/utils/services/stt';
 import { useEffect, useRef, useState } from 'react';
 
 const Page = () => {
   const {
     connected,
+    isRecording,
     connectTranscription,
     prepareAudioTrack,
     resumeTranscription,
     canResume,
     flushAndStop,
-  } = useRealtimeTranscribe({
+  } = useTranscribe({
     onEvent: (e: any) => {},
   });
 
@@ -21,6 +23,8 @@ const Page = () => {
     size: number;
     type: string;
   } | null>(null);
+
+  const [lastBlob, setLastBlob] = useState<Blob | null>(null);
 
   useEffect(() => {
     return () => {
@@ -46,6 +50,10 @@ const Page = () => {
       <div>
         {'canResume: '}
         {canResume ? 'true' : 'false'}
+      </div>
+      <div>
+        {'isRecording: '}
+        {isRecording ? 'true' : 'false'}
       </div>
 
       <button
@@ -81,6 +89,8 @@ const Page = () => {
           console.log(end);
 
           if (end.audioBlob && end.audioBlob.size > 0) {
+            setLastBlob(end.audioBlob);
+
             if (audioUrl) URL.revokeObjectURL(audioUrl);
 
             const url = URL.createObjectURL(end.audioBlob);
@@ -120,6 +130,33 @@ const Page = () => {
           bytes
         </div>
       )}
+
+      <div>
+        <button
+          style={{ backgroundColor: 'lightgray', padding: '5px 10px' }}
+          onClick={async () => {
+            if (!lastBlob || lastBlob.size === 0) {
+              alert('나가');
+              return;
+            }
+
+            const fileType = lastBlob.type || 'audio/webm';
+            const fileName = 'test.webm';
+            const file = new File([lastBlob], fileName, { type: fileType });
+
+            try {
+              const res = await testUploadAudio(file);
+              console.log(res);
+              alert('업로드 성공');
+            } catch (error) {
+              console.error(error);
+              alert('업로드 실패');
+            }
+          }}
+        >
+          업로드
+        </button>
+      </div>
     </div>
   );
 };
