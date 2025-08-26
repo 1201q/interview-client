@@ -276,9 +276,6 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
 
     await senderRef.current.replaceTrack(track);
 
-    // recorder 세팅
-    await initRecorder(track);
-
     // 준비 완료!
     setReadyToResume(true);
   }, []);
@@ -361,7 +358,7 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
 
   // 버퍼 커밋후 -> 마지막 텍스트까지 수집
   // 옵션으로 연결을 유지할지를 받습니다.
-  const flushAndStop = useCallback(
+  const tflushAndStop = useCallback(
     async (opt?: { keepConnection?: boolean }) => {
       const keepConnection = !!opt?.keepConnection;
       const dc = dcRef.current;
@@ -376,8 +373,6 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
         if (!keepConnection) {
           cleanup();
         }
-
-        return { text, segments: rawStableData, deltas: rawLiveData };
       }
 
       const segments: Transcript[] = [];
@@ -447,6 +442,8 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
           ? `${stableText} ${liveText}`.trim()
           : stableText || liveText;
 
+      console.log(finalText);
+
       // 오디오 blob 생성
       const recorder = mediaRecorderRef.current;
       let audioBlob: Blob | null = null;
@@ -508,6 +505,256 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
         deltas: liveData,
         audioBlob: audioBlob,
       };
+    },
+    [cleanup, getTranscriptSnapshot, rawLiveData, rawStableData],
+  );
+
+  const flushAndStop = useCallback(
+    async (opt?: { keepConnection?: boolean }) => {
+      const keepConnection = !!opt?.keepConnection;
+
+      try {
+        // 0) 송출 일시 정지
+        const track = streamRef.current?.getAudioTracks()[0];
+        if (track) track.enabled = false;
+        try {
+          mediaRecorderRef.current?.pause();
+        } catch {}
+
+        const dc = dcRef.current;
+        const pc = pcRef.current;
+
+        // 1) DataChannel이 없거나 열려있지 않다면: 스냅샷으로 즉시 반환
+        if (!dc || dc.readyState !== 'open') {
+          const text = getTranscriptSnapshot();
+
+          if (!keepConnection) cleanup();
+          else {
+            // 연결 유지 시 트랙만 정리
+            try {
+              streamRef.current?.getTracks().forEach((t) => {
+                try {
+                  t.stop();
+                } catch {}
+              });
+            } finally {
+              streamRef.current = null;
+              trackRef.current = null;
+              setReadyToRecording(false);
+              setReadyToResume(false);
+            }
+          }
+
+          // 녹음본 정리 (있으면)
+          let audioBlob: Blob | null = null;
+          if (mediaRecorderRef.current) {
+            audioBlob = await new Promise<Blob>((resolve) => {
+              const rec = mediaRecorderRef.current!;
+              const run = () => {
+                try {
+                  const blob = new Blob(recordChunksRef.current, {
+                    type: rec.mimeType || 'audio/webm',
+                  });
+                  resolve(blob);
+                } catch {
+                  resolve(new Blob([]));
+                } finally {
+                  recordChunksRef.current = [];
+                  mediaRecorderRef.current = null;
+                }
+              };
+              try {
+                rec.requestData?.();
+
+                setTimeout(() => {
+                  try {
+                    rec.onstop = run;
+                    rec.stop();
+                  } catch {
+                    run();
+                  }
+                }, 100);
+              } catch {
+                run();
+              }
+            });
+          }
+
+          return {
+            text,
+            segments: rawStableData,
+            deltas: rawLiveData,
+            audioBlob,
+          };
+        }
+
+        // 2) 열린 DataChannel: 커밋 후 최종 델타를 잠시 더 수집
+        const collectedSegments: Transcript[] = [];
+        const collectedDeltas: Delta[] = [];
+        let sawFinal = false;
+
+        const onMessage = (e: MessageEvent) => {
+          try {
+            const msg = JSON.parse(e.data);
+            if (
+              msg.type?.endsWith('input_audio_transcription.delta') &&
+              msg.delta
+            ) {
+              collectedDeltas.push(msg as Delta);
+            }
+            if (
+              msg.type?.endsWith('input_audio_transcription.completed') &&
+              msg.transcript
+            ) {
+              collectedSegments.push(msg as Transcript);
+              sawFinal = true;
+            }
+            if (msg.type === 'transcript.final' && msg.text) {
+              sawFinal = true;
+            }
+          } catch {}
+        };
+
+        // addEventListener가 없는 브라우저 대비
+        const removeListener = (() => {
+          if ('addEventListener' in dc) {
+            dc.addEventListener('message', onMessage as any);
+            return () => {
+              try {
+                dc.removeEventListener('message', onMessage as any);
+              } catch {}
+            };
+          } else {
+            const prev = (dc as any).onmessage;
+            (dc as any).onmessage = (ev: MessageEvent) => {
+              prev?.(ev);
+              onMessage(ev);
+            };
+            return () => {
+              try {
+                (dc as any).onmessage = prev;
+              } catch {}
+            };
+          }
+        })();
+
+        // 커밋 전: 혹시 버퍼가 비어있으면 의미 없음이므로 그냥 진행
+        try {
+          dc.send(JSON.stringify({ type: 'input_audio_buffer.commit' }));
+        } catch {}
+
+        // 3) 레이스
+        await Promise.race([
+          new Promise<void>((resolve) => {
+            const start = performance.now();
+            const tick = () => {
+              if (sawFinal) return resolve();
+              if (performance.now() - start > 1500) return resolve();
+              setTimeout(tick, 40);
+            };
+            tick();
+          }),
+          // 안전망: DataChannel이 갑자기 닫혀도 끝내기
+          new Promise<void>((resolve) => {
+            const check = () => {
+              if (!pc || !dc || dc.readyState !== 'open') return resolve();
+              setTimeout(check, 60);
+            };
+            check();
+          }),
+        ]);
+
+        removeListener();
+
+        // 4) 최종 텍스트 병합
+        const stableData = [...rawStableData, ...collectedSegments];
+        const liveData = [...rawLiveData, ...collectedDeltas];
+
+        const stableText = stableData
+          .map((s) => s.transcript)
+          .join(' ')
+          .trim();
+        const liveText = liveData
+          .map((d) => d.delta)
+          .join('')
+          .trim();
+        const finalText =
+          stableText && liveText
+            ? `${stableText} ${liveText}`.trim()
+            : stableText || liveText;
+
+        // 5) 오디오 Blob 생성
+        let audioBlob: Blob | null = null;
+        if (mediaRecorderRef.current) {
+          audioBlob = await new Promise<Blob>((resolve) => {
+            const rec = mediaRecorderRef.current!;
+            const run = () => {
+              try {
+                const blob = new Blob(recordChunksRef.current, {
+                  type: rec.mimeType || 'audio/webm',
+                });
+                resolve(blob);
+              } catch {
+                resolve(new Blob([]));
+              } finally {
+                recordChunksRef.current = [];
+                mediaRecorderRef.current = null;
+              }
+            };
+            try {
+              rec.requestData?.();
+            } catch {}
+            // stop이 예외나도 반드시 resolve
+            setTimeout(() => {
+              try {
+                rec.onstop = run;
+                rec.stop();
+              } catch {
+                run();
+              }
+            }, 100);
+          });
+        }
+
+        // 6) 연결 정리/유지
+        if (!keepConnection) {
+          cleanup();
+        } else {
+          try {
+            streamRef.current?.getTracks().forEach((t) => {
+              try {
+                t.stop();
+              } catch {}
+            });
+          } finally {
+            streamRef.current = null;
+            trackRef.current = null;
+            setReadyToRecording(false);
+            setReadyToResume(false);
+          }
+        }
+
+        return {
+          text: finalText,
+          segments: stableData,
+          deltas: liveData,
+          audioBlob,
+        };
+      } catch (e) {
+        console.error('flushAndStop error', e);
+        if (!opt?.keepConnection) {
+          try {
+            cleanup();
+          } catch {}
+        }
+        return {
+          text: getTranscriptSnapshot(),
+          segments: rawStableData,
+          deltas: rawLiveData,
+          audioBlob: null,
+          error: String(e),
+        };
+      }
     },
     [cleanup, getTranscriptSnapshot, rawLiveData, rawStableData],
   );
@@ -576,31 +823,35 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
     if (track) {
       track.enabled = false;
 
-      try {
-        mediaRecorderRef.current?.pause();
-      } catch {}
-
       setPaused(true);
     }
   }, []);
 
   // 재개
-  const resumeTranscription = useCallback(() => {
+  const resumeTranscription = useCallback(async () => {
     const track = streamRef.current?.getAudioTracks()[0];
-    if (track) {
-      track.enabled = true;
 
-      try {
-        mediaRecorderRef.current?.resume();
-      } catch {}
+    if (!track) return;
 
-      setPaused(false);
+    if (!mediaRecorderRef.current) {
+      await initRecorder(track);
     }
+
+    track.enabled = true;
+
+    try {
+      mediaRecorderRef.current?.resume();
+    } catch {}
+
+    setPaused(false);
   }, []);
 
   const initRecorder = async (track: MediaStreamTrack) => {
-    const cloned = track.clone();
-    const stream = new MediaStream([cloned]);
+    // 무음 클론 금지
+    // const cloned = track.clone();
+    // const stream = new MediaStream([cloned]);
+
+    const stream = new MediaStream([track]);
 
     const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
       ? 'audio/webm;codecs=opus'
@@ -623,7 +874,7 @@ export const useRealtimeTranscribe = (options: RealtimeOptions) => {
     };
     recorder.onstop = () => {};
 
-    recorder.start();
+    recorder.start(250);
     setReadyToRecording(true);
   };
 

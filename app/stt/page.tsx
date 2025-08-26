@@ -1,35 +1,125 @@
 'use client';
 
 import { useRealtimeTranscribe } from '@/utils/hooks/useRealtimeTranscribe';
+import { useEffect, useRef, useState } from 'react';
 
 const Page = () => {
-  const { connected, stable, live, start, flushAndStop, resetText } =
-    useRealtimeTranscribe({
-      onEvent: (e: any) => {
-        console.log(e);
-      },
-    });
+  const {
+    connected,
+    connectTranscription,
+    prepareAudioTrack,
+    resumeTranscription,
+    canResume,
+    flushAndStop,
+  } = useRealtimeTranscribe({
+    onEvent: (e: any) => {},
+  });
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [blobInfo, setBlobInfo] = useState<{
+    size: number;
+    type: string;
+  } | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (audioUrl) URL.revokeObjectURL(audioUrl);
+    };
+  }, [audioUrl]);
 
   return (
-    <div style={{ padding: 16 }}>
-      <div style={{ display: 'flex', gap: 8 }}>
-        <button onClick={() => start('mic')} disabled={connected}>
-          Start (mic)
-        </button>
-        <button onClick={() => start('tab')} disabled={connected}>
-          Start (tab)
-        </button>
-        <button onClick={() => flushAndStop()} disabled={!connected}>
-          Stop (Flush & Close)
-        </button>
-        <button onClick={resetText}>Clear Text</button>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        rowGap: '10px',
+        padding: 36,
+      }}
+    >
+      <div>
+        {'connected: '}
+        {connected ? 'connected' : 'disconnected'}
       </div>
-      <h4>{connected ? '연결' : '연결 끊김'}</h4>
-      <h3 style={{ marginTop: 16 }}>확정 텍스트</h3>
-      <pre style={{ whiteSpace: 'pre-wrap' }}>{stable}</pre>
+      <div>
+        {'canResume: '}
+        {canResume ? 'true' : 'false'}
+      </div>
 
-      <h3>진행 중(델타)</h3>
-      <pre style={{ whiteSpace: 'pre-wrap', opacity: 0.6 }}>{live}</pre>
+      <button
+        style={{ backgroundColor: 'lightgray', padding: '5px 10px' }}
+        onClick={async () => {
+          await connectTranscription();
+        }}
+      >
+        connect Transcription
+      </button>
+      <button
+        style={{ backgroundColor: 'lightgray', padding: '5px 10px' }}
+        onClick={async () => {
+          await prepareAudioTrack('tab');
+        }}
+      >
+        prepareAudioTrack
+      </button>
+      <button
+        style={{ backgroundColor: 'lightgray', padding: '5px 10px' }}
+        onClick={() => {
+          resumeTranscription();
+        }}
+      >
+        resumeTranscription
+      </button>
+
+      <button
+        style={{ backgroundColor: 'lightgray', padding: '5px 10px' }}
+        onClick={async () => {
+          const end = await flushAndStop();
+
+          console.log(end);
+
+          if (end.audioBlob && end.audioBlob.size > 0) {
+            if (audioUrl) URL.revokeObjectURL(audioUrl);
+
+            const url = URL.createObjectURL(end.audioBlob);
+
+            setAudioUrl(url);
+            setBlobInfo({ size: end.audioBlob.size, type: end.audioBlob.type });
+
+            try {
+              if (audioRef.current) {
+                audioRef.current.src = url;
+                await audioRef.current.play();
+              }
+            } catch (error) {
+              console.log('press play');
+            }
+          } else {
+            alert('audioblob 없음');
+          }
+        }}
+      >
+        flushAndStop
+      </button>
+      <audio
+        ref={audioRef}
+        controls
+        style={{ width: 400 }}
+        src={audioUrl ?? undefined}
+      />
+      {audioUrl && (
+        <a href={audioUrl} download="recording.webm" style={{ marginTop: 8 }}>
+          Download recording
+        </a>
+      )}
+      {blobInfo && (
+        <div style={{ opacity: 0.7 }}>
+          blob type: {blobInfo.type || '(unknown)'} / size: {blobInfo.size}{' '}
+          bytes
+        </div>
+      )}
     </div>
   );
 };
