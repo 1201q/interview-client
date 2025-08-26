@@ -2,6 +2,7 @@ import {
   getInterviewSessionDetail,
   startAnswer,
   startInterviewSession,
+  submitAnswer,
   testSubmitAnswer,
 } from '@/utils/services/interviewSession';
 import {
@@ -103,7 +104,11 @@ export const StartAnswerCountdownAtom = atom(
 
 export const SubmitAnswerAtom = atom(
   null,
-  async (get, set, update: { sessionId: string }) => {
+  async (
+    get,
+    set,
+    update: { sessionId: string; audioBlob: Blob | null; answerText: string },
+  ) => {
     const currentQuestion = get(CurrentSessionQuestionAtom);
     const clientPhase = get(ClientInterviewPhaseAtom);
 
@@ -111,7 +116,12 @@ export const SubmitAnswerAtom = atom(
     if (!currentQuestion) return;
 
     try {
-      const res = await testSubmitAnswer(update.sessionId, currentQuestion.id);
+      const res = await submitAnswer({
+        sessionId: update.sessionId,
+        sqId: currentQuestion.id,
+        audioBlob: update.audioBlob,
+        answerText: update.answerText,
+      });
 
       if (!res.finished) {
         set(RefreshSessionQuestionsAtom, update.sessionId);

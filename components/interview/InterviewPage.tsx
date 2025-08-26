@@ -13,14 +13,12 @@ import InterviewSubmitButton from './InterviewSubmitButton';
 import InterviewTimebar from './InterviewTimebar';
 import { InterviewPhase as InterviewPhaseType } from '@/utils/types/interview';
 import InterviewTimer from './InterviewTimer';
-import { QUESTION_MOCK_DATA } from '@/utils/constants/question.mock';
-import { useRealtimeTranscribe } from '@/utils/hooks/useRealtimeTranscribe';
+import { useTranscribe } from '@/utils/hooks/useTranscribe';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import {
   ClientInterviewPhaseAtom,
   CurrentSessionQuestionAtom,
   InterviewJobRoleAtom,
-  SessionQuestionsAtom,
   StartAnswerCountdownAtom,
   StartInterviewSessionAtom,
   SubmitAnswerAtom,
@@ -45,7 +43,6 @@ const InterviewPage = ({ sessionId }: { sessionId: string }) => {
 
   const [interviewPhase, setInterviewPhase] = useAtom(ClientInterviewPhaseAtom);
 
-  const questions = useAtomValue(SessionQuestionsAtom);
   const currentQuestion = useAtomValue(CurrentSessionQuestionAtom);
 
   const startInterviewSession = useSetAtom(StartInterviewSessionAtom);
@@ -54,14 +51,14 @@ const InterviewPage = ({ sessionId }: { sessionId: string }) => {
 
   const {
     connected,
-    paused,
+    isRecording,
     canResume,
     rawStableData,
     flushAndStop,
     resumeTranscription,
     connectTranscription,
     prepareAudioTrack,
-  } = useRealtimeTranscribe({
+  } = useTranscribe({
     onEvent: (e: any) => {},
   });
 
@@ -79,11 +76,15 @@ const InterviewPage = ({ sessionId }: { sessionId: string }) => {
     if (interviewPhase !== 'answering') return;
     setInterviewPhase('submitting');
 
-    const textData = await flushAndStop();
+    const data = await flushAndStop();
 
-    console.log(textData);
+    console.log(data);
 
-    submitAnswer({ sessionId: sessionId });
+    submitAnswer({
+      sessionId: sessionId,
+      audioBlob: data.audioBlob,
+      answerText: data.text,
+    });
   };
 
   const handleStartCountdown = useCallback(async () => {
@@ -93,7 +94,7 @@ const InterviewPage = ({ sessionId }: { sessionId: string }) => {
 
     try {
       await connectTranscription();
-      await prepareAudioTrack('mic');
+      await prepareAudioTrack('tab');
 
       startAnswerCountdown(sessionId);
 
@@ -116,7 +117,7 @@ const InterviewPage = ({ sessionId }: { sessionId: string }) => {
     } catch (error) {
       throw new Error('resume 실패');
     }
-  }, [canResume, connected, paused, setInterviewPhase, interviewPhase]);
+  }, [canResume, connected, isRecording, setInterviewPhase, interviewPhase]);
 
   const handleStartInterview = async () => {
     startInterviewSession(sessionId);

@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranscribe } from '@/utils/hooks/useRealtimeTranscribe';
+import { useTranscribe } from '@/utils/hooks/useTranscribe';
 import { testUploadAudio } from '@/utils/services/stt';
 import { useEffect, useRef, useState } from 'react';
 
