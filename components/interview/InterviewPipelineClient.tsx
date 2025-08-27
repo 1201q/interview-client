@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'motion/react';
 
 import InterviewInit from './InterviewInit';
 import { useAtom, useAtomValue } from 'jotai';
+import { useHydrateAtoms } from 'jotai/utils';
 import { InterviewInitAtom, SessionIdAtom } from '@/store/interviewSession';
 import InterviewPage from './InterviewPage';
 import { useEffect } from 'react';
@@ -16,11 +17,11 @@ const InterviewPipelineClient = ({
   sessionId,
 }: InterviewPipelineClientProps) => {
   const interviewInit = useAtomValue(InterviewInitAtom);
-  const [sId, setSId] = useAtom(SessionIdAtom);
+  const sId = useAtomValue(SessionIdAtom);
 
-  useEffect(() => {
-    setSId(sessionId);
-  }, []);
+  useHydrateAtoms([[SessionIdAtom, sessionId]], {
+    dangerouslyForceHydrate: true,
+  });
 
   if (!sId) return null;
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { motion, AnimatePresence, LayoutGroup, Transition } from 'motion/react';
 
 import styles from './styles/interview.module.css';

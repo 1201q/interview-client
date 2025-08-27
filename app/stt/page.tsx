@@ -4,6 +4,8 @@ import { useTranscribe } from '@/utils/hooks/useTranscribe';
 import { testUploadAudio } from '@/utils/services/stt';
 import { useEffect, useRef, useState } from 'react';
 
+import { useTimerController } from '@/utils/hooks/useTimerController';
+
 const Page = () => {
   const {
     connected,
@@ -16,6 +18,19 @@ const Page = () => {
   } = useTranscribe({
     onEvent: (e: any) => {},
   });
+
+  const {
+    progress,
+    start,
+    setDurationMs,
+    setRemainingMs,
+    stop,
+    paused,
+    running,
+    pause,
+    remainingMs,
+    resume,
+  } = useTimerController({ fps: 10 });
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
@@ -33,131 +48,182 @@ const Page = () => {
   }, [audioUrl]);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-        rowGap: '10px',
-        padding: 36,
-      }}
-    >
-      <div>
-        {'connected: '}
-        {connected ? 'connected' : 'disconnected'}
-      </div>
-      <div>
-        {'canResume: '}
-        {canResume ? 'true' : 'false'}
-      </div>
-      <div>
-        {'isRecording: '}
-        {isRecording ? 'true' : 'false'}
-      </div>
-
-      <button
-        style={{ backgroundColor: 'lightgray', padding: '5px 10px' }}
-        onClick={async () => {
-          await connectTranscription();
+    <>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start',
+          rowGap: '10px',
+          padding: 36,
         }}
       >
-        connect Transcription
-      </button>
-      <button
-        style={{ backgroundColor: 'lightgray', padding: '5px 10px' }}
-        onClick={async () => {
-          await prepareAudioTrack('tab');
-        }}
-      >
-        prepareAudioTrack
-      </button>
-      <button
-        style={{ backgroundColor: 'lightgray', padding: '5px 10px' }}
-        onClick={() => {
-          resumeTranscription();
-        }}
-      >
-        resumeTranscription
-      </button>
-
-      <button
-        style={{ backgroundColor: 'lightgray', padding: '5px 10px' }}
-        onClick={async () => {
-          const end = await flushAndStop();
-
-          console.log(end);
-
-          if (end.audioBlob && end.audioBlob.size > 0) {
-            setLastBlob(end.audioBlob);
-
-            if (audioUrl) URL.revokeObjectURL(audioUrl);
-
-            const url = URL.createObjectURL(end.audioBlob);
-
-            setAudioUrl(url);
-            setBlobInfo({ size: end.audioBlob.size, type: end.audioBlob.type });
-
-            try {
-              if (audioRef.current) {
-                audioRef.current.src = url;
-                await audioRef.current.play();
-              }
-            } catch (error) {
-              console.log('press play');
-            }
-          } else {
-            alert('audioblob 없음');
-          }
-        }}
-      >
-        flushAndStop
-      </button>
-      <audio
-        ref={audioRef}
-        controls
-        style={{ width: 400 }}
-        src={audioUrl ?? undefined}
-      />
-      {audioUrl && (
-        <a href={audioUrl} download="recording.webm" style={{ marginTop: 8 }}>
-          Download recording
-        </a>
-      )}
-      {blobInfo && (
-        <div style={{ opacity: 0.7 }}>
-          blob type: {blobInfo.type || '(unknown)'} / size: {blobInfo.size}{' '}
-          bytes
+        <div>
+          <button
+            onClick={() => {
+              start(18000);
+            }}
+          >
+            시작
+          </button>
+          <button
+            onClick={() => {
+              pause();
+            }}
+          >
+            pause
+          </button>
+          <button
+            onClick={() => {
+              resume();
+            }}
+          >
+            resume
+          </button>
+          <button
+            onClick={() => {
+              stop();
+            }}
+          >
+            stop
+          </button>
         </div>
-      )}
+        <div>{progress}</div>
+        <div>{remainingMs}</div>
+        <div>paused : {paused ? 'paused' : '-'}</div>
+        <div>running : {running ? 'running' : '-'}</div>
+      </div>
 
-      <div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start',
+          rowGap: '10px',
+          padding: 36,
+        }}
+      >
+        <div>
+          {'connected: '}
+          {connected ? 'connected' : 'disconnected'}
+        </div>
+        <div>
+          {'canResume: '}
+          {canResume ? 'true' : 'false'}
+        </div>
+        <div>
+          {'isRecording: '}
+          {isRecording ? 'true' : 'false'}
+        </div>
+
         <button
           style={{ backgroundColor: 'lightgray', padding: '5px 10px' }}
           onClick={async () => {
-            if (!lastBlob || lastBlob.size === 0) {
-              alert('나가');
-              return;
-            }
+            await connectTranscription();
+          }}
+        >
+          connect Transcription
+        </button>
+        <button
+          style={{ backgroundColor: 'lightgray', padding: '5px 10px' }}
+          onClick={async () => {
+            await prepareAudioTrack('tab');
+          }}
+        >
+          prepareAudioTrack
+        </button>
+        <button
+          style={{ backgroundColor: 'lightgray', padding: '5px 10px' }}
+          onClick={() => {
+            resumeTranscription();
+          }}
+        >
+          resumeTranscription
+        </button>
 
-            const fileType = lastBlob.type || 'audio/webm';
-            const fileName = 'test.webm';
-            const file = new File([lastBlob], fileName, { type: fileType });
+        <button
+          style={{ backgroundColor: 'lightgray', padding: '5px 10px' }}
+          onClick={async () => {
+            const end = await flushAndStop();
 
-            try {
-              const res = await testUploadAudio(file);
-              console.log(res);
-              alert('업로드 성공');
-            } catch (error) {
-              console.error(error);
-              alert('업로드 실패');
+            console.log(end);
+
+            if (end.audioBlob && end.audioBlob.size > 0) {
+              setLastBlob(end.audioBlob);
+
+              if (audioUrl) URL.revokeObjectURL(audioUrl);
+
+              const url = URL.createObjectURL(end.audioBlob);
+
+              setAudioUrl(url);
+              setBlobInfo({
+                size: end.audioBlob.size,
+                type: end.audioBlob.type,
+              });
+
+              try {
+                if (audioRef.current) {
+                  audioRef.current.src = url;
+                  await audioRef.current.play();
+                }
+              } catch (error) {
+                console.log('press play');
+              }
+            } else {
+              alert('audioblob 없음');
             }
           }}
         >
-          업로드
+          flushAndStop
         </button>
+        <audio
+          ref={audioRef}
+          controls
+          style={{ width: 400 }}
+          src={audioUrl ?? undefined}
+        />
+        {audioUrl && (
+          <a href={audioUrl} download="recording.webm" style={{ marginTop: 8 }}>
+            Download recording
+          </a>
+        )}
+        {blobInfo && (
+          <div style={{ opacity: 0.7 }}>
+            blob type: {blobInfo.type || '(unknown)'} / size: {blobInfo.size}{' '}
+            bytes
+          </div>
+        )}
+
+        <div>
+          <button
+            style={{ backgroundColor: 'lightgray', padding: '5px 10px' }}
+            onClick={async () => {
+              if (!lastBlob || lastBlob.size === 0) {
+                alert('나가');
+                return;
+              }
+
+              const fileType = lastBlob.type || 'audio/webm';
+              const fileName = 'test.webm';
+              const file = new File([lastBlob], fileName, { type: fileType });
+
+              try {
+                const res = await testUploadAudio(file);
+                console.log(res);
+                alert('업로드 성공');
+              } catch (error) {
+                console.error(error);
+                alert('업로드 실패');
+              }
+            }}
+          >
+            업로드
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
