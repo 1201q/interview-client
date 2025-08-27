@@ -22,6 +22,45 @@ export const getEphemeralToken = async () => {
   return client_secret;
 };
 
+interface EphemeralTokenPayload {
+  jobRole?: string;
+  questionText?: string;
+  keywords?: string[];
+}
+
+export const testgetEphemeralToken = async (payload: EphemeralTokenPayload) => {
+  const { jobRole, questionText, keywords } = payload;
+
+  const fd = new FormData();
+
+  if (jobRole) fd.append('jobRole', jobRole);
+  if (questionText) fd.append('questionText', questionText);
+  if (keywords) fd.append('keywords', JSON.stringify(keywords));
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/transcribe/realtime/token/test`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      cache: 'no-store',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: fd,
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error('토큰 획득 실패');
+  }
+
+  const { client_secret } = (await response.json()) as {
+    client_secret: { value: string; expires_at: number };
+  };
+
+  return client_secret;
+};
+
 export const testUploadAudio = async (file: File) => {
   const formd = new FormData();
 
