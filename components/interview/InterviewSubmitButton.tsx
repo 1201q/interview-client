@@ -8,18 +8,18 @@ import { InterviewPhase } from '@/utils/types/interview';
 
 interface SubmitButtonProps {
   phase: InterviewPhase;
-  handleSubmitAnswer: () => Promise<void>;
-  handleStartAnswer: () => void;
-  handleStartCountdown: () => Promise<void>;
-  handleStartInterview: () => Promise<void>;
+  submitAnswer: () => Promise<void>;
+  startAnswer: () => void;
+  startCountdown: () => Promise<void>;
+  startInterview: () => void;
 }
 
 const InterviewSubmitButton = ({
   phase,
-  handleStartAnswer,
-  handleStartCountdown,
-  handleSubmitAnswer,
-  handleStartInterview,
+  startAnswer,
+  startCountdown,
+  submitAnswer,
+  startInterview,
 }: SubmitButtonProps) => {
   const countdownControls = useAnimationControls(); // 카운트다운 애니메이션
   const buttonRef = useRef<HTMLButtonElement>(null); // 스페이스바로 버튼 제어
@@ -50,13 +50,13 @@ const InterviewSubmitButton = ({
   // =========== 버튼 클릭 이벤트
   const handleClick = async () => {
     if (phase === 'beforeStart') {
-      handleStartInterview();
+      startInterview();
       console.log('클릭1');
     } else if (phase === 'start') {
-      handleStartCountdown();
+      startCountdown();
       console.log('클릭2');
     } else if (phase === 'answering') {
-      handleSubmitAnswer();
+      submitAnswer();
       console.log('클릭3');
     }
   };
@@ -73,11 +73,11 @@ const InterviewSubmitButton = ({
       })
       .then(() => {
         countdownControls.stop();
-        handleStartAnswer();
+        startAnswer();
 
         isCountdown.current = false;
       });
-  }, [countdownControls, handleStartAnswer]);
+  }, [countdownControls, startAnswer]);
 
   useEffect(() => {
     if (phase === 'startCountdown3') {

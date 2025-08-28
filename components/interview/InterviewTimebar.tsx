@@ -5,14 +5,14 @@ import { InterviewPhase } from '@/utils/types/interview';
 
 interface TimebarProps {
   phase: InterviewPhase;
-  handleSubmitAnswer: () => Promise<void>;
-  handleStartCountdown: () => Promise<void>;
+  submitAnswer: () => Promise<void>;
+  startCountdown: () => Promise<void>;
 }
 
 const InterviewTimebar = ({
   phase,
-  handleSubmitAnswer,
-  handleStartCountdown,
+  submitAnswer,
+  startCountdown,
 }: TimebarProps) => {
   const controls = useAnimationControls();
 
@@ -54,15 +54,15 @@ const InterviewTimebar = ({
 
   useEffect(() => {
     if (phase === 'start') {
-      start(180, handleStartCountdown);
+      start(180, startCountdown);
     } else if (phase === 'answering') {
-      start(180, handleSubmitAnswer);
+      start(180, submitAnswer);
     } else if (phase === 'submitting' || phase === 'starting') {
       stop();
     } else if (phase === 'submitSuccess' || phase === 'startCountdown3') {
       reset();
     }
-  }, [phase, start, stop, reset, handleStartCountdown, handleSubmitAnswer]);
+  }, [phase, start, stop, reset, startCountdown, submitAnswer]);
 
   return (
     <div className={styles.fixedContainer}>
