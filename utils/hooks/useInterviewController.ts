@@ -13,6 +13,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranscribe } from './useTranscribe';
 import { InterviewPhase as InterviewPhaseType } from '@/utils/types/interview';
+import { useTimerController } from './useTimerController';
 
 type SideComponent = 'transcrie' | 'questionList';
 
@@ -86,11 +87,16 @@ export const useInterviewController = () => {
   const runIdRef = useRef(0);
   const run = () => (runIdRef.current += 1);
 
-  // -------------- phase 상태 관리 --------------
-  useEffect(() => {
-    if (phase === 'startCountdown3') setCameraOn(true);
-    else if (phase === 'submitting') setCameraOn(false);
+  // ----------⏱️ 타이머 ----------
+  const onTimerComplete = useCallback(() => {
+    if (phase === 'start') {
+      startCountdown();
+    } else if (phase === 'answering') {
+      submitAnswer();
+    }
   }, [phase]);
+
+  const timer = useTimerController({ fps: 60, onComplete: onTimerComplete });
 
   // -------------- 액션 --------------
 
@@ -164,6 +170,32 @@ export const useInterviewController = () => {
     setPhase,
   ]);
 
+  // -------------- phase 상태 관리 --------------
+  useEffect(() => {
+    if (phase === 'startCountdown3') setCameraOn(true);
+    if (phase === 'submitting') setCameraOn(false);
+
+    switch (phase) {
+      case 'start':
+        console.log('start1');
+        timer.start(60_000);
+        break;
+      case 'answering':
+        console.log('start2');
+        timer.start(60_000);
+        break;
+      case 'starting':
+      case 'submitting':
+        console.log('stop');
+        timer.stop();
+        break;
+      case 'startCountdown3':
+      case 'submitSuccess':
+    }
+  }, [phase]);
+
+  // -------------- phase 상태 관리 --------------
+
   const interview = {
     phase,
     question,
@@ -195,5 +227,10 @@ export const useInterviewController = () => {
     rawStableData,
   };
 
-  return { interview, action, ui, stt };
+  const time = {
+    barProgress: timer.progress,
+    remainingSec: timer.remainingSec,
+  };
+
+  return { interview, action, ui, stt, time };
 };

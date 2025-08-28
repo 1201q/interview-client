@@ -24,7 +24,7 @@ const spring: Transition = {
 };
 
 const InterviewPage = () => {
-  const { ui, interview, stt, action } = useInterviewController();
+  const { ui, interview, stt, action, time } = useInterviewController();
 
   const {
     cameraOn,
@@ -37,6 +37,9 @@ const InterviewPage = () => {
   const { phase, question, jobRole, sessionId } = interview;
   const { rawStableData, canResume } = stt;
   const { startAnswer, startCountdown, startInterview, submitAnswer } = action;
+  const { remainingSec, barProgress } = time;
+
+  console.log(remainingSec, barProgress);
 
   return (
     <>
@@ -78,13 +81,9 @@ const InterviewPage = () => {
           </AnimatePresence>
 
           {/* timebar */}
-          <InterviewTimebar
-            phase={phase}
-            submitAnswer={submitAnswer}
-            startCountdown={startCountdown}
-          />
+          <InterviewTimebar phase={phase} progress={barProgress} />
           {/* timer */}
-          <InterviewTimer phase={phase} />
+          <InterviewTimer phase={phase} remainingSec={remainingSec} />
 
           {/* InterviewInfo */}
           <InterviewInfo jobRole={jobRole} />

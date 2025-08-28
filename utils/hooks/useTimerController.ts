@@ -118,6 +118,7 @@ export const useTimerController = (args: {
   useEffect(() => () => clear(), []);
 
   const progress = durationMs > 0 ? 1 - remainingMs / durationMs : 0;
+  const remainingSec = Math.max(0, Math.ceil(remainingMs / 1000));
 
   return {
     // state
@@ -125,6 +126,7 @@ export const useTimerController = (args: {
     paused,
     durationMs,
     remainingMs,
+    remainingSec,
     progress,
 
     // controls

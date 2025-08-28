@@ -1,11 +1,12 @@
 import { InterviewPhase } from '@/utils/types/interview';
 import styles from './styles/interview-timer.module.css';
 import { Clock } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+
 import { motion, Variants } from 'motion/react';
 
 interface TimerProps {
   phase: InterviewPhase;
+  remainingSec: number;
 }
 
 const pad = (n: number) => {
@@ -26,68 +27,15 @@ const formatting = (sec: number) => {
   return `${minutes}:${pad(seconds)}`;
 };
 
-const InterviewTimer = ({ phase }: TimerProps) => {
-  const interveiwTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  const [remainingTime, setRemainingTime] = useState<number>(0);
-
-  const startTimer = () => {
-    clearTimer();
-
-    interveiwTimerRef.current = setInterval(() => {
-      setRemainingTime((prev) => {
-        const next = prev - 1;
-        return next >= 0 ? next : 0;
-      });
-    }, 1000);
-  };
-
-  const clearTimer = () => {
-    if (interveiwTimerRef.current) {
-      clearInterval(interveiwTimerRef.current);
-      interveiwTimerRef.current = null;
-    }
-  };
-
-  useEffect(() => {
-    switch (phase) {
-      case 'startCountdown3':
-        clearTimer();
-        setRemainingTime(180);
-        break;
-      case 'answering':
-        startTimer();
-        break;
-      case 'submitting':
-        clearTimer();
-        break;
-      case 'submitSuccess':
-        setRemainingTime(600);
-        break;
-      case 'start':
-        startTimer();
-        break;
-      case 'beforeStartLoading':
-        setRemainingTime(600);
-        break;
-      default:
-        clearTimer();
-        break;
-    }
-
-    return () => {
-      clearTimer();
-    };
-  }, [phase]);
-
+const InterviewTimer = ({ phase, remainingSec }: TimerProps) => {
   return (
     <motion.div
-      className={`${styles.timerContainer} ${phase === 'answering' && remainingTime <= 20 ? styles.redAlram : ''}`}
+      className={`${styles.timerContainer} ${phase === 'answering' && remainingSec <= 20 ? styles.redAlram : ''}`}
       variants={variants}
       animate={phase}
     >
       <Clock size={14} color="white" />
-      <p>{formatting(remainingTime)}</p>
+      <p>{formatting(remainingSec)}</p>
     </motion.div>
   );
 };
