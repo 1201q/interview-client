@@ -11,6 +11,21 @@ export const useTimerController = (args: {
   const [running, setRunning] = useState(false);
   const [paused, setPaused] = useState(false);
 
+  // -------- --------
+  const runningRef = useRef(false);
+  const pausedRef = useRef(false);
+  const durationMsRef = useRef(0);
+  const onCompleteRef = useRef<(() => void) | undefined>(onComplete);
+  const fpsRef = useRef(fps);
+
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
+
+  useEffect(() => {
+    fpsRef.current = fps;
+  }, [fps]);
+
   const startedAtRef = useRef(0);
   const pausedAccRef = useRef(0);
   const lastTickRef = useRef(0);
@@ -26,68 +41,76 @@ export const useTimerController = (args: {
     rafRef.current = null;
   };
 
-  const tick = useCallback(
-    (now: number, runId: number) => {
-      if (runIdRef.current !== runId) return;
+  const tick = (now: number, runId: number) => {
+    if (runIdRef.current !== runId) return;
 
-      if (fps > 0 && now - lastTickRef.current < 1000 / fps) {
-        rafRef.current = requestAnimationFrame((t) => tick(t, runId));
-        return;
-      }
+    const fpsLocal = fpsRef.current;
 
-      lastTickRef.current = now;
-
-      if (!running) return;
-
-      const elapsed = now - startedAtRef.current - pausedAccRef.current;
-      const remain = Math.max(0, durationMs - elapsed);
-
-      setRemainingMs(remain);
-
-      if (remain <= 0) {
-        setRunning(false);
-        setPaused(false);
-        clear();
-        onComplete?.();
-        return;
-      }
-
+    if (fpsLocal > 0 && now - lastTickRef.current < 1000 / fpsLocal) {
       rafRef.current = requestAnimationFrame((t) => tick(t, runId));
-    },
-    [running, durationMs, fps, onComplete],
-  );
+      return;
+    }
 
-  const start = useCallback(
-    (ms: number) => {
-      clear();
+    lastTickRef.current = now;
 
-      const now = performance.now();
-      runIdRef.current += 1;
+    if (!runningRef.current || pausedRef.current) return;
 
-      setDurationMs(ms);
-      setRemainingMs(ms);
-      setRunning(true);
+    const elapsed = now - startedAtRef.current - pausedAccRef.current;
+    const remain = Math.max(0, durationMsRef.current - elapsed);
+
+    setRemainingMs(remain);
+
+    if (remain <= 0) {
+      runningRef.current = false;
+      setRunning(false);
+
+      pausedRef.current = false;
       setPaused(false);
 
-      startedAtRef.current = now;
-      pausedAccRef.current = 0;
-      lastTickRef.current = 0;
+      clear();
+      onCompleteRef.current?.();
+      return;
+    }
 
-      const runId = runIdRef.current;
-      rafRef.current = requestAnimationFrame((t) => tick(t, runId));
-    },
-    [tick],
-  );
+    rafRef.current = requestAnimationFrame((t) => tick(t, runId));
+  };
+
+  const start = useCallback((ms: number) => {
+    clear();
+
+    const now = performance.now();
+    runIdRef.current += 1;
+
+    durationMsRef.current = ms;
+    setDurationMs(ms);
+    setRemainingMs(ms);
+
+    runningRef.current = true;
+    setRunning(true);
+
+    pausedRef.current = false;
+    setPaused(false);
+
+    startedAtRef.current = now;
+    pausedAccRef.current = 0;
+    lastTickRef.current = 0;
+
+    const runId = runIdRef.current;
+    rafRef.current = requestAnimationFrame((t) => tick(t, runId));
+  }, []);
 
   const stop = useCallback(() => {
     runIdRef.current += 1;
+    runningRef.current = false;
+    pausedRef.current = false;
+
     clear();
     setRunning(false);
     setPaused(false);
   }, []);
 
   const pause = useCallback(() => {
-    if (!running || paused) return;
+    if (!runningRef.current || pausedRef.current) return;
 
     runIdRef.current += 1;
     clear();
@@ -95,29 +118,33 @@ export const useTimerController = (args: {
     const now = performance.now();
 
     const elapsed = now - startedAtRef.current - pausedAccRef.current;
-    const remain = Math.max(0, durationMs - elapsed);
+    const remain = Math.max(0, durationMsRef.current - elapsed);
     setRemainingMs(remain);
 
+    pausedRef.current = true;
     setPaused(true);
-    setRunning(true);
-  }, [running, paused, durationMs]);
+  }, []);
 
   const resume = useCallback(() => {
-    if (!running || !paused) return;
-    const now = performance.now();
+    if (!runningRef.current || !pausedRef.current) return;
 
-    const elapsed = now - startedAtRef.current - (durationMs - remainingMs);
+    const now = performance.now();
+    const elapsed =
+      now - startedAtRef.current - (durationMsRef.current - remainingMs);
     pausedAccRef.current += elapsed < 0 ? 0 : elapsed;
 
+    pausedRef.current = false;
     setPaused(false);
+
     runIdRef.current += 1;
     const rid = runIdRef.current;
     rafRef.current = requestAnimationFrame((t) => tick(t, rid));
-  }, [running, paused, durationMs, remainingMs, tick]);
+  }, [remainingMs]);
 
   useEffect(() => () => clear(), []);
 
-  const progress = durationMs > 0 ? 1 - remainingMs / durationMs : 0;
+  const progress =
+    durationMsRef.current > 0 ? 1 - remainingMs / durationMsRef.current : 0;
   const remainingSec = Math.max(0, Math.ceil(remainingMs / 1000));
 
   return {

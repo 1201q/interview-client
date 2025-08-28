@@ -39,8 +39,6 @@ const InterviewPage = () => {
   const { startAnswer, startCountdown, startInterview, submitAnswer } = action;
   const { remainingSec, barProgress } = time;
 
-  console.log(remainingSec, barProgress);
-
   return (
     <>
       <LayoutGroup>
