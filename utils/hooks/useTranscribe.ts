@@ -1,13 +1,19 @@
 'use client';
 
 import { useCallback, useState, useRef, useEffect } from 'react';
-import { getEphemeralToken } from '../services/stt';
+import { getEphemeralToken, testgetEphemeralToken } from '../services/stt';
 import { Delta, Transcript } from '../types/types';
 
 export type AudioSource = 'mic' | 'tab';
 
 type ConnStatus = 'idle' | 'connecting' | 'connected';
 type RecStatus = 'idle' | 'prepared' | 'recording' | 'paused';
+
+type TokenPayload = {
+  jobRole?: string;
+  questionText?: string;
+  keywords?: string[];
+};
 
 const STT_URL =
   'https://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-12-17';
@@ -140,98 +146,101 @@ export const useTranscribe = ({ onEvent }: Options) => {
 
   // ==============================================================
   // ---- connect 관련 ----
-  const connectTranscription = useCallback(async () => {
-    resetText();
-    setCanResume(false);
+  const connectTranscription = useCallback(
+    async (payload: TokenPayload = {}) => {
+      resetText();
+      setCanResume(false);
 
-    if (pcRef.current) cleanup();
+      if (pcRef.current) cleanup();
 
-    setConnStatus('connecting');
+      setConnStatus('connecting');
 
-    // 1. 토큰 확인
-    const tokenRes = await getEphemeralToken();
-    const token = tokenRes.value ?? null;
-    if (!token) {
-      setConnStatus('idle');
-      throw new Error('EphemeralToken 없음');
-    }
-
-    // 2. RTCPeerConnection
-    // OpenAI Realtime과 WebRTC 연결할 객체.
-    const pc = new RTCPeerConnection({
-      iceServers: [{ urls: ['stun:stun.l.google.com:19302'] }],
-    });
-    pcRef.current = pc;
-
-    pc.oniceconnectionstatechange = () => {
-      const st = pc.iceConnectionState;
-
-      if (st === 'connected') {
-        setConnStatus('connected');
+      // 1. 토큰 확인
+      const tokenRes = await testgetEphemeralToken(payload);
+      const token = tokenRes.value ?? null;
+      if (!token) {
+        setConnStatus('idle');
+        throw new Error('EphemeralToken 없음');
       }
-      if (['disconnected', 'failed', 'closed'].includes(st)) cleanup();
-    };
 
-    // 만약 서버가 dc를 생성할 경우?
-    pc.ondatachannel = (e) => {
-      e.channel.onmessage = (event) => {
+      // 2. RTCPeerConnection
+      // OpenAI Realtime과 WebRTC 연결할 객체.
+      const pc = new RTCPeerConnection({
+        iceServers: [{ urls: ['stun:stun.l.google.com:19302'] }],
+      });
+      pcRef.current = pc;
+
+      pc.oniceconnectionstatechange = () => {
+        const st = pc.iceConnectionState;
+
+        if (st === 'connected') {
+          setConnStatus('connected');
+        }
+        if (['disconnected', 'failed', 'closed'].includes(st)) cleanup();
+      };
+
+      // 만약 서버가 dc를 생성할 경우?
+      pc.ondatachannel = (e) => {
+        e.channel.onmessage = (event) => {
+          try {
+            handleEvent(JSON.parse(event.data));
+          } catch {}
+        };
+      };
+
+      // 클라가 dc를 생성
+      const dc = pc.createDataChannel('oai-events');
+
+      dc.onmessage = (e) => {
         try {
-          handleEvent(JSON.parse(event.data));
+          handleEvent(JSON.parse(e.data));
         } catch {}
       };
-    };
+      dcRef.current = dc;
 
-    // 클라가 dc를 생성
-    const dc = pc.createDataChannel('oai-events');
+      // 핵심: 오디오 m=라인을 선점 (재협상 없이 나중에 트랙만 붙임)
+      transceiverRef.current = pc.addTransceiver('audio', {
+        direction: 'sendonly',
+      });
+      senderRef.current = transceiverRef.current.sender;
 
-    dc.onmessage = (e) => {
-      try {
-        handleEvent(JSON.parse(e.data));
-      } catch {}
-    };
-    dcRef.current = dc;
+      // SDP 생성/설정
+      await pc.setLocalDescription(await pc.createOffer());
 
-    // 핵심: 오디오 m=라인을 선점 (재협상 없이 나중에 트랙만 붙임)
-    transceiverRef.current = pc.addTransceiver('audio', {
-      direction: 'sendonly',
-    });
-    senderRef.current = transceiverRef.current.sender;
+      // ICE gathering 완료 대기 (리스너 해제를 포함)
+      await new Promise<void>((resolve) => {
+        if (pc.iceGatheringState === 'complete') return resolve();
+        const handler = () => {
+          if (pc.iceGatheringState === 'complete') {
+            pc.removeEventListener('icegatheringstatechange', handler);
+            resolve();
+          }
+        };
+        pc.addEventListener('icegatheringstatechange', handler);
+      });
 
-    // SDP 생성/설정
-    await pc.setLocalDescription(await pc.createOffer());
+      // OpenAI Realtime 요청
+      const sdpRes = await fetch(STT_URL, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/sdp',
+          'OpenAI-Beta': 'realtime=v1',
+        },
+        body: pc.localDescription!.sdp,
+      });
 
-    // ICE gathering 완료 대기 (리스너 해제를 포함)
-    await new Promise<void>((resolve) => {
-      if (pc.iceGatheringState === 'complete') return resolve();
-      const handler = () => {
-        if (pc.iceGatheringState === 'complete') {
-          pc.removeEventListener('icegatheringstatechange', handler);
-          resolve();
-        }
-      };
-      pc.addEventListener('icegatheringstatechange', handler);
-    });
+      const raw = await sdpRes.text();
+      if (!sdpRes.ok || !raw.startsWith('v=')) {
+        console.error('SDP POST 실패:', sdpRes.status, raw.slice(0, 200));
+        setConnStatus('idle');
+        throw new Error('Realtime SDP 교환 실패');
+      }
 
-    // OpenAI Realtime 요청
-    const sdpRes = await fetch(STT_URL, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/sdp',
-        'OpenAI-Beta': 'realtime=v1',
-      },
-      body: pc.localDescription!.sdp,
-    });
-
-    const raw = await sdpRes.text();
-    if (!sdpRes.ok || !raw.startsWith('v=')) {
-      console.error('SDP POST 실패:', sdpRes.status, raw.slice(0, 200));
-      setConnStatus('idle');
-      throw new Error('Realtime SDP 교환 실패');
-    }
-
-    await pc.setRemoteDescription({ type: 'answer', sdp: raw });
-  }, [cleanup, handleEvent, resetText]);
+      await pc.setRemoteDescription({ type: 'answer', sdp: raw });
+    },
+    [cleanup, handleEvent, resetText],
+  );
 
   // ==============================================================
   // ---- prepare  ----

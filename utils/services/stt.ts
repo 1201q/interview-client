@@ -29,14 +29,6 @@ interface EphemeralTokenPayload {
 }
 
 export const testgetEphemeralToken = async (payload: EphemeralTokenPayload) => {
-  const { jobRole, questionText, keywords } = payload;
-
-  const fd = new FormData();
-
-  if (jobRole) fd.append('jobRole', jobRole);
-  if (questionText) fd.append('questionText', questionText);
-  if (keywords) fd.append('keywords', JSON.stringify(keywords));
-
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/transcribe/realtime/token/test`,
     {
@@ -46,7 +38,7 @@ export const testgetEphemeralToken = async (payload: EphemeralTokenPayload) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: fd,
+      body: JSON.stringify(payload),
     },
   );
 

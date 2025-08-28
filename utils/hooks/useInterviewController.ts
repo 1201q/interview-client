@@ -70,18 +70,16 @@ export const useInterviewController = () => {
 
   // -------------- stt 토큰 컨텍스트 --------------
   const sttBias = useMemo(() => {
-    const qText = question?.text;
+    const qText = question?.text ?? '';
     const keyword =
-      keywords.find((k) => k.id === question?.id)?.stt_keywords ?? [];
+      keywords.find((k) => k.id === question?.question_id)?.stt_keywords ?? [];
 
     return {
-      jobRole: jobRole,
+      jobRole: jobRole ?? '',
       questionText: qText,
       keywords: keyword,
-      sessionId: sessionId ?? '',
-      sqId: question?.id ?? '',
     };
-  }, [jobRole, question?.id, question?.text, keywords, sessionId]);
+  }, [jobRole, question?.id, question?.text, keywords]);
 
   // -------------- 가드 --------------
   // 중복 방지
@@ -109,7 +107,7 @@ export const useInterviewController = () => {
 
     try {
       // 1. 컨텍스트와 함께 토큰 발급
-      await connectTranscription();
+      await connectTranscription(sttBias);
 
       // 2. 오디오 소스 준비
       await prepareAudioTrack('tab');
