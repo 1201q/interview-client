@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'motion/react';
 import styles from './styles/interview-panel.module.css';
 import { ChevronUp } from 'lucide-react';
+import React from 'react';
 
 type SideComponent = 'transcrie' | 'questionList';
 
@@ -43,4 +44,4 @@ const InterviewPanel = (props: InterviewPanelProps) => {
   );
 };
 
-export default InterviewPanel;
+export default React.memo(InterviewPanel);

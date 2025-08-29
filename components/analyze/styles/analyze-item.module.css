@@ -1,0 +1,148 @@
+.anwerItemContainer {
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 15px;
+  border: 1px solid rgb(229 231 235 / 0.5);
+  box-shadow:
+    0 10px 15px -3px rgb(229 231 235 / 0.5),
+    0 4px 6px -4px rgb(229 231 235 / 0.5);
+}
+
+.headerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 15px;
+  padding: 20px 22px 20px 24px;
+  cursor: pointer;
+}
+
+.leftHeaderContainer {
+  display: flex;
+}
+
+.rightHeaderContainer {
+  display: flex;
+  column-gap: 10px;
+
+  align-items: center;
+}
+
+.circleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  width: 29px;
+  height: 29px;
+  background-color: var(--bg-rose-color);
+  font-size: 0.8rem;
+  font-weight: 700;
+
+  text-align: center;
+  color: var(--font-red-color);
+  overflow: hidden;
+
+  transition: all 0.2s;
+}
+
+.scoreContainer {
+  font-size: 14px;
+  font-weight: 600;
+  height: 24px;
+  padding: 0px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-rose-color);
+  color: var(--font-red-color);
+  border-radius: 20px;
+  word-break: keep-all;
+}
+
+.headerText {
+  flex: 1 1 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.bottomContentsContainer {
+  border-top: 1px solid rgb(229 231 235 / 0.6);
+  padding: 20px 22px 20px 22px;
+}
+
+.contentsTitle {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.contentsTitle p {
+  font-size: 14px;
+  font-weight: 600;
+  margin-left: 6px;
+  margin-right: 10px;
+}
+
+.contentsTitle span {
+  color: var(--font-darkgray-color);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.myAnswerContainer {
+  background-color: var(--bg-gray2-color);
+  padding: 17px;
+  border-radius: 9px;
+}
+
+.myAnswerContainer p {
+  line-height: 130%;
+  font-size: 15px;
+}
+
+.blue {
+  background-color: var(--bg-blue-color);
+}
+
+.blue p {
+  color: var(--font-blue-color);
+}
+
+.voiceControllerContainer {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-gray2-color);
+  padding: 14px;
+  border-radius: 9px;
+  column-gap: 13px;
+}
+
+.resumePauseButton {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--main-blue-color);
+  transition: all 0.2s;
+}
+
+.resumePauseButton:hover {
+  background: var(--main-blue4-color);
+}
+
+.voiceContents {
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+}
+
+.voiceContents p {
+  font-size: 14px;
+  font-weight: 600;
+}

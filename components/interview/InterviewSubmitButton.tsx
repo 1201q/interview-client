@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, useAnimationControls } from 'motion/react';
 import { Loader2, Check, Space } from 'lucide-react';
 import { InterviewPhase } from '@/utils/types/interview';
+import React from 'react';
 
 interface SubmitButtonProps {
   phase: InterviewPhase;
@@ -361,4 +362,4 @@ const InterviewSubmitButton = ({
   );
 };
 
-export default InterviewSubmitButton;
+export default React.memo(InterviewSubmitButton);

@@ -33,12 +33,15 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: rgba(24, 25, 27, 1);
-  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
-  border-radius: 9px;
-  padding: 12px 12px;
+  /* background-color: rgba(24, 25, 27, 1); */
+  /* box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6); */
+
+  background-color: rgba(51, 65, 85, 0.2);
+  border: 1px solid rgba(71, 85, 105, 0.15);
+  border-radius: 12px;
+  padding: 14px 14px;
   cursor: pointer;
-  row-gap: 5px;
+  row-gap: 7px;
 }
 
 .questionItem .bigText {
@@ -49,28 +52,43 @@
 }
 
 .questionItem .text {
-  font-size: 13px;
-  line-height: 120%;
-  color: white;
+  font-size: 12px;
+  line-height: 140%;
+  color: rgb(153, 161, 175);
   opacity: 0.7;
 }
 
 .blueQuestionItem {
-  background-color: rgba(55, 143, 251, 0.3);
-  color: rgb(55, 143, 251);
+  background-color: rgba(64, 100, 199, 0.32);
+  border: 1px solid rgba(36, 94, 253, 0.2);
 }
 
 .greenQuestionItem {
-  background-color: rgba(58, 255, 176, 0.21);
-  color: rgb(21, 196, 126);
+  background-image: linear-gradient(
+    to right,
+    rgba(20, 83, 45, 0.4),
+    rgba(6, 78, 59, 0.4)
+  );
+  border: 1px solid rgba(22, 163, 74, 0.1);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
 }
 
-.blueQuestionItem .bigText,
-.greenQuestionItem .bigText {
-  font-size: 17px;
-  font-weight: 700;
+.blueQuestionItem .text {
   color: white;
-  opacity: 0.7;
+}
+
+.blueQuestionItem .bigText {
+  color: rgb(142, 197, 255);
+}
+
+.greenQuestionItem .bigText {
+  color: rgb(185, 248, 207);
+}
+
+.greenQuestionItem .text {
+  color: rgb(220, 252, 231);
 }
 
 /* 11111111111 */

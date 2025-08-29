@@ -96,7 +96,7 @@ export const useInterviewController = () => {
     }
   }, [phase]);
 
-  const timer = useTimerController({ fps: 60, onComplete: onTimerComplete });
+  const timer = useTimerController({ fps: 10, onComplete: onTimerComplete });
 
   // -------------- 액션 --------------
 

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { LayoutGroup, motion } from 'motion/react';
 import { useAtomValue } from 'jotai';
 import { SessionQuestionsAtom } from '@/store/interviewSession';
+import React from 'react';
 
 // item props
 interface QuestionItemProps {
@@ -135,4 +136,4 @@ const CollapsibleQuestionItem = ({
   );
 };
 
-export default InterviewQuestionList;
+export default React.memo(InterviewQuestionList);

@@ -1,5 +1,6 @@
 'use client';
 
+import React, { memo, useState } from 'react';
 import { motion, AnimatePresence, LayoutGroup, Transition } from 'motion/react';
 
 import styles from './styles/interview.module.css';
@@ -39,15 +40,13 @@ const InterviewPage = () => {
   const { startAnswer, startCountdown, startInterview, submitAnswer } = action;
   const { remainingSec, barProgress } = time;
 
+  const [sidebarVisible, setSidebarVisible] = useState(false);
+
   return (
     <>
       <LayoutGroup>
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          className={styles.container}
-        >
-          <div className={styles.mainContainer}>
+        <motion.div className={styles.container}>
+          <motion.div className={styles.mainContainer}>
             {/* webcam */}
             <AnimatePresence>
               <motion.div
@@ -69,7 +68,7 @@ const InterviewPage = () => {
                 <BelowQuestionText question={question} />
               )}
             </AnimatePresence>
-          </div>
+          </motion.div>
 
           {/* OverlayQuestionText */}
           <AnimatePresence mode="wait">
@@ -87,27 +86,42 @@ const InterviewPage = () => {
           <InterviewInfo jobRole={jobRole} />
 
           {/* panel */}
-          <motion.div layout className={styles.sideListContainer}>
-            <InterviewPanel
-              id="questionList"
-              titleText="필사 텍스트"
-              isExpanded={expanded.includes('questionList')}
-              onToggle={togglePanel}
-            >
-              <InterviewTranscribe
-                rawStableData={rawStableData}
-                canResume={canResume}
-              />
-            </InterviewPanel>
-            <InterviewPanel
-              id="transcrie"
-              titleText="질문 목록"
-              isExpanded={expanded.includes('transcrie')}
-              onToggle={togglePanel}
-            >
-              <InterviewQuestionList />
-            </InterviewPanel>
-          </motion.div>
+          <AnimatePresence>
+            {sidebarVisible && (
+              <motion.div
+                layout
+                initial={{ x: '100%', opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: '100%', opacity: 0 }}
+                transition={{
+                  stiffness: 100,
+                  damping: 40,
+                  mass: 0.2,
+                }}
+                className={styles.sideListContainer}
+              >
+                <InterviewPanel
+                  id="questionList"
+                  titleText="필사 텍스트"
+                  isExpanded={expanded.includes('questionList')}
+                  onToggle={togglePanel}
+                >
+                  <InterviewTranscribe
+                    rawStableData={rawStableData}
+                    canResume={canResume}
+                  />
+                </InterviewPanel>
+                <InterviewPanel
+                  id="transcrie"
+                  titleText="질문 목록"
+                  isExpanded={expanded.includes('transcrie')}
+                  onToggle={togglePanel}
+                >
+                  <InterviewQuestionList />
+                </InterviewPanel>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* InterviewSubmitButton */}
           <InterviewSubmitButton
@@ -135,16 +149,19 @@ const InterviewPage = () => {
         >
           초기화
         </button>
+        <button onClick={() => setSidebarVisible((prev) => !prev)}>
+          끄기/켜기
+        </button>
       </div>
     </>
   );
 };
 
-const OverlayQuestionText = ({
+const OverlayQuestionText = memo(function OverlayQuestionText({
   question,
 }: {
   question: QSessionQuestionItem;
-}) => {
+}) {
   return (
     <motion.div
       className={styles.overlayQuestionContainer}
@@ -170,13 +187,13 @@ const OverlayQuestionText = ({
       </motion.p>
     </motion.div>
   );
-};
+});
 
-const BelowQuestionText = ({
+const BelowQuestionText = memo(function BelowQuestionText({
   question,
 }: {
   question: QSessionQuestionItem;
-}) => {
+}) {
   return (
     <motion.div
       className={styles.questionBelowContainer}
@@ -201,9 +218,13 @@ const BelowQuestionText = ({
       </motion.p>
     </motion.div>
   );
-};
+});
 
-const InterviewInfo = ({ jobRole }: { jobRole?: string }) => {
+const InterviewInfo = memo(function InterviewInfo({
+  jobRole,
+}: {
+  jobRole?: string;
+}) {
   return (
     <div className={styles.interviewInfoContainer}>
       <p className={styles.blueGradientText}>모의 인터뷰</p>
@@ -215,6 +236,6 @@ const InterviewInfo = ({ jobRole }: { jobRole?: string }) => {
       )}
     </div>
   );
-};
+});
 
-export default InterviewPage;
+export default React.memo(InterviewPage);

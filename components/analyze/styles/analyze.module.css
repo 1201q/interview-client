@@ -1,0 +1,9 @@
+.analyzeContainer {
+  width: 100%;
+}
+
+.AnswerFeedbackListContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
