@@ -1,0 +1,69 @@
+.weakStrongContainer {
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 20px;
+  border: 1px solid rgb(229 231 235 / 0.5);
+  box-shadow:
+    0 10px 15px -3px rgb(229 231 235 / 0.5),
+    0 4px 6px -4px rgb(229 231 235 / 0.5);
+  padding: 22px 22px;
+  row-gap: 20px;
+  height: fit-content;
+}
+
+.weakStrongContainer p {
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.weakStrongContainer span {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.titleContainer {
+  display: flex;
+  align-items: center;
+  column-gap: 15px;
+}
+
+.titleIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 9px;
+  background-color: white;
+}
+
+.titleContainer p {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.mint {
+  background-color: var(--bg-mint-color);
+}
+
+.yellow {
+  background-color: var(--bg-yellow-color);
+}
+
+.itemListContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.item p {
+  font-size: 17px;
+  font-weight: 400;
+}

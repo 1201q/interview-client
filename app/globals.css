@@ -7,6 +7,7 @@
   --main-red-hover-color: #cc5253;
 
   --main-yellow-color: rgba(255, 233, 25, 1);
+  --main-darkyellow-color: #eab308;
   --main-red-color: rgb(240, 97, 109);
   --main-red2-color: rgb(255, 130, 140);
   --main-red3-color: rgb(200, 70, 80);
@@ -18,7 +19,7 @@
 
   --main-skyblue-color: #06b6d4;
   --main-violet-color: #6366f1;
-  --main-green-color: rgb(22, 163, 74);
+  --main-green-color: #22c55e;
   --main-gray-color: rgba(91, 97, 110, 0.7);
 
   --bg-gray-color: rgb(243, 244, 246);
@@ -27,11 +28,12 @@
   --bg-red-color: rgba(255 241 242);
   --bg-rose-color: rgb(255 228 230);
 
-  --bg-yellow-color: rgb(254 252 232);
+  --bg-yellow-color: rgb(255 237 213);
   --bg-darkblue-color: #111827;
   --bg-red2-color: #fef2f2;
   --bg-green-color: rgba(55, 179, 119, 0.2);
   --bg-green2-color: #f0fdf4;
+  --bg-mint-color: rgb(220 252 231);
   --bg-violet-color: rgb(243, 232, 255);
 
   --bg-black-color: #242424;
@@ -50,7 +52,7 @@
   --font-blue-color: #1d4ed8;
   --font-violet-color: #7e22ce;
   --font-red-color: #e11d48;
-  --font-yellow-color: rgb(113 63 18);
+  --font-yellow-color: rgb(234 88 12);
 
   --red-bg-gradient: linear-gradient(to right, #e61e4d 0%, #d70466 100%);
   --red-rose-gradient: linear-gradient(
