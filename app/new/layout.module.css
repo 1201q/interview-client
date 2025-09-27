@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100dvh;
+  background-color: var(--neutral-1);
+}
+
+.header {
+  height: 50px;
+  width: 100%;
+  background-color: var(--neutral-0);
+  border-bottom: 1px solid var(--neutral-3);
+  padding: 0px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.wrapper {
+  display: flex;
+  flex: 1;
+
+  padding: 0px 0px;
+  column-gap: 0px;
+}

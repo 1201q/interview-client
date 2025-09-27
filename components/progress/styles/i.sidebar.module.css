@@ -1,0 +1,170 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.topStatus {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  height: 80px;
+  background: var(--gradient-primary);
+  border-radius: 14px;
+  padding: 15px 20px;
+  margin: 0px 16px;
+}
+
+.topStatusTitle {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 3px;
+}
+
+.topStatusInfo {
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+}
+
+/* "질문 목록" */
+.listHeader {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--neutral-6);
+  margin: 35px 16px 10px 17px;
+}
+
+.questionList {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+/* 스크롤바 */
+.questionList::-webkit-scrollbar {
+  width: 2px;
+}
+.questionList::-webkit-scrollbar-thumb {
+  background: var(--color-dark-hover);
+  border-radius: 8px;
+}
+.questionList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ol */
+.list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 2px;
+  position: relative;
+
+  margin: 0px 2px;
+}
+
+/* item */
+.question {
+  display: flex;
+  flex-direction: column;
+
+  position: relative;
+  z-index: 1;
+  border-radius: 11px;
+  cursor: pointer;
+
+  row-gap: 5px;
+  padding: 13px 15px;
+}
+
+.question::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  bottom: -8px;
+  left: -8px;
+  right: -8px;
+  z-index: 0;
+}
+
+.question:hover {
+  background-color: var(--color-dark-hover);
+}
+
+/* 상단 title */
+.questionTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 27px;
+}
+
+.leftTitle {
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+}
+
+/* "질문" */
+.questionTitle span {
+  color: var(--neutral-3);
+  font-size: 17px;
+
+  font-weight: 700;
+}
+
+/* 질문 번호 */
+.questionOrder {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--neutral-3);
+}
+
+/* 확장시 보이는 질문 텍스트 */
+.questionText {
+  color: var(--neutral-5);
+  line-height: 130%;
+  font-size: 15px;
+  font-weight: 500;
+  padding-bottom: 2px;
+}
+
+.rightTitle {
+  display: flex;
+  align-items: center;
+  column-gap: 6px;
+}
+
+.rightTitle p {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--neutral-7);
+}
+
+.status {
+  color: var(--neutral-7);
+}
+
+.status.answering {
+  color: var(--color-primary);
+}
+
+.status.ready {
+  color: var(--color-primary);
+}
+
+/*  */
+.completed .questionTitle span {
+  color: var(--neutral-7);
+}
+.completed .questionOrder {
+  color: var(--neutral-7);
+}
+.completed .questionText {
+  color: var(--neutral-6);
+}

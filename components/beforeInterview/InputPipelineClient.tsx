@@ -30,7 +30,10 @@ const InputPipelineClient = () => {
           transition={{ duration: 0.15 }}
           style={{ display: 'flex', flex: 1, justifyContent: 'center' }}
         >
-          <LoadingPage onLoadingComplete={props.onLoadingComplete} />
+          <LoadingPage
+            onLoadingComplete={props.onLoadingComplete}
+            requestId={props.requestId}
+          />
         </motion.div>
       )}
     </AnimatePresence>

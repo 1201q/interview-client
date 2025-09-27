@@ -1,4 +1,136 @@
 :root {
+  /* === Base Brand === */
+  --primary: #4c86fe; /* 기존 main-blue-color */
+  --accent: #06b6d4; /* 스카이 블루 계열 */
+  --success: #22c55e;
+  --warning: #facc15;
+  --danger: #f44747;
+
+  /* === Neutral scale (gray) === */
+  --neutral-0: #ffffff;
+  --neutral-1: #f9fafb;
+  --neutral-2: #f3f4f6;
+  --neutral-3: #e5e7eb;
+  --neutral-4: #d1d5db;
+  --neutral-5: #9ca3af;
+  --neutral-6: #6b7280;
+  --neutral-7: #374151;
+  --neutral-8: #1f2937;
+
+  --color-dark-bg: #17171c;
+  --color-dark-hover: rgba(217, 217, 255, 0.11);
+
+  /* === Semantic tokens === */
+  --color-bg: var(--neutral-1);
+  --color-surface: var(--neutral-0);
+  --color-surface-2: var(--neutral-2);
+  --color-text: var(--neutral-8);
+  --color-text-muted: var(--neutral-6);
+  --color-border: var(--neutral-4);
+
+  --color-primary: var(--primary);
+  --color-primary-weak: color-mix(in srgb, var(--primary) 12%, white);
+  --color-primary-strong: color-mix(in srgb, var(--primary) 85%, black);
+  --color-primary-contrast: #ffffff;
+
+  --color-accent: var(--accent);
+
+  --color-success: var(--success);
+  --color-success-bg: #ecfdf5;
+  --color-warning: var(--warning);
+  --color-warning-bg: #fef9c3;
+  --color-danger: var(--danger);
+  --color-danger-bg: #fee2e2;
+
+  /* === Interaction states === */
+
+  --dark-opacity-bg: color-mix(
+    in srgb,
+    var(--color-dark-bg) 70%,
+    rgba(255, 255, 255, 0.1)
+  );
+
+  --dark-bg: color-mix(in srgb, var(--color-dark-bg) 96%, white);
+
+  --primary-bg: color-mix(in srgb, var(--primary) 8%, white);
+  --primary-border: color-mix(in srgb, var(--primary) 25%, white);
+
+  --active-primary-bg: color-mix(in srgb, var(--primary) 24%, white);
+  --focus-ring: color-mix(in srgb, var(--primary) 55%, white);
+
+  --danger-bg: color-mix(in srgb, var(--danger) 9%, white);
+  --danger-border: color-mix(in srgb, var(--danger) 30%, white);
+
+  /* === Gradients & shadows === */
+  --gradient-primary: linear-gradient(120deg, #4c86fe 0%, #1d4ed8 100%);
+  --gradient-primary-soft: linear-gradient(
+    135deg,
+    rgba(76, 134, 254, 0.12),
+    rgba(29, 78, 216, 0.12)
+  );
+  --gradient-primary-radial: radial-gradient(
+    circle at top left,
+    #4c86fe,
+    #1d4ed8
+  );
+
+  --gradient-sky: linear-gradient(90deg, #06b6d4 0%, #3b82f6 100%);
+  --gradient-sky-soft: linear-gradient(
+    135deg,
+    rgba(6, 182, 212, 0.15),
+    rgba(59, 130, 246, 0.15)
+  );
+
+  --gradient-success: linear-gradient(90deg, #22c55e 0%, #16a34a 100%);
+  --gradient-success-soft: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.15),
+    rgba(22, 163, 74, 0.15)
+  );
+
+  --gradient-warning: linear-gradient(90deg, #facc15 0%, #f97316 100%);
+  --gradient-warning-soft: linear-gradient(
+    135deg,
+    rgba(250, 204, 21, 0.15),
+    rgba(249, 115, 22, 0.15)
+  );
+
+  --gradient-danger: linear-gradient(90deg, #ef4444 0%, #be123c 100%);
+  --gradient-danger-soft: linear-gradient(
+    270deg,
+    rgba(239, 68, 68, 0.15),
+    rgba(190, 18, 60, 0.19)
+  );
+
+  --gradient-violet: linear-gradient(90deg, #8b5cf6 0%, #6366f1 100%);
+  --gradient-violet-soft: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.15),
+    rgba(99, 102, 241, 0.15)
+  );
+
+  --bg-gradient-blue-violet: linear-gradient(
+    135deg,
+    rgba(76, 134, 254, 0.2),
+    rgba(139, 92, 246, 0.05)
+  );
+  --bg-gradient-blue-violet-deep: linear-gradient(
+    135deg,
+    rgba(76, 134, 254, 0.25) 0%,
+    rgba(99, 102, 241, 0.08) 100%
+  );
+  --bg-gradient-blue-violet-radial: radial-gradient(
+    circle at top left,
+    rgba(76, 134, 254, 0.25),
+    rgba(139, 92, 246, 0.05)
+  );
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 3px 5px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 5px 12px rgba(0, 0, 0, 0.1);
+
+  /* --------------------------------------------------------------------------- */
+
   --main-black-hover-color: #1f2022;
   --main-gray-hover-color: #f3f4f6;
   --main-blue-hover-color: rgba(0, 73, 229, 0.771);

@@ -1,0 +1,37 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  max-height: 100dvh;
+  background-color: var(--color-dark-bg);
+}
+
+.header {
+  height: 50px;
+  width: 100%;
+
+  padding: 0px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.wrapper {
+  display: flex;
+  flex: 1;
+  padding: 0px 32px 28px 16px;
+  column-gap: 14px;
+  min-height: 0;
+}
+
+.sidebar {
+  display: flex;
+  width: 364px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}

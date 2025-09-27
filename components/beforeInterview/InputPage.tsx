@@ -76,7 +76,14 @@ const InputPage = ({
           </UserInput>
         </motion.div>
         <motion.div variants={itemVariants}>
-          <Button text="면접 질문 생성" attributes={{ type: 'submit' }} />
+          <Button
+            text={
+              props.submitButtonLoading ? '생성 중...' : '면접 질문 생성하기'
+            }
+            attributes={{ type: 'submit' }}
+            disabled={props.buttonDisabled}
+            loading={props.submitButtonLoading}
+          />
         </motion.div>
       </form>
     </motion.div>

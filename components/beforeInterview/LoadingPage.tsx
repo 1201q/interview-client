@@ -12,6 +12,7 @@ const TEST_ID = '4e88866e-2a7a-4e66-b49f-12a29e67109e';
 
 interface LoadingPageProps {
   onLoadingComplete: () => void;
+  requestId: string | null;
 }
 
 const LoadingPage = (props: LoadingPageProps) => {
@@ -26,7 +27,7 @@ const LoadingPage = (props: LoadingPageProps) => {
 
   useEffect(() => {
     const eventSource = new EventSource(
-      `${process.env.NEXT_PUBLIC_API_URL}/generate-question/test/${TEST_ID}?mock=true`,
+      `${process.env.NEXT_PUBLIC_API_URL}/generate-question/test/${props.requestId || TEST_ID}?mock=false`,
     );
 
     eventSource.addEventListener('question', (e) => {
@@ -51,7 +52,7 @@ const LoadingPage = (props: LoadingPageProps) => {
     return () => {
       eventSource.close();
     };
-  }, []);
+  }, [props.requestId]);
 
   useEffect(() => {
     if (generatedQuestions.length > 0) {
