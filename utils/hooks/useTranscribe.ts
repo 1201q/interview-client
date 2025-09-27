@@ -149,6 +149,9 @@ export const useTranscribe = ({ onEvent }: Options) => {
   const connectTranscription = useCallback(
     async (payload: TokenPayload = {}) => {
       resetText();
+
+      console.time('[connect] total');
+      console.time('[connect] token');
       setCanResume(false);
 
       if (pcRef.current) cleanup();
@@ -158,6 +161,8 @@ export const useTranscribe = ({ onEvent }: Options) => {
       // 1. 토큰 확인
       const tokenRes = await testgetEphemeralToken(payload);
       const token = tokenRes.value ?? null;
+      console.timeEnd('[connect] token');
+
       if (!token) {
         setConnStatus('idle');
         throw new Error('EphemeralToken 없음');
@@ -165,10 +170,26 @@ export const useTranscribe = ({ onEvent }: Options) => {
 
       // 2. RTCPeerConnection
       // OpenAI Realtime과 WebRTC 연결할 객체.
+
+      // const pc = new RTCPeerConnection({
+      //   iceServers: [{ urls: ['stun:stun.l.google.com:19302'] }],
+      // });
+
       const pc = new RTCPeerConnection({
-        iceServers: [{ urls: ['stun:stun.l.google.com:19302'] }],
+        iceServers: [
+          {
+            urls: [
+              'stun:stun.l.google.com:19302',
+              'stun:global.stun.twilio.com:3478',
+            ],
+          },
+        ],
+        bundlePolicy: 'max-bundle',
       });
+
       pcRef.current = pc;
+
+      console.log('oniceconnectionstatechange--------------');
 
       pc.oniceconnectionstatechange = () => {
         const st = pc.iceConnectionState;
@@ -179,6 +200,8 @@ export const useTranscribe = ({ onEvent }: Options) => {
         if (['disconnected', 'failed', 'closed'].includes(st)) cleanup();
       };
 
+      console.log('ondatachannel--------------');
+
       // 만약 서버가 dc를 생성할 경우?
       pc.ondatachannel = (e) => {
         e.channel.onmessage = (event) => {
@@ -188,8 +211,10 @@ export const useTranscribe = ({ onEvent }: Options) => {
         };
       };
 
+      console.log('클라가 dc를 생성--------------');
       // 클라가 dc를 생성
       const dc = pc.createDataChannel('oai-events');
+      dc.onopen = () => console.log('[dc] open');
 
       dc.onmessage = (e) => {
         try {
@@ -198,6 +223,8 @@ export const useTranscribe = ({ onEvent }: Options) => {
       };
       dcRef.current = dc;
 
+      console.log('핵심--------------');
+
       // 핵심: 오디오 m=라인을 선점 (재협상 없이 나중에 트랙만 붙임)
       transceiverRef.current = pc.addTransceiver('audio', {
         direction: 'sendonly',
@@ -205,21 +232,52 @@ export const useTranscribe = ({ onEvent }: Options) => {
       senderRef.current = transceiverRef.current.sender;
 
       // SDP 생성/설정
+      console.time('[connect] offer+local');
       await pc.setLocalDescription(await pc.createOffer());
+      console.timeEnd('[connect] offer+local');
 
       // ICE gathering 완료 대기 (리스너 해제를 포함)
+      // await new Promise<void>((resolve) => {
+      //   if (pc.iceGatheringState === 'complete') return resolve();
+      //   const handler = () => {
+      //     if (pc.iceGatheringState === 'complete') {
+      //       pc.removeEventListener('icegatheringstatechange', handler);
+      //       resolve();
+      //     }
+      //   };
+      //   pc.addEventListener('icegatheringstatechange', handler);
+      // });
+
       await new Promise<void>((resolve) => {
-        if (pc.iceGatheringState === 'complete') return resolve();
-        const handler = () => {
-          if (pc.iceGatheringState === 'complete') {
-            pc.removeEventListener('icegatheringstatechange', handler);
+        let done = false;
+        const finish = () => {
+          if (!done) {
+            done = true;
             resolve();
           }
         };
-        pc.addEventListener('icegatheringstatechange', handler);
+        const t = setTimeout(() => {
+          console.warn('[ICE] timeout → proceed with partial candidates');
+          finish();
+        }, 1500);
+
+        pc.onicecandidate = (e) => {
+          if (e.candidate) {
+            console.log('[ICE] cand:', e.candidate.type, e.candidate.protocol);
+          } else {
+            console.log('[ICE] null candidate (completed)');
+            clearTimeout(t);
+            finish();
+          }
+        };
+        if (pc.iceGatheringState === 'complete') {
+          clearTimeout(t);
+          finish();
+        }
       });
 
       // OpenAI Realtime 요청
+      console.time('[connect] sdp-exchange');
       const sdpRes = await fetch(STT_URL, {
         method: 'POST',
         headers: {
@@ -238,6 +296,8 @@ export const useTranscribe = ({ onEvent }: Options) => {
       }
 
       await pc.setRemoteDescription({ type: 'answer', sdp: raw });
+      console.timeEnd('[connect] sdp-exchange');
+      console.timeEnd('[connect] total');
     },
     [cleanup, handleEvent, resetText],
   );
@@ -329,6 +389,7 @@ export const useTranscribe = ({ onEvent }: Options) => {
     if (!track) return;
 
     await startRecorder(track);
+
     track.enabled = true;
 
     try {

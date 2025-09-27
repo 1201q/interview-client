@@ -6,22 +6,11 @@ import { motion, AnimatePresence, useAnimationControls } from 'motion/react';
 import { Loader2, Check, Space } from 'lucide-react';
 import { InterviewPhase } from '@/utils/types/interview';
 import React from 'react';
+import { useInterview } from '@/utils/hooks/useInterview';
 
-interface SubmitButtonProps {
-  phase: InterviewPhase;
-  submitAnswer: () => Promise<void>;
-  startAnswer: () => void;
-  startCountdown: () => Promise<void>;
-  startInterview: () => void;
-}
+const InterviewSubmitButton = (i: ReturnType<typeof useInterview>) => {
+  const phase = i.clientPhase;
 
-const InterviewSubmitButton = ({
-  phase,
-  startAnswer,
-  startCountdown,
-  submitAnswer,
-  startInterview,
-}: SubmitButtonProps) => {
   const countdownControls = useAnimationControls(); // 카운트다운 애니메이션
   const buttonRef = useRef<HTMLButtonElement>(null); // 스페이스바로 버튼 제어
   const [isPressed, setIsPressed] = useState(false); // 스페이스바로 눌림 애니메이션 구현 위함
@@ -44,21 +33,23 @@ const InterviewSubmitButton = ({
           phase === 'submitting' ||
           phase === 'submitSuccess'
         ? 'answerGroup'
-        : 'startGroup';
+        : phase === 'end'
+          ? 'endGroup'
+          : 'startGroup';
 
   const isDisabled = disabledPhases.includes(phase);
 
   // =========== 버튼 클릭 이벤트
   const handleClick = async () => {
     if (phase === 'beforeStart') {
-      startInterview();
-      console.log('클릭1');
+      i.doStartSession();
+      console.log('beforestart');
     } else if (phase === 'start') {
-      startCountdown();
-      console.log('클릭2');
+      i.doStartCountdown();
+      console.log('start');
     } else if (phase === 'answering') {
-      submitAnswer();
-      console.log('클릭3');
+      i.doSubmitAnswer();
+      console.log('answering');
     }
   };
 
@@ -74,11 +65,11 @@ const InterviewSubmitButton = ({
       })
       .then(() => {
         countdownControls.stop();
-        startAnswer();
+        i.doStartAnswer();
 
         isCountdown.current = false;
       });
-  }, [countdownControls, startAnswer]);
+  }, [countdownControls, i.doStartAnswer]);
 
   useEffect(() => {
     if (phase === 'startCountdown3') {
@@ -355,6 +346,34 @@ const InterviewSubmitButton = ({
                         style={{ marginRight: '-2px' }}
                       />
                     </motion.span>
+                  </motion.div>
+                )}
+              </motion.div>
+            )}
+            {/*  답변 시작 */}
+            {buttonGroup === 'endGroup' && (
+              <motion.div
+                key="endGroup"
+                initial={{ y: 8, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -8, opacity: 0 }}
+                transition={{ duration: 0.2, ease: 'easeInOut' }}
+              >
+                {/* 면접 종료됨 */}
+                {phase === 'end' && (
+                  <motion.div
+                    layout
+                    key={'end'}
+                    className={styles.buttonWrapper}
+                  >
+                    <div className={styles.text}>면접 종료</div>
+                    <div className={styles.iconContainer}>
+                      <Space
+                        color="white"
+                        size={19}
+                        style={{ marginBottom: '5px' }}
+                      />
+                    </div>
                   </motion.div>
                 )}
               </motion.div>

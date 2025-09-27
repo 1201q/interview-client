@@ -1,6 +1,9 @@
 'use client';
 
-import { SessionQuestionStatus } from '@/utils/types/interview';
+import {
+  QSessionQuestionItem,
+  SessionQuestionStatus,
+} from '@/utils/types/interview';
 import styles from './styles/i.sidebar.module.css';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
@@ -16,9 +19,11 @@ interface QuestionItemProps {
   qStatus: SessionQuestionStatus;
 }
 
-const InterviewSidebar = () => {
-  const questions = useAtomValue(SessionQuestionsAtom);
+interface SidebarProps {
+  questions: QSessionQuestionItem[];
+}
 
+const InterviewSidebar = ({ questions }: SidebarProps) => {
   const [openQuestions, setOpenQuestions] = useState<Record<string, boolean>>(
     () => {
       const initial: Record<string, boolean> = {};
@@ -109,7 +114,6 @@ const QuestionItem = ({
             <div className={styles.questionText}>{text}</div>
           </motion.div>
         )}
-        <>{qStatus}</>
       </AnimatePresence>
     </li>
   );

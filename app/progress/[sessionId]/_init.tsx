@@ -2,12 +2,17 @@
 
 import InterviewClient from '@/components/progress/InterviewClient';
 import InterviewSidebar from '@/components/progress/InterviewSidebar';
+import { useInterview } from '@/utils/hooks/useInterview';
+import { useTranscribe } from '@/utils/hooks/useTranscribe';
 
 import {
   getInterviewSessionDetail,
+  startAnswer,
   startInterviewSession,
+  submitAnswer,
 } from '@/utils/services/interviewSession';
 import {
+  InterviewPhase,
   InterviewSessionStatus,
   QSessionQuestionItem,
 } from '@/utils/types/interview';
@@ -25,57 +30,16 @@ const InterviewInit = ({
   questions,
   status,
 }: InterviewInitProps) => {
-  const [clientQuestions, setClientQuestions] = useState(questions);
-  const [serverStatus, setServerStatus] = useState(status);
-
-  // const []
-
-  const startSession = async () => {
-    await startInterviewSession(sessionId);
-
-    refresh();
-  };
-
-  const refresh = async () => {
-    const res = await getInterviewSessionDetail(sessionId);
-
-    setClientQuestions(res.questions);
-    setServerStatus(res.status);
-  };
-
-  const startAnswer = () => {};
-
-  useEffect(() => {
-    console.log(clientQuestions);
-    console.log(serverStatus);
-  }, [clientQuestions, serverStatus]);
+  const interview = useInterview({ sessionId, questions, status });
 
   return (
     <>
       <aside className="sidebar">
-        <InterviewSidebar />
+        <InterviewSidebar questions={interview.clientQuestions} />
       </aside>
       <main className="main">
-        <InterviewClient />
+        <InterviewClient {...interview} />
       </main>
-      <>
-        <button
-          style={{ position: 'fixed' }}
-          onClick={() => {
-            refresh();
-          }}
-        >
-          클릭1
-        </button>
-        <button
-          style={{ position: 'fixed', left: 50 }}
-          onClick={() => {
-            startSession();
-          }}
-        >
-          클릭2
-        </button>
-      </>
     </>
   );
 };
