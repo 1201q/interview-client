@@ -1,3 +1,5 @@
+'use client';
+
 import styles from './styles/button.module.css';
 import { AnimatePresence, HTMLMotionProps, motion } from 'framer-motion';
 import { LoaderCircle } from 'lucide-react';
@@ -8,7 +10,7 @@ interface ButtonProps {
   attributes?: MotionBtnAttrs;
   text: string;
   disabled?: boolean;
-  color?: 'blue' | 'gray';
+  color?: 'blue' | 'gray' | 'red';
   onClick?: () => void;
   loading?: boolean;
 }
@@ -26,6 +28,8 @@ const SharedButton = ({
       return styles.blue;
     } else if (color === 'gray') {
       return styles.gray;
+    } else if (color === 'red') {
+      return styles.red;
     } else {
       return '';
     }

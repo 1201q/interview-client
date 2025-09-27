@@ -207,13 +207,13 @@ export const getInterviewSessionDetail = async (
     );
 
     if (!res.ok) {
-      let error = '';
-
+      let body = '';
       try {
-        error = await res.text();
-      } catch {
-        throw new Error(`detail get 실패: ${res.status}${error ? error : ''}`);
-      }
+        body = await res.text();
+      } catch {}
+      const err = new Error(`detail get 실패: ${res.status} ${body}`);
+      (err as any).status = res.status;
+      throw err;
     }
 
     const json = (await res.json()) as GetSessionDetailResponse;
@@ -221,7 +221,7 @@ export const getInterviewSessionDetail = async (
     return json;
   } catch (error) {
     if ((error as any)?.name === 'AbortError') {
-      throw new Error('세션 생성 요청이 시간 초과되었습니다.');
+      throw new Error('세션 요청이 시간 초과되었습니다.');
     }
     throw error;
   } finally {

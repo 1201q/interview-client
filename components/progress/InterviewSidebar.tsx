@@ -1,19 +1,12 @@
 'use client';
 
-import {
-  InterviewSessionStatus,
-  QSessionQuestionItem,
-  SessionQuestionStatus,
-} from '@/utils/types/interview';
+import { SessionQuestionStatus } from '@/utils/types/interview';
 import styles from './styles/i.sidebar.module.css';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { LoaderCircle } from 'lucide-react';
-
-interface InterviewSidebarProps {
-  questions: QSessionQuestionItem[];
-  status: InterviewSessionStatus;
-}
+import { useAtomValue } from 'jotai';
+import { SessionQuestionsAtom } from '@/store/interviewSession';
 
 interface QuestionItemProps {
   isOpen: boolean;
@@ -23,7 +16,9 @@ interface QuestionItemProps {
   qStatus: SessionQuestionStatus;
 }
 
-const InterviewSidebar = ({ questions, status }: InterviewSidebarProps) => {
+const InterviewSidebar = () => {
+  const questions = useAtomValue(SessionQuestionsAtom);
+
   const [openQuestions, setOpenQuestions] = useState<Record<string, boolean>>(
     () => {
       const initial: Record<string, boolean> = {};
@@ -65,13 +60,7 @@ const InterviewSidebar = ({ questions, status }: InterviewSidebarProps) => {
                   }}
                   text={q.text}
                   order={q.order}
-                  qStatus={
-                    q.order === 0
-                      ? 'submitted'
-                      : q.order === 1
-                        ? 'answering'
-                        : 'ready'
-                  }
+                  qStatus={q.status}
                 />
               );
             })}
@@ -120,6 +109,7 @@ const QuestionItem = ({
             <div className={styles.questionText}>{text}</div>
           </motion.div>
         )}
+        <>{qStatus}</>
       </AnimatePresence>
     </li>
   );

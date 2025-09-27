@@ -14,7 +14,6 @@
 
   background: var(--color-primary);
   background-color: var(--color-primary);
-  transition: all 0.1s;
 }
 
 .buttonText {
@@ -34,7 +33,6 @@
 
 /* gray */
 
-/* blue button */
 .buttonContainer.gray button {
   background: var(--neutral-3);
   color: var(--color-text);
@@ -50,6 +48,25 @@
 }
 
 .buttonContainer.gray button:disabled {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* red */
+.buttonContainer.red button {
+  background-color: var(--danger);
+}
+
+.red .buttonText {
+  font-weight: 600;
+  color: var(--neutral-1);
+}
+
+.buttonContainer.red button:hover {
+  filter: brightness(90%);
+}
+
+.buttonContainer.red button:disabled {
   opacity: 0.7;
   pointer-events: none;
 }

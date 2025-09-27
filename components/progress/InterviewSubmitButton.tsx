@@ -6,7 +6,6 @@ import { motion, AnimatePresence, useAnimationControls } from 'motion/react';
 import { Loader2, Check, Space } from 'lucide-react';
 import { InterviewPhase } from '@/utils/types/interview';
 import React from 'react';
-import { ST } from 'next/dist/shared/lib/utils';
 
 interface SubmitButtonProps {
   phase: InterviewPhase;

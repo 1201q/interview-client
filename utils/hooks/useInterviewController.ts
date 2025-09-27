@@ -1,4 +1,4 @@
-import {
+﻿import {
   ClientInterviewPhaseAtom,
   CurrentSessionQuestionAtom,
   InterviewJobRoleAtom,
@@ -116,10 +116,12 @@ export const useInterviewController = () => {
       await connectTranscription(sttBias);
 
       // 2. 오디오 소스 준비
-      await prepareAudioTrack('tab');
+      await prepareAudioTrack('mic');
 
       // 3. 현재 질문을 answering으로 변경 -> 성공시 카운트 다운
       await doStartAnswerCountdown();
+
+      console.log('아니 제출좀 해라');
 
       if (runIdRef.current !== currentRun) return;
 
@@ -178,11 +180,11 @@ export const useInterviewController = () => {
     switch (phase) {
       case 'start':
         console.log('start1');
-        timer.start(60_000);
+        timer.start(5_000);
         break;
       case 'answering':
         console.log('start2');
-        timer.start(60_000);
+        timer.start(5_000);
         break;
       case 'starting':
       case 'submitting':

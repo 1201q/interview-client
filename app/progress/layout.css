@@ -35,3 +35,48 @@
   flex-direction: column;
   flex: 1;
 }
+
+.guide {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 16px 32px 16px 32px;
+}
+
+.guideIcon {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background-color: var(--color-dark-hover);
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.guideTitle {
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--neutral-2);
+  line-height: 130%;
+  text-align: center;
+}
+
+.guideDesc {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--neutral-5);
+  margin-top: 12px;
+  text-align: center;
+}
+
+.buttons {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+
+  column-gap: 15px;
+}
