@@ -130,6 +130,7 @@ export const useInterview = ({
   return {
     currentQuestion,
     clientQuestions,
+    serverStatus,
     clientPhase,
     doStartSession,
     doStartAnswer,

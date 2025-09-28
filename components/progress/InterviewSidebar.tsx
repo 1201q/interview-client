@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  InterviewPhase,
   QSessionQuestionItem,
   SessionQuestionStatus,
 } from '@/utils/types/interview';
@@ -19,11 +20,14 @@ interface QuestionItemProps {
   qStatus: SessionQuestionStatus;
 }
 
+type StatusType = 'not_started' | 'in_progress' | 'completed' | 'expired';
+
 interface SidebarProps {
   questions: QSessionQuestionItem[];
+  status: StatusType;
 }
 
-const InterviewSidebar = ({ questions }: SidebarProps) => {
+const InterviewSidebar = ({ questions, status }: SidebarProps) => {
   const [openQuestions, setOpenQuestions] = useState<Record<string, boolean>>(
     () => {
       const initial: Record<string, boolean> = {};
@@ -41,12 +45,57 @@ const InterviewSidebar = ({ questions }: SidebarProps) => {
     }));
   };
 
+  const statusText = (status: StatusType) => {
+    switch (status) {
+      case 'not_started':
+        return '인터뷰 시작 전';
+      case 'in_progress':
+        return '인터뷰 진행 중';
+      case 'completed':
+        return '인터뷰 완료';
+      case 'expired':
+        return '인터뷰 기간 만료';
+      default:
+        return '';
+    }
+  };
+
+  const progressPercent =
+    questions.length === 0
+      ? 0
+      : (questions.filter((q) => q.status === 'submitted').length /
+          questions.length) *
+        100;
+
   return (
     <nav className={styles.sidebar}>
-      <div className={styles.topStatus}>
-        <p className={styles.topStatusTitle}>면접 진행 중</p>
-        <p className={styles.topStatusInfo}>현재 0%</p>
-      </div>
+      <motion.div
+        layout
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className={`${styles.topStatus} ${status !== 'in_progress' ? styles.nonProgress : ''}`}
+      >
+        <motion.p
+          layout="position"
+          transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          className={styles.topStatusTitle}
+        >
+          {statusText(status)}
+        </motion.p>
+        <AnimatePresence initial={false} mode="popLayout">
+          {status === 'in_progress' && (
+            <motion.p
+              key="topStatusInfo"
+              className={styles.topStatusInfo}
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            >
+              현재 {Math.floor(progressPercent)}%
+            </motion.p>
+          )}
+        </AnimatePresence>
+      </motion.div>
       <p className={styles.listHeader}>질문 목록</p>
       <div className={styles.questionList}>
         <ol className={styles.list}>

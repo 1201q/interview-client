@@ -1,4 +1,11 @@
 import {
+  AnalysisData,
+  EvaluationResult,
+  RefinedAnswer,
+  SttResult,
+  VoiceMetrics,
+} from '../types/analysis';
+import {
   InterviewSessionStatus,
   QSessionQuestionItem,
 } from '../types/interview';
@@ -489,6 +496,49 @@ export const submitAnswer = async ({
   } catch (error) {
     if ((error as any)?.name === 'AbortError') {
       throw new Error('answer submit  요청이 시간 초과되었습니다.');
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
+};
+
+export const getAnalysis = async (
+  sessionId: string,
+  options?: { timeoutMs?: number },
+) => {
+  const controller = new AbortController();
+  const timeout = setTimeout(
+    () => controller.abort(),
+    options?.timeoutMs ?? 15000,
+  );
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/analysis/result/${sessionId}`,
+      {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
+      },
+    );
+
+    if (!res.ok) {
+      let body = '';
+      try {
+        body = await res.text();
+      } catch {}
+      const err = new Error(`detail get 실패: ${res.status} ${body}`);
+      (err as any).status = res.status;
+      throw err;
+    }
+
+    const json = (await res.json()) as AnalysisData[];
+
+    return json;
+  } catch (error) {
+    if ((error as any)?.name === 'AbortError') {
+      throw new Error('세션 요청이 시간 초과되었습니다.');
     }
     throw error;
   } finally {

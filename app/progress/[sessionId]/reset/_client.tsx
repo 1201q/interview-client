@@ -1,9 +1,7 @@
 'use client';
 
 import SharedButton from '@/components/new/Button';
-import Button from '@/components/shared/Button';
 import { resetInterviewSession } from '@/utils/services/interviewSession';
-import { motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -24,20 +22,6 @@ const ResetButtons = ({ sessionId, redirectTo }: ResetButtonsProps) => {
       router.refresh();
     } catch (e: any) {
       alert(e?.message ?? '초기화 실패');
-    } finally {
-      setLoading(null);
-    }
-  };
-
-  const onEndInterview = async () => {
-    try {
-      setLoading('end');
-
-      router.replace('/');
-      router.refresh();
-    } catch (e: any) {
-      alert(e?.message ?? '종료 실패');
-    } finally {
       setLoading(null);
     }
   };
@@ -50,13 +34,6 @@ const ResetButtons = ({ sessionId, redirectTo }: ResetButtonsProps) => {
         disabled={loading !== null}
         onClick={onReset}
         color="blue"
-      />
-      <SharedButton
-        text={loading === 'end' ? '로딩...' : '면접 종료'}
-        loading={loading === 'end'}
-        disabled={loading !== null}
-        onClick={onEndInterview}
-        color="gray"
       />
     </>
   );

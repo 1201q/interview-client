@@ -1,8 +1,7 @@
 .sidebar {
-  display: flex;
-  flex-direction: column;
+  position: sticky;
   width: 100%;
-  height: 100%;
+  top: calc(50px + 28px);
 }
 
 .topStatus {
@@ -16,14 +15,6 @@
   padding: 15px 20px;
   margin: 0px 16px;
   row-gap: 3px;
-}
-
-.nonProgress {
-  background: var(--gradient-primary-soft);
-}
-
-.nonProgress .topStatusTitle {
-  color: color-mix(in srgb, var(--color-primary) 60%, white 0%);
 }
 
 .topStatusTitle {
@@ -102,7 +93,7 @@
 }
 
 .question:hover {
-  background-color: var(--color-dark-hover);
+  background-color: var(--neutral-3);
 }
 
 /* 상단 title */
@@ -132,15 +123,6 @@
   font-size: 18px;
   font-weight: 600;
   color: var(--neutral-3);
-}
-
-/* 확장시 보이는 질문 텍스트 */
-.questionText {
-  color: var(--neutral-5);
-  line-height: 130%;
-  font-size: 15px;
-  font-weight: 500;
-  padding-bottom: 2px;
 }
 
 .rightTitle {

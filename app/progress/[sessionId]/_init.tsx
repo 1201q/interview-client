@@ -3,21 +3,11 @@
 import InterviewClient from '@/components/progress/InterviewClient';
 import InterviewSidebar from '@/components/progress/InterviewSidebar';
 import { useInterview } from '@/utils/hooks/useInterview';
-import { useTranscribe } from '@/utils/hooks/useTranscribe';
 
 import {
-  getInterviewSessionDetail,
-  startAnswer,
-  startInterviewSession,
-  submitAnswer,
-} from '@/utils/services/interviewSession';
-import {
-  InterviewPhase,
   InterviewSessionStatus,
   QSessionQuestionItem,
 } from '@/utils/types/interview';
-
-import { useEffect, useState } from 'react';
 
 interface InterviewInitProps {
   sessionId: string;
@@ -35,7 +25,10 @@ const InterviewInit = ({
   return (
     <>
       <aside className="sidebar">
-        <InterviewSidebar questions={interview.clientQuestions} />
+        <InterviewSidebar
+          status={interview.serverStatus}
+          questions={interview.clientQuestions}
+        />
       </aside>
       <main className="main">
         <InterviewClient {...interview} />

@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  background-color: var(--neutral-1);
+}
+
+.header {
+  height: 50px;
+  width: 100%;
+  background-color: var(--neutral-0);
+  border-bottom: 1px solid var(--neutral-3);
+  padding: 0px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 364px 1fr;
+  gap: 14px;
+  padding: 28px 32px 28px 16px;
+}
+
+.sidebar {
+  width: 364px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
