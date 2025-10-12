@@ -49,7 +49,6 @@
     var(--color-dark-bg) 70%,
     rgba(255, 255, 255, 0.1)
   );
-
   --dark-bg: color-mix(in srgb, var(--color-dark-bg) 96%, white);
 
   --primary-bg: color-mix(in srgb, var(--primary) 8%, white);
@@ -85,7 +84,7 @@
   --gradient-success-soft: linear-gradient(
     135deg,
     rgba(34, 197, 94, 0.15),
-    rgba(22, 163, 74, 0.15)
+    rgba(22, 163, 74, 0.25)
   );
 
   --gradient-warning: linear-gradient(90deg, #facc15 0%, #f97316 100%);

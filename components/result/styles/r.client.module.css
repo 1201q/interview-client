@@ -2,123 +2,471 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-
-  padding-top: 30px;
-  row-gap: 50px;
+  row-gap: 40px;
+  padding-bottom: 40px;
 }
 
-.section {
+.main section {
   display: flex;
+}
+
+.column {
   flex-direction: column;
 }
 
-.title {
-  align-items: flex-start;
-  display: flex;
-  margin-bottom: 16px;
+/* 상단 질문 텍스트 */
+.question {
+  width: 100%;
+  padding: 22px 26px;
   border-bottom: 1px solid var(--neutral-3);
-  padding-bottom: 13px;
+}
+
+.orderText {
+  font-size: 23px;
+  color: var(--color-primary-strong);
+  font-weight: 700;
+  margin-right: 7px;
 }
 
 .questionText {
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--neutral-7);
-  line-height: 120%;
-  margin-top: 2px;
-}
-
-.order {
-  width: 40px;
-  flex-shrink: 0;
-  font-size: 27px;
-  font-weight: 600;
-  color: var(--color-primary);
-}
-
-.smallTitle {
-  display: flex;
-  align-items: center;
-
-  column-gap: 7px;
-  margin-bottom: 12px;
-  background: var(--color-primary-weak);
-  padding: 7px 10px;
-  border-radius: 18px;
-  width: fit-content;
-}
-
-.smallTitle * {
-  color: var(--color-primary);
-}
-
-.smallTitleText {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.myAnswer {
-  margin-bottom: 20px;
-  border-left: 3px solid var(--color-primary);
-  padding-left: 10px;
-  margin-left: 3px;
-  background: white;
-  padding: 12px 15px;
-}
-
-.myAnswer p {
-  color: var(--neutral-7);
+  font-size: 22px;
   font-weight: 500;
+  color: var(--neutral-7);
   line-height: 130%;
 }
 
-.axis {
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  height: 35px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.sectionTitle h3 {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.sectionTitle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.container {
   display: flex;
   flex-direction: column;
+  border-radius: 18px;
 
-  margin-bottom: 10px;
+  border: 1px solid var(--neutral-3);
+  background-color: var(--neutral-0);
+  overflow: hidden;
+
+  text-align: left;
+  box-shadow: var(--shadow-sm);
 }
 
-.axisTitle {
+/* answer 텍스트 */
+/* ================================== */
+
+/* 컨트롤러 */
+.playController {
   display: flex;
-  align-items: flex-end;
-  border-radius: 9px;
-
-  column-gap: 10px;
-  margin-bottom: 5px;
+  align-items: center;
+  border-bottom: 1px solid var(--neutral-2);
+  column-gap: 18px;
+  margin-bottom: 20px;
+  padding: 28px 30px;
 }
 
-.axisTitleText {
-  font-weight: 600;
-  font-size: 20px;
-
-  color: var(--neutral-7);
-  margin-bottom: 5px;
+.playButton {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: color-mix(in srgb, #1d4ed8 40%, var(--color-primary) 60%);
+  box-shadow: var(--shadow-md);
+  transition: all 0.2s;
 }
 
-.axisTitleIntent {
-  font-weight: 500;
-  font-size: 14px;
-  margin-bottom: 6px;
+.playButton:hover {
+  background: color-mix(in srgb, #1d4ed8 100%, white 0%);
+}
+
+.playControllerRightInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.playControllerRightInfo .title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--neutral-9);
+  margin-bottom: 3px;
+}
+
+.playControllerRightInfo .desc {
+  font-size: 13px;
+  font-weight: 400;
   color: var(--neutral-6);
 }
 
-.axisDesc {
-  font-size: 14px;
+/* 세그먼트 */
+.segments {
+  font-size: 17px;
+  line-height: 1.65;
+  padding: 0px 30px 28px 30px;
 }
 
-.evidenceList {
+.segments span {
+  cursor: pointer;
+  border-radius: 3px;
+  padding-left: 2px;
+  padding-right: 4px;
+  transition:
+    color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--neutral-7);
+}
+
+.segments span:hover {
+  background: color-mix(in srgb, var(--color-primary) 15%, white 20%);
+}
+
+.segments span--active {
+  background: color-mix(in srgb, var(--color-primary) 25%, white 20%);
+  color: var(--neutral-9);
+}
+
+/* 면접관 피드백 */
+/* ================================== */
+.topOneLine {
+  font-size: 19px;
+  font-weight: 600;
+  padding: 25px 30px;
+  background-image: linear-gradient(
+    90deg,
+    #ecfdf5 0%,
+    #f0fdfa 50%,
+    #ecfeff 100%
+  );
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--color-success) 15%, white 30%);
+}
+
+.feedback {
+  padding: 28px 30px;
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+/* 오개념 */
+/* ================================== */
+.dontMisconception {
+  border: none;
+  color: color-mix(in srgb, var(--color-success) 90%, black 10%);
+}
+
+.misconception {
+  font-size: 19px;
+  font-weight: 600;
+  padding: 25px 30px;
+  background-color: color-mix(in srgb, var(--danger) 5%, white 50%);
+  border-bottom: 1px solid color-mix(in srgb, var(--danger) 15%, white 30%);
+  color: var(--danger);
+}
+
+/* 오개념 인용 */
+.yourAnswer {
+  margin-top: 28px;
+  margin-left: 30px;
+  margin-right: 30px;
+  border-left: 2px solid var(--danger);
+  padding-left: 17px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.yourAnswer span {
+  color: var(--neutral-5);
+}
+
+/* 질문 정보 */
+/* ================================== */
+.tabs {
+  height: 55px;
+  display: flex;
+  border-bottom: 1px solid var(--neutral-3);
+}
+
+.tab {
+  flex: 1;
   display: flex;
   align-items: center;
-  column-gap: 10px;
-  margin-bottom: 15px;
-}
+  justify-content: center;
 
-.evidence {
-  padding: 7px 10px;
-  border-radius: 9px;
-  background: var(--gradient-primary);
   font-size: 15px;
   font-weight: 500;
-  color: var(--neutral-1);
+  cursor: pointer;
+  color: var(--neutral-6);
+  text-align: center;
+  background-color: color-mix(in srgb, var(--neutral-1) 90%, white 30%);
+  transition: background-color 0.12s;
+}
+
+.tab.selected {
+  background-color: color-mix(in srgb, var(--color-primary) 7%, white 70%);
+  color: color-mix(in srgb, var(--color-primary) 100%, black 10%);
+  font-weight: 700;
+  box-shadow: inset 0 -2.5px 0 0
+    color-mix(in srgb, var(--color-primary) 100%, black 10%);
+}
+
+.tab:not(.selected):hover {
+  background-color: color-mix(in srgb, var(--neutral-1) 100%, black 2%);
+  color: var(--neutral-7);
+}
+
+.questionInfo {
+  padding: 28px 30px;
+}
+
+.questionInfo .title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--neutral-9);
+}
+
+.questionInfo .desc {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--neutral-7);
+  line-height: 1.4;
+}
+
+.greenText {
+  color: color-mix(in srgb, var(--color-success) 90%, black 10%);
+  stroke: color-mix(in srgb, var(--color-success) 90%, black 10%);
+}
+
+.redText {
+  color: color-mix(in srgb, var(--danger) 100%, black 10%);
+  stroke: color-mix(in srgb, var(--danger) 100%, black 10%);
+}
+
+.blueText {
+  color: color-mix(in srgb, var(--color-primary) 100%, black 20%);
+  stroke: color-mix(in srgb, var(--color-primary) 100%, black 20%);
+}
+
+.defaultText {
+  color: var(--neutral-7);
+  stroke: var(--neutral-7);
+}
+
+/* voice */
+/* ================================== */
+
+/* 접기 펴기 헤더 */
+.voiceHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 22px 20px 22px;
+}
+
+.voiceHeaderLeft {
+  display: flex;
+  align-items: center;
+  column-gap: 14px;
+}
+
+.voiceHeaderLeft svg {
+  width: 23px;
+  height: 23px;
+  margin-bottom: 3px;
+}
+
+.voiceHeaderLeftInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.voiceHeader .title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--neutral-9);
+  margin-bottom: 3px;
+  text-align: left;
+}
+
+.voiceHeader .desc {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--neutral-6);
+  text-align: left;
+}
+
+.voiceHeaderRight {
+  display: flex;
+  align-items: center;
+}
+
+.voiceHeaderRight svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--neutral-5);
+}
+
+/* 접기 펴기 컨텐츠 */
+
+.voiceContent {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 25px 22px 25px;
+  row-gap: 30px;
+}
+
+/*  접기 펴기 title */
+.voiceContentTitle {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 7px;
+  row-gap: 3px;
+}
+
+/* 제목 */
+.voiceContentTitle h4 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--neutral-9);
+  margin-bottom: 3px;
+  text-align: left;
+}
+
+.voiceContentTitle span {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--neutral-6);
+  text-align: left;
+  line-height: 1.4;
+}
+
+.voiceChart {
+  height: calc(100% - 50px);
+}
+
+/* 2줄 */
+.voiceGrid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  column-gap: 20px;
+  height: 100%;
+  min-height: 300px;
+}
+
+.voiceGridItem {
+  height: 100%;
+  max-height: 300px;
+}
+
+/*  */
+/* cards */
+/* ================================== */
+.cards {
+  display: flex;
+  column-gap: 25px;
+  min-height: 130px;
+}
+
+.card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+
+  padding: 22px;
+  border: 1px solid;
+}
+
+.card .icon {
+  width: 20px;
+  height: 20px;
+  margin-bottom: 12px;
+}
+
+.card .title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  margin-bottom: 5px;
+  margin-left: -1px;
+}
+
+.card .desc {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--neutral-6);
+}
+
+.card.gray {
+  background-image: linear-gradient(135deg, var(--neutral-1) 0%, #f1f5f9 100%);
+  border-color: var(--neutral-3);
+}
+
+.card.gray .title,
+.card.gray svg {
+  color: var(--neutral-6);
+  stroke: var(--neutral-6);
+}
+
+.card.gray .desc {
+  color: color-mix(in srgb, var(--neutral-6) 60%, white 30%);
+}
+
+.card.blue {
+  background-image: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border-color: #bfdbfe;
+}
+
+.card.blue .title,
+.card.blue svg {
+  color: var(--color-primary);
+  stroke: var(--color-primary);
+}
+
+.card.blue .desc {
+  color: color-mix(in srgb, var(--color-primary) 80%, white 30%);
+}
+
+.card.amber {
+  background-image: linear-gradient(135deg, #fffbeb 0%, #ffedd5 100%);
+  border-color: #fde68a;
+}
+
+.card.amber .title,
+.card.amber svg {
+  color: rgb(254, 154, 0);
+  stroke: rgb(254, 154, 0);
+}
+
+.card.amber .desc {
+  color: color-mix(in srgb, rgb(254, 154, 0) 80%, white 30%);
+}
+
+.card.green {
+  background-image: linear-gradient(135deg, #ecfdf5 0%, #e1fced 100%);
+  border-color: #a7f3d0;
+}
+
+.card.green .title,
+.card.green svg {
+  color: rgb(0, 153, 102);
+  stroke: rgb(0, 153, 102);
+}
+
+.card.green .desc {
+  color: color-mix(in srgb, rgb(0, 153, 102) 80%, white 30%);
 }

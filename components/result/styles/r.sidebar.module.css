@@ -42,8 +42,9 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  overflow-y: scroll;
+
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 /* 스크롤바 */
@@ -158,4 +159,17 @@
 }
 .completed .questionText {
   color: var(--neutral-6);
+}
+
+/* 하단 질문 */
+.questionText {
+  font-size: 16px;
+  font-weight: 400;
+
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
