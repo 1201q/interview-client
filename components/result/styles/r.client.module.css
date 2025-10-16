@@ -134,9 +134,42 @@
   background: color-mix(in srgb, var(--color-primary) 15%, white 20%);
 }
 
-.segments span--active {
-  background: color-mix(in srgb, var(--color-primary) 25%, white 20%);
-  color: var(--neutral-9);
+/* 기본(재생 중 아님) */
+.segIdle {
+  cursor: pointer;
+  border-radius: 0.25rem;
+  padding: 0 0.125rem;
+  transition:
+    background-color 150ms,
+    color 150ms;
+}
+.segIdle:hover {
+  background-color: #eff6ff;
+  color: #1e3a8a;
+}
+
+/* 재생 중: 현재 세그먼트 */
+.segActive {
+  cursor: pointer;
+  border-radius: 0.25rem;
+  padding: 0 0.125rem;
+  background-color: #dbeafe;
+  color: #1e3a8a;
+  transition:
+    background-color 150ms,
+    color 150ms;
+}
+
+/* 재생 중: 비현재 세그먼트(회색 처리) */
+.segDim {
+  cursor: pointer;
+  border-radius: 0.25rem;
+  padding: 0 0.125rem;
+  color: #9ca3af;
+  transition: color 150ms;
+}
+.segDim:hover {
+  color: #6b7280;
 }
 
 /* 면접관 피드백 */

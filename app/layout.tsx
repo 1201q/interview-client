@@ -4,6 +4,7 @@ import localFont from 'next/font/local';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 import JotaiProvider from '@/components/shared/JotaiProvider';
+import { cookies } from 'next/headers';
 
 interface Props {
   children: React.ReactNode;
@@ -17,9 +18,21 @@ const pretendard = localFont({
   variable: '--font-pretendard',
 });
 
-export default function RootLayout({ children, modal }: Readonly<Props>) {
+export default async function RootLayout({ children, modal }: Readonly<Props>) {
+  const sb =
+    (await cookies()).get('sidebar-size')?.value === 'mini'
+      ? 'mini'
+      : 'expanded';
+  // 없으면 expanded
+
+  const width = sb === 'mini' ? '60px' : '280px';
+
   return (
-    <html lang="ko">
+    <html
+      lang="ko"
+      data-sidebar-size={sb}
+      style={{ ['--sidebar-w' as any]: width }}
+    >
       <body className={pretendard.variable}>
         <JotaiProvider>
           <SpeedInsights />

@@ -1,0 +1,273 @@
+.steps {
+  padding: 24px 16px;
+
+  position: relative;
+  height: calc(100% - 100px);
+  overflow: hidden;
+}
+
+.loadingSteps {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: var(--primary);
+  padding: 16px 40px;
+
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  min-height: calc(100vh - 80px);
+}
+
+.loadingSteps::before,
+.loadingSteps::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(white 1px, transparent 1px);
+  background-size: 22px 22px;
+  opacity: 0.25;
+  animation: ani 12s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+.loadingSteps::after {
+  background-size: 26px 26px;
+  opacity: 0.2;
+  animation-duration: 12s;
+  animation-direction: alternate-reverse;
+  filter: blur(0.3px);
+}
+
+@keyframes ani {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0);
+  }
+  50% {
+    transform: translate3d(-3%, 2%, 0) scale(2) rotate(180deg);
+  }
+  100% {
+    transform: translate3d(1%, -2%, 0) scale(1) rotate(360deg);
+  }
+}
+
+/* .steps::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(76, 134, 254, 0.1),
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at 80% 40%,
+      rgba(139, 92, 246, 0.05),
+      transparent 70%
+    ),
+    radial-gradient(circle at 50% 80%, rgba(76, 134, 254, 0.1), transparent 60%);
+  background-blend-mode: screen;
+  filter: blur(20px);
+  animation: auroraMove 5s ease-in-out infinite alternate;
+  z-index: 0;
+}
+
+@keyframes auroraMove {
+  0% {
+    background-position:
+      20% 30%,
+      80% 40%,
+      50% 80%;
+    background-size:
+      100% 100%,
+      100% 100%,
+      100% 100%;
+  }
+  50% {
+    background-position:
+      30% 40%,
+      70% 50%,
+      60% 70%;
+    background-size:
+      120% 120%,
+      110% 110%,
+      130% 130%;
+  }
+  100% {
+    background-position:
+      25% 35%,
+      75% 45%,
+      55% 85%;
+    background-size:
+      100% 100%,
+      100% 100%,
+      100% 100%;
+  }
+} */
+
+.listHeader {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--neutral-6);
+  margin: 0px 0px 10px 2px;
+  white-space: nowrap;
+}
+
+.stepList {
+  display: flex;
+  flex-direction: column;
+  row-gap: 22px;
+  position: relative;
+  margin-top: 15px;
+}
+
+.step {
+  position: relative;
+  display: flex;
+  column-gap: 14px;
+  z-index: 1;
+}
+
+.step::before {
+  content: '';
+  position: absolute;
+  left: 12px; /* 아이콘 가운데 정렬 (icon width/2) */
+  top: 0;
+  bottom: -32px;
+  width: 1.5px;
+  background: none;
+  opacity: 0.5;
+  border-left: 1.5px dashed var(--neutral-5);
+  z-index: 0;
+}
+
+/* 첫번째 step은 위 선 제거 */
+.step:first-child::before {
+  top: 18px; /* 아이콘 중심부터 시작 */
+}
+
+/* 마지막 step은 아래 선 제거 */
+.step:last-child::before {
+  bottom: auto;
+  height: 18px;
+}
+
+/* 활성 단계는 실선으로 */
+.stepCompleted::before {
+  border-left: 1.5px solid var(--primary);
+  opacity: 1;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background-color: var(--neutral-0);
+  border-radius: 50%;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--neutral-5);
+  fill: var(--neutral-2);
+}
+
+/* current - 현재 단계 아이콘 */
+.stepCurrent .icon svg {
+  fill: var(--color-primary-weak);
+  stroke: var(--primary);
+  stroke-width: 2.2px;
+}
+
+/* completed - 완료한 단계 */
+.stepCompleted .icon {
+  background-color: var(--primary);
+}
+
+.stepCompleted .icon svg {
+  stroke: white;
+  fill: none;
+  stroke-width: 2.5px;
+}
+
+.stepContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  row-gap: 5px;
+}
+
+.stepTitle {
+  color: var(--neutral-7);
+
+  font-weight: 700;
+  font-size: 16px;
+  margin-top: 2.5px;
+}
+
+.stepDesc {
+  font-size: 12px;
+
+  color: var(--neutral-6);
+}
+
+.loadingTitle {
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--neutral-0);
+  margin-bottom: 10px;
+}
+
+.loadingDesc {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--neutral-0);
+  margin-bottom: 20px;
+}
+
+.loadingPercent {
+  font-size: 52px;
+  font-weight: 800;
+  color: var(--neutral-0);
+  letter-spacing: -1.5px;
+  margin-bottom: 10px;
+}
+
+.loadingRemainingTime {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: var(--neutral-0);
+  border-radius: 40px;
+  padding: 5px 15px;
+  font-size: 13px;
+  width: fit-content;
+}
+
+html[data-sidebar-size='mini'] .stepContent {
+  display: none;
+}
+
+html[data-sidebar-size='mini'] .questionOrder {
+  width: 100%;
+  text-align: center;
+}
+
+html[data-sidebar-size='mini'] .questionTitle {
+  width: 100%;
+  text-align: center;
+}
+
+html[data-sidebar-size='mini'] .listHeader {
+  height: 17px;
+  visibility: hidden;
+}

@@ -5,7 +5,7 @@ interface GenerateQuestionPayload {
 
 export const generateQuestion = async (payload: GenerateQuestionPayload) => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/generate-question/new`,
+    `${process.env.NEXT_PUBLIC_API_URL}/generate-question/create`,
     {
       method: 'POST',
       credentials: 'include',
@@ -21,7 +21,7 @@ export const generateQuestion = async (payload: GenerateQuestionPayload) => {
     throw new Error('생성 실패');
   }
 
-  const data: { id: string; status: string } = await response.json();
+  const data: { request_id: string; status: string } = await response.json();
 
   return data;
 };

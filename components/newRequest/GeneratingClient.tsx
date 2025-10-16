@@ -11,13 +11,13 @@ import { useMemo, useState } from 'react';
 import styles from './styles/generating.module.css';
 import { v4 as uuid } from 'uuid';
 import { GeneratedQuestionItem } from '@/utils/types/types';
-import { LoaderCircle } from 'lucide-react';
+import { LoaderCircle, Clock } from 'lucide-react';
 import { useStableSSE } from '@/utils/hooks/useStableSSE';
 import { useRouter } from 'next/navigation';
 
 const MAX_VISIBLE_QUESTIONS = 3;
-const ITEM_HEIGHT = 130;
-const GAP = 12;
+const ITEM_HEIGHT = 100;
+const GAP = 15;
 const PADDING = 10;
 const HEIGHT =
   ITEM_HEIGHT * MAX_VISIBLE_QUESTIONS +
@@ -26,13 +26,14 @@ const HEIGHT =
 
 interface GeneratingProps {
   questions: GeneratedQuestionItem[];
+  progress: number;
 }
 
 interface Props {
-  id: string;
+  requestId: string;
 }
 
-const NewGeneratingClient = ({ id }: Props) => {
+const GeneratingClient = ({ requestId }: Props) => {
   const [requestStage, setRequestStage] = useAtom(currentRequestStageAtom);
   const [generatedQuestions, setGeneratedQuestions] = useState<
     GeneratedQuestionItem[]
@@ -40,9 +41,9 @@ const NewGeneratingClient = ({ id }: Props) => {
 
   const router = useRouter();
 
-  const setProgress = useSetAtom(generatingProgressAtom);
+  const [progress, setProgress] = useAtom(generatingProgressAtom);
 
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${id}/stream?mock=false`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${requestId}/stream?mock=true`;
 
   useStableSSE(url, {
     onOpen: () => {
@@ -62,7 +63,7 @@ const NewGeneratingClient = ({ id }: Props) => {
       done: () => {
         setProgress(100);
         setRequestStage('selecting');
-        router.replace(`/new/${id}/select`);
+        router.replace(`/new-request/${requestId}/select`);
       },
     },
 
@@ -72,46 +73,51 @@ const NewGeneratingClient = ({ id }: Props) => {
   });
 
   return (
-    <div className="animationContainer">
-      <AnimatePresence mode="popLayout" initial={false}>
-        {requestStage === 'beforeGenerating' && (
-          <motion.div
-            key="before-generating"
-            initial="enter"
-            animate="center"
-            exit="exit"
-            className="spaceBetween"
-          >
-            <BeforeGenerating />
-          </motion.div>
-        )}
-        {requestStage === 'generating' && (
-          <motion.div
-            key="before-generating"
-            initial="enter"
-            animate="center"
-            exit="exit"
-            className="spaceBetween"
-          >
-            <Generating questions={generatedQuestions} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+    <AnimatePresence mode="popLayout" initial={false}>
+      {requestStage === 'beforeGenerating' && (
+        <motion.div
+          key="before-generating"
+          initial="enter"
+          animate="center"
+          exit="exit"
+          style={{ inset: 0 }}
+        >
+          <BeforeGenerating />
+        </motion.div>
+      )}
+      {requestStage === 'generating' && (
+        <motion.div
+          key="generating"
+          initial="enter"
+          animate="center"
+          exit="exit"
+          style={{ inset: 0, height: '100%' }}
+        >
+          <Generating questions={generatedQuestions} progress={progress} />
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
 const BeforeGenerating = () => {
   return (
-    <div>
-      <p className="stepText">STEP 3 OF 4</p>
-      <p className="title">이력서와 채용공고를 꼼꼼히 보고있어요.</p>
-      <p className="desc">잠시만 기다려주세요.</p>
+    <div className={styles.main}>
+      <p className={styles.title}>이력서와 채용공고를 꼼꼼히 보고있어요.</p>
+      <p className={styles.desc}>잠시만 기다려주세요.</p>
+
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }}
+        className={styles.loading}
+      >
+        <LoaderCircle color="var( --neutral-4)" size={80} strokeWidth={2} />
+      </motion.div>
     </div>
   );
 };
 
-const Generating = ({ questions }: GeneratingProps) => {
+const Generating = ({ questions, progress }: GeneratingProps) => {
   const visible = useMemo(
     () => questions.slice(-MAX_VISIBLE_QUESTIONS),
     [questions],
@@ -178,26 +184,26 @@ const Generating = ({ questions }: GeneratingProps) => {
                 </div>
                 <div className={styles.itemRight}>
                   <p className={styles.questionText}>{q.text}</p>
-                  <div className={styles.row}>
-                    <p className={styles.basedonText}>{q.based_on}</p>
-                  </div>
                 </div>
               </motion.div>
             );
           })}
         </AnimatePresence>
       </div>
-      <div>
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }}
-          style={{ display: 'flex' }}
-        >
-          <LoaderCircle color="var( --neutral-4)" size={40} strokeWidth={2} />
-        </motion.div>
+
+      <div className={styles.bottomInfo}>
+        <div className={styles.bottomInfoText}>
+          <Clock
+            size={13}
+            style={{ marginTop: '1px' }}
+            color="var(--neutral-5)"
+          />
+          <p>예상 시간 30초</p>
+        </div>
+        <div className={styles.progress}>{progress}%</div>
       </div>
     </div>
   );
 };
 
-export default NewGeneratingClient;
+export default GeneratingClient;

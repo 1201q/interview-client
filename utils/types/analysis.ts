@@ -77,7 +77,7 @@ export interface VoicePublic {
 // ============================================ status
 export interface AnalysesStatusesDto {
   session_id: string;
-  session_status: string;
+  session_status: SessionStatus;
   job_role: string | null;
   statuses: AnalysesStatusesItem[];
 }

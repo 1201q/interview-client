@@ -1,0 +1,58 @@
+.top {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  padding: 0px 0px 0px 17px;
+  position: relative;
+  background: none;
+  z-index: 10;
+}
+
+.top svg {
+  max-width: 100px;
+  filter: contrast(120%) opacity(70%);
+}
+
+/* 사이드바 버튼 */
+.toggleButton {
+  position: absolute;
+
+  right: 6px;
+
+  width: 35px;
+  height: 35px;
+
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 7px;
+}
+
+.toggleButton:hover {
+  background: var(--neutral-2);
+}
+
+html[data-sidebar-size='mini'] .top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+html[data-sidebar-size='mini'] .toggleButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  right: 0;
+  width: 47px;
+  height: 41px;
+  /* height: 17px; */
+  /* visibility: hidden; */
+}
+
+html[data-sidebar-size='mini'] .top svg:not(.toggleButton svg) {
+  display: none;
+}

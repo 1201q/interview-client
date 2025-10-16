@@ -15,9 +15,6 @@ import {
   generatingProgressAtom,
 } from '@/store/request-stage';
 import { AnimatePresence, motion } from 'framer-motion';
-import { usePathname } from 'next/navigation';
-import { useHydrateAtoms } from 'jotai/utils';
-import { useMemo } from 'react';
 
 const steps = [
   {

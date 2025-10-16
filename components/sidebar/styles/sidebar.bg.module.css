@@ -1,0 +1,10 @@
+.steps {
+  background-color: var(--neutral-1);
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+html[data-sidebar-size='mini'] .steps {
+  background-color: var(--neutral-0);
+}

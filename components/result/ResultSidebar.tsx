@@ -2,16 +2,16 @@
 
 import styles from './styles/r.sidebar.module.css';
 
-import { motion } from 'motion/react';
-import { LoaderCircle } from 'lucide-react';
 import Link from 'next/link';
 import { AnalysesStatusesDto } from '@/utils/types/analysis';
+import { useParams } from 'next/navigation';
 
 interface ResultItemProps {
   sessionId: string;
   id: string;
   order: number;
   text: string;
+  selected: boolean;
 }
 
 interface SidebarProps {
@@ -19,12 +19,10 @@ interface SidebarProps {
 }
 
 const ResultSidebar = ({ data }: SidebarProps) => {
+  const selectedAnswerId = useParams().answerId;
+
   return (
     <nav className={styles.sidebar}>
-      <div className={`${styles.topStatus}`}>
-        <p className={styles.topStatusTitle}>{'좋은 점수에요'}</p>
-        <p className={styles.topStatusInfo}>85점</p>
-      </div>
       <p className={styles.listHeader}>질문 목록</p>
       <div className={styles.questionList}>
         <ol className={styles.list}>
@@ -35,6 +33,7 @@ const ResultSidebar = ({ data }: SidebarProps) => {
                 id={s.answer_id}
                 order={s.order}
                 text={s.question_text}
+                selected={s.answer_id === selectedAnswerId}
               />
             </li>
           ))}
@@ -44,8 +43,18 @@ const ResultSidebar = ({ data }: SidebarProps) => {
   );
 };
 
-const ResultItem = ({ id, sessionId, order, text }: ResultItemProps) => {
-  const className = [styles.question, styles.completed]
+const ResultItem = ({
+  id,
+  sessionId,
+  order,
+  text,
+  selected,
+}: ResultItemProps) => {
+  const className = [
+    styles.question,
+    styles.completed,
+    selected ? styles.selected : '',
+  ]
     .filter(Boolean)
     .join(' ');
 
