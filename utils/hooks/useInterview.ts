@@ -9,14 +9,14 @@ import {
 import {
   InterviewPhase,
   InterviewSessionStatus,
-  QSessionQuestionItem,
+  SessionQuestionItemWithAnswerId,
 } from '@/utils/types/interview';
 
 import { useState } from 'react';
 
 interface InterviewInitProps {
   sessionId: string;
-  questions: QSessionQuestionItem[];
+  questions: SessionQuestionItemWithAnswerId[];
   status: InterviewSessionStatus;
 }
 
@@ -74,6 +74,7 @@ export const useInterview = ({
 
     try {
       setClientPhase('starting');
+
       // 1. 컨텍스트와 함께 토큰 발급
 
       await connectTranscription({});
@@ -84,10 +85,11 @@ export const useInterview = ({
 
       // 3. 현재 질문을 answering으로 변경 -> 성공시 카운트 다운
 
-      await startAnswer(sessionId, currentQuestion.id);
+      await startAnswer(currentQuestion.answer_id);
 
       setClientPhase('startCountdown3');
     } catch (error) {
+      console.log(error);
       setClientPhase('start');
     }
   };
@@ -107,8 +109,7 @@ export const useInterview = ({
 
       const data = await flushAndStop();
       const result = await submitAnswer({
-        sessionId: sessionId,
-        sqId: currentQuestion.id,
+        answerId: currentQuestion.answer_id,
         audioBlob: data.audioBlob,
         answerText: data.text,
       });
@@ -120,7 +121,9 @@ export const useInterview = ({
         setTimeout(() => setClientPhase('start'), 1200);
       } else {
         refresh();
-        setClientPhase('end');
+        setClientPhase('submitSuccess');
+
+        setTimeout(() => setClientPhase('end'), 1200);
       }
     } catch (error) {
       setClientPhase('answering');

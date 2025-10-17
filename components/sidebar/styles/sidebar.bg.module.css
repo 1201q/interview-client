@@ -5,6 +5,10 @@
   position: relative;
 }
 
-html[data-sidebar-size='mini'] .steps {
+.dark {
+  background-color: var(--neutral-9);
+}
+
+html[data-sidebar-size='mini'] .steps:not(.dark) {
   background-color: var(--neutral-0);
 }

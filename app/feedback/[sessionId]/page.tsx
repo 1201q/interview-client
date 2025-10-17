@@ -6,10 +6,6 @@ const Page = async ({
 }: {
   params: Promise<{ sessionId: string; answerId: string }>;
 }) => {
-  const { sessionId, answerId } = await params;
-
-  // const feedback = await getAnalysis(sessionId, answerId);
-
   return <>1</>;
 };
 

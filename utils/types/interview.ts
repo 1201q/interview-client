@@ -40,3 +40,13 @@ export interface SessionQuestionItem {
 export interface QSessionQuestionItem extends SessionQuestionItem {
   question_id: string;
 }
+
+export interface SessionQuestionItemWithAnswerId {
+  id: string;
+  question_id: string;
+  answer_id: string;
+  order: number;
+  type: 'main' | 'followup';
+  text: string;
+  status: SessionQuestionStatus;
+}

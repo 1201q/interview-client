@@ -10,6 +10,7 @@ import {
   InterviewPhase,
   InterviewSessionStatus,
   QSessionQuestionItem,
+  SessionQuestionItemWithAnswerId,
 } from '@/utils/types/interview';
 import { atom } from 'jotai';
 
@@ -30,10 +31,10 @@ export const KeywordsForSttAtom = atom<
 >([]);
 
 // 메인 질문
-export const SessionQuestionsAtom = atom<QSessionQuestionItem[]>([]);
+export const SessionQuestionsAtom = atom<SessionQuestionItemWithAnswerId[]>([]);
 
 export const CurrentSessionQuestionAtom = atom<
-  QSessionQuestionItem | undefined
+  SessionQuestionItemWithAnswerId | undefined
 >((get) =>
   get(SessionQuestionsAtom).find(
     (sq) => sq.status === 'ready' || sq.status === 'answering',
@@ -103,7 +104,7 @@ export const StartAnswerCountdownAtom = atom(null, async (get) => {
   if (!sessionId) return;
 
   try {
-    await startAnswer(sessionId, currentQuestion.id);
+    await startAnswer(currentQuestion.id);
   } catch (error) {
     console.log(error);
   }
@@ -122,8 +123,7 @@ export const SubmitAnswerAtom = atom(
 
     try {
       const res = await submitAnswer({
-        sessionId: sessionId,
-        sqId: currentQuestion.id,
+        answerId: currentQuestion.answer_id,
         audioBlob: update.audioBlob,
         answerText: update.answerText,
       });

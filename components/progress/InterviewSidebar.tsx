@@ -3,6 +3,7 @@
 import {
   InterviewPhase,
   QSessionQuestionItem,
+  SessionQuestionItemWithAnswerId,
   SessionQuestionStatus,
 } from '@/utils/types/interview';
 import styles from './styles/i.sidebar.module.css';
@@ -23,7 +24,7 @@ interface QuestionItemProps {
 type StatusType = 'not_started' | 'in_progress' | 'completed' | 'expired';
 
 interface SidebarProps {
-  questions: QSessionQuestionItem[];
+  questions: SessionQuestionItemWithAnswerId[];
   status: StatusType;
 }
 

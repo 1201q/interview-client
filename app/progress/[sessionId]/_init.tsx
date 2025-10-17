@@ -6,12 +6,12 @@ import { useInterview } from '@/utils/hooks/useInterview';
 
 import {
   InterviewSessionStatus,
-  QSessionQuestionItem,
+  SessionQuestionItemWithAnswerId,
 } from '@/utils/types/interview';
 
 interface InterviewInitProps {
   sessionId: string;
-  questions: QSessionQuestionItem[];
+  questions: SessionQuestionItemWithAnswerId[];
   status: InterviewSessionStatus;
 }
 

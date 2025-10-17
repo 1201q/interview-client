@@ -1,0 +1,27 @@
+.header {
+  padding: 0px 25px;
+  height: 100%;
+  display: flex;
+
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.info {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  column-gap: 15px;
+}
+
+.info h2 {
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--neutral-6);
+}
+
+.info span {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--neutral-5);
+}

@@ -1,0 +1,70 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: var(--neutral-0);
+  min-height: 100dvh;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  height: 100dvh;
+  transition: grid-template-columns 0.2s;
+}
+
+.sidebar {
+  width: var(--sidebar-w);
+  border-right: 1px solid var(--neutral-2);
+
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  overflow: hidden;
+  z-index: 1;
+  transition: width 0.2s;
+}
+
+/* 컨텐츠 오른쪽 */
+/* 메인 */
+.main {
+  height: 100%;
+  overflow: auto;
+  background-color: var(--neutral-9);
+  position: relative;
+}
+
+.header {
+  position: sticky;
+  left: 0;
+  top: 0;
+
+  height: 50px;
+  width: 100%;
+  z-index: 20;
+
+  backdrop-filter: saturate(160%) blur(22px);
+  -webkit-backdrop-filter: saturate(160%) blur(22px);
+
+  will-change: backdrop-filter;
+}
+
+.contents {
+  max-width: 1000px;
+  min-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 30px 36px;
+
+  margin: 0 auto;
+
+  position: relative;
+
+  height: calc(100% - 75px);
+
+  box-sizing: border-box;
+}
+
+.animationContainer {
+  inset: 0;
+}

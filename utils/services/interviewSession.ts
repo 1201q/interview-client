@@ -1,6 +1,7 @@
 import {
   InterviewSessionStatus,
   QSessionQuestionItem,
+  SessionQuestionItemWithAnswerId,
 } from '../types/interview';
 
 // create
@@ -180,10 +181,10 @@ export const createInterviewSttKeywords = async (
 // session data
 
 type GetSessionDetailResponse = {
-  id: string;
+  session_id: string;
   status: InterviewSessionStatus;
   created_at: string;
-  questions: QSessionQuestionItem[];
+  questions: SessionQuestionItemWithAnswerId[];
 };
 
 export const getInterviewSessionDetail = async (
@@ -231,8 +232,7 @@ export const getInterviewSessionDetail = async (
 
 // session start
 type StartSessionResponse = {
-  id: string;
-  status: InterviewSessionStatus;
+  session_id: string;
 };
 
 export const startInterviewSession = async (
@@ -269,10 +269,6 @@ export const startInterviewSession = async (
 
     const json = (await res.json()) as StartSessionResponse;
 
-    if (json.status !== 'in_progress') {
-      throw new Error('시작 실패');
-    }
-
     return json;
   } catch (error) {
     if ((error as any)?.name === 'AbortError') {
@@ -287,8 +283,7 @@ export const startInterviewSession = async (
 // answer start
 
 export const startAnswer = async (
-  sessionId: string,
-  sqId: string,
+  answerId: string,
   options?: { timeoutMs?: number },
 ) => {
   const controller = new AbortController();
@@ -299,7 +294,7 @@ export const startAnswer = async (
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/interview-answer/${sessionId}/${sqId}/start`,
+      `${process.env.NEXT_PUBLIC_API_URL}/interview-answer/${answerId}/start`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -381,6 +376,7 @@ type NextAnswer = {
   order: number;
   text: string;
   type: 'main' | 'followup';
+  answerId: string;
 };
 
 type SubmitAnswerRes = {
@@ -389,8 +385,8 @@ type SubmitAnswerRes = {
 };
 
 type SubmitAnswerProps = {
-  sessionId: string;
-  sqId: string;
+  answerId: string;
+
   audioBlob: Blob | null;
   answerText: string;
   options?: { timeoutMs?: number };
@@ -441,8 +437,7 @@ export const testSubmitAnswer = async (
 };
 
 export const submitAnswer = async ({
-  sessionId,
-  sqId,
+  answerId,
   audioBlob,
   options,
   answerText,
@@ -465,7 +460,7 @@ export const submitAnswer = async ({
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/interview-answer/${sessionId}/${sqId}/submit/test`,
+      `${process.env.NEXT_PUBLIC_API_URL}/interview-answer/${answerId}/submit`,
       {
         method: 'POST',
         signal: controller.signal,
@@ -485,7 +480,9 @@ export const submitAnswer = async ({
       }
     }
 
-    return (await res.json()) as SubmitAnswerRes;
+    const json = (await res.json()) as SubmitAnswerRes;
+
+    return json;
   } catch (error) {
     if ((error as any)?.name === 'AbortError') {
       throw new Error('answer submit  요청이 시간 초과되었습니다.');

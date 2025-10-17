@@ -1,0 +1,121 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  row-gap: 10px;
+}
+
+/* top  */
+/* ===================================== */
+.top {
+  flex: 1;
+  display: flex;
+}
+
+.camera {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+
+  background-color: var(--neutral-1);
+}
+
+.qOverlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 36px 42px;
+
+  pointer-events: none;
+  z-index: 2;
+}
+
+.qOverlay::before {
+  content: '';
+  position: absolute;
+  inset: -20px -0px 0px -20px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  background: linear-gradient(
+    to top,
+    rgba(10, 14, 20, 0.56) 0%,
+    rgba(10, 14, 20, 0.56) 35%,
+    rgba(10, 14, 20, 0.28) 65%,
+    rgba(10, 14, 20, 0.2) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 22%,
+    rgba(0, 0, 0, 0.7) 55%,
+    rgba(0, 0, 0, 0) 85%
+  );
+  mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 22%,
+    rgba(0, 0, 0, 0.7) 55%,
+    rgba(0, 0, 0, 0) 85%
+  );
+
+  z-index: 0;
+}
+
+.qStatus {
+  display: inline-block;
+  pointer-events: auto;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 8px;
+  backdrop-filter: saturate(120%) blur(2px);
+}
+
+.qText {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  line-height: 1.5;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--neutral-1);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  overflow-wrap: anywhere;
+  pointer-events: auto;
+  margin-left: 1px;
+}
+
+/* submit button  */
+/* ===================================== */
+.submitButton {
+  position: relative;
+  height: 45px;
+  margin-top: 15px;
+}
+
+/* bottom  */
+/* ===================================== */
+.sttPanel {
+  max-height: 100px;
+  overflow: hidden;
+  position: relative;
+  border-radius: 10px;
+  padding: 15px 20px;
+  background: #fff;
+  line-height: 1.5;
+  font-size: 14px;
+
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 75%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(to bottom, #000 75%, rgba(0, 0, 0, 0) 100%);
+}
+
+.sttPanel p {
+  color: var(--neutral-6);
+}

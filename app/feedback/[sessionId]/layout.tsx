@@ -10,9 +10,12 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
   sidebar: React.ReactNode;
-  params: { sessionId: string };
+
+  params: Promise<{ sessionId: string }>;
 }) {
-  const statuses = await getAnalyesStatuses(params.sessionId);
+  const { sessionId } = await params;
+
+  const statuses = await getAnalyesStatuses(sessionId);
 
   return (
     <div className="container">
