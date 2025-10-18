@@ -3,119 +3,194 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
-  row-gap: 10px;
 }
 
 /* top  */
 /* ===================================== */
 .top {
   flex: 1;
+  justify-content: center;
+  row-gap: 20px;
   display: flex;
+  flex-direction: column;
+  margin-bottom: 50px;
+}
+
+.cameraWrap {
+  position: relative;
+  max-height: 550px;
+
+  height: 100%;
+
+  will-change: transform;
 }
 
 .camera {
-  flex: 1;
   position: relative;
   overflow: hidden;
-  border-radius: 22px;
+  height: 100%;
 
+  border-radius: 24px;
+
+  box-shadow: var(--shadow-md);
   background-color: var(--neutral-1);
+  isolation: isolate;
 }
 
-.qOverlay {
+/* 오버레이  */
+/* ===================================== */
+.overlayTopCard {
+  border-radius: 18px;
   position: absolute;
-  inset: auto 0 0 0;
-  padding: 36px 42px;
+  top: 18px;
+  left: 18px;
 
-  pointer-events: none;
-  z-index: 2;
-}
+  right: auto;
+  width: calc(100% - 36px);
 
-.qOverlay::before {
-  content: '';
-  position: absolute;
-  inset: -20px -0px 0px -20px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  padding: 14px 16px 14px 16px;
+
+  display: inline-flex;
+  flex-direction: column;
+  row-gap: 7px;
+
+  pointer-events: auto;
+  z-index: 5;
 
   background: linear-gradient(
-    to top,
-    rgba(10, 14, 20, 0.56) 0%,
-    rgba(10, 14, 20, 0.56) 35%,
-    rgba(10, 14, 20, 0.28) 65%,
-    rgba(10, 14, 20, 0.2) 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 1) 22%,
-    rgba(0, 0, 0, 0.7) 55%,
-    rgba(0, 0, 0, 0) 85%
-  );
-  mask-image: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 1) 22%,
-    rgba(0, 0, 0, 0.7) 55%,
-    rgba(0, 0, 0, 0) 85%
+    180deg,
+    rgba(20, 24, 32, 0.62) 0%,
+    rgba(20, 24, 32, 0.42) 100%
   );
 
-  z-index: 0;
+  backdrop-filter: saturate(120%) blur(10px);
+  -webkit-backdrop-filter: saturate(120%) blur(10px);
+
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.overlayOff {
+  background: transparent;
+  border: transparent;
+
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+
+  box-shadow: none;
 }
 
 .qStatus {
+  width: fit-content;
   display: inline-block;
-  pointer-events: auto;
   font-size: 12px;
   font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 50px;
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  margin-bottom: 8px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  color: var(--neutral-1);
+
+  margin-left: -1px;
+
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
   backdrop-filter: saturate(120%) blur(2px);
 }
 
 .qText {
-  position: relative;
-  z-index: 1;
   margin: 0;
-  line-height: 1.5;
-  font-size: 20px;
+  line-height: 1.45;
+  font-size: 19px;
   font-weight: 700;
-  color: var(--neutral-1);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
   overflow-wrap: anywhere;
-  pointer-events: auto;
-  margin-left: 1px;
 }
 
 /* submit button  */
 /* ===================================== */
-.submitButton {
-  position: relative;
-  height: 45px;
-  margin-top: 15px;
+.overlayBottomButton {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  z-index: 6;
+  pointer-events: auto;
 }
 
-/* bottom  */
+/* 카메라 어둡게  */
 /* ===================================== */
-.sttPanel {
-  max-height: 100px;
+.cameraScreen {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0;
+
+  background: radial-gradient(
+    120% 120% at 50% 50%,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.65) 60%,
+    rgba(0, 0, 0, 0.75) 100%
+  );
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* stt dock  */
+/* ===================================== */
+.sttDock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background-color: var(--neutral-1);
+  border-top-left-radius: 22px;
+  border-top-right-radius: 22px;
+  border: 1px solid var(--neutral-3);
+  border-bottom: none;
+
+  box-shadow: var(--shadow-md);
+
+  will-change: height, transform;
   overflow: hidden;
-  position: relative;
-  border-radius: 10px;
-  padding: 15px 20px;
-  background: #fff;
+  z-index: 9;
+}
+
+.sttInner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 22px;
+  row-gap: 10px;
+}
+
+.sttTitle {
+  display: flex;
+  column-gap: 7px;
+  margin: 0;
+}
+
+.sttTitle h3,
+.sttTitle svg {
+  font-size: 15px;
+  font-weight: 600;
+  stroke: var(--neutral-5);
+  color: var(--neutral-5);
+}
+
+.sttScroll {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+
   line-height: 1.5;
   font-size: 14px;
-
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    #000 75%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  mask-image: linear-gradient(to bottom, #000 75%, rgba(0, 0, 0, 0) 100%);
 }
 
-.sttPanel p {
-  color: var(--neutral-6);
+.sttScroll span {
+  color: var(--neutral-5);
 }

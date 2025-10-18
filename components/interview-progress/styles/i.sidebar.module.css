@@ -90,7 +90,7 @@
 .questionFullText {
   font-size: 14px;
   font-weight: 500;
-  padding: 0px 10px 3px 10px;
+  padding: 3px 10px 3px 10px;
   text-align: start;
   color: var(--neutral-7);
 }
@@ -123,6 +123,11 @@
   font-weight: 600;
   color: var(--neutral-1);
   background: color-mix(in srgb, var(--color-primary) 80%, black 2%);
+}
+
+.submitted .badge {
+  background: color-mix(in srgb, var(--neutral-3) 90%, white 30%);
+  color: var(--neutral-6);
 }
 
 html[data-sidebar-size='mini'] .questionFullText {

@@ -9,9 +9,11 @@ import { cookies } from 'next/headers';
 export default async function DefaultSidebar({
   params,
 }: {
-  params: { sessionId: string; answerId: string };
+  params: Promise<{ sessionId: string }>;
 }) {
-  const statuses = await getAnalyesStatuses(params.sessionId);
+  const { sessionId } = await params;
+
+  const statuses = await getAnalyesStatuses(sessionId);
 
   const sidebarSizeCookie = (await cookies()).get('sidebar-size')?.value as
     | 'mini'

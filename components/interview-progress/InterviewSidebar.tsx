@@ -6,14 +6,16 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useInterview } from './InterviewProvider';
 import InterviewSidebarStatus from './InterviewSidebarStatus';
+import { SessionQuestionStatus } from '@/utils/types/interview';
 
 interface ResultItemProps {
   order: number;
   text: string;
   isOpen: boolean;
-  isAnswering: boolean;
-  isSubmitted: boolean;
+  isCurrent: boolean;
+
   toggleItem: () => void;
+  status: SessionQuestionStatus;
 }
 
 const InterviewSidebar = () => {
@@ -69,21 +71,20 @@ const InterviewSidebar = () => {
           .sort((a, b) => a.order - b.order)
           .map((q) => {
             const isOpen = openQuestions[q.id];
-            const isAnswering = currentQuestion?.id === q.id;
-            const isSubmitted = q.status === 'submitted';
+            const isCurrent = currentQuestion?.id === q.id;
 
             return (
               <InterviewSidebarItem
                 key={q.id}
                 isOpen={isOpen}
                 toggleItem={() => {
-                  if (isAnswering) return;
+                  if (isCurrent) return;
                   toggleItem(q.id);
                 }}
                 text={q.text}
                 order={q.order}
-                isAnswering={isAnswering}
-                isSubmitted={isSubmitted}
+                isCurrent={isCurrent}
+                status={q.status}
               />
             );
           })}
@@ -96,18 +97,26 @@ const InterviewSidebarItem = ({
   order,
   text,
   isOpen,
-  isAnswering,
-  isSubmitted,
+  isCurrent,
+
+  status,
   toggleItem,
 }: ResultItemProps) => {
   return (
     <button
       onClick={toggleItem}
-      className={`${styles.question} ${isAnswering ? styles.selected : ''} ${isSubmitted ? styles.submitted : ''}`}
+      className={`${styles.question} ${isCurrent ? styles.selected : ''} ${status === 'submitted' ? styles.submitted : ''}`}
     >
       <div className={styles.questionTitle}>
         <span className={styles.questionOrder}>Q{order + 1}.</span>
-        {isAnswering && <div className={`${styles.badge}`}>답변중</div>}
+        {isCurrent && (
+          <div className={`${styles.badge}`}>
+            {status === 'ready' ? '답변할 질문' : '답변 중'}
+          </div>
+        )}
+        {isOpen && status === 'submitted' && (
+          <div className={`${styles.badge}`}>제출됨</div>
+        )}
         {!isOpen && <p className={styles.questionText}>{text}</p>}
       </div>
       <AnimatePresence initial={false}>

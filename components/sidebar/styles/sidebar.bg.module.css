@@ -6,7 +6,7 @@
 }
 
 .dark {
-  background-color: var(--neutral-9);
+  background-color: var(--color-dark-bg);
 }
 
 html[data-sidebar-size='mini'] .steps:not(.dark) {
