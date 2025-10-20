@@ -33,6 +33,8 @@ interface Props {
   requestId: string;
 }
 
+const TEST_ID = '87ca5626-b201-43f7-82d0-44ea227321dd';
+
 const GeneratingClient = ({ requestId }: Props) => {
   const [requestStage, setRequestStage] = useAtom(currentRequestStageAtom);
   const [generatedQuestions, setGeneratedQuestions] = useState<
@@ -43,7 +45,7 @@ const GeneratingClient = ({ requestId }: Props) => {
 
   const [progress, setProgress] = useAtom(generatingProgressAtom);
 
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${requestId}/stream?mock=true`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${TEST_ID}/stream?mock=true`;
 
   useStableSSE(url, {
     onOpen: () => {
@@ -103,9 +105,6 @@ const GeneratingClient = ({ requestId }: Props) => {
 const BeforeGenerating = () => {
   return (
     <div className={styles.main}>
-      <p className={styles.title}>이력서와 채용공고를 꼼꼼히 보고있어요.</p>
-      <p className={styles.desc}>잠시만 기다려주세요.</p>
-
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }}

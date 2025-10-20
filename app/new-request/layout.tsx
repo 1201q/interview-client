@@ -13,7 +13,9 @@ export default async function Layout({
     <div className="container">
       <div className="wrapper">
         <aside className="sidebar">
-          <Suspense fallback={<div>Loading…</div>}>{sidebar ?? null}</Suspense>
+          <Suspense fallback={<div>111111111111111111111</div>}>
+            {sidebar}
+          </Suspense>
         </aside>
         <main className="main">{children}</main>
       </div>

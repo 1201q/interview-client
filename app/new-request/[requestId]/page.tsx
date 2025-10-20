@@ -1,8 +1,6 @@
 import GeneratingClient from '@/components/newRequest/GeneratingClient';
 import RequestHeader from '@/components/newRequest/RequestHeader';
 
-import { Suspense } from 'react';
-
 const TEST_ID = '87ca5626-b201-43f7-82d0-44ea227321dd';
 
 const getRequest = async (requestId: string, isTest: boolean = true) => {
@@ -24,15 +22,17 @@ const Page = async ({ params }: { params: Promise<{ requestId: string }> }) => {
 
   const requestData = await getRequest(requestId);
 
+  const wait = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+  await wait(2000);
+
   return (
     <>
       <header className="header">
         <RequestHeader text={'Step 3/4'} />
       </header>
       <div className="contents">
-        <Suspense fallback={<div>1</div>}>
-          <GeneratingClient requestId={requestId} />
-        </Suspense>
+        <GeneratingClient requestId={requestId} />
       </div>
     </>
   );

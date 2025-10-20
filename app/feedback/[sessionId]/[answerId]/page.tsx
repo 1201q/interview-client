@@ -1,6 +1,8 @@
 import ResultClient from '@/components/result/ResultClient';
 import ResultHeader from '@/components/result/ResultHeader';
 import { getAnalysis } from '@/utils/services/analyses';
+import { Suspense } from 'react';
+import SkeletonTop from './loading';
 
 const Page = async ({
   params,
@@ -20,7 +22,9 @@ const Page = async ({
         />
       </header>
       <div className="contents">
-        <ResultClient data={feedback.analyses[0]} answerId={answerId} />
+        <Suspense fallback={<SkeletonTop />}>
+          <ResultClient data={feedback.analyses[0]} answerId={answerId} />
+        </Suspense>
       </div>
     </>
   );

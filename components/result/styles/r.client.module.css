@@ -16,6 +16,8 @@
 
 /* 상단 질문 텍스트 */
 .question {
+  display: flex;
+
   width: 100%;
   padding: 22px 26px;
   border-bottom: 1px solid var(--neutral-3);

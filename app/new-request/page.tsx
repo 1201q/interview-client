@@ -8,6 +8,7 @@ import { currentRequestStageAtom } from '@/store/request-stage';
 import ResumeUploader from '@/components/newRequest/ResumeUploader';
 import JobTextUploader from '@/components/newRequest/JobTextUploader';
 import RequestHeader from '@/components/newRequest/RequestHeader';
+import { Suspense } from 'react';
 
 const resumeSlideVariants: Variants = {
   enter: { x: '-100%', opacity: 0 },
