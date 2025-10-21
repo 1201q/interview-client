@@ -61,7 +61,7 @@ const useCreateQuestion = () => {
       }
 
       setSubmitButtonLoading(false);
-      setRequestId(res.id);
+      setRequestId(res.request_id);
       setStage('loading');
     } catch (error) {
       setSubmitButtonLoading(false);
