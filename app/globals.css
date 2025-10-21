@@ -216,13 +216,19 @@
     rgb(76, 134, 254) 0%,
     rgb(125, 166, 255) 100%
   );
+
+  /*  */
+  --glass-bg: rgba(255, 255, 255, 0.36);
+  --glass-border: rgba(255, 255, 255, 0.55);
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: var(--font-pretendard);
+
+  font-family: var(--font-wanted);
+
   font-variant-numeric: tabular-nums;
   color: var(--font-black-color);
   -webkit-tap-highlight-color: transparent;

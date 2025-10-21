@@ -28,25 +28,15 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
+  // 비로그인 유저가 로그아웃 페이지 접근시 메인으로 리다이렉트
+  if (!request.cookies.has('accessToken') && pathname.startsWith('/logout')) {
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+
   if (
     !request.cookies.has('accessToken') &&
     pathname.startsWith('/question_select') &&
     (role === 'user' || role === 'ai' || role === 'bookmark')
-  ) {
-    return NextResponse.redirect(new URL('/login', request.url));
-  }
-
-  if (
-    !request.cookies.has('accessToken') &&
-    (pathname.startsWith('/question_generate') ||
-      pathname.startsWith('/question_delete'))
-  ) {
-    return NextResponse.redirect(new URL('/login', request.url));
-  }
-
-  if (
-    !request.cookies.has('accessToken') &&
-    pathname.startsWith('/question_select/confirm')
   ) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
@@ -118,6 +108,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/login',
+    '/logout',
     '/interview',
     '/interview/running',
     '/question_select',

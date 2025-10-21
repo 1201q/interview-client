@@ -1,0 +1,36 @@
+<svg viewBox="0 0 512 512" preserveAspectRatio="xMidYMid meet"
+     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="겹친 둥근 말풍선"
+     style="display:block;max-width:100%">
+  <defs>
+    <style>
+      :root{
+        --fg:#ffffff;   /* 앞 말풍선 */
+        --bg:#99ecff;   /* 뒤 말풍선 */
+        --dot:#7dd3fc;  /* 점 색상 */
+      }
+    </style>
+  </defs>
+
+  <!-- 뒤쪽 말풍선 (오른쪽, 매우 둥근 알약 모양) -->
+  <rect x="285" y="160" width="210" height="160" rx="80" fill="var(--bg)"/>
+  <!-- 꼬리: 둥근 곡선 -->
+  <path d="M 420 320
+           C 438 330, 458 332, 470 342
+           C 456 320, 454 306, 448 292
+           C 441 304, 432 313, 420 320 Z"
+        fill="var(--bg)"/>
+
+  <!-- 앞쪽 말풍선 (왼쪽, 더 둥글게) -->
+  <rect x="90" y="90" width="250" height="180" rx="90" fill="var(--fg)"/>
+  <!-- 꼬리: 둥근 곡선 -->
+  <path d="M 140 270
+           C 120 282, 108 290, 100 302
+           C 106 286, 114 270, 122 256
+           C 128 264, 134 268, 140 270 Z"
+        fill="var(--fg)"/>
+
+  <!-- 점 3개: 중앙 정렬 -->
+  <circle cx="180" cy="180" r="12" fill="var(--dot)"/>
+  <circle cx="215" cy="180" r="12" fill="var(--dot)"/>
+  <circle cx="250" cy="180" r="12" fill="var(--dot)"/>
+</svg>

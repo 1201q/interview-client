@@ -1,0 +1,40 @@
+<svg viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="이력서·채용공고 기반 맞춤형 질문" style="display:block;max-width:100%">
+  <!-- 컬러 팔레트 -->
+  <defs>
+    <style>
+      :root{
+        --doc:#ffffff;
+        --muted:#dce7ff;
+        --accent2:#60a5fa; 
+        --accent:#60a5fa; 
+      }
+    </style>
+    <filter id="s" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="var(--shadow)"/>
+    </filter>
+  </defs>
+
+  <!-- 아트박스: x=740, y=60, w=420, h=480 -->
+  <g transform="translate(740,60)">
+
+    <g >
+      <rect x="20" y="0" width="260" height="320" rx="24" fill="var(--doc)"/>
+      <circle cx="86" cy="76" r="28" fill="var(--muted)"/>
+      <rect x="56" y="118" width="140" height="12" rx="6" fill="var(--muted)"/>
+      <rect x="56" y="142" width="172" height="12" rx="6" fill="var(--muted)"/>
+      <rect x="56" y="170" width="172" height="10" rx="5" fill="var(--muted)"/>
+      <rect x="56" y="192" width="152" height="10" rx="5" fill="var(--muted)"/>
+      <rect x="56" y="216" width="180" height="10" rx="5" fill="var(--muted)"/>
+    </g>
+
+    <!-- 돋보기 + 체크 (맞춤 매칭) -->
+    <g transform="translate(300,260)">
+      <circle r="74" fill="var(--accent2)"/>
+      <path d="M-26 2 l18 18 l42 -42" fill="none" stroke="var(--doc)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="45" y="54" width="96" height="20" rx="10" transform="rotate(45 54 54)" fill="var(--accent2)"/>
+    
+    </g>
+
+   
+  </g>
+</svg>

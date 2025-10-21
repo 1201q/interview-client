@@ -1,0 +1,20 @@
+<svg viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="타깃 아이콘" style="display:block;max-width:100%">
+  <!-- 색만 바꾸려면 아래 변수만 교체 -->
+  <style>
+    :root{
+      --ring:#ffffff;    /* 링 색 (밝은색) */
+      --core:#22d3ee;    /* 중심점 색 */
+    }
+  </style>
+
+  <!-- 아트박스: x=740, y=60, w=420, h=480 (우40 / 상하60 고정) -->
+  <g transform="translate(740,60)">
+    <!-- 심플 동심원 과녁 -->
+    <g transform="translate(300,240)">
+      <circle r="140" fill="none" stroke="var(--ring)" stroke-width="20" opacity="0.95"/>
+      <circle r="100" fill="none" stroke="var(--ring)" stroke-width="16" opacity="0.9"/>
+      <circle r="64"  fill="none" stroke="var(--ring)" stroke-width="12" opacity="0.9"/>
+      <circle r="10"  fill="var(--core)"/>
+    </g>
+  </g>
+</svg>

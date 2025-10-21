@@ -18,6 +18,13 @@ const pretendard = localFont({
   variable: '--font-pretendard',
 });
 
+const wanted = localFont({
+  src: '../public/fonts/WantedSansVariable.woff2',
+  display: 'swap',
+  weight: '45 920',
+  variable: '--font-wanted',
+});
+
 export default async function RootLayout({ children, modal }: Readonly<Props>) {
   const sb =
     (await cookies()).get('sidebar-size')?.value === 'mini'
@@ -33,7 +40,7 @@ export default async function RootLayout({ children, modal }: Readonly<Props>) {
       data-sidebar-size={sb}
       style={{ ['--sidebar-w' as any]: width }}
     >
-      <body className={pretendard.variable}>
+      <body className={`${pretendard.variable} ${wanted.variable}`}>
         <JotaiProvider>
           <SpeedInsights />
           <Analytics />
