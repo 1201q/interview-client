@@ -175,7 +175,7 @@ export async function middleware(request: NextRequest) {
       const now = Math.floor(Date.now() / 1000);
 
       // 300초 미만 => 토큰 재발급
-      if (exp - now > 300) {
+      if (exp - now < 300) {
         try {
           const refreshResponse = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,

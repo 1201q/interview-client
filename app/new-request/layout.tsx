@@ -1,7 +1,5 @@
 import './layout.css';
 
-import { Suspense } from 'react';
-
 export default async function Layout({
   children,
   sidebar,
@@ -12,11 +10,7 @@ export default async function Layout({
   return (
     <div className="container">
       <div className="wrapper">
-        <aside className="sidebar">
-          <Suspense fallback={<div>111111111111111111111</div>}>
-            {sidebar}
-          </Suspense>
-        </aside>
+        <aside className="sidebar">{sidebar}</aside>
         <main className="main">{children}</main>
       </div>
     </div>

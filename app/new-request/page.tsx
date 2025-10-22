@@ -9,6 +9,7 @@ import ResumeUploader from '@/components/newRequest/ResumeUploader';
 import JobTextUploader from '@/components/newRequest/JobTextUploader';
 import RequestHeader from '@/components/newRequest/RequestHeader';
 import { Suspense } from 'react';
+import RequestSkeleton from './_loading';
 
 const resumeSlideVariants: Variants = {
   enter: { x: '-100%', opacity: 0 },
@@ -49,7 +50,7 @@ const Page = () => {
   };
 
   return (
-    <>
+    <Suspense fallback={<RequestSkeleton />}>
       <header className="header">
         <RequestHeader text={headerText()} />
       </header>
@@ -83,7 +84,7 @@ const Page = () => {
           )}
         </AnimatePresence>
       </div>
-    </>
+    </Suspense>
   );
 };
 

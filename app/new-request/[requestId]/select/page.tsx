@@ -3,6 +3,7 @@ import SelectQuestion from '@/components/newRequest/SelectQuestion';
 import { GeneratedQuestionItem } from '@/utils/types/types';
 
 import { Suspense } from 'react';
+import SelectSkeleton from './loading';
 
 const TEST_ID = 'd2151465-878d-4996-9aba-c2dd0e830598';
 
@@ -31,14 +32,14 @@ const Page = async ({ params }: { params: Promise<{ requestId: string }> }) => {
   await wait(1000);
 
   return (
-    <>
+    <Suspense fallback={<SelectSkeleton />}>
       <header className="header">
         <RequestHeader text={'Step 4/4'} />
       </header>
       <div className="contents">
         <SelectQuestion questions={questions} />
       </div>
-    </>
+    </Suspense>
   );
 };
 
