@@ -1,38 +1,12 @@
-.main {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-}
-
 /* top  */
 /* ===================================== */
-.top {
-  flex: 1;
-  justify-content: center;
-  row-gap: 20px;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 50px;
-}
-
-.cameraWrap {
-  position: relative;
-  max-height: 550px;
-
-  height: 100%;
-
-  will-change: transform;
-}
 
 .camera {
   position: relative;
   overflow: hidden;
   height: 100%;
+  border-radius: 20px;
 
-  border-radius: 24px;
-
-  box-shadow: var(--shadow-md);
   background-color: var(--neutral-1);
   isolation: isolate;
 }
@@ -134,24 +108,23 @@
     rgba(0, 0, 0, 0.65) 60%,
     rgba(0, 0, 0, 0.75) 100%
   );
-
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
 }
 
 /* stt dock  */
 /* ===================================== */
 .sttDock {
+  width: 500px;
+  max-width: 90%;
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 20px;
 
-  background-color: var(--neutral-1);
-  border-top-left-radius: 22px;
-  border-top-right-radius: 22px;
-  border: 1px solid var(--neutral-3);
-  border-bottom: none;
+  background-color: rgba(0, 0, 0, 0.2);
+
+  backdrop-filter: blur(2px);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
 
   box-shadow: var(--shadow-md);
 
@@ -163,19 +136,29 @@
 .sttInner {
   height: 100%;
   display: flex;
-  flex-direction: column;
+
   padding: 16px 22px;
-  row-gap: 10px;
+  column-gap: 15px;
 }
 
-.sttTitle {
+.sttRight {
   display: flex;
-  column-gap: 7px;
+  flex-direction: column;
+}
+
+.sttRight h3 {
+  color: var(--neutral-6);
+  font-size: 13px;
+  font-weight: 300;
+}
+
+.sttIcon {
+  display: flex;
+  align-items: center;
   margin: 0;
 }
 
-.sttTitle h3,
-.sttTitle svg {
+.sttIcon svg {
   font-size: 15px;
   font-weight: 600;
   stroke: var(--neutral-5);
@@ -193,4 +176,6 @@
 
 .sttScroll span {
   color: var(--neutral-5);
+  font-size: 15px;
+  font-weight: 500;
 }

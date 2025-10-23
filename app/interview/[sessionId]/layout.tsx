@@ -1,9 +1,5 @@
-import SidebarBg from '@/components/sidebar/SidebarBg';
 import './layout.css';
 
-import { Suspense } from 'react';
-import TopLogo from '@/components/sidebar/TopLogo';
-import InterviewSidebar from '@/components/interview-progress/InterviewSidebar';
 import { cookies } from 'next/headers';
 import {
   InterviewSessionStatus,
@@ -56,20 +52,6 @@ export default async function Layout({
   };
 
   return (
-    <InterviewProvider initialData={initialData}>
-      <div className="container">
-        <div className="wrapper">
-          <aside className="sidebar">
-            <Suspense fallback={<div>Loading…</div>}>
-              <SidebarBg>
-                <TopLogo toggleState={sidebarSize} />
-                <InterviewSidebar />
-              </SidebarBg>
-            </Suspense>
-          </aside>
-          <main className="main">{children}</main>
-        </div>
-      </div>
-    </InterviewProvider>
+    <InterviewProvider initialData={initialData}>{children}</InterviewProvider>
   );
 }

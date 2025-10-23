@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import styles from './webcam.module.css';
-import { useAtomValue } from 'jotai';
-import { initHumanAtom } from '@/store/webcam';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { initHumanAtom, webcamStreamAtom } from '@/store/webcam';
 import { initWebcam } from './initWebcam';
 import { useDetect } from './useDetect';
 import { useDraw } from './useDraw';
@@ -23,6 +23,8 @@ const RWebcam = ({ isRunning, drawTargets }: Props) => {
 
   const human = useAtomValue(initHumanAtom);
 
+  const setWebcamStream = useSetAtom(webcamStreamAtom);
+
   const { startDetection, stopDetection } = useDetect(human, videoRef);
   const { startDrawing, stopDrawing } = useDraw(human, videoRef, canvasRef);
 
@@ -32,11 +34,19 @@ const RWebcam = ({ isRunning, drawTargets }: Props) => {
     const setup = async () => {
       const init = initWebcam(human, videoRef, canvasRef);
       await init();
+
+      const stream =
+        (videoRef.current?.srcObject as MediaStream | null) ??
+        (human.webcam as any)?.stream ??
+        null;
+
+      if (stream) setWebcamStream(stream);
     };
 
     setup();
 
     return () => {
+      setWebcamStream(null);
       stopDetection();
       stopDrawing();
       human.webcam.stop();

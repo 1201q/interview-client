@@ -58,12 +58,6 @@ const InterviewSidebar = () => {
 
   return (
     <nav className={styles.sidebar}>
-      {currentQuestion && (
-        <InterviewSidebarStatus
-          current={currentQuestion.order}
-          total={clientQuestions.length}
-        />
-      )}
       {/* 질문 목록 */}
       <p className={styles.listHeader}>질문 목록</p>
       <ol className={styles.list}>

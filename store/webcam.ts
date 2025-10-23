@@ -28,3 +28,5 @@ initHumanAtom.onMount = (set) => {
     }
   })();
 };
+
+export const webcamStreamAtom = atom<MediaStream | null>(null);

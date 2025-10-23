@@ -6,8 +6,8 @@
 .listHeader {
   font-size: 14px;
   font-weight: 500;
-  color: var(--neutral-6);
-  margin: 35px 16px 10px 17px;
+  color: var(--neutral-4);
+  margin: 20px 16px 16px 19px;
   white-space: nowrap;
 }
 
@@ -15,14 +15,18 @@
 .list {
   display: flex;
   flex-direction: column;
-  row-gap: 4px;
+  row-gap: 6px;
   position: relative;
-  margin: 0px 6px;
+  margin: 0px 10px;
 }
 
 /* item */
 .selected {
-  background-color: color-mix(in srgb, var(--color-primary) 12%, white 70%);
+  background-color: color-mix(
+    in srgb,
+    var(--color-primary) 10%,
+    rgba(255, 255, 255, 0.05) 70%
+  );
 }
 
 .question {
@@ -31,18 +35,18 @@
 
   position: relative;
   z-index: 1;
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
 
   column-gap: 8px;
-  padding: 8px 1px 8px 1px;
+  padding: 7px 1px 7px 1px;
 
   overflow: hidden;
   transition: background-color 0.12s;
 }
 
 .question:not(.selected):hover {
-  background-color: var(--neutral-3);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 /*  title */
@@ -63,7 +67,7 @@
 .questionOrder {
   font-size: 14px;
   font-weight: 700;
-  color: var(--neutral-6);
+  color: var(--neutral-4);
   flex: 0 0 auto;
   text-align: start;
 }
@@ -72,7 +76,7 @@
   font-size: 14px;
   font-weight: 500;
 
-  color: var(--neutral-7);
+  color: var(--neutral-5);
 
   font-weight: 500;
 
@@ -92,7 +96,7 @@
   font-weight: 500;
   padding: 3px 10px 3px 10px;
   text-align: start;
-  color: var(--neutral-7);
+  color: var(--neutral-5);
 }
 
 .selected .questionOrder {
@@ -119,17 +123,21 @@
   padding: 0 8px;
   border-radius: 6px;
   white-space: nowrap;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 500;
   color: var(--neutral-1);
-  background: color-mix(in srgb, var(--color-primary) 80%, black 2%);
+  background: color-mix(
+    in srgb,
+    var(--color-primary) 50%,
+    rgba(255, 255, 255, 0.1) 20%
+  );
 }
 
 .submitted .badge {
   background: color-mix(in srgb, var(--neutral-3) 90%, white 30%);
   color: var(--neutral-6);
 }
-
+/* 
 html[data-sidebar-size='mini'] .questionFullText {
   display: none;
 }
@@ -151,4 +159,4 @@ html[data-sidebar-size='mini'] .listHeader {
 
 html[data-sidebar-size='mini'] .badge {
   display: none;
-}
+} */

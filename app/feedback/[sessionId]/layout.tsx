@@ -1,7 +1,6 @@
 import './layout.css';
 
 import { getAnalyesStatuses } from '@/utils/services/analyses';
-import { Suspense } from 'react';
 
 export default async function Layout({
   children,
@@ -20,9 +19,7 @@ export default async function Layout({
   return (
     <div className="container">
       <div className="wrapper">
-        <aside className="sidebar">
-          <Suspense>{sidebar ?? null}</Suspense>
-        </aside>
+        <aside className="sidebar">{sidebar}</aside>
         <main className="main">{children}</main>
       </div>
     </div>

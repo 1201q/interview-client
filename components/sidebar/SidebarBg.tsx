@@ -9,7 +9,7 @@ const SidebarBg = ({
   type?: 'default' | 'dark';
 }) => {
   return (
-    <div className={`${styles.steps} ${type === 'dark' ? styles.dark : ''}`}>
+    <div className={`${styles.sidebar} ${type === 'dark' ? styles.dark : ''}`}>
       {children}
     </div>
   );

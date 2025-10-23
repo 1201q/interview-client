@@ -1,15 +1,11 @@
 .video {
-  width: 100%;
-  height: 100%;
-
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  /* object-fit: cover; */
-  object-fit: cover;
   display: none;
+  object-fit: cover;
 }
 
 .canvas {
@@ -21,4 +17,16 @@
   object-fit: cover;
 
   /* display: none; */
+}
+
+.bgVideoFixed {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(5px) brightness(0.32);
+  transform: scale(1.28);
+  pointer-events: none;
+  z-index: 0;
 }

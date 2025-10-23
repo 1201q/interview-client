@@ -3,12 +3,14 @@
 import { InterviewPhase } from '@/utils/types/interview';
 import WebcamInstance from '../refactorWebcam/WebcamInstance';
 import { useInterview } from './InterviewProvider';
-import InterviewSubmitButton from './InterviewSubmitButton';
+
 import styles from './styles/i.client.module.css';
 
 import { SpeechIcon } from 'lucide-react';
 
-import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
+import GlobalVideoBg from '../refactorWebcam/GlobalVideoBg';
+import { Transcript } from '@/utils/types/types';
 
 const phaseMotionMap = (phase: InterviewPhase) => {
   switch (phase) {
@@ -41,102 +43,54 @@ const InterviewClient = (props: ReturnType<typeof useInterview>) => {
   const overlayOff = screenOpacity === 1 ? styles.overlayOff : '';
   const cameraOn = screenOpacity === 0;
 
-  const prefersReduce = useReducedMotion();
-
-  const overlayKey =
-    serverStatus === 'in_progress' && currentQuestion
-      ? `q-${currentQuestion.id ?? currentQuestion.order}`
-      : serverStatus;
-
-  const spring = { type: 'spring', stiffness: 520, damping: 40, mass: 0.8 };
-  const fade = { duration: 0.18, ease: 'easeOut' as const };
-
-  const enter = prefersReduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 };
-  const show = { opacity: 1, y: 0 };
-  const exit = prefersReduce ? { opacity: 0 } : { opacity: 0, y: -14 };
-
   return (
-    <div className={`${styles.main}`}>
-      <div className={styles.top}>
+    <>
+      <div className={styles.camera}>
+        <GlobalVideoBg />
+        <WebcamInstance isRunning={cameraOn} drawTargets={{}} />
+
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div className={`${styles.overlayTopCard} ${overlayOff}`}>
+            <motion.span className={styles.qStatus}>
+              {serverStatus === 'in_progress' && currentQuestion
+                ? `질문 ${currentQuestion.order + 1}`
+                : serverStatus === 'not_started'
+                  ? '면접 시작 전'
+                  : '면접 종료'}
+            </motion.span>
+
+            <motion.h2 className={styles.qText}>
+              {serverStatus === 'in_progress' && currentQuestion
+                ? currentQuestion.text
+                : serverStatus === 'not_started'
+                  ? '면접이 시작되면 이 곳에 질문이 표시됩니다. ‘면접 시작하기’를 누르면 시작됩니다.'
+                  : '면접이 종료되었습니다. 수고하셨습니다.'}
+            </motion.h2>
+          </motion.div>
+        </AnimatePresence>
+
+        <Stt rawStableData={rawStableData} />
+        {/* 어둡게 오버레이 */}
         <motion.div
-          className={styles.cameraWrap}
-          animate={{ y: camY }}
-          transition={spring}
-        >
-          <div className={styles.camera}>
-            <WebcamInstance isRunning={cameraOn} drawTargets={{}} />
-
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={overlayKey}
-                className={`${styles.overlayTopCard} ${overlayOff}`}
-                initial={enter}
-                animate={show}
-                exit={exit}
-                transition={spring}
-              >
-                <motion.span
-                  className={styles.qStatus}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={fade}
-                >
-                  {serverStatus === 'in_progress' && currentQuestion
-                    ? `질문 ${currentQuestion.order + 1}`
-                    : serverStatus === 'not_started'
-                      ? '면접 시작 전'
-                      : '면접 종료'}
-                </motion.span>
-
-                <motion.h2
-                  className={styles.qText}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ ...fade, delay: 0.03 }}
-                >
-                  {serverStatus === 'in_progress' && currentQuestion
-                    ? currentQuestion.text
-                    : serverStatus === 'not_started'
-                      ? '면접이 시작되면 이 곳에 질문이 표시됩니다. ‘면접 시작하기’를 누르면 시작됩니다.'
-                      : '면접이 종료되었습니다. 수고하셨습니다.'}
-                </motion.h2>
-              </motion.div>
-            </AnimatePresence>
-            {/* 하단 메인 제어 버튼  */}
-            <div className={styles.overlayBottomButton}>
-              <InterviewSubmitButton
-                phase={props.clientPhase}
-                startAnswer={props.doStartAnswer}
-                startCountdown={props.doStartCountdown}
-                submitAnswer={props.doSubmitAnswer}
-                startInterview={props.doStartSession}
-              />
-            </div>
-
-            {/* 어둡게 오버레이 */}
-            <motion.div
-              className={styles.cameraScreen}
-              animate={{ opacity: screenOpacity }}
-              transition={{ duration: 0.2 }}
-            />
-          </div>
-        </motion.div>
+          className={styles.cameraScreen}
+          animate={{ opacity: screenOpacity }}
+          transition={{ duration: 0.2 }}
+        />
       </div>
+    </>
+  );
+};
 
-      {/* STT 패널 상태에 따라 열림/닫힘 높이 전환 */}
-      <motion.div
-        animate={{ height: sttH }}
-        transition={spring}
-        className={styles.sttDock}
-      >
-        <div className={styles.sttInner}>
-          <div className={styles.sttTitle}>
-            <SpeechIcon size={20} />
-            <h3>실시간 필사</h3>
-          </div>
+const Stt = ({ rawStableData }: { rawStableData: Transcript[] }) => {
+  return (
+    <div className={styles.sttDock}>
+      <div className={styles.sttInner}>
+        <div className={styles.sttIcon}>
+          <SpeechIcon size={20} strokeWidth={1} />
+        </div>
 
+        <div className={styles.sttRight}>
+          <h3>실시간 필사</h3>
           <div className={styles.sttScroll}>
             {rawStableData?.length ? (
               rawStableData.map((s) => (
@@ -147,21 +101,6 @@ const InterviewClient = (props: ReturnType<typeof useInterview>) => {
             )}
           </div>
         </div>
-      </motion.div>
-    </div>
-  );
-};
-
-const Camera = () => {
-  return (
-    <div className={styles.camera}>
-      <WebcamInstance isRunning={true} drawTargets={{}} />
-      <div className={styles.qOverlay}>
-        <span className={styles.qStatus}>질문 1</span>
-        <h2 className={styles.qText}>
-          협업에서 ‘극도의 투명함’을 실천하기 위해 평소에 유지하는 한 가지
-          루틴을 소개해 주세요.
-        </h2>
       </div>
     </div>
   );

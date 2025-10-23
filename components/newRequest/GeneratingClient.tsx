@@ -4,7 +4,7 @@ import {
   currentRequestStageAtom,
   generatingProgressAtom,
 } from '@/store/request-stage';
-import { useAtom, useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { AnimatePresence, motion } from 'motion/react';
 import { useMemo, useState } from 'react';
 

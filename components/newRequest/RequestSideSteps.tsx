@@ -53,9 +53,6 @@ const steps = [
 
 export function RequestSideSteps() {
   const [requestStage] = useAtom(currentRequestStageAtom);
-  const [generatingProgress] = useAtom(generatingProgressAtom);
-
-  console.log(requestStage);
 
   return (
     <nav className={`${styles.steps}`}>
@@ -84,8 +81,6 @@ export function RequestSideSteps() {
                   </span>
                   <div className={styles.stepContent}>
                     <p className={styles.stepTitle}>{step.title}</p>
-
-                    <p className={styles.stepDesc}>{step.desc}</p>
                   </div>
                 </li>
               );

@@ -1,27 +1,47 @@
 .header {
-  padding: 0px 25px;
+  padding: 12px 26px;
   height: 100%;
   display: flex;
 
   justify-content: flex-start;
   align-items: center;
+
+  column-gap: 22px;
 }
 
-.info {
-  height: 100%;
+/* 면접 상태 */
+.status {
   display: flex;
   align-items: center;
-  column-gap: 15px;
+  justify-content: center;
+  width: 45px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background-color: color-mix(in srgb, var(--primary) 100%, transparent 20%);
+}
+
+.status svg {
+  stroke: var(--neutral-2);
+  stroke-width: 2px;
+}
+
+/* 오른쪽 텍스트 */
+.info {
+  row-gap: 2px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .info h2 {
   font-weight: 600;
-  font-size: 18px;
-  color: var(--neutral-6);
+  font-size: 22px;
+  color: var(--neutral-4);
 }
 
 .info span {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 400;
   color: var(--neutral-5);
 }

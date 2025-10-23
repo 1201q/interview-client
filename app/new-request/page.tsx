@@ -54,7 +54,7 @@ const Page = () => {
       <header className="header">
         <RequestHeader text={headerText()} />
       </header>
-      <div className="contents">
+      <div className="slideContents">
         <AnimatePresence mode="popLayout" initial={false}>
           {requestStage === 'resumeText' && (
             <motion.div
