@@ -2,6 +2,8 @@ import LogoutModal from '@/components/modal/LogoutModal';
 import { logout } from '@/utils/actions/logout';
 import { getAuth } from '@/utils/services/auth';
 import { cookies } from 'next/headers';
+import { Suspense } from 'react';
+import ModalLoading from './loading';
 
 const Page = async () => {
   const auth = await getAuth();
@@ -15,7 +17,11 @@ const Page = async () => {
     await logout(refreshToken);
   };
 
-  return <LogoutModal email={auth.user.email} action={action} />;
+  return (
+    <Suspense fallback={<ModalLoading />}>
+      <LogoutModal email={auth.user.email} action={action} />
+    </Suspense>
+  );
 };
 
 export default Page;

@@ -3,8 +3,7 @@ import { cookies } from 'next/headers';
 import styles from './styles/bottom.user.module.css';
 import { getAuth } from '@/utils/services/auth';
 
-import { logout } from '@/utils/actions/logout';
-import LogoutButton from './LogoutButton';
+import UserProfile from './UserProfile';
 
 const BottomUser = async () => {
   const auth = await getAuth();
@@ -13,14 +12,9 @@ const BottomUser = async () => {
 
   if (!auth.user || !refreshToken) return null;
 
-  const action = async () => {
-    'use server';
-    await logout(refreshToken);
-  };
-
   return (
     <div className={styles.bottom}>
-      <LogoutButton action={action} user={auth.user} />
+      <UserProfile user={auth.user} />
     </div>
   );
 };

@@ -4,11 +4,11 @@
 .camera {
   position: relative;
   overflow: hidden;
-  height: 100%;
-  border-radius: 20px;
 
-  background-color: var(--neutral-1);
-  isolation: isolate;
+  height: 100%;
+  border-radius: 24px;
+
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 /* 오버레이  */
@@ -22,7 +22,7 @@
   right: auto;
   width: calc(100% - 36px);
 
-  padding: 14px 16px 14px 16px;
+  padding: 14px 17px 14px 18px;
 
   display: inline-flex;
   flex-direction: column;
@@ -31,21 +31,6 @@
   pointer-events: auto;
   z-index: 5;
 
-  background: linear-gradient(
-    180deg,
-    rgba(20, 24, 32, 0.62) 0%,
-    rgba(20, 24, 32, 0.42) 100%
-  );
-
-  backdrop-filter: saturate(120%) blur(10px);
-  -webkit-backdrop-filter: saturate(120%) blur(10px);
-
-  box-shadow:
-    0 8px 22px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
-}
-
-.overlayOff {
   background: transparent;
   border: transparent;
 
@@ -61,7 +46,7 @@
   font-size: 12px;
   font-weight: 700;
   padding: 3px 10px;
-  border-radius: 20px;
+  border-radius: 18px;
   color: var(--neutral-1);
 
   margin-left: -1px;
@@ -69,7 +54,7 @@
   background: rgba(255, 255, 255, 0.14);
   border: 1px solid rgba(255, 255, 255, 0.18);
 
-  backdrop-filter: saturate(120%) blur(2px);
+  backdrop-filter: saturate(120%);
 }
 
 .qText {
@@ -82,17 +67,6 @@
   overflow-wrap: anywhere;
 }
 
-/* submit button  */
-/* ===================================== */
-.overlayBottomButton {
-  position: absolute;
-  left: 50%;
-  bottom: 22px;
-  transform: translateX(-50%);
-  z-index: 6;
-  pointer-events: auto;
-}
-
 /* 카메라 어둡게  */
 /* ===================================== */
 .cameraScreen {
@@ -100,82 +74,32 @@
   inset: 0;
   z-index: 4;
   pointer-events: none;
-  opacity: 0;
 
   background: radial-gradient(
     120% 120% at 50% 50%,
-    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.8) 0%,
     rgba(0, 0, 0, 0.65) 60%,
-    rgba(0, 0, 0, 0.75) 100%
+    rgba(0, 0, 0, 0.85) 100%
   );
 }
 
-/* stt dock  */
-/* ===================================== */
-.sttDock {
-  width: 500px;
-  max-width: 90%;
+.cameraShadeTop {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 20px;
+  left: 0;
+  right: 0;
+  top: 0;
 
-  background-color: rgba(0, 0, 0, 0.2);
+  --q-height: 110px;
+  --pad: 18px;
+  height: max(calc(var(--q-height) + var(--pad) * 2), 20%);
 
-  backdrop-filter: blur(2px);
-  border: 1px solid var(--glass-border);
-  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgba(3, 7, 18, 0.68) 0%,
+    rgba(3, 7, 18, 0.36) 55%,
+    rgba(3, 7, 18, 0) 100%
+  );
 
-  box-shadow: var(--shadow-md);
-
-  will-change: height, transform;
-  overflow: hidden;
-  z-index: 9;
-}
-
-.sttInner {
-  height: 100%;
-  display: flex;
-
-  padding: 16px 22px;
-  column-gap: 15px;
-}
-
-.sttRight {
-  display: flex;
-  flex-direction: column;
-}
-
-.sttRight h3 {
-  color: var(--neutral-6);
-  font-size: 13px;
-  font-weight: 300;
-}
-
-.sttIcon {
-  display: flex;
-  align-items: center;
-  margin: 0;
-}
-
-.sttIcon svg {
-  font-size: 15px;
-  font-weight: 600;
-  stroke: var(--neutral-5);
-  color: var(--neutral-5);
-}
-
-.sttScroll {
-  min-height: 0;
-  flex: 1;
-  overflow: auto;
-
-  line-height: 1.5;
-  font-size: 14px;
-}
-
-.sttScroll span {
-  color: var(--neutral-5);
-  font-size: 15px;
-  font-weight: 500;
+  pointer-events: none;
+  z-index: 4;
 }

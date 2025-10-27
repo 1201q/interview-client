@@ -15,9 +15,10 @@ interface DrawTargets {
 interface Props {
   isRunning: boolean;
   drawTargets: DrawTargets;
+  cameraObjectFitOpt?: 'cover' | 'contain';
 }
 
-const RWebcam = ({ isRunning, drawTargets }: Props) => {
+const Webcam = ({ isRunning, drawTargets, cameraObjectFitOpt }: Props) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -68,9 +69,12 @@ const RWebcam = ({ isRunning, drawTargets }: Props) => {
   return (
     <>
       <video ref={videoRef} className={styles.video} playsInline autoPlay />
-      <canvas ref={canvasRef} className={styles.canvas} />
+      <canvas
+        ref={canvasRef}
+        className={`${styles.canvas} ${cameraObjectFitOpt === 'cover' ? styles.cover : styles.contain}`}
+      />
     </>
   );
 };
 
-export default RWebcam;
+export default Webcam;

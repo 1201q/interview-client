@@ -9,7 +9,7 @@ import ResumeUploader from '@/components/newRequest/ResumeUploader';
 import JobTextUploader from '@/components/newRequest/JobTextUploader';
 import RequestHeader from '@/components/newRequest/RequestHeader';
 import { Suspense } from 'react';
-import RequestSkeleton from './_loading';
+import RequestSkeleton from './loading';
 
 const resumeSlideVariants: Variants = {
   enter: { x: '-100%', opacity: 0 },

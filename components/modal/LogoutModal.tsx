@@ -5,6 +5,8 @@ import styles from './styles/modal.module.css';
 import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
+import { motion } from 'motion/react';
+
 const LogoutModal = ({
   email,
   action,
@@ -23,7 +25,9 @@ const LogoutModal = ({
 
   useEffect(() => {
     document.addEventListener('mousedown', handleBackgroundClick);
+    document.body.style.overflow = 'hidden';
     return () => {
+      document.body.style.overflow = 'auto';
       document.removeEventListener('mousedown', handleBackgroundClick);
     };
   }, []);

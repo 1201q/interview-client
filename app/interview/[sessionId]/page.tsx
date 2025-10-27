@@ -3,6 +3,7 @@
 import InterviewBottomController from '@/components/interview-progress/InterviewBottomController';
 import InterviewClient from '@/components/interview-progress/InterviewClient';
 import InterviewHeader from '@/components/interview-progress/InterviewHeader';
+import InterviewPermissionOverlay from '@/components/interview-progress/InterviewPermissionOverlay';
 import { useInterview } from '@/components/interview-progress/InterviewProvider';
 import InterviewSidebar from '@/components/interview-progress/InterviewSidebar';
 
@@ -12,15 +13,20 @@ const Page = () => {
   return (
     <div className="container">
       <div className="wrapper">
+        <InterviewPermissionOverlay />
         <div className="main">
           <header className="header">
             <InterviewHeader />
           </header>
           <div className="center">
             <div className="centerGrid">
-              <aside className="sidebar">
-                <InterviewSidebar />
-              </aside>
+              <div
+                className={`sidebarSpacer ${!props.visibleQuestionList ? 'hidden' : ''}`}
+              >
+                <aside className="sidebarPanel">
+                  <InterviewSidebar />
+                </aside>
+              </div>
               <main className="camera">
                 <InterviewClient {...props} />
               </main>

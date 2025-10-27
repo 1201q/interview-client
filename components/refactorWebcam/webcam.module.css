@@ -14,9 +14,14 @@
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+}
 
-  /* display: none; */
+.contain {
+  object-fit: contain;
+}
+
+.cover {
+  object-fit: cover;
 }
 
 .bgVideoFixed {
@@ -25,8 +30,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: blur(5px) brightness(0.32);
-  transform: scale(1.28);
+  filter: blur(12px) brightness(0.25);
+  transform: scale(1.38);
   pointer-events: none;
   z-index: 0;
 }

@@ -1,0 +1,95 @@
+/* stt dock  */
+/* ===================================== */
+.sttDock {
+  width: 500px;
+  max-width: 90%;
+  height: 100%;
+  max-height: 80px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 20px;
+
+  background-color: rgba(0, 0, 0, 0.3);
+
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+
+  box-shadow: var(--shadow-md);
+
+  will-change: height, transform;
+  overflow: hidden;
+  z-index: 9;
+}
+
+.sttInner {
+  height: 100%;
+  display: flex;
+
+  padding: 12px 22px;
+  column-gap: 15px;
+}
+
+.sttRight {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sttRight h3 {
+  color: var(--neutral-4);
+  font-size: 12px;
+  font-weight: 300;
+  margin-bottom: 3px;
+}
+
+.sttIcon {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.sttIcon svg {
+  font-size: 15px;
+  font-weight: 600;
+  stroke: var(--neutral-3);
+  color: var(--neutral-3);
+}
+
+.sttScroll {
+  font-size: 14px;
+  line-height: 1.2;
+
+  --lh: 16px;
+  height: 35px;
+  max-height: 35px;
+
+  overflow: auto;
+  scrollbar-width: thin;
+  padding-right: 2px;
+
+  word-break: break-word;
+  white-space: normal;
+
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+}
+
+.sttScroll span {
+  color: var(--neutral-3);
+  font-size: 13px;
+  font-weight: 500;
+}

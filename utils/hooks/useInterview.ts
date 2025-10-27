@@ -12,13 +12,39 @@ import {
   SessionQuestionItemWithAnswerId,
 } from '@/utils/types/interview';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 interface InterviewInitProps {
   sessionId: string;
   questions: SessionQuestionItemWithAnswerId[];
   status: InterviewSessionStatus;
 }
+
+type CameraObjectFit = 'cover' | 'contain';
+
+const LOCALSTORAGE_PREFIX = 'useInterview_';
+
+const makeKey = (sessionId: string) => `${LOCALSTORAGE_PREFIX}/${sessionId}`;
+
+const readLocalStorage = <T>(key: string, fallback: T): T => {
+  if (typeof window === 'undefined') return fallback;
+
+  try {
+    const raw = window.localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : fallback;
+  } catch {
+    return fallback;
+  }
+};
+const writeLocalStorage = (key: string, value: unknown) => {
+  if (typeof window === 'undefined') return;
+
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    console.error('Failed to write localStorage');
+  }
+};
 
 export const useInterview = ({
   questions,
@@ -30,8 +56,40 @@ export const useInterview = ({
     (q) => q.status === 'ready' || q.status === 'answering',
   );
 
+  const [visibleQuestionList, setVisibleQuestionList] = useState(true);
+  const [visibleSttComponent, setVisibleSttComponent] = useState(true);
+  const [cameraObjectFitOpt, setCameraObjectFitOpt] =
+    useState<CameraObjectFit>('cover');
+
   const [serverStatus, setServerStatus] = useState(status);
   const [clientPhase, setClientPhase] = useState<InterviewPhase>('beforeStart');
+
+  const localStorageKey = useMemo(() => makeKey(sessionId), [sessionId]);
+
+  useEffect(() => {
+    const data = readLocalStorage(localStorageKey, {
+      visibleQuestionList: false,
+      visibleSttComponent: false,
+      cameraObjectFitOpt: 'cover' as CameraObjectFit,
+    });
+
+    setVisibleQuestionList(data.visibleQuestionList);
+    setVisibleSttComponent(data.visibleSttComponent);
+    setCameraObjectFitOpt(data.cameraObjectFitOpt);
+  }, [localStorageKey]);
+
+  useEffect(() => {
+    writeLocalStorage(localStorageKey, {
+      visibleQuestionList,
+      visibleSttComponent,
+      cameraObjectFitOpt,
+    });
+  }, [
+    localStorageKey,
+    visibleQuestionList,
+    visibleSttComponent,
+    cameraObjectFitOpt,
+  ]);
 
   const {
     connected,
@@ -81,7 +139,7 @@ export const useInterview = ({
 
       // 2. 오디오 소스 준비
 
-      await prepareAudioTrack('mic');
+      await prepareAudioTrack('tab');
 
       // 3. 현재 질문을 answering으로 변경 -> 성공시 카운트 다운
 
@@ -130,6 +188,18 @@ export const useInterview = ({
     }
   };
 
+  const toggleQuestionList = () => {
+    setVisibleQuestionList((prev) => !prev);
+  };
+
+  const toggleSttComponent = () => {
+    setVisibleSttComponent((prev) => !prev);
+  };
+
+  const toggleCameraObjectFit = () => {
+    setCameraObjectFitOpt((prev) => (prev === 'cover' ? 'contain' : 'cover'));
+  };
+
   return {
     currentQuestion,
     clientQuestions,
@@ -141,5 +211,14 @@ export const useInterview = ({
     doSubmitAnswer,
 
     rawStableData,
+
+    visibleQuestionList,
+    toggleQuestionList,
+
+    visibleSttComponent,
+    toggleSttComponent,
+
+    cameraObjectFitOpt,
+    toggleCameraObjectFit,
   };
 };

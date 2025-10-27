@@ -1,0 +1,84 @@
+.main {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 0px 25px;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  column-gap: 12px;
+  flex: 1;
+}
+
+/* menu button  */
+.menuToggleButton {
+  display: inline-flex;
+  align-items: center;
+
+  height: 43px;
+  border-radius: 999px;
+  padding: 0px 13px;
+  background-color: rgba(0, 0, 0, 0.4);
+
+  outline: 1px solid var(--glass-border);
+
+  box-shadow: var(--shadow-md);
+
+  overflow: hidden;
+}
+
+.iconWrap {
+  width: 17px;
+  height: 17px;
+  display: grid;
+  place-items: center;
+}
+
+.labelBox {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+}
+
+.label {
+  font-size: 13px;
+  line-height: 1;
+  margin-left: 5px;
+  margin-right: 0px;
+}
+
+.menuToggleButton svg {
+  stroke: var(--neutral-4);
+}
+
+.menuToggleButton span {
+  font-size: 14px;
+  color: var(--neutral-4);
+}
+
+/* submit button  */
+/* ===================================== */
+.overlayBottomButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+/* 카메라 설정 */
+.setting {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}

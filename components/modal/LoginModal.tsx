@@ -10,6 +10,7 @@ import Image from 'next/image';
 
 import Logo from '@/public/aiterviewlogo.svg';
 
+import { motion } from 'motion/react';
 const LoginModal = () => {
   const bgRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -22,14 +23,23 @@ const LoginModal = () => {
 
   useEffect(() => {
     document.addEventListener('mousedown', handleBackgroundClick);
+
+    document.body.style.overflow = 'hidden';
+
     return () => {
+      document.body.style.overflow = 'auto';
       document.removeEventListener('mousedown', handleBackgroundClick);
     };
   }, []);
 
   return (
-    <div ref={bgRef} className={styles.container}>
-      <div className={styles.loginBox}>
+    <motion.div
+      ref={bgRef}
+      className={styles.container}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+    >
+      <motion.div className={styles.loginBox}>
         <div className={styles.padding}>
           <div className={styles.headerLogo}>
             <Logo />
@@ -64,8 +74,8 @@ const LoginModal = () => {
             </button>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

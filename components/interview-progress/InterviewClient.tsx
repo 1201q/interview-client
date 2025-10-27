@@ -6,11 +6,10 @@ import { useInterview } from './InterviewProvider';
 
 import styles from './styles/i.client.module.css';
 
-import { SpeechIcon } from 'lucide-react';
-
 import { motion, AnimatePresence } from 'motion/react';
 import GlobalVideoBg from '../refactorWebcam/GlobalVideoBg';
-import { Transcript } from '@/utils/types/types';
+
+import InterviewSttDock from './InterviewSttDock';
 
 const phaseMotionMap = (phase: InterviewPhase) => {
   switch (phase) {
@@ -23,7 +22,7 @@ const phaseMotionMap = (phase: InterviewPhase) => {
     case 'starting':
       return { camY: -10, sttH: 50, screenOpacity: 1 };
     case 'startCountdown3':
-      return { camY: -45, sttH: 130, screenOpacity: 0 };
+      return { camY: -45, sttH: 130, screenOpacity: 1 };
     case 'answering':
       return { camY: -45, sttH: 130, screenOpacity: 0 };
     case 'submitting':
@@ -36,21 +35,32 @@ const phaseMotionMap = (phase: InterviewPhase) => {
 };
 
 const InterviewClient = (props: ReturnType<typeof useInterview>) => {
-  const { currentQuestion, serverStatus, rawStableData, clientPhase } = props;
+  const {
+    currentQuestion,
+    serverStatus,
+    rawStableData,
+    clientPhase,
+    visibleSttComponent,
+    cameraObjectFitOpt,
+  } = props;
 
   const { camY, sttH, screenOpacity } = phaseMotionMap(clientPhase);
 
-  const overlayOff = screenOpacity === 1 ? styles.overlayOff : '';
   const cameraOn = screenOpacity === 0;
 
   return (
     <>
       <div className={styles.camera}>
         <GlobalVideoBg />
-        <WebcamInstance isRunning={cameraOn} drawTargets={{}} />
+        <WebcamInstance
+          cameraObjectFitOpt={cameraObjectFitOpt}
+          isRunning={cameraOn}
+          drawTargets={{}}
+        />
 
+        <div className={styles.cameraShadeTop} />
         <AnimatePresence mode="wait" initial={false}>
-          <motion.div className={`${styles.overlayTopCard} ${overlayOff}`}>
+          <motion.div className={`${styles.overlayTopCard}`}>
             <motion.span className={styles.qStatus}>
               {serverStatus === 'in_progress' && currentQuestion
                 ? `질문 ${currentQuestion.order + 1}`
@@ -69,7 +79,11 @@ const InterviewClient = (props: ReturnType<typeof useInterview>) => {
           </motion.div>
         </AnimatePresence>
 
-        <Stt rawStableData={rawStableData} />
+        <AnimatePresence>
+          {visibleSttComponent && (
+            <InterviewSttDock rawStableData={rawStableData} />
+          )}
+        </AnimatePresence>
         {/* 어둡게 오버레이 */}
         <motion.div
           className={styles.cameraScreen}
@@ -78,31 +92,6 @@ const InterviewClient = (props: ReturnType<typeof useInterview>) => {
         />
       </div>
     </>
-  );
-};
-
-const Stt = ({ rawStableData }: { rawStableData: Transcript[] }) => {
-  return (
-    <div className={styles.sttDock}>
-      <div className={styles.sttInner}>
-        <div className={styles.sttIcon}>
-          <SpeechIcon size={20} strokeWidth={1} />
-        </div>
-
-        <div className={styles.sttRight}>
-          <h3>실시간 필사</h3>
-          <div className={styles.sttScroll}>
-            {rawStableData?.length ? (
-              rawStableData.map((s) => (
-                <span key={`s-${s.item_id}`}>{s.transcript} </span>
-              ))
-            ) : (
-              <span>이곳에 필사 텍스트가 표시됩니다</span>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
   );
 };
 
