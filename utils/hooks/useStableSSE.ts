@@ -1,92 +1,103 @@
 import { useEffect, useRef } from 'react';
 
-type ExtendedType = { type: string };
-
-type NamedHandler<E extends ExtendedType> = {
-  [K in E['type']]?: (data: Extract<E, { type: K }>, ev: MessageEvent) => void;
-};
-
-type Handlers<E extends ExtendedType> = {
-  onOpen?: () => void;
-  onMessage?: (ev: MessageEvent) => void;
-  onNamed?: NamedHandler<E>;
-  onError?: (err: any) => void;
-  onDone?: () => void;
-};
-
-export function useStableSSE<E extends ExtendedType>(
+export function useStableSSE<E extends { type: string }>(
   url: string,
-  handlers: Handlers<E>,
-
+  handlers: {
+    onOpen?: () => void;
+    onMessage?: (ev: MessageEvent) => void;
+    onNamed?: {
+      [K in E['type']]?: (
+        data: Extract<E, { type: K }>,
+        ev: MessageEvent,
+      ) => void;
+    };
+    onError?: (err: any) => void;
+    onDone?: () => void;
+  },
   opts?: {
     autoReconnect?: boolean;
     maxRetries?: number;
     backoffBaseMs?: number;
+    withCredentials?: boolean;
   },
 ) {
-  const startedRef = useRef(false);
   const esRef = useRef<EventSource | null>(null);
   const retryRef = useRef(0);
   const closedRef = useRef(false);
 
   useEffect(() => {
-    if (!url || startedRef.current) return;
-
-    startedRef.current = true;
+    if (!url) return;
     closedRef.current = false;
 
     const autoReconnect = opts?.autoReconnect ?? true;
     const maxRetries = opts?.maxRetries ?? 5;
     const backoffBaseMs = opts?.backoffBaseMs ?? 400;
 
+    // 핸들러에 선언된 키를 그대로 리스너로 등록(확장 자동 반영)
+    const namedKeys = Object.keys(handlers.onNamed ?? {}) as Array<E['type']>;
+    const added: Array<{ key: string; fn: (e: MessageEvent) => void }> = [];
+
     const connect = () => {
       if (closedRef.current) return;
 
-      const ess = new EventSource(url);
+      const es = new EventSource(url, {
+        withCredentials: !!opts?.withCredentials,
+      } as EventSourceInit);
+      esRef.current = es;
 
-      esRef.current = ess;
-
-      ess.onopen = () => {
+      es.onopen = () => {
         retryRef.current = 0;
         handlers.onOpen?.();
       };
 
-      ess.onmessage = (e) => {
+      // 기본 message (event 미지정, data에 {type} 포함)
+      es.onmessage = (e) => {
         handlers.onMessage?.(e);
-
-        let parsed: unknown = e.data;
-
+        let payload: any = e.data;
         try {
-          parsed = JSON.parse(e.data as string);
+          payload = JSON.parse(payload); // 1차
+          if (typeof payload === 'string') payload = JSON.parse(payload); // 2차(이중 stringify 방어)
         } catch {}
-
-        const obj = parsed as Partial<E> | undefined;
-        const typekey =
-          obj && typeof obj === 'object' ? (obj as any).type : undefined;
-
-        if (typekey && handlers.onNamed && typekey in handlers.onNamed) {
-          handlers.onNamed[typekey as E['type']]?.(obj as any, e);
-
-          if (typekey === 'done') {
-            handlers.onDone?.();
-            ess.close();
-            esRef.current = null;
-            closedRef.current = true;
-          }
+        const t = payload?.type as E['type'] | undefined;
+        if (t && handlers.onNamed?.[t]) {
+          handlers.onNamed[t]?.(payload, e);
         }
       };
 
-      ess.onerror = (error) => {
-        handlers.onError?.(error);
+      // 네임드 이벤트 (server가 event: <name>로 보낼 때)
+      namedKeys.forEach((key) => {
+        const fn = (e: MessageEvent) => {
+          let payload: any = e.data;
+          try {
+            payload = JSON.parse(payload);
+            if (typeof payload === 'string') payload = JSON.parse(payload);
+          } catch {}
+          // 서버가 event: done 으로 보낼 때 completed로 매핑
+          const mappedKey =
+            key === ('completed' as E['type']) && (e as any).type === 'done'
+              ? ('completed' as E['type'])
+              : ((e as any).type as E['type']) || key;
 
-        ess.close();
+          const data = {
+            ...(typeof payload === 'object' ? payload : { data: payload }),
+            type: mappedKey,
+          } as E;
+
+          handlers.onNamed?.[mappedKey]?.(data as any, e);
+        };
+        es.addEventListener(key as string, fn);
+
+        added.push({ key: key as string, fn });
+      });
+
+      // 에러/재시도
+      es.onerror = (err) => {
+        handlers.onError?.(err);
+        es.close();
         esRef.current = null;
-
         if (!autoReconnect || closedRef.current) return;
         if (retryRef.current >= maxRetries) return;
-
         const t = backoffBaseMs * Math.pow(2, retryRef.current++);
-
         setTimeout(connect, t);
       };
     };
@@ -95,7 +106,11 @@ export function useStableSSE<E extends ExtendedType>(
 
     return () => {
       closedRef.current = true;
-      esRef.current?.close();
+      const es = esRef.current;
+      if (es) {
+        added.forEach(({ key, fn }) => es.removeEventListener(key, fn));
+        es.close();
+      }
       esRef.current = null;
     };
   }, [url]);

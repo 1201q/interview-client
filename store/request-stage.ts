@@ -19,3 +19,5 @@ generatingProgressAtom.onMount = (set) => {
     console.log('generatingProgressAtom unmounted, reset to 0');
   };
 };
+
+export const resumeTextAtom = atom('');

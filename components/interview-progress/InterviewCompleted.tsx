@@ -5,7 +5,7 @@ import { motion } from 'motion/react';
 import { Loader2, CheckCircle2 } from 'lucide-react';
 import { AnalysesStatusesItem } from '@/utils/types/analysis';
 import { AnalysisEvent, AnalysisStage } from '@/utils/types/analysis-sse';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useStableSSE } from '@/utils/hooks/useStableSSE';
 import { useRouter } from 'next/navigation';
 
@@ -34,18 +34,17 @@ function computeWeighted(stages: StageProgress): number {
   const refine = stages.refine ?? 0;
   const audio = stages.audio ?? 0;
   const feedback = stages.feedback ?? 0;
-
   const w =
     (stt / 100) * WEIGHTS.stt +
     (refine / 100) * WEIGHTS.refine +
     (audio / 100) * WEIGHTS.audio +
     (feedback / 100) * WEIGHTS.feedback;
-
   return Math.round(Math.max(0, Math.min(100, w)));
 }
 
 function computeOverall(baseOverall: number, stages: StageProgress): number {
-  return Math.max(baseOverall, computeWeighted(stages));
+  const weighted = computeWeighted(stages);
+  return Math.max(baseOverall ?? 0, weighted);
 }
 
 // 스냅샷 → 클라이언트 상태로 변환
@@ -78,28 +77,22 @@ const getProgressMap = (statuses: AnalysesStatusesItem[]): ProgressMap => {
 // SSE 이벤트 병합
 const applyProgressEvent = (
   prev: ProgressMap,
-  event: { answer_id: string; stage: AnalysisStage; value: number },
+  ev: { answer_id: string; stage: AnalysisStage; value: number },
 ): ProgressMap => {
   const cur =
-    prev[event.answer_id] ??
-    ({
-      baseOverall: 0,
-      stages: {},
-      overall: 0,
-    } as AnswerProgressState);
+    prev[ev.answer_id] ??
+    ({ baseOverall: 0, stages: {}, overall: 0 } as AnswerProgressState);
 
-  // 단계 값은 최대값
   const nextStages: StageProgress = {
     ...cur.stages,
-    [event.stage]: Math.max(cur.stages[event.stage] ?? 0, event.value),
+    [ev.stage]: Math.max(cur.stages[ev.stage] ?? 0, ev.value),
   };
-
   const nextOverall = computeOverall(cur.baseOverall, nextStages);
 
   return {
     ...prev,
-    [event.answer_id]: {
-      baseOverall: cur.baseOverall,
+    [ev.answer_id]: {
+      ...cur,
       stages: nextStages,
       overall: nextOverall,
     },
@@ -149,7 +142,6 @@ const InterviewCompleted = ({
         );
       },
       completed: (ev) => {
-        // 전체 100으로 고정(서버 이벤트 신뢰)
         setProgressMap((prev) => {
           const cur = prev[ev.answer_id];
           if (!cur) return prev;
@@ -158,17 +150,27 @@ const InterviewCompleted = ({
             [ev.answer_id]: {
               ...cur,
               overall: 100,
-              stages: { ...cur.stages, feedback: 100 },
+              stages: {
+                ...cur.stages,
+                stt: 100,
+                refine: 100,
+                audio: 100,
+                feedback: 100,
+                overall: 100,
+              },
             },
           };
         });
-
-        setTimeout(() => {
-          router.replace(`/feedback/${sessionId}`);
-        }, 1200);
       },
     },
   });
+
+  useEffect(() => {
+    if (allDone) {
+      const t = setTimeout(() => router.refresh(), 1200);
+      return () => clearTimeout(t);
+    }
+  }, [allDone, router, sessionId]);
 
   return (
     <div className={styles.main}>

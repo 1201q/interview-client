@@ -1,6 +1,7 @@
 .sharedMenu {
   margin-top: 20px;
   margin-bottom: 20px;
+  position: sticky;
 }
 
 /* ol */
@@ -18,62 +19,43 @@
 }
 
 .menu {
-  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 41px;
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  align-items: center;
+  gap: 3px;
 
-  position: relative;
-  z-index: 1;
-  border-radius: 8px;
-  cursor: pointer;
-
-  column-gap: 8px;
-  padding: 8px 1px 8px 1px;
+  text-align: left;
+  padding: 0 10px;
+  border-radius: 10px;
   transition: background-color 0.12s;
+  overflow: hidden;
 }
 
 .menu:not(.selected):hover {
   background-color: var(--neutral-3);
 }
 
-/*  title */
-.menuTitle {
-  display: flex;
-  align-items: center;
-
-  height: 25px;
-
-  border-radius: 7px;
-  color: var(--neutral-2);
-
-  padding: 0px 10px;
-  column-gap: 9px;
-  overflow: hidden;
+html[data-sidebar-size='mini'] .menu:not(.selected):hover {
+  background-color: var(--neutral-2);
 }
 
 /* 아이콘 */
 .menuIcon {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--neutral-6);
-  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+  overflow: hidden;
+
+  width: 26px;
+  height: 26px;
 }
 
 .menuIcon svg {
   stroke: var(--neutral-6);
-}
-
-.menuText {
-  font-size: 14px;
-  font-weight: 500;
-
-  white-space: nowrap;
-  text-overflow: ellipsis;
-
-  flex: 1 1 auto;
-  min-width: 0;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .selected .menuIcon svg {
@@ -88,16 +70,18 @@
   color: var(--color-primary);
 }
 
-html[data-sidebar-size='mini'] .menuText {
-  display: none;
-}
+.menuText {
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 
-html[data-sidebar-size='mini'] .menuIcon {
-  width: 100%;
-  text-align: center;
-}
+  max-width: 230px;
+  font-size: 15px;
 
-html[data-sidebar-size='mini'] .menuTitle {
-  width: 100%;
-  text-align: center;
+  font-weight: 500;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

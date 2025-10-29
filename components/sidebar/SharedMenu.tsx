@@ -23,28 +23,14 @@ const SharedMenu = () => {
       text: '새로운 면접 시작',
       selected: pathname.startsWith('/new-request'),
       href: '/new-request',
-      icon: (
-        <PlayIcon
-          size={20}
-          style={{
-            marginLeft: '-1px',
-            marginRight: '0.4px',
-            marginTop: '2px',
-          }}
-        />
-      ),
+      icon: <PlayIcon size={20} />,
     },
     {
       id: '2',
       text: '면접 기록',
       selected: false,
       href: '/projects',
-      icon: (
-        <FileTextIcon
-          size={20}
-          style={{ marginRight: '0px', marginTop: '3px' }}
-        />
-      ),
+      icon: <FileTextIcon size={20} />,
     },
   ];
 
@@ -74,10 +60,8 @@ const MenuItem = ({ text, selected, href, icon }: MenuItemProps) => {
 
   return (
     <Link href={href} className={className}>
-      <div className={styles.menuTitle}>
-        <span className={styles.menuIcon}>{icon}</span>
-        <p className={styles.menuText}>{text}</p>
-      </div>
+      <span className={styles.menuIcon}>{icon}</span>
+      <p className={styles.menuText}>{text}</p>
     </Link>
   );
 };

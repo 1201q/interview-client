@@ -7,7 +7,7 @@ import SelectSkeleton from './loading';
 
 const TEST_ID = 'd2151465-878d-4996-9aba-c2dd0e830598';
 
-const getRequest = async (requestId: string, isTest: boolean = true) => {
+const getRequest = async (requestId: string, isTest: boolean = false) => {
   const url = `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${isTest ? TEST_ID : requestId}/questions`;
   const res = await fetch(url);
 

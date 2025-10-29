@@ -15,7 +15,7 @@ const Page = () => {
     <div className="container">
       <div className="wrapper">
         <InterviewPermissionOverlay />
-        <InterviewProgress {...props} />
+
         <div className="main">
           <header className="header">
             <InterviewHeader />

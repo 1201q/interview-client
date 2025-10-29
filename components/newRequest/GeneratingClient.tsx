@@ -14,6 +14,7 @@ import { GeneratedQuestionItem } from '@/utils/types/types';
 import { LoaderCircle, Clock } from 'lucide-react';
 import { useStableSSE } from '@/utils/hooks/useStableSSE';
 import { useRouter } from 'next/navigation';
+import { GenerateEvent } from '@/utils/types/generate-sse';
 
 const MAX_VISIBLE_QUESTIONS = 3;
 const ITEM_HEIGHT = 100;
@@ -45,14 +46,18 @@ const GeneratingClient = ({ requestId }: Props) => {
 
   const [progress, setProgress] = useAtom(generatingProgressAtom);
 
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${TEST_ID}/stream?mock=true`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${requestId}/stream?mock=false`;
 
-  useStableSSE<any>(url, {
+  useStableSSE<GenerateEvent>(url, {
     onOpen: () => {
       setRequestStage('generating');
     },
+    onMessage: (ev) => {
+      console.log(ev);
+    },
     onNamed: {
       question: (data) => {
+        console.log(data);
         setGeneratedQuestions((prev) => [...prev, { ...data, id: uuid() }]);
       },
 
@@ -62,7 +67,7 @@ const GeneratingClient = ({ requestId }: Props) => {
         }
       },
 
-      done: () => {
+      completed: () => {
         setProgress(100);
         setRequestStage('selecting');
         router.replace(`/new-request/${requestId}/select`);

@@ -7,8 +7,11 @@ import { useMediaPermissions } from '@/utils/hooks/useMediaPermissions';
 import { isHumanLoadedAtom } from '@/store/webcam';
 
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const InterviewPermissionOverlay = () => {
+  const router = useRouter();
+
   const { cameraPermission, micPermission, requestPermission } =
     useMediaPermissions();
 
@@ -97,7 +100,15 @@ const InterviewPermissionOverlay = () => {
             <span>마이크</span>
             <span className={styles.statusRight}>
               {cameraPermission === 'granted' && micPermission === 'prompt' && (
-                <button onClick={() => requestPermission()}>권한 요청</button>
+                <button
+                  onClick={() => {
+                    requestPermission().then(() => {
+                      router.refresh();
+                    });
+                  }}
+                >
+                  권한 요청
+                </button>
               )}
             </span>
           </div>

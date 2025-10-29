@@ -12,6 +12,8 @@
 .top svg {
   max-width: 100px;
   filter: contrast(120%) opacity(70%);
+
+  user-select: none;
 }
 
 /* 사이드바 버튼 */
@@ -28,10 +30,12 @@
   cursor: pointer;
   z-index: 10;
   border-radius: 7px;
+
+  transition: background 0.12s;
 }
 
 .toggleButton:hover {
-  background: var(--neutral-2);
+  background: var(--neutral-3);
 }
 
 html[data-sidebar-size='mini'] .top {
@@ -49,10 +53,13 @@ html[data-sidebar-size='mini'] .toggleButton {
   right: 0;
   width: 47px;
   height: 41px;
-  /* height: 17px; */
-  /* visibility: hidden; */
 }
 
 html[data-sidebar-size='mini'] .top svg:not(.toggleButton svg) {
   display: none;
+}
+
+html[data-sidebar-size='mini'] .toggleButton:hover {
+  background: var(--neutral-2);
+  border-radius: 10px;
 }

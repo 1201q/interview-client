@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import styles from './styles/uploader.module.css';
-import { FileTextIcon, ArrowUp, XIcon } from 'lucide-react';
-import { AnimatePresence, motion, Variants } from 'motion/react';
+
+import { motion } from 'motion/react';
 import Button from '@/components/new/Button';
 import { useAtom } from 'jotai';
-import { currentRequestStageAtom } from '@/store/request-stage';
+import { currentRequestStageAtom, resumeTextAtom } from '@/store/request-stage';
 import { generateQuestion } from '@/utils/services/generateQuestion';
 import { useRouter } from 'next/navigation';
 
@@ -14,14 +14,17 @@ const TEST_JOB =
   '토스플레이스 소속  정규직  초기 멤버  합류하게 될 팀에 대해 알려드려요    토스플레이스 Server Developer (Product)포지션은 초기 멤버로 팀에 합류하여 다양한 경험을 해보실 수 있어요.  토스에서 새롭게 진출하는 오프라인 결제산업의 역사를 만들어가고 있어요. 설레는 마음으로 결제 생태계의 변화를 기획하고 있습니다.  최고의 결제 단말기를 성공적으로 출시할 수 있도록 Business Development Manager, Purchasing Manager, Hardware Engineer 등 여러 동료들과 함께 일해요.  합류하면 함께할 업무예요    오프라인 결제 시장에 디지털 혁신을 만들고, 이를 통해 아름다운 결제 경험을 제공하는 Product 서버를 설계하고 개발해요.  최고의 가치를 제공하기 위해 시스템 서비스 설계부터 운영까지 보이지 않는 모든 일을 하고 있어요.  트렌디한 기술을 활용하여 서비스가 안정적으로 운영될 수 있도록 하며, 유저들의 보이스를 듣고 빠르고 유연하게 문제를 해결해요.    이런 분과 함께하고 싶어요    고가용성의 확장 가능한 시스템을 설계하고 운영해본 경험이 있는 분이 필요해요.  대규모의 실시간 트래픽을 처리하는 시스템 개발 경험이 있는 분이 필요해요.  장애를 경험하고 문제를 해결해보신 경험이 있는 분이 필요해요.  서비스에 대한 애착이 강해서 ‘내 서비스’라는 마음으로 일하는 분이 필요해요.  서비스 개발을 하면서 얻게 되는 새로운 인사이트나 아이디어에 대해서도 공유하며, 끊임없이 기술적인 도전을 하고 싶은 분과 함께하고 싶어요.    이력서는 이렇게 작성하시는 걸 추천해요    대용량 트래픽을 빠르고 안정적으로 처리할 수 있도록 고민하고 개발해본 경험이 필요해요.  문제를 발견해서 적극적으로 개선해본 경험이 있다면, 어떤 기술 스택을 사용하여 어느 정도 개선했는지 구체적으로 적어주세요!  서비스 초기단계에 참여해본 경험이 있다면 기술해주세요.  Spring Framework 기반의 B2C 서비스 개발 경험이 있다면 작성해 주세요.';
 
 const JobTextUploader = () => {
-  const MAX_LENGTH = 2000;
+  const MAX_LENGTH = 2500;
   const MIN_LENGTH = 100;
 
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const router = useRouter();
 
   const [text, setText] = useState('');
 
   const [requestStage, setRequestStage] = useAtom(currentRequestStageAtom);
+
+  const [resumeText] = useAtom(resumeTextAtom);
 
   const [submitting, setSubmitting] = useState(false);
   const nextButtonDisabled = text.length < MIN_LENGTH;
@@ -30,10 +33,21 @@ const JobTextUploader = () => {
   const createRequest = async () => {
     setSubmitting(true);
 
+    const jobText = textareaRef.current?.value || '';
+
+    console.log(jobText);
+    console.log(resumeText);
+
     try {
+      if (jobText.length < MIN_LENGTH) {
+        setSubmitting(false);
+        alert(`채용공고 내용을 최소 ${MIN_LENGTH}자 이상 입력해주세요.`);
+        return;
+      }
+
       const res = await generateQuestion({
-        resume_text: TEST_RESUME,
-        job_text: TEST_JOB,
+        resume_text: resumeText,
+        job_text: jobText,
       });
 
       setSubmitting(false);
@@ -63,6 +77,7 @@ const JobTextUploader = () => {
           <motion.section layout>
             <div className={styles.textInput}>
               <textarea
+                ref={textareaRef}
                 value={text}
                 onChange={(e) => {
                   setText(e.target.value);
@@ -93,7 +108,9 @@ const JobTextUploader = () => {
           text="다음"
           disabled={nextButtonDisabled}
           loading={submitting}
-          onClick={() => createRequest()}
+          onClick={() => {
+            createRequest();
+          }}
         />
       </div>
     </>
