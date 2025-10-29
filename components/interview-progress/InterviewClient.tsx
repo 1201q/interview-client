@@ -14,23 +14,23 @@ import InterviewSttDock from './InterviewSttDock';
 const phaseMotionMap = (phase: InterviewPhase) => {
   switch (phase) {
     case 'beforeStart':
-      return { camY: -10, sttH: 0, screenOpacity: 1 };
+      return { screenOpacity: 1 };
     case 'beforeStartLoading':
-      return { camY: -10, sttH: 0, screenOpacity: 1 };
+      return { screenOpacity: 1 };
     case 'start':
-      return { camY: -10, sttH: 50, screenOpacity: 1 };
+      return { screenOpacity: 1 };
     case 'starting':
-      return { camY: -10, sttH: 50, screenOpacity: 1 };
+      return { screenOpacity: 1 };
     case 'startCountdown3':
-      return { camY: -45, sttH: 130, screenOpacity: 1 };
+      return { screenOpacity: 1 };
     case 'answering':
-      return { camY: -45, sttH: 130, screenOpacity: 0 };
+      return { screenOpacity: 0 };
     case 'submitting':
-      return { camY: -45, sttH: 130, screenOpacity: 1 };
+      return { screenOpacity: 1 };
     case 'submitSuccess':
-      return { camY: -10, sttH: 50, screenOpacity: 1 };
+      return { screenOpacity: 1 };
     default:
-      return { camY: -20, sttH: 0, screenOpacity: 1 };
+      return { screenOpacity: 1 };
   }
 };
 
@@ -44,7 +44,7 @@ const InterviewClient = (props: ReturnType<typeof useInterview>) => {
     cameraObjectFitOpt,
   } = props;
 
-  const { camY, sttH, screenOpacity } = phaseMotionMap(clientPhase);
+  const { screenOpacity } = phaseMotionMap(clientPhase);
 
   const cameraOn = screenOpacity === 0;
 

@@ -47,7 +47,7 @@ const GeneratingClient = ({ requestId }: Props) => {
 
   const url = `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${TEST_ID}/stream?mock=true`;
 
-  useStableSSE(url, {
+  useStableSSE<any>(url, {
     onOpen: () => {
       setRequestStage('generating');
     },

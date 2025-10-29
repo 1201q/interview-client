@@ -4,6 +4,7 @@ import InterviewBottomController from '@/components/interview-progress/Interview
 import InterviewClient from '@/components/interview-progress/InterviewClient';
 import InterviewHeader from '@/components/interview-progress/InterviewHeader';
 import InterviewPermissionOverlay from '@/components/interview-progress/InterviewPermissionOverlay';
+import InterviewProgress from '@/components/interview-progress/InterviewProgress';
 import { useInterview } from '@/components/interview-progress/InterviewProvider';
 import InterviewSidebar from '@/components/interview-progress/InterviewSidebar';
 
@@ -14,6 +15,7 @@ const Page = () => {
     <div className="container">
       <div className="wrapper">
         <InterviewPermissionOverlay />
+        <InterviewProgress {...props} />
         <div className="main">
           <header className="header">
             <InterviewHeader />

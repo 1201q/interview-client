@@ -63,6 +63,7 @@
 
 .slideContents {
   height: calc(100% - 60px);
+  overflow-x: clip;
 }
 
 .animationContainer {

@@ -6,6 +6,7 @@ import { motion, AnimatePresence, useAnimationControls } from 'motion/react';
 import { Loader2, Check, Space } from 'lucide-react';
 import { InterviewPhase } from '@/utils/types/interview';
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 interface SubmitButtonProps {
   phase: InterviewPhase;
@@ -13,6 +14,7 @@ interface SubmitButtonProps {
   startAnswer: () => void;
   startCountdown: () => Promise<void>;
   startInterview: () => void;
+  complete: () => void;
 }
 
 const InterviewSubmitButton = ({
@@ -21,6 +23,7 @@ const InterviewSubmitButton = ({
   startCountdown,
   submitAnswer,
   startInterview,
+  complete,
 }: SubmitButtonProps) => {
   const countdownControls = useAnimationControls(); // 카운트다운 애니메이션
   const buttonRef = useRef<HTMLButtonElement>(null); // 스페이스바로 버튼 제어
@@ -61,6 +64,8 @@ const InterviewSubmitButton = ({
     } else if (phase === 'answering') {
       submitAnswer();
       console.log('클릭3');
+    } else if (phase === 'end') {
+      complete();
     }
   };
 

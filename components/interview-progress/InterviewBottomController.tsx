@@ -43,6 +43,7 @@ const InterviewBottomController = (props: ReturnType<typeof useInterview>) => {
             startCountdown={props.doStartCountdown}
             submitAnswer={props.doSubmitAnswer}
             startInterview={props.doStartSession}
+            complete={props.doComplete}
           />
         </div>
       </div>

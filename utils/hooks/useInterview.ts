@@ -11,6 +11,7 @@ import {
   InterviewSessionStatus,
   SessionQuestionItemWithAnswerId,
 } from '@/utils/types/interview';
+import { useRouter } from 'next/navigation';
 
 import { useEffect, useMemo, useState } from 'react';
 
@@ -51,6 +52,7 @@ export const useInterview = ({
   sessionId,
   status,
 }: InterviewInitProps) => {
+  const router = useRouter();
   const [clientQuestions, setClientQuestions] = useState(questions);
   const currentQuestion = clientQuestions.find(
     (q) => q.status === 'ready' || q.status === 'answering',
@@ -188,6 +190,10 @@ export const useInterview = ({
     }
   };
 
+  const doComplete = () => {
+    router.push(`/feedback/${sessionId}`);
+  };
+
   const toggleQuestionList = () => {
     setVisibleQuestionList((prev) => !prev);
   };
@@ -209,6 +215,7 @@ export const useInterview = ({
     doStartAnswer,
     doStartCountdown,
     doSubmitAnswer,
+    doComplete,
 
     rawStableData,
 
@@ -220,5 +227,7 @@ export const useInterview = ({
 
     cameraObjectFitOpt,
     toggleCameraObjectFit,
+
+    sessionId,
   };
 };
