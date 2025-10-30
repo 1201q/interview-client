@@ -1,5 +1,3 @@
-import './layout.css';
-
 import { cookies } from 'next/headers';
 import {
   InterviewSessionStatus,

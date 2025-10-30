@@ -102,9 +102,7 @@ const InterviewPermissionOverlay = () => {
               {cameraPermission === 'granted' && micPermission === 'prompt' && (
                 <button
                   onClick={() => {
-                    requestPermission().then(() => {
-                      router.refresh();
-                    });
+                    requestPermission();
                   }}
                 >
                   권한 요청

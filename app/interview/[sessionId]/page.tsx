@@ -4,38 +4,42 @@ import InterviewBottomController from '@/components/interview-progress/Interview
 import InterviewClient from '@/components/interview-progress/InterviewClient';
 import InterviewHeader from '@/components/interview-progress/InterviewHeader';
 import InterviewPermissionOverlay from '@/components/interview-progress/InterviewPermissionOverlay';
-import InterviewProgress from '@/components/interview-progress/InterviewProgress';
+
 import { useInterview } from '@/components/interview-progress/InterviewProvider';
 import InterviewSidebar from '@/components/interview-progress/InterviewSidebar';
+
+import GlobalVideoBg from '@/components/refactorWebcam/GlobalVideoBg';
+
+import styles from './page.module.css';
 
 const Page = () => {
   const { ...props } = useInterview();
 
   return (
-    <div className="container">
-      <div className="wrapper">
-        <InterviewPermissionOverlay />
-
-        <div className="main">
-          <header className="header">
+    <div className={styles.container}>
+      <GlobalVideoBg />
+      <InterviewPermissionOverlay />
+      <div className={styles.wrapper}>
+        <div className={styles.main}>
+          <header className={styles.header}>
             <InterviewHeader />
           </header>
-          <div className="center">
-            <div className="centerGrid">
+          <div className={styles.center}>
+            <div className={styles.centerGrid}>
               <div
-                className={`sidebarSpacer ${!props.visibleQuestionList ? 'hidden' : ''}`}
+                className={`${styles.sidebarSpacer} ${!props.visibleQuestionList ? styles.hidden : ''}`}
               >
-                <aside className="sidebarPanel">
+                <aside className={styles.sidebarPanel}>
                   <InterviewSidebar />
                 </aside>
               </div>
-              <main className="camera">
+              <main className={styles.camera}>
                 <InterviewClient {...props} />
               </main>
             </div>
           </div>
 
-          <div className="bottom">
+          <div className={styles.bottom}>
             <InterviewBottomController {...props} />
           </div>
         </div>

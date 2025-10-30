@@ -35,3 +35,15 @@
   pointer-events: none;
   z-index: 0;
 }
+
+.fallbackBox {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 9999;
+  padding: 8px 10px;
+  border-radius: 6px;
+  color: #fff;
+  background: #e74c3c;
+  font-size: 12px;
+}

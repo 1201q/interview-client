@@ -253,7 +253,7 @@ const ResultClient = ({ data, answerId }: ResultClientProps) => {
         <div className={`${styles.sectionTitle}`}>
           <ClipboardCheckIcon
             style={{ marginTop: '1px' }}
-            className={`${hasMisconception ? styles.redText : styles.greenText}`}
+            className={`${styles.greenText}`}
           />
           <h3 className={`${styles.greenText}`}>면접관 피드백</h3>
         </div>

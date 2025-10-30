@@ -12,9 +12,12 @@ import {
   toggleSelectedQuestionsAtom,
 } from '@/store/selectedQuestions';
 import { ChevronUp, Check } from 'lucide-react';
+import { createInterviewSession } from '@/utils/services/interviewSession';
+import { useRouter } from 'next/navigation';
 
 interface NewSelectClientProps {
   questions: GeneratedQuestionItem[];
+  requestId: string;
 }
 
 interface SelectItemListProps {
@@ -35,7 +38,10 @@ interface SelectItemProps {
   onClick: () => void;
 }
 
-const SelectQuestion = ({ questions }: NewSelectClientProps) => {
+const MIN_SELECT_COUNT = 3;
+const MAX_SELECT_COUNT = 10;
+
+const SelectQuestion = ({ questions, requestId }: NewSelectClientProps) => {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>(
     () => {
       const initial: Record<string, boolean> = {};
@@ -45,6 +51,10 @@ const SelectQuestion = ({ questions }: NewSelectClientProps) => {
       return initial;
     },
   );
+
+  const router = useRouter();
+
+  const [submitting, setSubmitting] = useState(false);
 
   const selected = useAtomValue(selectedQuestionsAtom);
 
@@ -84,6 +94,47 @@ const SelectQuestion = ({ questions }: NewSelectClientProps) => {
     }));
   };
 
+  const isNextDisabled =
+    selected.length < MIN_SELECT_COUNT || selected.length > MAX_SELECT_COUNT;
+
+  const buttonText =
+    selected.length < MIN_SELECT_COUNT
+      ? `최소 ${MIN_SELECT_COUNT}개 선택 필요`
+      : selected.length > MAX_SELECT_COUNT
+        ? `최대 ${MAX_SELECT_COUNT}개 선택 가능`
+        : '다음';
+
+  const createSession = async () => {
+    setSubmitting(true);
+
+    try {
+      if (selected.length < MIN_SELECT_COUNT) {
+        setSubmitting(false);
+        alert(`최소 ${MIN_SELECT_COUNT}개의 질문을 선택해주세요.`);
+        return;
+      } else if (selected.length > MAX_SELECT_COUNT) {
+        setSubmitting(false);
+        alert(`최대 ${MAX_SELECT_COUNT}개의 질문만 선택할 수 있습니다.`);
+        return;
+      }
+
+      const res = await createInterviewSession({
+        requestId,
+        questions: selected.map((q, index) => ({
+          question_id: q.id,
+          order: index,
+        })),
+      });
+
+      setSubmitting(false);
+
+      router.replace(`/interview/${res.session_id}`);
+    } catch (error) {
+      setSubmitting(false);
+      alert('문제가 발생했어요. 다시 시도해주세요.');
+    }
+  };
+
   return (
     <>
       <div className={styles.main}>
@@ -110,11 +161,12 @@ const SelectQuestion = ({ questions }: NewSelectClientProps) => {
       </div>
 
       <div className={styles.buttons}>
+        <motion.span layout>{selected.length}개 선택함</motion.span>
         <Button
-          text="다음"
-          disabled={false}
-          loading={false}
-          onClick={() => {}}
+          text={buttonText}
+          disabled={isNextDisabled}
+          loading={submitting}
+          onClick={createSession}
         />
       </div>
     </>

@@ -13,7 +13,6 @@ import {
 } from '@/utils/constants/common';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { createInterviewSession } from '@/utils/services/interviewSession';
 
 interface SelectGuideProps {
   itemVariants: Variants;
@@ -54,14 +53,14 @@ const SelectGuide = ({ itemVariants, questionLength }: SelectGuideProps) => {
     try {
       setLoading(true);
 
-      const res = await createInterviewSession(
-        '4e88866e-2a7a-4e66-b49f-12a29e67109e',
-        formatting,
-      );
+      // const res = await createInterviewSession(
+      //   '4e88866e-2a7a-4e66-b49f-12a29e67109e',
+      //   formatting,
+      // );
 
-      if (res.status === 'not_started' && res.id) {
-        router.push(`/interview/${res.id}`);
-      }
+      // if (res.status === 'not_started' && res.id) {
+      //   router.push(`/interview/${res.id}`);
+      // }
 
       setLoading(false);
     } catch (error) {

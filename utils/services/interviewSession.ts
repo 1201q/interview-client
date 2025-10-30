@@ -11,15 +11,18 @@ type CreateSessionBody = {
 };
 
 type CreateSessionResponse = {
-  id: string;
-  status: InterviewSessionStatus;
+  session_id: string;
 };
 
-export const createInterviewSession = async (
-  requestId: string,
-  questions: { question_id: string; order: number }[],
-  options?: { timeoutMs?: number },
-) => {
+export const createInterviewSession = async ({
+  requestId,
+  questions,
+  options,
+}: {
+  requestId: string;
+  questions: { question_id: string; order: number }[];
+  options?: { timeoutMs?: number };
+}) => {
   const uniqueCheck = new Map<string, { question_id: string; order: number }>();
 
   for (const q of questions) {
@@ -62,7 +65,7 @@ export const createInterviewSession = async (
 
     const json = (await res.json()) as CreateSessionResponse;
 
-    if (!json.id) throw new Error('세션 응답에 id가 없음.');
+    if (!json.session_id) throw new Error('세션 응답에 id가 없음.');
 
     return json;
   } catch (error) {
@@ -211,7 +214,9 @@ export const getInterviewSessionDetail = async (
       let body = '';
       try {
         body = await res.text();
-      } catch {}
+      } catch {
+        console.error('detail get 실패');
+      }
       const err = new Error(`detail get 실패: ${res.status} ${body}`);
       (err as any).status = res.status;
       throw err;

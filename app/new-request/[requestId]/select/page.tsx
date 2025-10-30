@@ -5,10 +5,8 @@ import { GeneratedQuestionItem } from '@/utils/types/types';
 import { Suspense } from 'react';
 import SelectSkeleton from './loading';
 
-const TEST_ID = 'd2151465-878d-4996-9aba-c2dd0e830598';
-
-const getRequest = async (requestId: string, isTest: boolean = false) => {
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${isTest ? TEST_ID : requestId}/questions`;
+const getRequest = async (requestId: string) => {
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${requestId}/questions`;
   const res = await fetch(url);
 
   if (!res.ok) {
@@ -36,8 +34,8 @@ const Page = async ({ params }: { params: Promise<{ requestId: string }> }) => {
       <header className="header">
         <RequestHeader text={'Step 4/4'} />
       </header>
-      <div className="contents">
-        <SelectQuestion questions={questions} />
+      <div className="slideContents">
+        <SelectQuestion questions={questions} requestId={requestId} />
       </div>
     </Suspense>
   );

@@ -12,12 +12,21 @@
 }
 
 .buttons {
+  position: sticky;
+  bottom: 0px;
+  padding: 15px 0px 15px 0px;
+
   width: 100%;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-end;
-  column-gap: 15px;
-  padding-bottom: 30px;
+  column-gap: 30px;
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+.buttons span {
+  font-size: 16px;
+  font-weight: 600;
 }
 
 /* 공용 */

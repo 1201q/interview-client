@@ -28,8 +28,8 @@ const SharedMenu = () => {
     {
       id: '2',
       text: '면접 기록',
-      selected: false,
-      href: '/projects',
+      selected: pathname.startsWith('/history'),
+      href: '/history',
       icon: <FileTextIcon size={20} />,
     },
   ];

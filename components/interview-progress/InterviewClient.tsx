@@ -7,7 +7,6 @@ import { useInterview } from './InterviewProvider';
 import styles from './styles/i.client.module.css';
 
 import { motion, AnimatePresence } from 'motion/react';
-import GlobalVideoBg from '../refactorWebcam/GlobalVideoBg';
 
 import InterviewSttDock from './InterviewSttDock';
 
@@ -51,7 +50,6 @@ const InterviewClient = (props: ReturnType<typeof useInterview>) => {
   return (
     <>
       <div className={styles.camera}>
-        <GlobalVideoBg />
         <WebcamInstance
           cameraObjectFitOpt={cameraObjectFitOpt}
           isRunning={cameraOn}

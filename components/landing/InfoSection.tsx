@@ -27,7 +27,12 @@ const InfoSection = () => {
         </div>
         <div className={styles.info}>
           <div className={styles.infoImage}>
-            <Image src={'/생성.png'} alt="스크린샷" width={400} height={340} />
+            <Image
+              src={'/생성.png'}
+              alt="생성중인 사진"
+              width={400}
+              height={340}
+            />
           </div>
           <div className={styles.infoRight}>
             <div className={styles.infoBadge}>면접 진행</div>
@@ -45,7 +50,7 @@ const InfoSection = () => {
         </div>
         <div className={styles.info}>
           <div className={styles.infoImage}>
-            <Image src={'/생성.png'} alt="스크린샷" width={400} height={340} />
+            <Image src={'/피드백.jpg'} alt="피드백" width={400} height={320} />
           </div>
           <div className={styles.infoRight}>
             <div className={styles.infoBadge}>답변 피드백</div>
