@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from 'motion/react';
 import styles from './styles/q.select.module.css';
-import Button from '@/components/new/Button';
+import Button from '@/components/shared/Button';
 import { GeneratedQuestionItem, QuestionSection } from '@/utils/types/types';
 import { useMemo, useState } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';

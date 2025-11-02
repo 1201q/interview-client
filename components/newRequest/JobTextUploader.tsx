@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import styles from './styles/uploader.module.css';
 
 import { motion } from 'motion/react';
-import Button from '@/components/new/Button';
+import Button from '@/components/shared/Button';
 import { useAtom } from 'jotai';
 import { currentRequestStageAtom, resumeTextAtom } from '@/store/request-stage';
 import { generateQuestion } from '@/utils/services/generateQuestion';

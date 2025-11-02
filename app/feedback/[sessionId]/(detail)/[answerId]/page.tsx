@@ -14,7 +14,7 @@ const Page = async ({
   const feedback = await getAnalysis(sessionId, answerId);
 
   return (
-    <div className="main" key={answerId}>
+    <>
       <header className="header">
         <ResultHeader
           jobRole={feedback.job_role}
@@ -26,7 +26,7 @@ const Page = async ({
           <ResultClient data={feedback.analyses[0]} answerId={answerId} />
         </Suspense>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,65 +1,120 @@
 .buttonContainer {
-  width: 100%;
+  width: fit-content;
+  min-width: 0;
 }
 
 .buttonContainer button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  width: 100%;
+  height: 42px;
+  background: var(--color-primary);
+  background-color: var(--color-primary);
+  will-change: transform;
+  transition: background-color 0.15s ease;
+  min-width: 0;
+}
+
+.inner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 22px;
+  width: 100%;
+  line-height: 1;
+  white-space: nowrap;
+  gap: 0px;
+  transition: gap 0.16s ease;
+  min-width: 0;
+}
+
+.loaderSlot {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  width: 100%;
-  height: 54px;
-
-  border-radius: 12px;
-
-  background: var(--red-bg-gradient);
-  box-shadow: var(--box-shadow);
-  transition: all 0.2s;
+  overflow: hidden;
+  flex: 0 0 auto;
 }
 
-.smallButton button {
-  height: 45px;
+.loaderIconWrap {
+  display: flex;
+}
+
+.loaderIconWrap svg {
+  stroke: var(--neutral-2);
+}
+
+.textViewport {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 1em;
+  line-height: 1;
+  overflow: hidden;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .buttonText {
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: white;
-}
-
-.smallButton .buttonText {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 1;
   font-size: 1rem;
-  color: white;
-}
-
-.noshadow button {
-  box-shadow: none;
-}
-
-.buttonContainer button:not(:disabled):hover,
-.buttonContainer button:not(.noshadow):hover {
-  box-shadow: var(--box-red-shadow);
+  font-weight: 600;
+  color: var(--neutral-1);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .buttonContainer button:disabled {
-  opacity: 0.5;
+  background-color: color-mix(in srgb, var(--color-primary) 60%, white 70%);
   pointer-events: none;
-  box-shadow: var(--box-red-shadow);
+}
+.buttonContainer button:hover {
+  background-color: color-mix(in srgb, var(--color-primary) 80%, black 20%);
 }
 
-/* blue button */
-.buttonContainer.blue button {
-  background: var(--main-blue4-color);
-  transition: all 0.2s;
+/* gray */
+.buttonContainer.gray button {
+  background: var(--neutral-2);
+  color: var(--neutral-6);
 }
-
-.buttonContainer.blue button:not(:disabled):hover,
-.buttonContainer.blue button:not(.noshadow):hover {
-  box-shadow: var(--box-blue-shadow);
+.gray .buttonText {
+  color: var(--neutral-6);
 }
-
-.buttonContainer.blue button:disabled {
-  opacity: 0.5;
+.buttonContainer.gray button:hover {
+  background-color: var(--neutral-3);
+}
+.buttonContainer.gray button:disabled {
+  background-color: color-mix(in srgb, var(--neutral-3) 40%, white 10%);
   pointer-events: none;
-  box-shadow: var(--box-blue-shadow);
+}
+.buttonContainer.gray button:disabled .buttonText {
+  color: var(--neutral-5);
+}
+.buttonContainer.gray button:disabled .loaderIconWrap svg {
+  stroke: var(--neutral-4);
+}
+
+.gray .loaderIconWrap svg {
+  stroke: var(--neutral-5);
+}
+
+/* red */
+.buttonContainer.red button {
+  background-color: var(--danger);
+}
+.red .buttonText {
+  color: var(--neutral-1);
+}
+.buttonContainer.red button:hover {
+  filter: brightness(90%);
+}
+.buttonContainer.red button:disabled {
+  opacity: 0.7;
+  pointer-events: none;
 }

@@ -1,4 +1,4 @@
-import FeedbackSidebar from '@/components/result/FeedbackSidebar';
+import FeedbackSidebar from '@/components/sidebar/FeedbackSidebar';
 import BottomUser from '@/components/sidebar/BottomUser';
 import SharedMenu from '@/components/sidebar/SharedMenu';
 import SidebarBg from '@/components/sidebar/SidebarBg';

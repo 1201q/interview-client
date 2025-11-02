@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './styles/uploader.module.css';
 import { FileTextIcon, ArrowUp, XIcon } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import Button from '@/components/new/Button';
+import Button from '@/components/shared/Button';
 import { useAtom } from 'jotai';
 import { currentRequestStageAtom, resumeTextAtom } from '@/store/request-stage';
 import { uploadPdfWithProgress } from '@/utils/services/pdf';

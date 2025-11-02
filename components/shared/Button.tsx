@@ -1,3 +1,5 @@
+'use client';
+
 import styles from './styles/button.module.css';
 import { AnimatePresence, HTMLMotionProps, motion } from 'framer-motion';
 import { LoaderCircle } from 'lucide-react';
@@ -8,57 +10,97 @@ interface ButtonProps {
   attributes?: MotionBtnAttrs;
   text: string;
   disabled?: boolean;
-  color?: 'blue' | 'red';
-  isSmallButton?: boolean;
-  shadow?: boolean;
+  color?: 'blue' | 'gray' | 'red';
   onClick?: () => void;
   loading?: boolean;
 }
 
-const Button = ({
+const SharedButton = ({
   attributes,
   text,
   disabled = false,
-  color = 'red',
-  isSmallButton = false,
-  shadow = true,
-  loading,
+  color = 'blue',
+  loading = false,
   onClick,
 }: ButtonProps) => {
+  const btnStyle = (c: any) =>
+    c === 'blue'
+      ? styles.blue
+      : c === 'gray'
+        ? styles.gray
+        : c === 'red'
+          ? styles.red
+          : '';
+
   return (
-    <motion.div
-      className={`${styles.buttonContainer} ${shadow ? '' : styles.noshadow} ${color === 'blue' ? styles.blue : ''} ${isSmallButton ? styles.smallButton : ''}`}
-    >
+    <motion.div className={`${styles.buttonContainer} ${btnStyle(color)}`}>
       <motion.button
-        layout
         {...attributes}
+        type="button"
         disabled={disabled || loading}
         onClick={onClick}
+        className={styles.button}
+        transition={{ layout: { type: 'tween', duration: 0.12 } }}
+        aria-busy={loading}
+        aria-disabled={disabled || loading}
       >
-        <AnimatePresence mode="wait" initial={false}>
-          {loading && (
-            <motion.div
-              key="loader"
-              style={{ display: 'flex' }}
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: 28, opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              transition={{ duration: 0.5, type: 'spring' }}
-            >
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }}
-                style={{ display: 'flex' }}
+        <div className={styles.inner} data-loading={loading ? '1' : '0'}>
+          <AnimatePresence initial={false} mode="wait">
+            {loading ? (
+              <motion.span
+                key="loader"
+                className={styles.loaderSlot}
+                initial={{ width: 0, opacity: 0 }}
+                animate={{ width: 18, opacity: 1 }}
+                exit={{ width: 0, opacity: 0 }}
+                transition={{ duration: 0.14, ease: 'easeOut' }}
               >
-                <LoaderCircle color="white" size={20} strokeWidth={2} />
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-        <motion.div className={styles.buttonText}>{text}</motion.div>
+                <motion.span
+                  aria-hidden
+                  className={styles.loaderIconWrap}
+                  animate={{ rotate: 360 }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 0.9,
+                    ease: 'linear',
+                  }}
+                >
+                  <LoaderCircle size={18} strokeWidth={2.5} />
+                </motion.span>
+              </motion.span>
+            ) : (
+              <motion.span
+                key="no-loader"
+                className={styles.loaderSlot}
+                initial={{ width: 0, opacity: 0 }}
+                animate={{ width: 0, opacity: 0 }}
+                exit={{ width: 0, opacity: 0 }}
+              />
+            )}
+          </AnimatePresence>
+
+          <motion.div
+            className={styles.textViewport}
+            animate={{ paddingLeft: loading ? 8 : 0 }}
+            transition={{ duration: 0.14, ease: 'easeOut' }}
+          >
+            <AnimatePresence initial={false} mode="popLayout">
+              <motion.span
+                key={text}
+                className={styles.buttonText}
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 10, opacity: 0 }}
+                transition={{ duration: 0.16, ease: 'easeOut' }}
+              >
+                {text}
+              </motion.span>
+            </AnimatePresence>
+          </motion.div>
+        </div>
       </motion.button>
     </motion.div>
   );
 };
 
-export default Button;
+export default SharedButton;
