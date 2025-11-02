@@ -167,6 +167,16 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
+  if (
+    !accessToken &&
+    (pathname.startsWith('/new-request') ||
+      pathname.startsWith('/feedback') ||
+      pathname.startsWith('/interview') ||
+      pathname.startsWith('/result'))
+  ) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
   // 토큰 만료 임박시 refresh 호출 (pass-through로 쿠키 전달)
   if (accessToken && refreshToken) {
     const exp = getJwtExp(accessToken);
@@ -210,7 +220,7 @@ export const config = {
     '/logout',
 
     // 인증 필요
-    '/new-request',
+    '/new-request/:path*',
     '/feedback/:path*',
     '/interview/:path*',
     '/result/:id',
