@@ -239,6 +239,14 @@ body {
   height: 100%;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
+html.no-stable-gutter {
+  scrollbar-gutter: auto;
+}
+
 a {
   text-decoration: none;
   color: inherit;

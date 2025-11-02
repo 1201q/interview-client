@@ -141,7 +141,7 @@ export const useInterview = ({
 
       // 2. 오디오 소스 준비
 
-      await prepareAudioTrack('tab');
+      await prepareAudioTrack('mic');
 
       // 3. 현재 질문을 answering으로 변경 -> 성공시 카운트 다운
 

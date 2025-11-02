@@ -1,8 +1,9 @@
 .container {
-  width: 100%;
+  width: calc(100%);
   min-height: 100dvh;
-  position: relative;
+
   background-color: rgba(255, 255, 255, 0.5);
+
   backdrop-filter: blur(7px);
   position: fixed;
   top: 0;

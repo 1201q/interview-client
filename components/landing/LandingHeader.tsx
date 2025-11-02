@@ -50,6 +50,9 @@ function HeaderBlur({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     onScroll();
+
+    console.log(window.scrollY);
+
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);

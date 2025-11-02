@@ -11,7 +11,7 @@ export default function RequestSideStepsHydrated({
   initialStage: RequestStage;
 }) {
   useHydrateAtoms([[currentRequestStageAtom, initialStage]], {
-    dangerouslyForceHydrate: false,
+    dangerouslyForceHydrate: true,
   });
   return <RequestSideSteps />;
 }

@@ -59,7 +59,12 @@ const ResultItem = ({
     .join(' ');
 
   return (
-    <Link href={`/result/${sessionId}/${id}`} className={className}>
+    <button
+      onClick={() => {
+        window.location.assign(`/result/${sessionId}/${id}`);
+      }}
+      className={className}
+    >
       <div className={styles.questionTitle}>
         <div className={styles.leftTitle}>
           <span>답변한 질문</span>
@@ -68,7 +73,7 @@ const ResultItem = ({
         <div className={styles.rightTitle}>{}</div>
       </div>
       <div className={styles.questionText}>{text}</div>
-    </Link>
+    </button>
   );
 };
 

@@ -57,7 +57,11 @@ const ResultItem = ({
     .join(' ');
 
   return (
-    <Link href={`/feedback/${sessionId}/${id}`} className={className}>
+    <Link
+      href={`/feedback/${sessionId}/${id}`}
+      scroll={true}
+      className={className}
+    >
       <div className={styles.questionTitle}>
         <span className={styles.questionOrder}>Q{order + 1}.</span>
         <p className={styles.questionText}>{text}</p>

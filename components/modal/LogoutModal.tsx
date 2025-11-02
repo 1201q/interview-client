@@ -26,8 +26,10 @@ const LogoutModal = ({
   useEffect(() => {
     document.addEventListener('mousedown', handleBackgroundClick);
     document.body.style.overflow = 'hidden';
+
     return () => {
       document.body.style.overflow = 'auto';
+
       document.removeEventListener('mousedown', handleBackgroundClick);
     };
   }, []);

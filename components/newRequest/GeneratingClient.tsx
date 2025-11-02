@@ -34,8 +34,6 @@ interface Props {
   requestId: string;
 }
 
-const TEST_ID = '87ca5626-b201-43f7-82d0-44ea227321dd';
-
 const GeneratingClient = ({ requestId }: Props) => {
   const [requestStage, setRequestStage] = useAtom(currentRequestStageAtom);
   const [generatedQuestions, setGeneratedQuestions] = useState<

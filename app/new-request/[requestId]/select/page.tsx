@@ -27,14 +27,14 @@ const Page = async ({ params }: { params: Promise<{ requestId: string }> }) => {
 
   const wait = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
-  await wait(1000);
+  await wait(500);
 
   return (
     <Suspense fallback={<SelectSkeleton />}>
       <header className="header">
         <RequestHeader text={'Step 4/4'} />
       </header>
-      <div className="slideContents">
+      <div className="contents">
         <SelectQuestion questions={questions} requestId={requestId} />
       </div>
     </Suspense>

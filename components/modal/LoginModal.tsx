@@ -28,6 +28,7 @@ const LoginModal = () => {
 
     return () => {
       document.body.style.overflow = 'auto';
+
       document.removeEventListener('mousedown', handleBackgroundClick);
     };
   }, []);

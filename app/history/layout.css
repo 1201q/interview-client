@@ -9,7 +9,7 @@
 .wrapper {
   display: grid;
   grid-template-columns: var(--sidebar-w) 1fr;
-  height: 100dvh;
+  min-height: 100dvh;
   transition: grid-template-columns 0.2s;
 }
 
@@ -22,13 +22,14 @@
   overflow: hidden;
   z-index: 1;
   transition: width 0.2s;
+
+  align-self: start;
 }
 
 /* 컨텐츠 오른쪽 */
 /* 메인 */
 .main {
   height: 100%;
-  overflow: auto;
   background-color: var(--neutral-0);
   position: relative;
 }

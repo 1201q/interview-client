@@ -20,7 +20,7 @@ export default async function Layout({
     <div className="container">
       <div className="wrapper">
         <aside className="sidebar">{sidebar}</aside>
-        <main className="main">{children}</main>
+        {children}
       </div>
     </div>
   );

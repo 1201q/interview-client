@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useMemo } from 'react';
+import React, { createContext, useContext, useEffect, useMemo } from 'react';
 import { useInterview as useInterviewSingleton } from '@/utils/hooks/useInterview';
 import {
   InterviewSessionStatus,
@@ -29,6 +29,13 @@ export default function InterviewProvider({
     status: initialData.status,
     questions: initialData.questions,
   });
+
+  useEffect(() => {
+    document.documentElement.classList.add('no-stable-gutter');
+    return () => {
+      document.documentElement.classList.remove('no-stable-gutter');
+    };
+  }, []);
 
   const mem = useMemo(() => value, [value]);
 

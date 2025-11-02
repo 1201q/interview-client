@@ -9,6 +9,7 @@
   color: var(--neutral-4);
   margin: 20px 16px 16px 19px;
   white-space: nowrap;
+  flex: 0 0 auto;
 }
 
 /* ol */
@@ -18,6 +19,7 @@
   row-gap: 6px;
   position: relative;
   margin: 0px 10px;
+  overflow: auto;
 }
 
 /* item */
