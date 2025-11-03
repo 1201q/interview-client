@@ -10,6 +10,8 @@
   color: var(--neutral-6);
   margin: 35px 16px 10px 17px;
   white-space: nowrap;
+  opacity: 1;
+  transition: opacity 0.18s ease;
 }
 
 /* ol */
@@ -21,49 +23,40 @@
   margin: 0px 6px;
 }
 
-/* item */
-.selected {
-  background-color: color-mix(in srgb, var(--color-primary) 12%, white 70%);
-}
-
 .question {
-  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 41px;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  align-items: center;
+  gap: 3px;
+
+  text-align: left;
+  padding: 0 10px;
+  border-radius: 10px;
+  transition: background-color 0.12s;
 
   position: relative;
-  z-index: 1;
-  border-radius: 8px;
-  cursor: pointer;
-
-  column-gap: 8px;
-  padding: 8px 1px 8px 1px;
-  transition: background-color 0.12s;
 }
 
 .question:not(.selected):hover {
   background-color: var(--neutral-3);
 }
 
-/*  title */
-.questionTitle {
-  display: flex;
-  align-items: center;
-
-  height: 25px;
-
-  border-radius: 7px;
-  color: var(--neutral-2);
-
-  padding: 0px 10px;
-  column-gap: 9px;
-  overflow: hidden;
-}
-
 /* 질문 번호 */
 .questionOrder {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--neutral-6);
-  flex: 0 0 auto;
+
+  display: grid;
+  place-items: center;
+  text-align: center;
+  overflow: hidden;
+
+  width: 26px;
+  height: 26px;
 }
 
 .questionText {
@@ -79,31 +72,50 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 0.18s ease,
+    inline-size 0.18s ease,
+    transform 0.18s ease;
 }
 
 .selected .questionOrder {
   color: var(--color-primary);
+  z-index: 1;
 }
 
 .selected .questionText {
   color: var(--color-primary);
+  z-index: 1;
+  font-weight: 500;
 }
 
 html[data-sidebar-size='mini'] .questionText {
-  display: none;
-}
-
-html[data-sidebar-size='mini'] .questionOrder {
-  width: 100%;
-  text-align: center;
-}
-
-html[data-sidebar-size='mini'] .questionTitle {
-  width: 100%;
-  text-align: center;
+  inline-size: 0;
+  opacity: 0;
+  transform: translateX(-4px);
+  pointer-events: none;
 }
 
 html[data-sidebar-size='mini'] .listHeader {
   height: 17px;
   visibility: hidden;
+}
+
+html[data-sidebar-size='mini'] .listHeader {
+  opacity: 0;
+}
+
+.highlightBg {
+  position: absolute;
+  inset: 0;
+
+  border-radius: 8px;
+  background-color: color-mix(in srgb, var(--color-primary) 12%, white 70%);
+
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
 }

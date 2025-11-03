@@ -60,29 +60,31 @@ const InterviewSidebar = () => {
     <nav className={styles.sidebar}>
       {/* 질문 목록 */}
       <p className={styles.listHeader}>질문 목록</p>
-      <ol className={styles.list}>
-        {clientQuestions
-          .sort((a, b) => a.order - b.order)
-          .map((q) => {
-            const isOpen = openQuestions[q.id];
-            const isCurrent = currentQuestion?.id === q.id;
+      <div className={styles.scroll}>
+        <ol className={styles.list}>
+          {clientQuestions
+            .sort((a, b) => a.order - b.order)
+            .map((q) => {
+              const isOpen = openQuestions[q.id];
+              const isCurrent = currentQuestion?.id === q.id;
 
-            return (
-              <InterviewSidebarItem
-                key={q.id}
-                isOpen={isOpen}
-                toggleItem={() => {
-                  if (isCurrent) return;
-                  toggleItem(q.id);
-                }}
-                text={q.text}
-                order={q.order}
-                isCurrent={isCurrent}
-                status={q.status}
-              />
-            );
-          })}
-      </ol>
+              return (
+                <InterviewSidebarItem
+                  key={q.id}
+                  isOpen={isOpen}
+                  toggleItem={() => {
+                    if (isCurrent) return;
+                    toggleItem(q.id);
+                  }}
+                  text={q.text}
+                  order={q.order}
+                  isCurrent={isCurrent}
+                  status={q.status}
+                />
+              );
+            })}
+        </ol>
+      </div>
     </nav>
   );
 };

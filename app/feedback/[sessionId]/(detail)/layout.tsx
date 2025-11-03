@@ -1,7 +1,5 @@
 import './layout.css';
 
-import { getAnalyesStatuses } from '@/utils/services/analyses';
-
 export default async function Layout({
   children,
   params,
@@ -13,8 +11,6 @@ export default async function Layout({
   params: Promise<{ sessionId: string }>;
 }) {
   const { sessionId } = await params;
-
-  const statuses = await getAnalyesStatuses(sessionId);
 
   return (
     <div className="container">

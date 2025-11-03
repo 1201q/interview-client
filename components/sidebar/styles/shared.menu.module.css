@@ -13,11 +13,6 @@
   margin: 0px 6px;
 }
 
-/* item */
-.selected {
-  background-color: color-mix(in srgb, var(--color-primary) 12%, white 70%);
-}
-
 .menu {
   width: 100%;
   height: 100%;
@@ -29,17 +24,14 @@
 
   text-align: left;
   padding: 0 10px;
-  border-radius: 10px;
+  border-radius: 8px;
   transition: background-color 0.12s;
-  overflow: hidden;
+
+  position: relative;
 }
 
 .menu:not(.selected):hover {
   background-color: var(--neutral-3);
-}
-
-html[data-sidebar-size='mini'] .menu:not(.selected):hover {
-  background-color: var(--neutral-2);
 }
 
 /* 아이콘 */
@@ -56,22 +48,25 @@ html[data-sidebar-size='mini'] .menu:not(.selected):hover {
 
 .menuIcon svg {
   stroke: var(--neutral-6);
+  z-index: 1;
 }
 
 .selected .menuIcon svg {
   stroke: var(--color-primary);
+  z-index: 1;
 }
 
 .selected .menuIcon {
   color: var(--color-primary);
+  z-index: 1;
 }
 
 .selected .menuText {
   color: var(--color-primary);
+  z-index: 1;
 }
 
 .menuText {
-  min-width: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -84,4 +79,35 @@ html[data-sidebar-size='mini'] .menu:not(.selected):hover {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 0.18s ease,
+    inline-size 0.18s ease,
+    transform 0.18s ease;
+  will-change: opacity, transform;
+}
+
+html[data-sidebar-size='mini'] .menu:not(.selected):hover {
+  background-color: var(--neutral-2);
+}
+
+html[data-sidebar-size='mini'] .menuText {
+  inline-size: 0;
+  opacity: 0;
+  transform: translateX(-4px);
+  pointer-events: none;
+}
+
+.highlightBg {
+  position: absolute;
+  inset: 0;
+
+  border-radius: 8px;
+  background-color: color-mix(in srgb, var(--color-primary) 12%, white 70%);
+
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
 }

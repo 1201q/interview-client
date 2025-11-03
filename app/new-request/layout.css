@@ -10,7 +10,7 @@
   display: grid;
   grid-template-columns: var(--sidebar-w) 1fr;
   min-height: 100dvh;
-  transition: grid-template-columns 0.2s;
+  transition: grid-template-columns 0.3s var(--ease-out);
 }
 
 .sidebar {
@@ -21,9 +21,9 @@
   align-self: start;
   top: 0;
   height: 100dvh;
-  overflow: hidden;
+
   z-index: 1;
-  transition: width 0.2s;
+  transition: width 0.3s var(--ease-out);
 }
 
 /* 컨텐츠 오른쪽 */
@@ -69,4 +69,12 @@
 
 .animationContainer {
   inset: 0;
+}
+
+.wrapper,
+.sidebar,
+.header,
+.main {
+  will-change: transform, width, grid-template-columns, backdrop-filter;
+  transform: translateZ(0);
 }

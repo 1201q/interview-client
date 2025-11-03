@@ -10,10 +10,7 @@ import {
   Check,
 } from 'lucide-react';
 
-import {
-  currentRequestStageAtom,
-  generatingProgressAtom,
-} from '@/store/request-stage';
+import { currentRequestStageAtom } from '@/store/request-stage';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const steps = [
