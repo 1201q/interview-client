@@ -31,7 +31,7 @@
   height: 100%;
   object-fit: cover;
   filter: blur(12px) brightness(0.25);
-  transform: scale(1.38);
+  transform: scale(1.38) scaleX(-1);
   pointer-events: none;
   z-index: 0;
 }

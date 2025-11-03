@@ -3,9 +3,12 @@ import { useEffect, useState } from 'react';
 import { Subscription } from 'rxjs';
 
 export const useMediaPermissions = () => {
-  const [cameraPermission, setCameraPermission] =
-    useState<PermissionState>('prompt');
-  const [micPermission, setMicPermission] = useState<PermissionState>('prompt');
+  const [cameraPermission, setCameraPermission] = useState<
+    PermissionState | 'checking'
+  >('checking');
+  const [micPermission, setMicPermission] = useState<
+    PermissionState | 'checking'
+  >('checking');
 
   useEffect(() => {
     const subs: Subscription[] = [

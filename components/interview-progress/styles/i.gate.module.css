@@ -1,0 +1,182 @@
+.main {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+.contents {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  max-width: 1200px;
+  height: 70%;
+  padding: 0px 36px;
+  position: relative;
+  z-index: 0;
+}
+
+.contents::before {
+  content: '';
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(
+      60% 80% at 20% 30%,
+      rgba(124, 183, 255, 0.25),
+      transparent 60%
+    ),
+    radial-gradient(
+      50% 70% at 75% 70%,
+      rgba(34, 105, 247, 0.28),
+      transparent 65%
+    ),
+    radial-gradient(
+      40% 40% at 50% 20%,
+      rgba(64, 132, 255, 0.18),
+      transparent 70%
+    );
+  filter: blur(42px) saturate(125%);
+  animation: aurora-float 12s ease-in-out infinite alternate;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes aurora-float {
+  0% {
+    transform: translate3d(-2%, -2%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, 1%, 0) scale(1.03);
+  }
+  100% {
+    transform: translate3d(-1%, 2%, 0) scale(1.01);
+  }
+}
+
+.contents h1 {
+  margin-top: 4px;
+  font-size: 48px;
+  font-weight: 600;
+  margin-left: 1px;
+
+  background: linear-gradient(90deg, #7fb3ff, #2269f7 50%, #7fb3ff 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: text-sweep 2s linear infinite;
+}
+
+@keyframes text-sweep {
+  to {
+    background-position: 200% 0;
+  }
+}
+
+.loader {
+  display: flex;
+  width: fit-content;
+  height: fit-content;
+}
+
+.loaderWrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.loader svg {
+  stroke: var(--neutral-4);
+  stroke-width: 2px;
+}
+
+.progress {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 20px;
+  margin-left: 1px;
+  column-gap: 15px;
+}
+
+.progress span {
+  color: var(--neutral-3);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+  line-height: 1.4;
+}
+
+.cameraWrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.cameraWrapper canvas,
+.cameraWrapper video {
+  visibility: hidden;
+}
+
+.requestPermissionButton {
+  --btn-bg: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--primary) 14%, rgba(255, 255, 255, 0) 86%),
+    color-mix(in srgb, var(--primary) 24%, rgba(0, 0, 0, 0) 76%)
+  );
+  --btn-overlay: radial-gradient(
+    120% 140% at 20% 0%,
+    rgba(255, 255, 255, 0.16),
+    rgba(255, 255, 255, 0) 60%
+  );
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  column-gap: 8px;
+
+  padding: 12px 22px 12px 20px;
+  width: fit-content;
+
+  margin-top: 30px;
+  color: var(--neutral-4);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+
+  border: 1px solid
+    color-mix(in srgb, var(--primary) 38%, rgba(255, 255, 255, 0.08));
+  border-radius: 12px;
+
+  background: var(--btn-overlay), var(--btn-bg);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: saturate(180%) blur(4px);
+  cursor: pointer;
+  transition:
+    transform 0.14s ease,
+    filter 0.14s ease,
+    box-shadow 0.14s ease,
+    background 0.14s ease,
+    border-color 0.14s ease;
+}
+
+.requestPermissionButton:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
+  color: var(--neutral-0);
+}
+.requestPermissionButton svg {
+  width: 17px;
+  height: 17px;
+  stroke: var(--neutral-4);
+}

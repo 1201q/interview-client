@@ -53,7 +53,7 @@
 
   text-align: left;
   box-shadow: var(--shadow-sm);
-  height: 282px;
+  min-height: 282px;
   overflow: hidden;
 }
 /* ===== Skeleton ===== */

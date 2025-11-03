@@ -1,8 +1,8 @@
 'use client';
 
 import { useAtomValue } from 'jotai';
-import { useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
+import { useEffect, useRef } from 'react';
+
 import { webcamStreamAtom } from '@/store/webcam';
 import styles from './webcam.module.css';
 
@@ -14,7 +14,12 @@ const GlobalVideoBg = () => {
     if (!ref.current || !stream) return;
     ref.current.srcObject = stream;
 
-    ref.current.play().catch(() => {});
+    ref.current
+      .play()
+      .then(() => {
+        ref.current?.pause();
+      })
+      .catch(() => {});
   }, [stream]);
 
   return (

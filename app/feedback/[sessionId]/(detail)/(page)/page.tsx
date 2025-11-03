@@ -1,4 +1,5 @@
 import InterviewCompleted from '@/components/interview-progress/InterviewCompleted';
+
 import { getAnalyesStatuses } from '@/utils/services/analyses';
 import { redirect } from 'next/navigation';
 

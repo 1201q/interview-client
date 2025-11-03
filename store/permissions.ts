@@ -26,3 +26,6 @@ export const overlayVisibleAtom = atom((get) => {
   const p = get(guardPhaseAtom);
   return !(p === 'ready' || p === 'idle');
 });
+
+//
+export const isInterviewReadyAtom = atom(false); // 권한과 human이 모두 준비된 상태
