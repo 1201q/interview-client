@@ -25,32 +25,10 @@ const InfoSection = () => {
             </div>
           </div>
         </div>
-        <div className={styles.info}>
-          <div className={styles.infoImage}>
-            <Image
-              src={'/생성.png'}
-              alt="생성중인 사진"
-              width={400}
-              height={340}
-            />
-          </div>
-          <div className={styles.infoRight}>
-            <div className={styles.infoBadge}>면접 진행</div>
 
-            <div className={styles.bigText}>
-              <p>실제 면접과 같은 환경에서</p>
-              <p>면접을 연습하세요</p>
-            </div>
-            <div className={styles.smallText}>
-              <p>원하는 면접 질문을 선택하고</p>
-              <p>차근차근 답변해보세요</p>
-              <p>답변의 음성과 집중도까지 분석해드려요</p>
-            </div>
-          </div>
-        </div>
         <div className={styles.info}>
           <div className={styles.infoImage}>
-            <Image src={'/피드백.jpg'} alt="피드백" width={400} height={320} />
+            <Image src={'/피드백.png'} alt="피드백" width={400} height={340} />
           </div>
           <div className={styles.infoRight}>
             <div className={styles.infoBadge}>답변 피드백</div>

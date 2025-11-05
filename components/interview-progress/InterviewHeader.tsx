@@ -6,7 +6,7 @@ const InterviewHeader = () => {
   return (
     <div className={styles.header}>
       <div className={styles.info}>
-        <h2>모의 인터뷰</h2>
+        <h2>인터뷰 세션</h2>
         <span>모의 인터뷰</span>
       </div>
     </div>

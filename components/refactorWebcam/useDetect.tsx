@@ -1,8 +1,7 @@
 import {
-  faceDetected$,
-  faceResult$,
-  gestureResults$,
-} from '@/store/observable';
+  detectedFaceResult$,
+  detectedGestureResults$,
+} from '@/store/observable/raw';
 import Human from '@vladmandic/human';
 import { RefObject, useRef } from 'react';
 
@@ -30,12 +29,8 @@ export const useDetect = (
         const faceDetected = result.face.length > 0;
         const faceResult = result.face[0];
 
-        faceDetected$.next(faceDetected);
-        gestureResults$.next(result.gesture);
-
-        if (faceResult) {
-          faceResult$.next(faceResult);
-        }
+        detectedFaceResult$.next(faceResult);
+        detectedGestureResults$.next(result.gesture);
       }
     }
 

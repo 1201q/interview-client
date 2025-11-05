@@ -1,3 +1,5 @@
+import { answerEnd$, answerStart$ } from '@/store/observable/raw';
+import { FaceFrameState, recordedFaceData$ } from '@/store/observable/result';
 import { useTranscribe } from '@/utils/hooks/useTranscribe';
 
 import {
@@ -13,7 +15,7 @@ import {
 } from '@/utils/types/interview';
 import { useRouter } from 'next/navigation';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 interface InterviewInitProps {
   sessionId: string;
@@ -67,6 +69,18 @@ export const useInterview = ({
   const [clientPhase, setClientPhase] = useState<InterviewPhase>('beforeStart');
 
   const localStorageKey = useMemo(() => makeKey(sessionId), [sessionId]);
+
+  const faceDataRef = useRef<FaceFrameState[] | null>(null);
+
+  useEffect(() => {
+    const sub = recordedFaceData$.subscribe((data) => {
+      faceDataRef.current = data;
+    });
+
+    return () => {
+      sub.unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     const data = readLocalStorage(localStorageKey, {
@@ -155,6 +169,8 @@ export const useInterview = ({
   };
 
   const doStartAnswer = async () => {
+    answerStart$.next();
+
     resumeTranscription();
     setClientPhase('answering');
 
@@ -167,11 +183,14 @@ export const useInterview = ({
     try {
       setClientPhase('submitting');
 
+      answerEnd$.next();
+
       const data = await flushAndStop();
       const result = await submitAnswer({
         answerId: currentQuestion.answer_id,
         audioBlob: data.audioBlob,
         answerText: data.text,
+        faceData: faceDataRef.current,
       });
 
       if (!result.finished) {
@@ -191,7 +210,7 @@ export const useInterview = ({
   };
 
   const doComplete = () => {
-    router.push(`/feedback/${sessionId}`);
+    router.push(`/feedback/${sessionId}/progress`);
   };
 
   const toggleQuestionList = () => {

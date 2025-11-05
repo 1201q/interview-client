@@ -109,34 +109,3 @@ export const StartAnswerCountdownAtom = atom(null, async (get) => {
     console.log(error);
   }
 });
-
-export const SubmitAnswerAtom = atom(
-  null,
-  async (get, set, update: { audioBlob: Blob | null; answerText: string }) => {
-    const currentQuestion = get(CurrentSessionQuestionAtom);
-    const clientPhase = get(ClientInterviewPhaseAtom);
-    const sessionId = get(SessionIdAtom);
-
-    if (!sessionId) return;
-    if (clientPhase !== 'submitting') return;
-    if (!currentQuestion) return;
-
-    try {
-      const res = await submitAnswer({
-        answerId: currentQuestion.answer_id,
-        audioBlob: update.audioBlob,
-        answerText: update.answerText,
-      });
-
-      if (!res.finished) {
-        set(RefreshSessionQuestionsAtom);
-      }
-
-      set(ClientInterviewPhaseAtom, 'submitSuccess');
-
-      setTimeout(() => set(ClientInterviewPhaseAtom, 'start'), 1200);
-    } catch (error) {
-      set(ClientInterviewPhaseAtom, 'answering');
-    }
-  },
-);

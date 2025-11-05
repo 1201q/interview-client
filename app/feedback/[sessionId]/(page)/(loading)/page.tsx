@@ -1,7 +1,5 @@
-import InterviewCompleted from '@/components/interview-progress/InterviewCompleted';
-
 import { getAnalyesStatuses } from '@/utils/services/analyses';
-import { notFound, redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 export default async function Page({
   params,
@@ -23,9 +21,7 @@ export default async function Page({
     const firstAnswer = data.statuses[0];
     const firstAnswerId = firstAnswer.answer_id;
     redirect(`/feedback/${sessionId}/${firstAnswerId}`);
+  } else {
+    redirect(`/feedback/${sessionId}/progress`);
   }
-
-  return (
-    <InterviewCompleted sessionId={data.session_id} statuses={data.statuses} />
-  );
 }

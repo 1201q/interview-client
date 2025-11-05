@@ -1,6 +1,5 @@
 import {
   InterviewSessionStatus,
-  QSessionQuestionItem,
   SessionQuestionItemWithAnswerId,
 } from '../types/interview';
 
@@ -446,7 +445,8 @@ export const submitAnswer = async ({
   audioBlob,
   options,
   answerText,
-}: SubmitAnswerProps) => {
+  faceData,
+}: SubmitAnswerProps & { faceData: any }) => {
   const form = new FormData();
 
   const controller = new AbortController();
@@ -461,6 +461,11 @@ export const submitAnswer = async ({
     });
     form.append('audio', file);
   }
+
+  if (faceData) {
+    form.append('faceData', JSON.stringify(faceData));
+  }
+
   form.append('answerText', answerText ?? '');
 
   try {
