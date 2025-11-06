@@ -1,5 +1,5 @@
 import { answerEnd$, answerStart$ } from '@/store/observable/raw';
-import { FaceFrameState, recordedFaceData$ } from '@/store/observable/result';
+import { recordedFaceData$ } from '@/store/observable/result';
 import { useTranscribe } from '@/utils/hooks/useTranscribe';
 
 import {
@@ -16,6 +16,7 @@ import {
 import { useRouter } from 'next/navigation';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { FaceFrameState } from '../types/analysis';
 
 interface InterviewInitProps {
   sessionId: string;

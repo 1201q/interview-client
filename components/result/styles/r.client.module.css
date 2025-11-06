@@ -407,6 +407,19 @@
   max-height: 300px;
 }
 
+.voiceFlex {
+  display: flex;
+  flex-direction: column;
+
+  row-gap: 20px;
+  height: 100%;
+}
+
+.faceChart {
+  width: 100%;
+  height: 250px;
+}
+
 /*  */
 /* cards */
 /* ================================== */

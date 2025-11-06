@@ -113,7 +113,7 @@ const BeforeGenerating = () => {
         transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }}
         className={styles.loading}
       >
-        <LoaderCircle color="var( --neutral-4)" size={80} strokeWidth={2} />
+        {/* <LoaderCircle color="var( --neutral-4)" size={80} strokeWidth={2} /> */}
       </motion.div>
     </div>
   );

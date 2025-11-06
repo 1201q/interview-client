@@ -23,7 +23,10 @@ export default async function Sidebar({
     <SidebarBg>
       <TopLogo toggleState={sidebarSize} />
       <SharedMenu />
-      <RequestSideStepsHydrated initialStage="beforeGenerating" />
+      <RequestSideStepsHydrated
+        initialStage="beforeGenerating"
+        dangerouslyForceHydrate={false}
+      />
       <BottomUser />
     </SidebarBg>
   );

@@ -5,7 +5,7 @@ import GeneratingSkeleton from './loading';
 
 const TEST_ID = '87ca5626-b201-43f7-82d0-44ea227321dd';
 
-const getRequest = async (requestId: string, isTest: boolean = true) => {
+const getRequest = async (requestId: string, isTest: boolean = false) => {
   const url = `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${isTest ? TEST_ID : requestId}/request`;
   const res = await fetch(url);
 

@@ -1,6 +1,7 @@
 import { bufferTime, filter, map, shareReplay } from 'rxjs';
 import { detectedFaceResult$ } from './raw';
 import { Emotion, FaceResult } from '@vladmandic/human';
+import { EmotionState } from '@/utils/types/analysis';
 
 // parameters
 const WINDOW_MS = 500; // 0.5초 단위로 묶어서 봄
@@ -10,18 +11,6 @@ const POSITIVE_EMOTIONS: Emotion[] = ['happy', 'surprise', 'neutral'];
 
 // types
 type EMOTION_TYPE = 'positive' | 'negative';
-export type EmotionVotes = {
-  positive: number;
-  negative: number;
-};
-export type EmotionState = {
-  timestamp: number;
-  votes: EmotionVotes;
-};
-export type StableEmotion = {
-  label: Emotion;
-  score: number;
-};
 
 export const emotionBuffer$ = detectedFaceResult$.pipe(
   filter(

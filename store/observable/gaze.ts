@@ -1,3 +1,4 @@
+import { GazeState } from '@/utils/types/analysis';
 import {
   answerEnd$,
   answerStart$,
@@ -7,7 +8,6 @@ import {
 import { GestureResult } from '@vladmandic/human';
 import {
   bufferTime,
-  bufferToggle,
   distinctUntilChanged,
   filter,
   map,
@@ -22,15 +22,6 @@ const SLIDE_MS = 200;
 
 // types
 export type GazeDirection = 'left' | 'right' | 'up' | 'down' | 'center';
-export type GazeState = {
-  timestamp: number;
-  direction: GazeDirection;
-  facingVotes: Record<GazeDirection, number>;
-  irisVotes: Record<GazeDirection, number>;
-  blink: boolean;
-  faceDetected: boolean;
-};
-export type GazeSession = GazeState[];
 
 export const gestureBuffer$ = detectedGestureResults$.pipe(
   bufferTime(WINDOW_MS, SLIDE_MS),

@@ -1,14 +1,8 @@
 import { bufferToggle, filter, map, shareReplay, withLatestFrom } from 'rxjs';
 import { answerStart$, answerEnd$ } from './raw';
-import { GazeState, stableGazeState$ } from './gaze';
-import { EmotionState, stableEmotionState$ } from './emotion';
-
-export type FaceFrameState = {
-  timestamp: number;
-  gaze: GazeState;
-  emotion: EmotionState;
-  faceDetected: boolean;
-};
+import { stableGazeState$ } from './gaze';
+import { stableEmotionState$ } from './emotion';
+import { FaceFrameState } from '@/utils/types/analysis';
 
 // 답변 프레임 상태 스트림
 export const faceFrameState$ = stableGazeState$.pipe(
