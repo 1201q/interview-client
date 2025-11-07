@@ -125,7 +125,7 @@ export const config = {
     '/logout',
 
     // 인증 필요
-    'history',
+    '/history',
     '/new-request/:path*',
     '/feedback/:path*',
     '/interview/:path*',
