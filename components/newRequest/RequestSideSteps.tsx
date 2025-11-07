@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 
 import { currentRequestStageAtom } from '@/store/request-stage';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 
 const steps = [
   {

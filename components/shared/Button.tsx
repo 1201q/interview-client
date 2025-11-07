@@ -1,7 +1,7 @@
 'use client';
 
 import styles from './styles/button.module.css';
-import { AnimatePresence, HTMLMotionProps, motion } from 'framer-motion';
+import { AnimatePresence, HTMLMotionProps, motion } from 'motion/react';
 import { LoaderCircle } from 'lucide-react';
 
 type MotionBtnAttrs = Omit<HTMLMotionProps<'button'>, 'onClick' | 'disabled'>;
