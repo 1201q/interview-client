@@ -1,5 +1,8 @@
-import { cameraPermission$, micPermission$ } from '@/store/observable';
-import { useEffect, useState } from 'react';
+import {
+  cameraPermission$,
+  micPermission$,
+} from '@/store/observable/permission';
+import { useCallback, useEffect, useState } from 'react';
 import { Subscription } from 'rxjs';
 
 export const useMediaPermissions = () => {
@@ -19,9 +22,9 @@ export const useMediaPermissions = () => {
     return () => subs.forEach((sub) => sub.unsubscribe());
   }, []);
 
-  const requestPermission = async () => {
+  const requestPermission = useCallback(async () => {
     try {
-      const d = await navigator.mediaDevices.getUserMedia({
+      const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           width: { ideal: 9999 },
           height: { ideal: 9999 },
@@ -29,11 +32,21 @@ export const useMediaPermissions = () => {
         audio: true,
       });
 
-      console.log(d);
-    } catch (error) {
-      console.log(error);
+      stream.getTracks().forEach((track) => {
+        try {
+          track.stop();
+        } catch {
+          console.warn('Failed to stop track after getUserMedia');
+        }
+      });
+
+      setCameraPermission('granted');
+      setMicPermission('granted');
+    } catch (err) {
+      setCameraPermission('denied');
+      setMicPermission('denied');
     }
-  };
+  }, []);
 
   return { cameraPermission, micPermission, requestPermission };
 };

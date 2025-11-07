@@ -24,12 +24,19 @@ import type { Config } from '@vladmandic/human';
 
 export const humanConfig: Partial<Config> = {
   debug: false,
+
   modelBasePath: 'https://cdn.jsdelivr.net/gh/vladmandic/human-models/models/',
+
   face: {
     enabled: true,
     skipFrames: 1000,
-
-    detector: { enabled: true, maxDetected: 1, minSize: 256, scale: 1.4 },
+    detector: {
+      minConfidence: 0.5,
+      enabled: true,
+      maxDetected: 1,
+      minSize: 256,
+      scale: 1.4,
+    },
     mesh: { enabled: true },
     iris: { enabled: true },
     description: { enabled: false },

@@ -11,7 +11,7 @@ import GlobalVideoBg from '@/components/refactorWebcam/GlobalVideoBg';
 
 import styles from './page.module.css';
 import { useAtomValue } from 'jotai';
-import { isInterviewReadyAtom } from '@/store/permissions';
+import { isInterviewReadyAtom } from '@/store/interview';
 import InterviewGateOverlay from '@/components/interview-progress/InterviewGateOverlay';
 import { AnimatePresence, motion } from 'motion/react';
 import InterviewGateController from '@/components/interview-progress/InterviewGateController';
@@ -30,7 +30,7 @@ const Page = () => {
       </AnimatePresence>
 
       {/* 인터뷰 화면 */}
-      {isInterviewReady && (
+      {true && (
         <motion.div
           key="interview"
           style={{ width: '100%', height: '100%' }}

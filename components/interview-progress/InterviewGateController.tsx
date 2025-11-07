@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useSetAtom } from 'jotai';
-import { isInterviewReadyAtom } from '@/store/permissions';
+import { isInterviewReadyAtom } from '@/store/interview';
 import { useMediaPermissions } from '@/utils/hooks/useMediaPermissions';
 import { useAtomValue } from 'jotai';
 import { isHumanLoadedAtom } from '@/store/webcam';
@@ -14,6 +14,7 @@ export default function InterviewGateController() {
 
   const allGranted =
     cameraPermission === 'granted' && micPermission === 'granted';
+
   const allReady = allGranted && isHumanLoaded;
 
   const prev = useRef<boolean | null>(null);

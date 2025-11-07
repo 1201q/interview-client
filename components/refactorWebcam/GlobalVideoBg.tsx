@@ -11,15 +11,25 @@ const GlobalVideoBg = () => {
   const ref = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (!ref.current || !stream) return;
-    ref.current.srcObject = stream;
+    const video = ref.current;
 
-    ref.current
-      .play()
-      .then(() => {
-        ref.current?.pause();
-      })
-      .catch(() => {});
+    if (!video) return;
+
+    if (stream) {
+      video.srcObject = stream;
+
+      video.play().then(() => {
+        video.pause();
+      });
+    } else {
+      video.pause();
+      video.srcObject = null;
+    }
+
+    return () => {
+      video.pause();
+      video.srcObject = null;
+    };
   }, [stream]);
 
   return (

@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react';
 import styles from './webcam.module.css';
-import { useAtomValue, useSetAtom } from 'jotai';
-import { initHumanAtom, webcamStreamAtom } from '@/store/webcam';
+import { useSetAtom } from 'jotai';
+import { webcamStreamAtom } from '@/store/webcam';
 import { initWebcam } from './initWebcam';
 import { useDetect } from './useDetect';
 import { useDraw } from './useDraw';
+import type { Human } from '@vladmandic/human';
 
 interface DrawTargets {
   face?: boolean;
@@ -13,16 +14,20 @@ interface DrawTargets {
 }
 
 interface Props {
+  human: Human;
   isRunning: boolean;
   drawTargets: DrawTargets;
   cameraObjectFitOpt?: 'cover' | 'contain';
 }
 
-const Webcam = ({ isRunning, drawTargets, cameraObjectFitOpt }: Props) => {
+const Webcam = ({
+  human,
+  isRunning,
+  drawTargets,
+  cameraObjectFitOpt,
+}: Props) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const human = useAtomValue(initHumanAtom);
 
   const setWebcamStream = useSetAtom(webcamStreamAtom);
 
@@ -30,8 +35,6 @@ const Webcam = ({ isRunning, drawTargets, cameraObjectFitOpt }: Props) => {
   const { startDrawing, stopDrawing } = useDraw(human, videoRef, canvasRef);
 
   useEffect(() => {
-    if (!human) return;
-
     const setup = async () => {
       const init = initWebcam(human, videoRef, canvasRef);
       await init();
@@ -47,6 +50,7 @@ const Webcam = ({ isRunning, drawTargets, cameraObjectFitOpt }: Props) => {
     setup();
 
     return () => {
+      console.log('Webcam unmounting, stopping webcam stream');
       setWebcamStream(null);
       stopDetection();
       stopDrawing();

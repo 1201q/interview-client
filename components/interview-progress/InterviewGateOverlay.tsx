@@ -2,12 +2,11 @@
 
 import { Loader2, ShieldCheck } from 'lucide-react';
 import styles from './styles/i.gate.module.css';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 import { useMediaPermissions } from '@/utils/hooks/useMediaPermissions';
 import { useAtom, useAtomValue } from 'jotai';
-import { isHumanLoadedAtom } from '@/store/webcam';
-import WebcamInstance from '../refactorWebcam/WebcamInstance';
-import { isInterviewReadyAtom } from '@/store/permissions';
+import { initHumanAtom, isHumanLoadedAtom } from '@/store/webcam';
+import { isInterviewReadyAtom } from '@/store/interview';
 
 const InterviewGateOverlay = () => {
   const { cameraPermission, micPermission, requestPermission } =
@@ -41,18 +40,7 @@ const InterviewGateOverlay = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <div className={styles.cameraWrapper}>
-              <WebcamInstance isRunning={false} />
-            </div>
-            <div className={styles.loaderWrapper}>
-              <motion.div
-                className={styles.loader}
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-              >
-                <Loader2 size={70} />
-              </motion.div>
-            </div>
+            <HumanLoading />
           </motion.div>
         ) : (
           <motion.div
@@ -161,6 +149,22 @@ const InterviewGateOverlay = () => {
         )}
       </AnimatePresence>
     </motion.div>
+  );
+};
+
+const HumanLoading = () => {
+  useAtomValue(initHumanAtom);
+
+  return (
+    <div className={styles.loaderWrapper}>
+      <motion.div
+        className={styles.loader}
+        animate={{ rotate: 360 }}
+        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+      >
+        <Loader2 size={70} />
+      </motion.div>
+    </div>
   );
 };
 export default InterviewGateOverlay;

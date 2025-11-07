@@ -17,8 +17,8 @@ export const initWebcam = (
       crop: true,
       id,
       mode: 'front',
-      width: 1920,
-      height: 1080,
+      width: 1280,
+      height: 720,
     });
 
     if (canvas) {

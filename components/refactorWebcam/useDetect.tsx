@@ -26,7 +26,6 @@ export const useDetect = (
       const video = videoRef.current;
       if (video && !video.paused) {
         const result = await human.detect(video);
-        const faceDetected = result.face.length > 0;
         const faceResult = result.face[0];
 
         detectedFaceResult$.next(faceResult);

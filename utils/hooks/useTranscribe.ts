@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useState, useRef, useEffect } from 'react';
-import { getEphemeralToken, testgetEphemeralToken } from '../services/stt';
+import { getEphemeralToken } from '../services/stt';
 import { Delta, Transcript } from '../types/types';
 
 export type AudioSource = 'mic' | 'tab';
@@ -159,7 +159,7 @@ export const useTranscribe = ({ onEvent }: Options) => {
       setConnStatus('connecting');
 
       // 1. 토큰 확인
-      const tokenRes = await testgetEphemeralToken(payload);
+      const tokenRes = await getEphemeralToken(payload);
       const token = tokenRes.value ?? null;
       console.timeEnd('[connect] token');
 

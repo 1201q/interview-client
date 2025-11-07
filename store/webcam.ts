@@ -2,7 +2,6 @@ import { humanConfig } from '@/utils/constants/human.config';
 import type { Human } from '@vladmandic/human';
 import { atom } from 'jotai';
 
-export const humanInstanceAtom = atom<Human>();
 export const isHumanLoadedAtom = atom(false);
 
 export const humanClientAtom = atom(null as unknown as Human);
@@ -24,6 +23,7 @@ initHumanAtom.onMount = (set) => {
       await human.warmup();
 
       set(human);
+      console.log(human);
       console.log('human 로딩완료');
     }
   })();
