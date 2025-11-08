@@ -6,7 +6,6 @@ import { motion, AnimatePresence, useAnimationControls } from 'motion/react';
 import { Loader2, Check, Space } from 'lucide-react';
 import { InterviewPhase } from '@/utils/types/interview';
 import React from 'react';
-import { useRouter } from 'next/navigation';
 
 interface SubmitButtonProps {
   phase: InterviewPhase;
@@ -363,7 +362,7 @@ const InterviewSubmitButton = ({
               )}
             </motion.div>
           )}
-          {/*  답변 시작 */}
+          {/*  답변 end */}
           {buttonGroup === 'endGroup' && (
             <motion.div
               key="endGroup"

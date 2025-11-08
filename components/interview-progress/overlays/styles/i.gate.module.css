@@ -128,55 +128,72 @@
   visibility: hidden;
 }
 
-.requestPermissionButton {
-  --btn-bg: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--primary) 14%, rgba(255, 255, 255, 0) 86%),
-    color-mix(in srgb, var(--primary) 24%, rgba(0, 0, 0, 0) 76%)
-  );
-  --btn-overlay: radial-gradient(
-    120% 140% at 20% 0%,
-    rgba(255, 255, 255, 0.16),
-    rgba(255, 255, 255, 0) 60%
-  );
+.buttons {
+  display: flex;
+  align-items: center;
+  column-gap: 20px;
+  margin-top: 30px;
+}
 
+.requestPermissionButton,
+.gohomeButton {
   position: relative;
   display: inline-flex;
   align-items: center;
   column-gap: 8px;
 
-  padding: 12px 22px 12px 20px;
+  padding: 10px 22px 10px 22px;
   width: fit-content;
 
-  margin-top: 30px;
   color: var(--neutral-4);
+
+  border-radius: 12px;
+
+  background: color-mix(in srgb, var(--primary) 84%, rgba(0, 0, 0, 0.2) 46%);
+
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: saturate(100%);
+  cursor: pointer;
+  transition:
+    transform 0.24s ease,
+    backdrop-filter 0.24s ease,
+    color 0.24s ease;
+
+  white-space: nowrap;
+}
+
+.requestPermissionButton span,
+.gohomeButton span {
   font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.1px;
 
-  border: 1px solid
-    color-mix(in srgb, var(--primary) 38%, rgba(255, 255, 255, 0.08));
-  border-radius: 12px;
-
-  background: var(--btn-overlay), var(--btn-bg);
-  box-shadow: var(--shadow-lg);
-  backdrop-filter: saturate(180%) blur(4px);
-  cursor: pointer;
-  transition:
-    transform 0.14s ease,
-    filter 0.14s ease,
-    box-shadow 0.14s ease,
-    background 0.14s ease,
-    border-color 0.14s ease;
+  text-align: center;
 }
 
 .requestPermissionButton:hover {
-  filter: brightness(1.1);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
+  backdrop-filter: saturate(800%);
   color: var(--neutral-0);
 }
-.requestPermissionButton svg {
+
+.requestPermissionButton svg,
+.gohomeButton svg {
   width: 17px;
   height: 17px;
   stroke: var(--neutral-4);
+}
+
+.gohomeButton {
+  background: color-mix(in srgb, var(--primary) 21%, rgba(0, 0, 0, 0.15) 70%);
+  backdrop-filter: brightness(100%);
+  color: var(--neutral-4);
+}
+
+.gohomeButton svg {
+  stroke: var(--neutral-5);
+}
+
+.gohomeButton:hover {
+  backdrop-filter: brightness(120%);
+  color: var(--neutral-0);
 }

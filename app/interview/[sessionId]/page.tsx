@@ -1,20 +1,20 @@
 'use client';
 
-import InterviewBottomController from '@/components/interview-progress/InterviewBottomController';
-import InterviewClient from '@/components/interview-progress/InterviewClient';
-import InterviewHeader from '@/components/interview-progress/InterviewHeader';
+import InterviewBottomController from '@/components/interview-progress/layout/InterviewBottomController';
+import InterviewClient from '@/components/interview-progress/core/InterviewClient';
+import InterviewHeader from '@/components/interview-progress/layout/InterviewHeader';
 
-import { useInterview } from '@/components/interview-progress/InterviewProvider';
-import InterviewSidebar from '@/components/interview-progress/InterviewSidebar';
+import { useInterview } from '@/components/interview-progress/core/InterviewProvider';
+import InterviewSidebar from '@/components/interview-progress/layout/InterviewSidebar';
 
 import GlobalVideoBg from '@/components/refactorWebcam/GlobalVideoBg';
 
 import styles from './page.module.css';
 import { useAtomValue } from 'jotai';
 import { isInterviewReadyAtom } from '@/store/interview';
-import InterviewGateOverlay from '@/components/interview-progress/InterviewGateOverlay';
+import InterviewGateOverlay from '@/components/interview-progress/overlays/InterviewGateOverlay';
 import { AnimatePresence, motion } from 'motion/react';
-import InterviewGateController from '@/components/interview-progress/InterviewGateController';
+import InterviewReadyGuard from '@/components/interview-progress/core/InterviewReadyGuard';
 
 const Page = () => {
   const props = useInterview();
@@ -23,7 +23,7 @@ const Page = () => {
   return (
     <div className={styles.container}>
       {/* 항상 작동 */}
-      <InterviewGateController />
+      <InterviewReadyGuard />
 
       <AnimatePresence mode="wait">
         {!isInterviewReady && <InterviewGateOverlay />}

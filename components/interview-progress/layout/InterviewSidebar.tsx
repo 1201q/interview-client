@@ -4,8 +4,8 @@ import styles from './styles/i.sidebar.module.css';
 
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { useInterview } from './InterviewProvider';
-import InterviewSidebarStatus from './InterviewSidebarStatus';
+import { useInterview } from '../core/InterviewProvider';
+
 import { SessionQuestionStatus } from '@/utils/types/interview';
 
 interface ResultItemProps {

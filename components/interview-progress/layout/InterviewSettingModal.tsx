@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useInterview } from './InterviewProvider';
+import { useInterview } from '../core/InterviewProvider';
 import styles from './styles/i.modal.module.css';
 
 import { AnimatePresence, motion } from 'motion/react';

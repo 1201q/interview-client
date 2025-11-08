@@ -7,10 +7,13 @@ import { useMediaPermissions } from '@/utils/hooks/useMediaPermissions';
 import { useAtom, useAtomValue } from 'jotai';
 import { initHumanAtom, isHumanLoadedAtom } from '@/store/webcam';
 import { isInterviewReadyAtom } from '@/store/interview';
+import { useState } from 'react';
 
 const InterviewGateOverlay = () => {
   const { cameraPermission, micPermission, requestPermission } =
     useMediaPermissions();
+
+  const [buttonLoading, setButtonLoading] = useState(false);
   const isHumanLoaded = useAtomValue(isHumanLoadedAtom);
   const [interviewReady] = useAtom(isInterviewReadyAtom);
 
@@ -129,7 +132,9 @@ const InterviewGateOverlay = () => {
                 >
                   {'권한 요청을 누르고 권한을 허용해주세요.'}
                 </motion.span>
-                <motion.button
+
+                <motion.div
+                  className={styles.buttons}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{
@@ -137,12 +142,25 @@ const InterviewGateOverlay = () => {
                     duration: 0.6,
                     ease: [0.25, 0.46, 0.45, 0.94],
                   }}
-                  className={styles.requestPermissionButton}
-                  onClick={requestPermission}
                 >
-                  <ShieldCheck />
-                  권한 요청하기
-                </motion.button>
+                  <motion.button
+                    disabled={buttonLoading}
+                    className={styles.requestPermissionButton}
+                    onClick={() => {
+                      setButtonLoading(true);
+                      requestPermission().finally(() =>
+                        setButtonLoading(false),
+                      );
+                    }}
+                  >
+                    <ShieldCheck />
+                    <span>
+                      {buttonLoading
+                        ? '권한을 확인하는 중...'
+                        : '권한 요청하기'}
+                    </span>
+                  </motion.button>
+                </motion.div>
               </motion.div>
             )}
           </motion.div>

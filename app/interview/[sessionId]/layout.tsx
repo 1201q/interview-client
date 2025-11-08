@@ -1,11 +1,13 @@
-import { cookies } from 'next/headers';
 import {
   InterviewSessionStatus,
   SessionQuestionItemWithAnswerId,
 } from '@/utils/types/interview';
 import InterviewProvider, {
   InterviewInitial,
-} from '@/components/interview-progress/InterviewProvider';
+} from '@/components/interview-progress/core/InterviewProvider';
+import InterviewInProgressOverlay from '@/components/interview-progress/overlays/InterviewInProgressOverlay';
+import InterviewCompletedOverlay from '@/components/interview-progress/overlays/InterviewCompletedOverlay';
+import InterviewNotFoundOverlay from '@/components/interview-progress/overlays/InterviewNotFoundOverlay';
 
 type SessionDetailResponse = {
   session_id: string;
@@ -19,7 +21,7 @@ const getSession = async (sessionId: string) => {
   const res = await fetch(url);
 
   if (!res.ok) {
-    throw new Error('Failed to fetch request data');
+    return null;
   }
 
   return res.json() as Promise<SessionDetailResponse>;
@@ -33,15 +35,19 @@ export default async function Layout({
   params: Promise<{ sessionId: string }>;
 }) {
   const { sessionId } = await params;
-
-  const sidebarSizeCookie = (await cookies()).get('sidebar-size')?.value as
-    | 'mini'
-    | 'expanded'
-    | undefined;
-
-  const sidebarSize = sidebarSizeCookie ? sidebarSizeCookie : 'expanded';
-
   const data = await getSession(sessionId);
+
+  if (!data) {
+    return <InterviewNotFoundOverlay />;
+  }
+
+  if (data.status === 'in_progress') {
+    return <InterviewInProgressOverlay sessionId={sessionId} />;
+  }
+
+  if (data.status === 'completed') {
+    return <InterviewCompletedOverlay sessionId={sessionId} />;
+  }
 
   const initialData: InterviewInitial = {
     sessionId: data.session_id,

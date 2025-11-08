@@ -7,7 +7,7 @@ import { useMediaPermissions } from '@/utils/hooks/useMediaPermissions';
 import { useAtomValue } from 'jotai';
 import { isHumanLoadedAtom } from '@/store/webcam';
 
-export default function InterviewGateController() {
+export default function InterviewReadyGuard() {
   const { cameraPermission, micPermission } = useMediaPermissions();
   const isHumanLoaded = useAtomValue(isHumanLoadedAtom);
   const setInterviewReady = useSetAtom(isInterviewReadyAtom);

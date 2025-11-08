@@ -108,7 +108,7 @@ const computeSessionOverall = (m: ProgressMap) => {
   return Math.round(avg);
 };
 
-const InterviewCompleted = ({
+const InterviewAnalyzingOverlay = ({
   sessionId,
   statuses,
 }: {
@@ -233,4 +233,4 @@ const InterviewCompleted = ({
   );
 };
 
-export default InterviewCompleted;
+export default InterviewAnalyzingOverlay;

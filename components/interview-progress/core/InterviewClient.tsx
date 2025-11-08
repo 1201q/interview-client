@@ -1,15 +1,14 @@
 'use client';
 
 import { InterviewPhase } from '@/utils/types/interview';
-import WebcamInstance from '../refactorWebcam/WebcamInstance';
+import WebcamInstance from '../../refactorWebcam/WebcamInstance';
 import { useInterview } from './InterviewProvider';
 
 import styles from './styles/i.client.module.css';
 
 import { motion, AnimatePresence } from 'motion/react';
 
-import InterviewSttDock from './InterviewSttDock';
-import { useRouter } from 'next/navigation';
+import InterviewSttDock from '../layout/InterviewSttDock';
 
 const phaseMotionMap = (phase: InterviewPhase) => {
   switch (phase) {
@@ -18,7 +17,7 @@ const phaseMotionMap = (phase: InterviewPhase) => {
     case 'beforeStartLoading':
       return { screenOpacity: 1, cameraOn: false };
     case 'start':
-      return { screenOpacity: 1, cameraOn: true };
+      return { screenOpacity: 1, cameraOn: false };
     case 'starting':
       return { screenOpacity: 1, cameraOn: true };
     case 'startCountdown3':
@@ -35,7 +34,6 @@ const phaseMotionMap = (phase: InterviewPhase) => {
 };
 
 const InterviewClient = (props: ReturnType<typeof useInterview>) => {
-  const router = useRouter();
   const {
     currentQuestion,
     serverStatus,
@@ -89,14 +87,6 @@ const InterviewClient = (props: ReturnType<typeof useInterview>) => {
           transition={{ duration: 0.2 }}
         />
       </div>
-      <button
-        style={{ position: 'fixed', bottom: 0, zIndex: 200 }}
-        onClick={() => {
-          router.push('/test');
-        }}
-      >
-        이동
-      </button>
     </>
   );
 };

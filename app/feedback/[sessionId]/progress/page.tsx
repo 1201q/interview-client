@@ -1,4 +1,4 @@
-import InterviewCompleted from '@/components/interview-progress/InterviewCompleted';
+import InterviewAnalyzingOverlay from '@/components/interview-progress/overlays/InterviewAnalyzingOverlay';
 
 import { getAnalyesStatuses } from '@/utils/services/analyses';
 import { redirect } from 'next/navigation';
@@ -26,6 +26,9 @@ export default async function Page({
   }
 
   return (
-    <InterviewCompleted sessionId={data.session_id} statuses={data.statuses} />
+    <InterviewAnalyzingOverlay
+      sessionId={data.session_id}
+      statuses={data.statuses}
+    />
   );
 }

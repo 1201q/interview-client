@@ -1,11 +1,8 @@
 'use client';
 
 import styles from './styles/i.stt.module.css';
-
 import { SpeechIcon } from 'lucide-react';
-
 import { motion } from 'motion/react';
-
 import { Transcript } from '@/utils/types/types';
 import { useEffect, useRef } from 'react';
 

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { useInterview } from './InterviewProvider';
+import { useInterview } from '../core/InterviewProvider';
 import InterviewSubmitButton from './InterviewSubmitButton';
 import styles from './styles/i.bottom.module.css';
 
@@ -106,7 +106,6 @@ const ExpandingButton = ({
 
 const Button = ({
   icon,
-
   onClick,
 }: {
   icon: React.ReactNode;
