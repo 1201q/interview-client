@@ -28,6 +28,8 @@ export const useDetect = (
         const result = await human.detect(video);
         const faceResult = result.face[0];
 
+        console.log(result);
+
         detectedFaceResult$.next(faceResult);
         detectedGestureResults$.next(result.gesture);
       }

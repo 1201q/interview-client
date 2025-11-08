@@ -9,17 +9,18 @@ import styles from './styles/i.client.module.css';
 import { motion, AnimatePresence } from 'motion/react';
 
 import InterviewSttDock from './InterviewSttDock';
+import { useRouter } from 'next/navigation';
 
 const phaseMotionMap = (phase: InterviewPhase) => {
   switch (phase) {
     case 'beforeStart':
-      return { screenOpacity: 1, cameraOn: false };
+      return { screenOpacity: 1, cameraOn: true };
     case 'beforeStartLoading':
       return { screenOpacity: 1, cameraOn: false };
     case 'start':
-      return { screenOpacity: 1, cameraOn: false };
+      return { screenOpacity: 1, cameraOn: true };
     case 'starting':
-      return { screenOpacity: 1, cameraOn: false };
+      return { screenOpacity: 1, cameraOn: true };
     case 'startCountdown3':
       return { screenOpacity: 1, cameraOn: true };
     case 'answering':
@@ -34,6 +35,7 @@ const phaseMotionMap = (phase: InterviewPhase) => {
 };
 
 const InterviewClient = (props: ReturnType<typeof useInterview>) => {
+  const router = useRouter();
   const {
     currentQuestion,
     serverStatus,
@@ -87,6 +89,14 @@ const InterviewClient = (props: ReturnType<typeof useInterview>) => {
           transition={{ duration: 0.2 }}
         />
       </div>
+      <button
+        style={{ position: 'fixed', bottom: 0, zIndex: 200 }}
+        onClick={() => {
+          router.push('/test');
+        }}
+      >
+        이동
+      </button>
     </>
   );
 };

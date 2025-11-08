@@ -21,12 +21,10 @@ const WebcamInstance = ({
   cameraObjectFitOpt = 'cover',
 }: Props) => {
   const isHumanLoaded = useAtomValue(isHumanLoadedAtom);
-  const human = useAtomValue(humanClientAtom);
 
-  if (isHumanLoaded && human) {
+  if (isHumanLoaded) {
     return (
       <Webcam
-        human={human}
         cameraObjectFitOpt={cameraObjectFitOpt}
         isRunning={isRunning}
         drawTargets={drawTargets}
