@@ -1,5 +1,5 @@
 // =========================================== status
-type GenerateStatus = 'pending' | 'working' | 'completed' | 'failed';
+export type GenerateStatus = 'pending' | 'working' | 'completed' | 'failed';
 type SessionStatus = 'not_started' | 'in_progress' | 'completed' | 'expired';
 type QAStatus = 'pending' | 'processing' | 'completed' | 'failed';
 type AnswerStatus = 'waiting' | 'ready' | 'answering' | 'submitted';

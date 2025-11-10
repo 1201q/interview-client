@@ -1,3 +1,5 @@
+import { GenerateStatus } from '../types/analysis';
+
 interface GenerateQuestionPayload {
   resume_text: string;
   job_text: string;
@@ -21,7 +23,8 @@ export const generateQuestion = async (payload: GenerateQuestionPayload) => {
     throw new Error('생성 실패');
   }
 
-  const data: { request_id: string; status: string } = await response.json();
+  const data: { request_id: string; status: GenerateStatus } =
+    await response.json();
 
   return data;
 };

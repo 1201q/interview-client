@@ -1,12 +1,13 @@
 'use client';
 
+import { motion } from 'motion/react';
 import styles from './styles/info.module.css';
 
 import Image from 'next/image';
 
 const InfoSection = () => {
   return (
-    <section className={styles.infoSection}>
+    <motion.section className={styles.infoSection}>
       <div className={`${styles.contents} ${styles.infoContents}`}>
         <div className={styles.info}>
           <div className={styles.infoImage}>
@@ -43,7 +44,7 @@ const InfoSection = () => {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

@@ -37,9 +37,20 @@
   box-sizing: border-box;
 }
 
-.headerWrapper svg {
+.logoButton {
+  display: flex;
+  align-items: center;
+  width: 100%;
   max-width: 100px;
 }
+
+.logoButton svg {
+  max-width: 100px;
+}
+
+/* .headerWrapper svg {
+  max-width: 100px;
+} */
 
 .rightController {
   display: flex;

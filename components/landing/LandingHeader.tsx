@@ -11,7 +11,14 @@ const LandingHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   return (
     <HeaderBlur>
       <div className={styles.headerWrapper}>
-        <Logo />
+        <button
+          className={styles.logoButton}
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        >
+          <Logo />
+        </button>
         {isLoggedIn ? (
           <>
             <div className={styles.rightController}>

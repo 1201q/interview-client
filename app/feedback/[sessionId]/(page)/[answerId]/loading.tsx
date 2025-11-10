@@ -8,49 +8,23 @@ export default function SkeletonTop() {
           className={`${styles.skeleton} ${styles.headerSkeleton} ${styles.shimmer}`}
         />
       </div>
-      <div className={styles.contents}>
-        <section>
-          <div className={styles.sectionTitle}>
-            <div
-              className={`${styles.skeleton} ${styles.sectionTitleSkeleton} ${styles.shimmer}`}
-            ></div>
-          </div>
 
-          <div className={` ${styles.container}`}>
-            <div className={`${styles.topQuestionText}`}>
+      <div className={styles.contents}>
+        <div className={`${styles.topQuestionText}`}>
+          <div className={`${styles.skeleton} ${styles.shimmer}`}></div>
+          <div className={`${styles.tabs}`}>
+            <div className={`${styles.tab}`}>
               <div className={`${styles.skeleton} ${styles.shimmer}`}></div>
             </div>
-            <div className={`${styles.tabs}`}>
-              <div className={`${styles.tab}`}>
-                <div className={`${styles.skeleton} ${styles.shimmer}`}></div>
-              </div>
-              <div className={`${styles.tab}`}>
-                <div className={`${styles.skeleton} ${styles.shimmer}`}></div>
-              </div>
-              <div className={`${styles.tab}`}>
-                <div className={`${styles.skeleton} ${styles.shimmer}`}></div>
-              </div>
-              <div className={`${styles.tab}`}>
-                <div className={`${styles.skeleton} ${styles.shimmer}`}></div>
-              </div>
+            <div className={`${styles.tab}`}>
+              <div className={`${styles.skeleton} ${styles.shimmer}`}></div>
             </div>
-            <div className={styles.tabBottom}>
-              <div className={`${styles.contentsBigText}`}>
-                <div
-                  className={`${styles['w-30']} ${styles.skeleton} ${styles.shimmer}`}
-                ></div>
-              </div>
-              <div className={`${styles.contentsSmallText}`}>
-                <div className={`${styles.skeleton} ${styles.shimmer}`}></div>
-              </div>
-              <div className={`${styles.contentsSmallText}`}>
-                <div
-                  className={`${styles['w-30']} ${styles.skeleton} ${styles.shimmer}`}
-                ></div>
-              </div>
+            <div className={`${styles.tab}`}>
+              <div className={`${styles.skeleton} ${styles.shimmer}`}></div>
             </div>
           </div>
-        </section>
+        </div>
+
         <section>
           <div className={styles.sectionTitle}>
             <div

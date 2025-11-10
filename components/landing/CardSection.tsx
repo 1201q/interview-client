@@ -8,10 +8,12 @@ import Card3 from '@/public/card3.svg';
 
 import { useState } from 'react';
 
+import { motion } from 'motion/react';
+
 const CardSection = () => {
   return (
     <section className={styles.cardSection}>
-      <div className={styles.contents}>
+      <motion.div className={styles.contents}>
         <p className={styles.title}>AI와 함께하는 면접 준비</p>
         <div className={styles.cardGrid}>
           <MotionCard
@@ -23,12 +25,14 @@ const CardSection = () => {
             desc="이력서/채용공고를 분석해 포지션별 핵심 질문을 자동 생성합니다."
             Icon={Card}
           />
+
           <MotionCard
             colorClass={styles['card--cyan']}
             title={['인성 면접부터', '기술, 컬처핏 질문까지']}
             desc="역량·경험·컬처핏 영역을 균형 있게 커버하는 질문 세트를 구성합니다."
             Icon={Card2}
           />
+
           <MotionCard
             colorClass={styles['card--indigo']}
             title={['실제 면접과 유사한 환경에서', '면접 대비하기']}
@@ -36,7 +40,7 @@ const CardSection = () => {
             Icon={Card3}
           />
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

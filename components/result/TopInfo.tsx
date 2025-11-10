@@ -5,12 +5,10 @@ import styles from './styles/r.client.module.css';
 import { useState } from 'react';
 
 interface TopInfoProps {
-  order: number;
-  questionText: string;
   rubric: RubricItemDto;
 }
 
-const TopInfo = ({ order, questionText, rubric }: TopInfoProps) => {
+const TopInfo = ({ rubric }: TopInfoProps) => {
   const [selectedTab, setSelectedTab] =
     useState<keyof RubricItemDto>('context');
 
@@ -27,12 +25,6 @@ const TopInfo = ({ order, questionText, rubric }: TopInfoProps) => {
 
   return (
     <div className={styles.container}>
-      <div className={`${styles.question}`}>
-        <h1>
-          <span className={styles.orderText}>{order + 1}.</span>
-          <span className={styles.questionText}>{questionText}</span>
-        </h1>
-      </div>
       <ul className={styles.tabs}>
         {tabs.map((tab) => (
           <li

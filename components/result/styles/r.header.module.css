@@ -5,6 +5,7 @@
 
   justify-content: flex-start;
   align-items: center;
+  background-color: var(--neutral-0);
 }
 
 .info {

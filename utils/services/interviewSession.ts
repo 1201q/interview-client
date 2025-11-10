@@ -396,50 +396,6 @@ type SubmitAnswerProps = {
   options?: { timeoutMs?: number };
 };
 
-export const testSubmitAnswer = async (
-  sessionId: string,
-  sqId: string,
-  options?: { timeoutMs?: number },
-) => {
-  const controller = new AbortController();
-  const timeout = setTimeout(
-    () => controller.abort(),
-    options?.timeoutMs ?? 15000,
-  );
-
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/interview-answer/${sessionId}/${sqId}/submit/test`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        signal: controller.signal,
-      },
-    );
-
-    if (!res.ok) {
-      let error = '';
-
-      try {
-        error = await res.text();
-      } catch {
-        throw new Error(
-          `answer submit 실패: ${res.status}${error ? error : ''}`,
-        );
-      }
-    }
-
-    return (await res.json()) as SubmitAnswerRes;
-  } catch (error) {
-    if ((error as any)?.name === 'AbortError') {
-      throw new Error('answer submit  요청이 시간 초과되었습니다.');
-    }
-    throw error;
-  } finally {
-    clearTimeout(timeout);
-  }
-};
-
 export const submitAnswer = async ({
   answerId,
   audioBlob,

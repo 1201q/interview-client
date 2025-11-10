@@ -1,0 +1,40 @@
+.menuTabs {
+  display: flex;
+  width: 100%;
+  height: 43px;
+
+  column-gap: 20px;
+  margin-bottom: 25px;
+  position: sticky;
+  top: 50px;
+  background-color: var(--neutral-0);
+  border-bottom: 1px solid var(--neutral-2);
+}
+
+.menuTabButton {
+  height: 100%;
+
+  position: relative;
+}
+
+.menuTabButton span {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--neutral-5);
+}
+
+.active span {
+  font-weight: 500;
+  color: var(--neutral-8);
+}
+
+.underline {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: -1px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--neutral-7);
+  border-radius: 999px;
+}
