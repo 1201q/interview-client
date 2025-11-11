@@ -271,14 +271,20 @@
   color: var(--neutral-7);
 }
 
+.questionInfos {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
+
 .questionInfo {
-  padding: 28px 30px;
+  padding: 26px 30px;
 }
 
 .questionInfo .title {
   font-size: 20px;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   color: var(--neutral-9);
 }
 

@@ -7,7 +7,7 @@ import InterviewHeader from '@/components/interview-progress/layout/InterviewHea
 import { useInterview } from '@/components/interview-progress/core/InterviewProvider';
 import InterviewSidebar from '@/components/interview-progress/layout/InterviewSidebar';
 
-import GlobalVideoBg from '@/components/refactorWebcam/GlobalVideoBg';
+import GlobalVideoBg from '@/components/human-webcam/GlobalVideoBg';
 
 import styles from './page.module.css';
 import { useAtomValue } from 'jotai';

@@ -4,10 +4,20 @@ import { GeneratedQuestionItem } from '@/utils/types/types';
 
 import { Suspense } from 'react';
 import SelectSkeleton from './loading';
+import { cookies } from 'next/headers';
 
 const getRequest = async (requestId: string) => {
   const url = `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${requestId}/questions`;
-  const res = await fetch(url);
+
+  const cookie = cookies().toString();
+
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+      cookie,
+      accept: 'application/json',
+    },
+  });
 
   if (!res.ok) {
     throw new Error('Failed to fetch request data');

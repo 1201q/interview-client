@@ -1,7 +1,7 @@
 'use client';
 
 import { InterviewPhase } from '@/utils/types/interview';
-import WebcamInstance from '../../refactorWebcam/WebcamInstance';
+import WebcamInstance from '../../human-webcam/WebcamInstance';
 import { useInterview } from './InterviewProvider';
 
 import styles from './styles/i.client.module.css';

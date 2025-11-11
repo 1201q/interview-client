@@ -77,109 +77,6 @@ export const createInterviewSession = async ({
   }
 };
 
-// jobRole
-type CreateJobRoleResponse = {
-  job_role: string;
-  status: 'completed' | 'failed';
-};
-
-export const createInterviewJobRole = async (
-  sessionId: string,
-  options?: { timeoutMs?: number },
-) => {
-  const controller = new AbortController();
-  const timeout = setTimeout(
-    () => controller.abort(),
-    options?.timeoutMs ?? 15000,
-  );
-
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/interview-session/${sessionId}/role`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        signal: controller.signal,
-      },
-    );
-
-    if (!res.ok) {
-      let error = '';
-
-      try {
-        error = await res.text();
-      } catch {
-        throw new Error(`직군 생성 실패: ${res.status}${error ? error : ''}`);
-      }
-    }
-
-    const json = (await res.json()) as CreateJobRoleResponse;
-
-    if (json.status === 'failed') throw new Error('직군이 미존재.');
-
-    return json;
-  } catch (error) {
-    if ((error as any)?.name === 'AbortError') {
-      throw new Error('세션 생성 요청이 시간 초과되었습니다.');
-    }
-    throw error;
-  } finally {
-    clearTimeout(timeout);
-  }
-};
-
-// keywords
-type CreateSttKeywordsResponse = {
-  keywords: { id: string; stt_keywords: string[] }[];
-};
-
-export const createInterviewSttKeywords = async (
-  sessionId: string,
-  options?: { timeoutMs?: number },
-) => {
-  const controller = new AbortController();
-  const timeout = setTimeout(
-    () => controller.abort(),
-    options?.timeoutMs ?? 60000,
-  );
-
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/interview-session/${sessionId}/keywords`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        signal: controller.signal,
-      },
-    );
-
-    if (!res.ok) {
-      let error = '';
-
-      try {
-        error = await res.text();
-      } catch {
-        throw new Error(
-          `keywords 생성 실패: ${res.status}${error ? error : ''}`,
-        );
-      }
-    }
-
-    const json = (await res.json()) as CreateSttKeywordsResponse;
-
-    if (!json.keywords) throw new Error('세션 응답에 keywords가 없음.');
-
-    return json;
-  } catch (error) {
-    if ((error as any)?.name === 'AbortError') {
-      throw new Error('세션 생성 요청이 시간 초과되었습니다.');
-    }
-    throw error;
-  } finally {
-    clearTimeout(timeout);
-  }
-};
-
 // session data
 
 type GetSessionDetailResponse = {
@@ -206,6 +103,7 @@ export const getInterviewSessionDetail = async (
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         signal: controller.signal,
+        credentials: 'include',
       },
     );
 
@@ -256,6 +154,7 @@ export const startInterviewSession = async (
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         signal: controller.signal,
+        credentials: 'include',
       },
     );
 
@@ -303,6 +202,7 @@ export const startAnswer = async (
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         signal: controller.signal,
+        credentials: 'include',
       },
     );
 
@@ -350,6 +250,7 @@ export const resetInterviewSession = async (
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         signal: controller.signal,
+        credentials: 'include',
       },
     );
 
@@ -431,6 +332,7 @@ export const submitAnswer = async ({
         method: 'POST',
         signal: controller.signal,
         body: form,
+        credentials: 'include',
       },
     );
 

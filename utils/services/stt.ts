@@ -6,7 +6,7 @@ interface EphemeralTokenPayload {
 
 export const getEphemeralToken = async (payload: EphemeralTokenPayload) => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/transcribe/realtime/token/test`,
+    `${process.env.NEXT_PUBLIC_API_URL}/transcribe/realtime/token`,
     {
       method: 'POST',
       credentials: 'include',

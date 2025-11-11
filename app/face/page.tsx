@@ -1,6 +1,6 @@
 'use client';
 
-import WebcamInstance from '@/components/refactorWebcam/WebcamInstance';
+import WebcamInstance from '@/components/human-webcam/WebcamInstance';
 import { answerEnd$, answerStart$ } from '@/store/observable/raw';
 import { recordedFaceData$ } from '@/store/observable/result';
 

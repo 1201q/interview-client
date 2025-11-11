@@ -11,7 +11,7 @@ import { useMemo, useState } from 'react';
 import styles from './styles/generating.module.css';
 import { v4 as uuid } from 'uuid';
 import { GeneratedQuestionItem } from '@/utils/types/types';
-import { LoaderCircle, Clock } from 'lucide-react';
+import { Clock } from 'lucide-react';
 import { useStableSSE } from '@/utils/hooks/useStableSSE';
 import { useRouter } from 'next/navigation';
 import { GenerateEvent } from '@/utils/types/generate-sse';
@@ -46,36 +46,42 @@ const GeneratingClient = ({ requestId }: Props) => {
 
   const url = `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${requestId}/stream?mock=false`;
 
-  useStableSSE<GenerateEvent>(url, {
-    onOpen: () => {
-      setRequestStage('generating');
-    },
-    onMessage: (ev) => {
-      console.log(ev);
-    },
-    onNamed: {
-      question: (data) => {
-        console.log(data);
-        setGeneratedQuestions((prev) => [...prev, { ...data, id: uuid() }]);
+  useStableSSE<GenerateEvent>(
+    url,
+    {
+      onOpen: () => {
+        setRequestStage('generating');
+      },
+      onMessage: (ev) => {
+        console.log(ev);
+      },
+      onNamed: {
+        question: (data) => {
+          console.log(data);
+          setGeneratedQuestions((prev) => [...prev, { ...data, id: uuid() }]);
+        },
+
+        progress: (data) => {
+          if (data?.limitCount) {
+            setProgress(
+              Math.floor((data.createdTotal / data.limitCount) * 100),
+            );
+          }
+        },
+
+        completed: () => {
+          setProgress(100);
+          setRequestStage('selecting');
+          router.replace(`/new-request/${requestId}/select`);
+        },
       },
 
-      progress: (data) => {
-        if (data?.limitCount) {
-          setProgress(Math.floor((data.createdTotal / data.limitCount) * 100));
-        }
-      },
-
-      completed: () => {
-        setProgress(100);
-        setRequestStage('selecting');
-        router.replace(`/new-request/${requestId}/select`);
+      onError: (error) => {
+        console.warn('SSE error:', error);
       },
     },
-
-    onError: (error) => {
-      console.warn('SSE error:', error);
-    },
-  });
+    { withCredentials: true },
+  );
 
   return (
     <AnimatePresence mode="popLayout" initial={false}>

@@ -12,9 +12,7 @@ export const getAnalysis = async (
 ) => {
   return fetchWithTimeout<AnalysesResultDto>(
     `/analysis/${sessionId}/${answerId}/result`,
-    {
-      timeoutMs: options?.timeoutMs,
-    },
+    { withCookie: true, timeoutMs: options?.timeoutMs },
   );
 };
 

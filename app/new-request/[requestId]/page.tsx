@@ -2,12 +2,21 @@ import GeneratingClient from '@/components/newRequest/GeneratingClient';
 import RequestHeader from '@/components/newRequest/RequestHeader';
 import { Suspense } from 'react';
 import GeneratingSkeleton from './loading';
+import { cookies } from 'next/headers';
 
-const TEST_ID = '87ca5626-b201-43f7-82d0-44ea227321dd';
+const getRequest = async (requestId: string) => {
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${requestId}/request`;
 
-const getRequest = async (requestId: string, isTest: boolean = false) => {
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${isTest ? TEST_ID : requestId}/request`;
-  const res = await fetch(url);
+  const cookie = cookies().toString();
+
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+      cookie,
+      accept: 'application/json',
+    },
+    cache: 'no-store',
+  });
 
   if (!res.ok) {
     throw new Error('Failed to fetch request data');

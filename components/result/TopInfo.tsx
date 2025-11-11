@@ -2,17 +2,13 @@
 
 import { RubricItemDto } from '@/utils/types/analysis';
 import styles from './styles/r.client.module.css';
-import { useState } from 'react';
 
 interface TopInfoProps {
   rubric: RubricItemDto;
 }
 
 const TopInfo = ({ rubric }: TopInfoProps) => {
-  const [selectedTab, setSelectedTab] =
-    useState<keyof RubricItemDto>('context');
-
-  const tabs: Array<{
+  const rubrics: Array<{
     key: keyof RubricItemDto;
     label: string;
     text: string | null;
@@ -24,28 +20,15 @@ const TopInfo = ({ rubric }: TopInfoProps) => {
   ];
 
   return (
-    <div className={styles.container}>
-      <ul className={styles.tabs}>
-        {tabs.map((tab) => (
-          <li
-            className={`${styles.tab} ${selectedTab === tab.key ? styles.selected : ''}`}
-            key={tab.key}
-            onClick={() => {
-              setSelectedTab(tab.key);
-            }}
-          >
-            {tab.label}
-          </li>
-        ))}
-      </ul>
-      <div className={styles.questionInfo}>
-        <p className={styles.title}>
-          {tabs.find((t) => t.key === selectedTab)?.label}
-        </p>
-        <p className={styles.desc}>
-          {tabs.find((t) => t.key === selectedTab)?.text || '정보가 없습니다.'}
-        </p>
-      </div>
+    <div className={styles.questionInfos}>
+      {rubrics.map((r) => (
+        <div className={styles.container} key={r.key}>
+          <div className={styles.questionInfo}>
+            <p className={styles.title}>{r.label}</p>
+            <p className={styles.desc}>{r.text ? r.text : '정보 없음'}</p>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

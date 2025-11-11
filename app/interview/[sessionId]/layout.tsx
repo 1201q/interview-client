@@ -8,6 +8,7 @@ import InterviewProvider, {
 import InterviewInProgressOverlay from '@/components/interview-progress/overlays/InterviewInProgressOverlay';
 import InterviewCompletedOverlay from '@/components/interview-progress/overlays/InterviewCompletedOverlay';
 import InterviewNotFoundOverlay from '@/components/interview-progress/overlays/InterviewNotFoundOverlay';
+import { cookies } from 'next/headers';
 
 type SessionDetailResponse = {
   session_id: string;
@@ -18,7 +19,17 @@ type SessionDetailResponse = {
 
 const getSession = async (sessionId: string) => {
   const url = `${process.env.NEXT_PUBLIC_API_URL}/interview-session/${sessionId}`;
-  const res = await fetch(url);
+
+  const cookie = cookies().toString();
+
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+      cookie,
+      accept: 'application/json',
+    },
+    cache: 'no-store',
+  });
 
   if (!res.ok) {
     return null;
