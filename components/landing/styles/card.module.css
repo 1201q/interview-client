@@ -1,93 +1,298 @@
 .contents {
   width: 100%;
-
-  max-width: 1100px;
-
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 26px;
   position: relative;
-
   box-sizing: border-box;
 }
 
 .cardSection {
-  margin-top: 110px;
+  margin-top: 30px;
 }
 
 .cardSection * .title {
   text-align: center;
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 600;
+  color: black;
+  margin-bottom: 30px;
+}
 
-  color: var(--neutral-8);
+.cardSection * .desc {
+  text-align: center;
+  font-size: 42px;
+  font-weight: 700;
+  color: black;
   margin-bottom: 60px;
 }
 
 .cardGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 50px;
 }
 
-.cardGrid > *:last-child {
-  grid-column: 1 / -1;
+.ifWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 15px;
+  margin-bottom: 200px;
+}
+
+.ifItem {
+  background-color: black;
+  border-radius: 16px;
+  padding: 12px 20px 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 12px;
+}
+
+.ifItem p {
+  color: var(--neutral-0);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.ifItem svg {
+  stroke: var(--danger);
+  stroke-width: 3px;
 }
 
 /* card */
 
-.card {
-  height: 280px;
-
+.card,
+.videoCard {
+  display: flex;
+  flex-direction: column;
+  height: 600px;
   border-radius: 28px;
-  padding: 40px 40px;
-  box-shadow: var(--shadow-sm);
   position: relative;
+  isolation: isolate;
   overflow: hidden;
+  background-color: var(--neutral-0);
+  box-shadow:
+    #60a5fa2d 0px 16px 64px 4px,
+    rgba(0, 0, 0, 0.04) 0px 8px 32px 0px;
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
-.card p {
-  color: var(--neutral-0);
-  font-size: 25px;
-  font-weight: 600;
+.card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: 0;
+  border-radius: 28px;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background-image:
+    radial-gradient(
+      120% 100% at 80% 0%,
+      rgba(96, 165, 250, 0.3) 0%,
+      rgba(37, 99, 235, 0.2) 35%,
+      rgba(37, 99, 235, 0) 70%
+    ),
+    linear-gradient(135deg, #60a5fa 0%, #2563eb 20%);
+  background-blend-mode: screen;
+  background-size: 180% 180%;
+  animation: gradient-move 8s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  box-shadow:
+    0 0 0 1px rgba(96, 165, 250, 0.25),
+    0 18px 60px rgba(37, 99, 235, 0.15);
+  pointer-events: none;
+}
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  padding: 45px 40px;
+  transition:
+    background-color 0.35s ease,
+    transform 0.35s ease,
+    opacity 0.35s ease;
+  backdrop-filter: blur(2px);
+  will-change: transform;
+}
+
+.card p,
+.videoCard p {
+  color: var(--neutral-8);
+  font-size: 22px;
+  font-weight: 700;
   line-height: 1.3;
 }
 
-.card--blue {
-  background-image: linear-gradient(to bottom right, #60a5fa 0%, #2563eb 100%);
+.card span,
+.videoCard span {
+  margin-top: 15px;
+  font-weight: 500;
+  font-size: 17px;
+  color: var(--neutral-6);
+  line-height: 1.3;
 }
 
-.card--blue .icon {
+.card .icon {
+  position: absolute;
+  width: 100%;
+  height: 80%;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(8px);
+  transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* 두 레이어 공통 */
+.iconPrimary,
+.iconSecondary {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.35s ease;
+}
+
+/* 기본: 첫 번째 아이콘만 보임 */
+.iconPrimary {
+  transform: scale(0.96) translateX(0);
+  opacity: 0.6;
+}
+
+.iconSecondary {
+  transform: scale(0.96) translateX(120px); /* 오른쪽에서 대기 */
+  opacity: 0;
+  display: flex;
+  align-items: flex-end;
+}
+
+.iconPrimary img {
+  width: 100%;
+
+  object-fit: cover;
+}
+
+.iconSecondary video {
+  max-width: none;
+  width: 100%;
+
+  background-color: red;
+}
+
+/* hover 상태 전환 */
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    rgba(96, 165, 250, 0.18) 0px 16px 64px 4px,
+    rgba(0, 0, 0, 0.1) 0px 8px 32px 0px;
+}
+
+.card:hover::before {
+  opacity: 0.55;
+}
+
+.card:hover::after {
+  opacity: 1;
+}
+
+.card:hover .textWrapper {
+  transform: translateY(-2px);
+}
+
+.card:hover p {
+  color: var(--neutral-0);
+  filter: drop-shadow(10px 20px 10px rgba(0, 0, 0, 0.2));
+}
+
+.card:hover span {
+  color: var(--neutral-0);
+  filter: drop-shadow(10px 20px 10px rgba(0, 0, 0, 0.15));
+}
+
+/* 아이콘 전환 핵심 */
+.card:hover .icon {
+  transform: translateY(0);
+}
+
+.card:hover .iconPrimary {
+  opacity: 0;
+  transform: scale(0.98) translateX(-40px); /* 왼쪽으로 빠지면서 사라짐 */
+}
+
+.card:hover .iconSecondary {
+  opacity: 1;
+  transform: scale(1) translateX(0); /* 오른쪽에서 슬라이드 인 */
+}
+
+@keyframes gradient-move {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 50% 50%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+.videoWrapper {
+  position: absolute;
+  inset: calc(0px * -1);
+  z-index: 0;
+  overflow: hidden;
+}
+
+.videoWrapper video {
   width: 100%;
   height: 100%;
+
+  margin-top: 90px;
+  object-fit: cover;
+
+  background: none;
+
+  filter: brightness(1.08) saturate(1.2);
+}
+
+.cardOverlay {
   position: absolute;
-  top: 85px;
-  right: -25px;
-  z-index: 0;
-}
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
 
-.card--cyan {
-  background-image: linear-gradient(to bottom right, #22d3ee 0%, #3b82f6 100%);
-}
-
-.card--cyan .icon {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 55px;
-  right: 25px;
-  z-index: 0;
-}
-
-.card--indigo {
-  background-image: linear-gradient(to bottom right, #818cf8 0%, #a855f7 100%);
-}
-
-.card--indigo .icon {
-  width: 400px;
-
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
-  z-index: 0;
-  transform: translateY(28%) translateX(-6%);
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(255, 255, 255, 0.35) 45%,
+    rgba(255, 255, 255, 0.85) 75%,
+    #ffffff 100%
+  );
+  backdrop-filter: blur(1px);
 }

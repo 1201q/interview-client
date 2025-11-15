@@ -7,7 +7,8 @@ import { cookies } from 'next/headers';
 const getRequest = async (requestId: string) => {
   const url = `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${requestId}/request`;
 
-  const cookie = cookies().toString();
+  const cookieStore = await cookies();
+  const cookie = cookieStore.toString();
 
   const res = await fetch(url, {
     method: 'GET',
@@ -17,6 +18,8 @@ const getRequest = async (requestId: string) => {
     },
     cache: 'no-store',
   });
+
+  console.log(res);
 
   if (!res.ok) {
     throw new Error('Failed to fetch request data');
@@ -32,6 +35,8 @@ const Page = async ({ params }: { params: Promise<{ requestId: string }> }) => {
   const { requestId } = await params;
 
   const requestData = await getRequest(requestId);
+
+  console.log(requestData);
 
   const wait = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));

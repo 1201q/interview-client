@@ -1,11 +1,13 @@
 'use client';
 
 import styles from './styles/header.module.css';
-import Logo from '@/public/aiterviewlogo-black.svg';
+import Logo from '@/public/LOGO.svg';
 import { useEffect, useState } from 'react';
 
 import { ChevronRightIcon } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
+// Image
 
 const LandingHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   return (
@@ -17,7 +19,14 @@ const LandingHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
         >
-          <Logo />
+          {/* <Logo /> */}
+          {/* <Image
+            src={'/main-logo.png'}
+            alt="main-logo"
+            width={29}
+            height={20}
+          /> */}
+          <Logo width={70} height={40} />
         </button>
         {isLoggedIn ? (
           <>

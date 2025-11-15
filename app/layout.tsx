@@ -5,6 +5,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 import JotaiProvider from '@/components/shared/JotaiProvider';
 import { cookies } from 'next/headers';
+import { Metadata } from 'next';
 
 interface Props {
   children: React.ReactNode;
@@ -24,6 +25,13 @@ const wanted = localFont({
   weight: '45 920',
   variable: '--font-wanted',
 });
+
+export const metadata: Metadata = {
+  title: '디딤 - AI 모의 면접 서비스',
+  icons: {
+    icon: '/favicon.ico',
+  },
+};
 
 export default async function RootLayout({ children, modal }: Readonly<Props>) {
   const sb =

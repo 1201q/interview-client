@@ -34,8 +34,17 @@ export function useStableSSE<E extends { type: string }>(
     const backoffBaseMs = opts?.backoffBaseMs ?? 400;
 
     // 핸들러에 선언된 키를 그대로 리스너로 등록(확장 자동 반영)
+
     const namedKeys = Object.keys(handlers.onNamed ?? {}) as Array<E['type']>;
     const added: Array<{ key: string; fn: (e: MessageEvent) => void }> = [];
+
+    // 강제 종료 함수
+    // completed / failed를 받으면 재접속하지 말고 바로 닫기
+    const hardClose = () => {
+      closedRef.current = true;
+      esRef.current?.close();
+      esRef.current = null;
+    };
 
     const connect = () => {
       if (closedRef.current) return;
@@ -59,6 +68,14 @@ export function useStableSSE<E extends { type: string }>(
           if (typeof payload === 'string') payload = JSON.parse(payload); // 2차(이중 stringify 방어)
         } catch {}
         const t = payload?.type as E['type'] | undefined;
+
+        // completed / failed 이벤트 받으면 강제 종료
+        if (t === ('completed' as E['type']) || t === ('failed' as E['type'])) {
+          handlers.onNamed?.[t]?.(payload, e);
+          hardClose();
+          return;
+        }
+
         if (t && handlers.onNamed?.[t]) {
           handlers.onNamed[t]?.(payload, e);
         }
@@ -82,6 +99,16 @@ export function useStableSSE<E extends { type: string }>(
             ...(typeof payload === 'object' ? payload : { data: payload }),
             type: mappedKey,
           } as E;
+
+          // completed / failed 이벤트 받으면 강제 종료
+          if (
+            mappedKey === ('completed' as E['type']) ||
+            mappedKey === ('failed' as E['type'])
+          ) {
+            handlers.onNamed?.[mappedKey]?.(data as any, e);
+            hardClose();
+            return;
+          }
 
           handlers.onNamed?.[mappedKey]?.(data as any, e);
         };

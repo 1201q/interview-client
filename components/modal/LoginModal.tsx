@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 import Image from 'next/image';
 
-import Logo from '@/public/aiterviewlogo.svg';
+import Logo from '@/public/LOGO.svg';
 
 import { motion } from 'motion/react';
 const LoginModal = () => {

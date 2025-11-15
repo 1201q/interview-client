@@ -10,13 +10,14 @@
 }
 
 .top svg {
-  max-width: 100px;
-  filter: contrast(120%) opacity(70%);
+  max-width: 70px;
 
   user-select: none;
 
   opacity: 1;
   transition: opacity 1s;
+
+  color: var(--neutral-5) !important;
 }
 
 /* 사이드바 버튼 */

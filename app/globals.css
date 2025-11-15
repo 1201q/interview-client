@@ -233,7 +233,7 @@
   font-family: var(--font-wanted);
 
   font-variant-numeric: tabular-nums;
-  color: var(--font-black-color);
+
   -webkit-tap-highlight-color: transparent;
 }
 

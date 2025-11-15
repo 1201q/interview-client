@@ -84,6 +84,7 @@ const JobTextUploader = () => {
                 }}
                 maxLength={MAX_LENGTH}
                 minLength={MIN_LENGTH}
+                spellCheck={false}
                 placeholder="채용공고 내용을 입력하세요."
               />
 

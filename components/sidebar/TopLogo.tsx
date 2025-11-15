@@ -1,6 +1,6 @@
 import ToggleButton from './ToggleButton';
 import styles from './styles/top.module.css';
-import Logo from '@/public/aiterviewlogo.svg';
+import Logo from '@/public/LOGO.svg';
 
 const TopLogo = ({ toggleState }: { toggleState: 'mini' | 'expanded' }) => {
   return (

@@ -37,7 +37,14 @@
 
 .headerLogo {
   max-width: 100px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
+}
+
+.headerLogo svg {
+  max-width: 70px;
+  height: auto;
+
+  color: var(--neutral-5);
 }
 
 .headerText {
@@ -56,7 +63,7 @@
 
   text-align: left;
   line-height: 1.2;
-  color: var(--neutral-5);
+  color: var(--neutral-7);
 }
 
 .descText {

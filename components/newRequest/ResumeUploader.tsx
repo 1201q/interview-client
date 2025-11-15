@@ -281,6 +281,7 @@ const ResumeUploader = () => {
                 maxLength={MAX_LENGTH}
                 minLength={MIN_LENGTH}
                 placeholder="이력서 내용을 입력하세요."
+                spellCheck={false}
               />
               {text.length > 0 && (
                 <div className={styles.textLength}>

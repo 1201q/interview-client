@@ -4,8 +4,7 @@ import LandingHeader from '@/components/landing/LandingHeader';
 
 import { getAuth } from '@/utils/services/auth';
 import { cookies } from 'next/headers';
-import CardSection from '@/components/landing/CardSection';
-import InfoSection from '@/components/landing/InfoSection';
+
 import HeroSection from '@/components/landing/HeroSection';
 
 const Page = async () => {
@@ -17,12 +16,12 @@ const Page = async () => {
 
   return (
     <div className={styles.container}>
-      <LandingHeader isLoggedIn={isLoggedIn} />
-      <main className={styles.main}>
-        <HeroSection isLoggedIn />
-        <CardSection />
-        <InfoSection />
-      </main>
+      <div className={`${styles.heroBg} ${styles.heroFog}`}>
+        <LandingHeader isLoggedIn={isLoggedIn} />
+        <main className={styles.main}>
+          <HeroSection isLoggedIn />
+        </main>
+      </div>
     </div>
   );
 };

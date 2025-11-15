@@ -80,7 +80,7 @@ const GeneratingClient = ({ requestId }: Props) => {
         console.warn('SSE error:', error);
       },
     },
-    { withCredentials: true },
+    { withCredentials: true, autoReconnect: false },
   );
 
   return (
