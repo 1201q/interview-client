@@ -25,7 +25,7 @@ export default async function DefaultSidebar({
       <SharedMenu />
       <RequestSideStepsHydrated
         initialStage="resumeText"
-        dangerouslyForceHydrate={true}
+        dangerouslyForceHydrate={false}
       />
       <BottomUser />
     </SidebarBg>

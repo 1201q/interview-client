@@ -3,7 +3,6 @@ import { recordedFaceData$ } from '@/store/observable/result';
 import { useTranscribe } from '@/utils/hooks/useTranscribe';
 
 import {
-  getInterviewSessionDetail,
   startAnswer,
   startInterviewSession,
   submitAnswer,
@@ -17,6 +16,7 @@ import { useRouter } from 'next/navigation';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { FaceFrameState } from '../types/analysis';
+import { getInterviewSessionDetailClient } from '../services/interview-session.client';
 
 interface InterviewInitProps {
   sessionId: string;
@@ -138,7 +138,7 @@ export const useInterview = ({
   };
 
   const refresh = async () => {
-    const res = await getInterviewSessionDetail(sessionId);
+    const res = await getInterviewSessionDetailClient(sessionId);
 
     setClientQuestions(res.questions);
     setServerStatus(res.status);

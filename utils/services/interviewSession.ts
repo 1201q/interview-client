@@ -1,7 +1,4 @@
-import {
-  InterviewSessionStatus,
-  SessionQuestionItemWithAnswerId,
-} from '../types/interview';
+import { InterviewSessionStatus } from '../types/interview';
 
 // create
 type CreateSessionBody = {
@@ -70,61 +67,6 @@ export const createInterviewSession = async ({
   } catch (error) {
     if ((error as any)?.name === 'AbortError') {
       throw new Error('세션 생성 요청이 시간 초과되었습니다.');
-    }
-    throw error;
-  } finally {
-    clearTimeout(timeout);
-  }
-};
-
-// session data
-
-type GetSessionDetailResponse = {
-  session_id: string;
-  status: InterviewSessionStatus;
-  created_at: string;
-  questions: SessionQuestionItemWithAnswerId[];
-};
-
-export const getInterviewSessionDetail = async (
-  sessionId: string,
-  options?: { timeoutMs?: number },
-) => {
-  const controller = new AbortController();
-  const timeout = setTimeout(
-    () => controller.abort(),
-    options?.timeoutMs ?? 15000,
-  );
-
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/interview-session/${sessionId}`,
-      {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        signal: controller.signal,
-        credentials: 'include',
-      },
-    );
-
-    if (!res.ok) {
-      let body = '';
-      try {
-        body = await res.text();
-      } catch {
-        console.error('detail get 실패');
-      }
-      const err = new Error(`detail get 실패: ${res.status} ${body}`);
-      (err as any).status = res.status;
-      throw err;
-    }
-
-    const json = (await res.json()) as GetSessionDetailResponse;
-
-    return json;
-  } catch (error) {
-    if ((error as any)?.name === 'AbortError') {
-      throw new Error('세션 요청이 시간 초과되었습니다.');
     }
     throw error;
   } finally {

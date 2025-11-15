@@ -1,39 +1,14 @@
 import RequestHeader from '@/components/newRequest/RequestHeader';
 import SelectQuestion from '@/components/newRequest/SelectQuestion';
-import { GeneratedQuestionItem } from '@/utils/types/types';
-
 import { Suspense } from 'react';
 import SelectSkeleton from './loading';
-import { cookies } from 'next/headers';
-
-const getRequest = async (requestId: string) => {
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/generate-question/${requestId}/questions`;
-
-  const cookie = cookies().toString();
-
-  const res = await fetch(url, {
-    method: 'GET',
-    headers: {
-      cookie,
-      accept: 'application/json',
-    },
-  });
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch request data');
-  }
-
-  const json = res.json();
-
-  const questions = (await json).questions as GeneratedQuestionItem[];
-
-  return questions;
-};
+import { getRequestQuestions } from '@/utils/services/generate-request';
 
 const Page = async ({ params }: { params: Promise<{ requestId: string }> }) => {
   const { requestId } = await params;
 
-  const questions = await getRequest(requestId);
+  const result = await getRequestQuestions(requestId);
+  const questions = result.questions;
 
   const wait = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));

@@ -10,7 +10,7 @@ const RequestHeader = ({ text }: HeaderProps) => {
   return (
     <div className={styles.header}>
       <div className={styles.info}>
-        <h2>질문 생성</h2>
+        <h2>새로운 면접 시작</h2>
         <span>{text}</span>
       </div>
     </div>

@@ -10,8 +10,7 @@ const HistoryHeader = ({ text }: HeaderProps) => {
   return (
     <div className={styles.header}>
       <div className={styles.info}>
-        <h2>진행한 면접</h2>
-        <span>{text}</span>
+        <h2>{text}</h2>
       </div>
     </div>
   );

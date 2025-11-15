@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import styles from './styles/shared.menu.module.css';
 
-import { FileTextIcon, PlayIcon } from 'lucide-react';
+import { PlayIcon, FolderClosedIcon, HistoryIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
 
@@ -29,9 +29,16 @@ const SharedMenu = () => {
     {
       id: '2',
       text: '면접 기록',
-      selected: pathname.startsWith('/history'),
-      href: '/history',
-      icon: <FileTextIcon size={20} />,
+      selected: pathname.startsWith('/history/interview'),
+      href: '/history/interview',
+      icon: <HistoryIcon size={19} style={{ marginLeft: '2px' }} />,
+    },
+    {
+      id: '3',
+      text: 'My',
+      selected: pathname.startsWith('/history/request'),
+      href: '/history/request',
+      icon: <FolderClosedIcon size={18} style={{ marginLeft: '2px' }} />,
     },
   ];
 

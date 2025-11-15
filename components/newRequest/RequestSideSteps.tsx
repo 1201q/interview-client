@@ -59,7 +59,7 @@ export function RequestSideSteps() {
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
         >
-          <p className={styles.listHeader}>새로운 질문 생성</p>
+          <p className={styles.listHeader}>새로운 면접 시작</p>
           <ol className={styles.stepList}>
             {steps.map((step, idx) => {
               const stageIndex = steps.findIndex((s) =>

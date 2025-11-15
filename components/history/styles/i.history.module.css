@@ -100,7 +100,8 @@
 
 /* 오른쪽 로딩 배지 */
 /* ========================================== */
-.loadingBadge {
+.loadingBadge,
+.statusBadge {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -114,10 +115,32 @@
   user-select: none;
 }
 
-.loadingBadge span {
+.loadingBadge span,
+.statusBadge span {
   font-size: 13px;
   font-weight: 600;
+}
+
+.loadingBadge span {
   color: var(--neutral-7);
+}
+
+.statusWorking {
+  color: color-mix(in srgb, var(--primary) 70%, black 8%);
+  background: color-mix(in srgb, var(--primary) 10%, white 90%);
+  border-color: color-mix(in srgb, var(--primary) 40%, white 80%);
+}
+
+.statusCompleted {
+  color: color-mix(in srgb, var(--success) 70%, black 10%);
+  background: color-mix(in srgb, var(--success) 8%, white 95%);
+  border-color: color-mix(in srgb, var(--success) 40%, white 90%);
+}
+
+.statusFailed {
+  color: color-mix(in srgb, var(--danger) 70%, black 8%);
+  background: color-mix(in srgb, var(--danger) 10%, white 90%);
+  border-color: color-mix(in srgb, var(--danger) 40%, white 80%);
 }
 
 /* 아이콘 스피너 */
@@ -140,8 +163,6 @@
   justify-content: space-between;
 
   flex: 1;
-
-  margin-bottom: 15px;
 }
 
 .headerLeft {
@@ -156,6 +177,40 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+/* footer row */
+.footerRow {
+  margin-top: 14px;
+}
+
+.pastSessionTag {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--primary) 5%, white 80%);
+  border: 1px solid color-mix(in srgb, var(--primary) 20%, white 80%);
+}
+
+.pastSessionDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--primary);
+}
+
+.pastSessionText {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+.pastSessionMeta {
+  font-size: 11px;
+  color: var(--primary);
 }
 
 /* 메타 라인 */
@@ -197,6 +252,7 @@
 
   border-top: 1px dashed var(--neutral-3);
   padding-top: 14px;
+  margin-top: 15px;
 }
 
 .qItem {
