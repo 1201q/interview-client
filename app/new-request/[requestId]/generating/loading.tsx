@@ -3,13 +3,6 @@ import styles from './loading.module.css';
 export default function GeneratingSkeleton() {
   return (
     <div className={styles.main}>
-      {/* 헤더 */}
-      <div className={styles.header}>
-        <div
-          className={`${styles.skeleton} ${styles.headerSkeleton} ${styles.shimmer}`}
-        />
-      </div>
-
       {/* 컨텐츠 */}
       <div className={styles.contents}>
         <section>

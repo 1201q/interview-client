@@ -52,23 +52,21 @@
 
 .contents,
 .slideContents {
+  height: calc(100% - 50px);
   max-width: 1000px;
   min-width: 1000px;
   margin: 0 auto;
-  padding: 30px 36px;
+
   position: relative;
 
-  height: calc(100% - 120px);
   box-sizing: border-box;
-}
-
-.slideContents {
-  height: calc(100% - 50px);
   overflow-x: clip;
+  padding: 30px 36px 0px 36px;
 }
 
 .animationContainer {
   inset: 0;
+  padding-bottom: 0;
 }
 
 .wrapper,

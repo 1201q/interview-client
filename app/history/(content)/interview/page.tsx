@@ -7,6 +7,10 @@ import InterviewHistoryList from '@/components/history/InterviewHistoryList';
 const Page = async () => {
   const data = await getAnalysesList();
 
+  const wait = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+  await wait(500);
+
   return (
     <Suspense fallback={<RequestSkeleton />}>
       <header className="header">

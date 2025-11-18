@@ -3,11 +3,12 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from './styles/uploader.module.css';
 import { FileTextIcon, ArrowUp, XIcon, Loader2 } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
+import { motion } from 'motion/react';
 import Button from '@/components/shared/Button';
 import { useAtom } from 'jotai';
-import { currentRequestStageAtom, resumeTextAtom } from '@/store/request-stage';
+import { resumeTextAtom } from '@/store/request-stage';
 import { uploadPdfWithProgress } from '@/utils/services/pdf';
+import { useRouter } from 'next/navigation';
 
 const ResumeUploader = () => {
   const MAX_LENGTH = 8000;
@@ -22,10 +23,12 @@ const ResumeUploader = () => {
 
   const [dragOver, setDragOver] = useState(false); // 드래그 중.
 
-  const [requestStage, setRequestStage] = useAtom(currentRequestStageAtom);
+  // const [requestStage, setRequestStage] = useAtom(currentRequestStageAtom);
   const [resumeText, setResumeText] = useAtom(resumeTextAtom);
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (!file) return;
@@ -95,7 +98,9 @@ const ResumeUploader = () => {
       setResumeText(text);
     }
 
-    setRequestStage('jobText');
+    // setRequestStage('jobText');
+
+    router.push('/new-request/job');
   };
 
   const handleFile = (f: File) => {

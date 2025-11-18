@@ -23,7 +23,7 @@ const SharedMenu = () => {
       id: '1',
       text: '새로운 면접 시작',
       selected: pathname.startsWith('/new-request'),
-      href: '/new-request',
+      href: '/new-request/resume',
       icon: <PlayIcon size={20} />,
     },
     {

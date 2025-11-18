@@ -1,5 +1,5 @@
 import GeneratingClient from '@/components/newRequest/GeneratingClient';
-import RequestHeader from '@/components/newRequest/RequestHeader';
+
 import { Suspense } from 'react';
 import GeneratingSkeleton from './loading';
 
@@ -16,12 +16,7 @@ const Page = async ({ params }: { params: Promise<{ requestId: string }> }) => {
 
   return (
     <Suspense fallback={<GeneratingSkeleton />}>
-      <header className="header">
-        <RequestHeader text={'Step 3/4'} />
-      </header>
-      <div className="contents">
-        <GeneratingClient requestId={requestId} />
-      </div>
+      <GeneratingClient requestId={requestId} />
     </Suspense>
   );
 };

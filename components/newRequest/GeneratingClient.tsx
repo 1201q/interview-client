@@ -1,9 +1,6 @@
 'use client';
 
-import {
-  currentRequestStageAtom,
-  generatingProgressAtom,
-} from '@/store/request-stage';
+import { generatingProgressAtom } from '@/store/request-stage';
 import { useAtom } from 'jotai';
 import { AnimatePresence, motion } from 'motion/react';
 import { useMemo, useState } from 'react';
@@ -35,7 +32,9 @@ interface Props {
 }
 
 const GeneratingClient = ({ requestId }: Props) => {
-  const [requestStage, setRequestStage] = useAtom(currentRequestStageAtom);
+  const [stage, setStage] = useState<'connecting' | 'generating' | 'failed'>(
+    'connecting',
+  );
   const [generatedQuestions, setGeneratedQuestions] = useState<
     GeneratedQuestionItem[]
   >([]);
@@ -50,14 +49,14 @@ const GeneratingClient = ({ requestId }: Props) => {
     url,
     {
       onOpen: () => {
-        setRequestStage('generating');
+        setStage('connecting');
       },
       onMessage: (ev) => {
         console.log(ev);
       },
       onNamed: {
         question: (data) => {
-          console.log(data);
+          setStage('generating');
           setGeneratedQuestions((prev) => [...prev, { ...data, id: uuid() }]);
         },
 
@@ -71,12 +70,12 @@ const GeneratingClient = ({ requestId }: Props) => {
 
         completed: () => {
           setProgress(100);
-          setRequestStage('selecting');
           router.replace(`/new-request/${requestId}/select`);
         },
       },
 
       onError: (error) => {
+        setStage('failed');
         console.warn('SSE error:', error);
       },
     },
@@ -84,43 +83,36 @@ const GeneratingClient = ({ requestId }: Props) => {
   );
 
   return (
-    <AnimatePresence mode="popLayout" initial={false}>
-      {requestStage === 'beforeGenerating' && (
-        <motion.div
-          key="before-generating"
-          initial="enter"
-          animate="center"
-          exit="exit"
-          style={{ inset: 0 }}
-        >
-          <BeforeGenerating />
-        </motion.div>
+    <>
+      {stage === 'connecting' && <BeforeGenerating />}
+      {stage === 'generating' && (
+        <Generating questions={generatedQuestions} progress={progress} />
       )}
-      {requestStage === 'generating' && (
-        <motion.div
-          key="generating"
-          initial="enter"
-          animate="center"
-          exit="exit"
-          style={{ inset: 0, height: '100%' }}
-        >
-          <Generating questions={generatedQuestions} progress={progress} />
-        </motion.div>
-      )}
-    </AnimatePresence>
+    </>
   );
 };
 
 const BeforeGenerating = () => {
   return (
-    <div className={styles.main}>
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }}
-        className={styles.loading}
-      >
-        {/* <LoaderCircle color="var( --neutral-4)" size={80} strokeWidth={2} /> */}
-      </motion.div>
+    <div className={styles.itemList}>
+      <div
+        className={styles.stackViewport}
+        style={{
+          maxHeight: HEIGHT,
+        }}
+      ></div>
+
+      <div className={styles.bottomInfo}>
+        <div className={styles.bottomInfoText}>
+          <Clock
+            size={13}
+            style={{ marginTop: '1px' }}
+            color="var(--neutral-5)"
+          />
+          <p>예상 시간 30초</p>
+        </div>
+        <div className={styles.progress}>생성 대기 중</div>
+      </div>
     </div>
   );
 };

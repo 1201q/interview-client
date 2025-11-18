@@ -1,4 +1,4 @@
-import RequestSideStepsHydrated from '@/components/newRequest/RequestSideStepsHydrated';
+import { RequestSideSteps } from '@/components/newRequest/RequestSideSteps';
 
 import BottomUser from '@/components/sidebar/BottomUser';
 import SharedMenu from '@/components/sidebar/SharedMenu';
@@ -7,11 +7,7 @@ import TopLogo from '@/components/sidebar/TopLogo';
 
 import { cookies } from 'next/headers';
 
-export default async function DefaultSidebar({
-  params,
-}: {
-  params: { sessionId: string; answerId: string };
-}) {
+export default async function DefaultSidebar() {
   const sidebarSizeCookie = (await cookies()).get('sidebar-size')?.value as
     | 'mini'
     | 'expanded'
@@ -23,10 +19,7 @@ export default async function DefaultSidebar({
     <SidebarBg>
       <TopLogo toggleState={sidebarSize} />
       <SharedMenu />
-      <RequestSideStepsHydrated
-        initialStage="resumeText"
-        dangerouslyForceHydrate={false}
-      />
+      <RequestSideSteps />
       <BottomUser />
     </SidebarBg>
   );

@@ -29,10 +29,9 @@
   display: flex;
   flex-direction: column;
   max-width: 1000px;
-  min-width: 1000px;
+
   width: 100%;
-  margin: 0 auto;
-  padding: 30px 36px;
+
   row-gap: 0;
 }
 
@@ -64,26 +63,26 @@
 }
 
 .headerSkeleton {
-  height: 27px;
+  height: 32px;
   width: 150px;
 }
 
 .sectionTitle {
   display: flex;
   flex-direction: column;
-  row-gap: 8px;
+  row-gap: 12px;
 
   font-weight: 600;
 }
 
 .sectionTitleSkeleton {
-  height: 35px;
+  height: 40px;
   width: 150px;
 }
 
 .sectionDesc.skeleton {
-  height: 25px;
-  margin-bottom: 20px;
+  height: 28px;
+  margin-bottom: 15px;
 }
 
 .contentsBigText {
@@ -109,7 +108,7 @@
   display: flex;
   flex-direction: column;
   row-gap: 15px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .question {
