@@ -25,7 +25,10 @@
   height: 100dvh;
 
   z-index: 1;
-  transition: width 0.3s var(--ease-out);
+
+  transition:
+    width 0.3s var(--ease-out),
+    max-width 0.3s var(--ease-out);
 }
 
 /* 컨텐츠 오른쪽 */
@@ -71,8 +74,11 @@
   background-color: var(--neutral-0);
 }
 
-html[data-sidebar-size='mini'] .sidebar {
-  background-color: var(--neutral-0);
+.wrapper,
+.sidebar,
+.main {
+  will-change: transform, width, grid-template-columns, backdrop-filter;
+  transform: translateZ(0);
 }
 
 html[data-sidebar-size='mini'] .contents {
@@ -80,9 +86,10 @@ html[data-sidebar-size='mini'] .contents {
   min-width: 1200px;
 }
 
-.wrapper,
-.sidebar,
-.main {
-  will-change: transform, width, grid-template-columns, backdrop-filter;
-  transform: translateZ(0);
+html[data-sidebar-size='mini'] .sidebar {
+  max-width: var(--min-sidebar-w);
+}
+
+html[data-sidebar-size='expanded'] .sidebar {
+  max-width: var(--max-sidebar-w);
 }

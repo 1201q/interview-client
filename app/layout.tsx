@@ -4,8 +4,9 @@ import localFont from 'next/font/local';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 import JotaiProvider from '@/components/shared/JotaiProvider';
-import { cookies } from 'next/headers';
+
 import { Metadata } from 'next';
+import Script from 'next/script';
 
 interface Props {
   children: React.ReactNode;
@@ -34,26 +35,32 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children, modal }: Readonly<Props>) {
-  const sb =
-    (await cookies()).get('sidebar-size')?.value === 'mini'
-      ? 'mini'
-      : 'expanded';
-  // 없으면 expanded
-
-  const width = sb === 'mini' ? '60px' : '280px';
-
   return (
-    <html
-      lang="ko"
-      data-sidebar-size={sb}
-      style={{ ['--sidebar-w' as any]: width }}
-    >
+    <html lang="ko" data-sidebar-size="mini" suppressHydrationWarning>
       <body className={`${pretendard.variable} ${wanted.variable}`}>
         <JotaiProvider>
           <SpeedInsights />
           <Analytics />
           {children}
           {modal}
+          <Script id="sidebar-init" strategy="beforeInteractive">
+            {`
+          (function() {
+            try {
+              var v = localStorage.getItem('sidebar-size');
+              
+              if (v !== 'mini' && v !== 'expanded') v = 'mini';
+
+              var w = v === 'mini' ? '60px' : '280px';
+
+              var html = document.documentElement;
+              html.setAttribute('data-sidebar-size', v);
+              html.style.setProperty('--sidebar-w', w); 
+
+            } catch (e) {}
+          })();
+        `}
+          </Script>
         </JotaiProvider>
       </body>
     </html>

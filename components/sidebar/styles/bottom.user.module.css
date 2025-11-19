@@ -33,11 +33,11 @@
 }
 
 .bottomWrapper:hover {
-  background-color: var(--neutral-3);
+  background-color: color-mix(in srgb, var(--neutral-6) 9%, transparent 90%);
 }
 
 html[data-sidebar-size='mini'] .bottomWrapper:hover {
-  background-color: var(--neutral-2);
+  background-color: color-mix(in srgb, var(--neutral-6) 8%, transparent 90%);
 }
 
 .profile {

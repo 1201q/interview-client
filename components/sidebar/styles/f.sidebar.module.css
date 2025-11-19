@@ -34,14 +34,14 @@
 
   text-align: left;
   padding: 0 10px;
-  border-radius: 10px;
+  border-radius: 8px;
   transition: background-color 0.12s;
 
   position: relative;
 }
 
 .question:not(.selected):hover {
-  background-color: var(--neutral-3);
+  background-color: color-mix(in srgb, var(--neutral-6) 9%, transparent 90%);
 }
 
 /* 질문 번호 */
@@ -106,6 +106,10 @@ html[data-sidebar-size='mini'] .listHeader {
 
 html[data-sidebar-size='mini'] .listHeader {
   opacity: 0;
+}
+
+html[data-sidebar-size='mini'] .question:not(.selected):hover {
+  background-color: color-mix(in srgb, var(--neutral-6) 8%, transparent 90%);
 }
 
 .highlightBg {

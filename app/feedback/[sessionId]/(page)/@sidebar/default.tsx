@@ -4,7 +4,6 @@ import SharedMenu from '@/components/sidebar/SharedMenu';
 import SidebarBg from '@/components/sidebar/SidebarBg';
 import TopLogo from '@/components/sidebar/TopLogo';
 import { getAnalyesStatuses } from '@/utils/services/analyses';
-import { cookies } from 'next/headers';
 
 export default async function DefaultSidebar({
   params,
@@ -13,13 +12,6 @@ export default async function DefaultSidebar({
 }) {
   const { sessionId } = await params;
 
-  const sidebarSizeCookie = (await cookies()).get('sidebar-size')?.value as
-    | 'mini'
-    | 'expanded'
-    | undefined;
-
-  const sidebarSize = sidebarSizeCookie ? sidebarSizeCookie : 'expanded';
-
   let data: Awaited<ReturnType<typeof getAnalyesStatuses>>;
 
   try {
@@ -27,7 +19,7 @@ export default async function DefaultSidebar({
 
     return (
       <SidebarBg>
-        <TopLogo toggleState={sidebarSize} />
+        <TopLogo />
         <SharedMenu />
         <FeedbackSidebar data={data} />
         <BottomUser />
@@ -36,7 +28,7 @@ export default async function DefaultSidebar({
   } catch (error) {
     return (
       <SidebarBg>
-        <TopLogo toggleState={sidebarSize} />
+        <TopLogo />
         <SharedMenu />
         <div style={{ height: '100%' }}></div>
         <BottomUser />

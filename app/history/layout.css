@@ -22,7 +22,9 @@
   height: 100dvh;
 
   z-index: 1;
-  transition: width 0.3s var(--ease-out);
+  transition:
+    width 0.3s var(--ease-out),
+    max-width 0.3s var(--ease-out);
 
   align-self: start;
 }
@@ -83,4 +85,12 @@
 .main {
   will-change: transform, width, grid-template-columns, backdrop-filter;
   transform: translateZ(0);
+}
+
+html[data-sidebar-size='mini'] .sidebar {
+  max-width: var(--min-sidebar-w);
+}
+
+html[data-sidebar-size='expanded'] .sidebar {
+  max-width: var(--max-sidebar-w);
 }

@@ -80,7 +80,7 @@ const HistoryItem = ({ item }: { item: RequestListItem }) => {
     >
       <div className={styles.itemHeader}>
         <div className={styles.headerLeft}>
-          <h3 className={styles.sessionTitle}>질문 생성{item.request_id}</h3>
+          <h3 className={styles.sessionTitle}>질문 생성</h3>
 
           <div className={styles.metaRow}>
             <span className={styles.meta}>
