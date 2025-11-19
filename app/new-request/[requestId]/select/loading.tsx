@@ -6,6 +6,7 @@ export default function SelectSkeleton() {
   return (
     <div className={styles.main}>
       {/* 컨텐츠 */}
+      <div className="loading-lock"></div>
       <div className={styles.contents}>
         <section>
           <div className={styles.sectionTitle}>

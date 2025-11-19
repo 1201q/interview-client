@@ -1,8 +1,9 @@
 import styles from './loading.module.css';
 
-export default function SkeletonTop() {
+export default function InterviewSkeleton() {
   return (
     <div className={styles.main}>
+      <div className="loading-lock"></div>
       <div className={styles.header}>
         <div
           className={`${styles.skeleton} ${styles.headerSkeleton} ${styles.shimmer}`}

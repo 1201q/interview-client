@@ -3,14 +3,15 @@
   flex-direction: column;
   width: 100%;
   background-color: var(--neutral-0);
-  min-height: 100dvh;
+  height: 100dvh;
 }
 
 .wrapper {
   display: grid;
   grid-template-columns: var(--sidebar-w) 1fr;
-  min-height: 100dvh;
+  height: 100dvh;
   transition: grid-template-columns 0.3s var(--ease-out);
+  overflow: hidden;
 }
 
 .sidebar {
@@ -32,6 +33,13 @@
   height: 100%;
   background-color: var(--neutral-0);
   position: relative;
+
+  overflow: auto;
+  overflow-x: auto;
+}
+
+.main:has(.loading-lock) {
+  overflow-x: hidden;
 }
 
 .header {
@@ -65,6 +73,8 @@
 
 .animationContainer {
   inset: 0;
+  padding-bottom: 0;
+  overflow: clip;
 }
 
 .wrapper,

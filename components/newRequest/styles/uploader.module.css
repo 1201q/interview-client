@@ -17,6 +17,7 @@
   align-items: flex-end;
   justify-content: flex-end;
   column-gap: 15px;
+  padding-bottom: 25px;
 }
 
 /* 공용 */

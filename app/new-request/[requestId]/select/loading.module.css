@@ -1,8 +1,10 @@
 .main {
+  width: 100%;
   height: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
 
   position: relative;
+  /* background-color: red; */
 }
 
 .header {
@@ -40,26 +42,14 @@
   flex-direction: column;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  border-radius: 18px;
-
-  border: 1px solid var(--neutral-3);
-  background-color: var(--neutral-0);
-  overflow: hidden;
-
-  text-align: left;
-  box-shadow: var(--shadow-sm);
-  height: 282px;
-  overflow: hidden;
-}
 /* ===== Skeleton ===== */
 .skeleton {
   position: relative;
   overflow: hidden;
   background: color-mix(in srgb, var(--neutral-2) 60%, white 40%);
   border-radius: 8px;
+  contain: paint;
+  isolation: isolate;
 }
 
 .headerSkeleton {
@@ -123,6 +113,7 @@
   transition: background 0.12s;
 
   height: 84px;
+  overflow: hidden;
 }
 
 .questionOrder {
@@ -169,7 +160,8 @@
 
 .shimmer::after {
   content: '';
-  position: absolute;
+  position: fixed;
+
   inset: 0;
   transform: translateX(-100%);
   background: linear-gradient(
@@ -178,7 +170,11 @@
     color-mix(in srgb, white 70%, var(--neutral-2) 30%) 50%,
     transparent 100%
   );
+
   animation: shimmer 1.2s infinite;
+
+  pointer-events: none;
+  z-index: 0;
 }
 
 .segments {

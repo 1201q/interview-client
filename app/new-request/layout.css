@@ -3,25 +3,23 @@
   flex-direction: column;
   width: 100%;
   background-color: var(--neutral-0);
-  min-height: 100dvh;
+  height: 100dvh;
 }
 
 .wrapper {
   display: grid;
   grid-template-columns: var(--sidebar-w) 1fr;
-  min-height: 100dvh;
+  height: 100dvh;
   transition: grid-template-columns 0.3s var(--ease-out);
+  overflow: hidden;
 }
 
 .sidebar {
   width: var(--sidebar-w);
-
   position: sticky;
-
   align-self: start;
   top: 0;
   height: 100dvh;
-
   z-index: 1;
   transition: width 0.3s var(--ease-out);
 }
@@ -29,9 +27,16 @@
 /* 컨텐츠 오른쪽 */
 /* 메인 */
 .main {
-  min-height: 100dvh;
+  height: 100dvh;
   background-color: var(--neutral-0);
   position: relative;
+
+  overflow: auto;
+  overflow-x: auto;
+}
+
+.main:has(.loading-lock) {
+  overflow-x: hidden;
 }
 
 .header {
@@ -67,6 +72,7 @@
 .animationContainer {
   inset: 0;
   padding-bottom: 0;
+  overflow: clip;
 }
 
 .wrapper,

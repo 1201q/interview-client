@@ -13,8 +13,6 @@ export default async function DefaultSidebar({
 }) {
   const { sessionId } = await params;
 
-  const statuses = await getAnalyesStatuses(sessionId);
-
   const sidebarSizeCookie = (await cookies()).get('sidebar-size')?.value as
     | 'mini'
     | 'expanded'
@@ -22,12 +20,27 @@ export default async function DefaultSidebar({
 
   const sidebarSize = sidebarSizeCookie ? sidebarSizeCookie : 'expanded';
 
-  return (
-    <SidebarBg>
-      <TopLogo toggleState={sidebarSize} />
-      <SharedMenu />
-      <FeedbackSidebar data={statuses} />
-      <BottomUser />
-    </SidebarBg>
-  );
+  let data: Awaited<ReturnType<typeof getAnalyesStatuses>>;
+
+  try {
+    data = await getAnalyesStatuses(sessionId);
+
+    return (
+      <SidebarBg>
+        <TopLogo toggleState={sidebarSize} />
+        <SharedMenu />
+        <FeedbackSidebar data={data} />
+        <BottomUser />
+      </SidebarBg>
+    );
+  } catch (error) {
+    return (
+      <SidebarBg>
+        <TopLogo toggleState={sidebarSize} />
+        <SharedMenu />
+        <div style={{ height: '100%' }}></div>
+        <BottomUser />
+      </SidebarBg>
+    );
+  }
 }

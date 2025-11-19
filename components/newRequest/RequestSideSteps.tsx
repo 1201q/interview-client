@@ -22,7 +22,12 @@ const menu: Record<StepKey, { title: string; icon: any }> = {
 
 export function RequestSideSteps() {
   const pathname = usePathname();
-  const current = getStepFromPathname(pathname) ?? 'resume';
+  const current = getStepFromPathname(pathname);
+
+  if (!current) {
+    return <div style={{ height: '100%' }}></div>;
+  }
+
   const currentIdx = stepOrder.indexOf(current);
 
   return (

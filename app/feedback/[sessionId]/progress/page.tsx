@@ -1,7 +1,8 @@
 import InterviewAnalyzingOverlay from '@/components/interview-progress/overlays/InterviewAnalyzingOverlay';
+import SoftRedirect from '@/components/shared/SoftRedirect';
 
 import { getAnalyesStatuses } from '@/utils/services/analyses';
-import { redirect } from 'next/navigation';
+import InterviewSkeleton from '../(page)/(content)/[answerId]/loading';
 
 export default async function Page({
   params,
@@ -22,7 +23,13 @@ export default async function Page({
   if (allDone) {
     const firstAnswer = data.statuses[0];
     const firstAnswerId = firstAnswer.answer_id;
-    redirect(`/feedback/${sessionId}/${firstAnswerId}`);
+
+    return (
+      <SoftRedirect
+        href={`/feedback/${sessionId}/${firstAnswerId}`}
+        fallback={<InterviewSkeleton />}
+      />
+    );
   }
 
   return (
