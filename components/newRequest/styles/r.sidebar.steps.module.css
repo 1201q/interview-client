@@ -1,53 +1,39 @@
 .steps {
   padding: 24px 16px;
-
   position: relative;
   height: calc(100% - 100px);
   overflow: hidden;
 }
 
-.loadingSteps {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  background: var(--primary);
-  padding: 16px 40px;
-
-  box-shadow: var(--shadow-sm);
+.progressWrapper {
   position: relative;
-  overflow: hidden;
-  min-height: calc(100vh - 80px);
+  margin-top: 15px;
 }
 
-.loadingSteps::before,
-.loadingSteps::after {
-  content: '';
+.progressTrack {
   position: absolute;
-  inset: 0;
-  background-image: radial-gradient(white 1px, transparent 1px);
-  background-size: 22px 22px;
-  opacity: 0.25;
-  animation: ani 12s ease-in-out infinite alternate;
+  left: 13px;
+  top: 6px;
+  bottom: 6px;
+  width: 1.5px;
+  border-left: 1.5px dashed var(--neutral-4);
+  opacity: 0.7;
   pointer-events: none;
 }
-.loadingSteps::after {
-  background-size: 26px 26px;
-  opacity: 0.2;
-  animation-duration: 12s;
-  animation-direction: alternate-reverse;
-  filter: blur(0.3px);
-}
 
-@keyframes ani {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1) rotate(0);
-  }
-  50% {
-    transform: translate3d(-3%, 2%, 0) scale(2) rotate(180deg);
-  }
-  100% {
-    transform: translate3d(1%, -2%, 0) scale(1) rotate(360deg);
-  }
+.progressFill {
+  position: absolute;
+  left: 13px;
+  top: 6px;
+  width: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    var(--primary),
+    var(--color-primary-weak)
+  );
+  box-shadow: 0 0 10px rgba(76, 134, 254, 0.4);
+  pointer-events: none;
 }
 
 .listHeader {
@@ -66,7 +52,6 @@
   flex-direction: column;
   row-gap: 22px;
   position: relative;
-  margin-top: 15px;
 }
 
 .step {
@@ -76,42 +61,12 @@
   z-index: 1;
 }
 
-.step::before {
-  content: '';
-  position: absolute;
-  left: 12px; /* 아이콘 가운데 정렬 (icon width/2) */
-  top: 0;
-  bottom: -32px;
-  width: 1.5px;
-  background: none;
-  opacity: 0.5;
-  border-left: 1.5px dashed var(--neutral-5);
-  z-index: 0;
-}
-
-/* 첫번째 step은 위 선 제거 */
-.step:first-child::before {
-  top: 18px; /* 아이콘 중심부터 시작 */
-}
-
-/* 마지막 step은 아래 선 제거 */
-.step:last-child::before {
-  bottom: auto;
-  height: 18px;
-}
-
-/* 활성 단계는 실선으로 */
-.stepCompleted::before {
-  border-left: 1.5px solid var(--primary);
-  opacity: 1;
-}
-
 .icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   background-color: var(--neutral-0);
   border-radius: 50%;
   box-shadow: var(--shadow-sm);
@@ -125,6 +80,16 @@
   height: 16px;
   stroke: var(--neutral-5);
   fill: var(--neutral-2);
+}
+
+.stepHighlight {
+  position: absolute;
+  inset: -6px -10px;
+
+  border-radius: 8px;
+  background-color: color-mix(in srgb, var(--color-primary) 12%, white 70%);
+
+  z-index: 0;
 }
 
 /* current - 현재 단계 아이콘 */
@@ -175,40 +140,6 @@
 .stepDesc {
   font-size: 12px;
   color: var(--neutral-6);
-}
-
-.loadingTitle {
-  font-size: 32px;
-  font-weight: 600;
-  color: var(--neutral-0);
-  margin-bottom: 10px;
-}
-
-.loadingDesc {
-  font-size: 18px;
-  font-weight: 500;
-  color: var(--neutral-0);
-  margin-bottom: 20px;
-}
-
-.loadingPercent {
-  font-size: 52px;
-  font-weight: 800;
-  color: var(--neutral-0);
-  letter-spacing: -1.5px;
-  margin-bottom: 10px;
-}
-
-.loadingRemainingTime {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.3);
-  color: var(--neutral-0);
-  border-radius: 40px;
-  padding: 5px 15px;
-  font-size: 13px;
-  width: fit-content;
 }
 
 html[data-sidebar-size='mini'] .stepContent {

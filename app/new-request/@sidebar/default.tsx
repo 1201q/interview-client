@@ -1,5 +1,3 @@
-import { RequestSideSteps } from '@/components/newRequest/RequestSideSteps';
-
 import BottomUser from '@/components/sidebar/BottomUser';
 import SharedMenu from '@/components/sidebar/SharedMenu';
 import SidebarBg from '@/components/sidebar/SidebarBg';
@@ -10,7 +8,7 @@ export default async function DefaultSidebar() {
     <SidebarBg>
       <TopLogo />
       <SharedMenu />
-      <RequestSideSteps />
+      <div style={{ height: '100%' }}></div>
       <BottomUser />
     </SidebarBg>
   );

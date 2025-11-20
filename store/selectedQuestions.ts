@@ -3,6 +3,12 @@ import { atom } from 'jotai';
 
 export const selectedQuestionsAtom = atom<GeneratedQuestionItem[]>([]);
 
+selectedQuestionsAtom.onMount = (set) => {
+  return () => {
+    set([]);
+  };
+};
+
 export const toggleSelectedQuestionsAtom = atom(
   null,
   (get, set, item: GeneratedQuestionItem) => {

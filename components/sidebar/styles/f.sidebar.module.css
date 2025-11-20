@@ -17,10 +17,13 @@
 /* ol */
 .list {
   display: flex;
+  height: calc(100% - 320px);
   flex-direction: column;
   row-gap: 4px;
   position: relative;
   margin: 0px 6px;
+
+  overflow-y: scroll;
 }
 
 .question {
